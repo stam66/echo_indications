@@ -1,12 +1,12 @@
 #tag WebPage
-Begin WebPage wp_users
+Begin WebPage wp_settings
    AllowTabOrderWrap=   True
    Compatibility   =   ""
    ControlCount    =   0
    ControlID       =   ""
    CSSClasses      =   ""
    Enabled         =   False
-   Height          =   688
+   Height          =   714
    ImplicitInstance=   True
    Index           =   -2147483648
    Indicator       =   0
@@ -25,10 +25,10 @@ Begin WebPage wp_users
    PanelIndex      =   0
    ScaleFactor     =   0.0
    TabIndex        =   0
-   Title           =   "User management"
+   Title           =   "Issues - Changes"
    Top             =   0
    Visible         =   True
-   Width           =   1068
+   Width           =   1116
    _ImplicitInstance=   False
    _mDesignHeight  =   0
    _mDesignWidth   =   0
@@ -54,199 +54,23 @@ Begin WebPage wp_users
       PanelIndex      =   0
       Scope           =   2
       ScrollDirection =   0
-      SectionTitle    =   "Manage Admins"
+      SectionTitle    =   "Issues / Change requests"
       TabIndex        =   0
       TabStop         =   True
       Tooltip         =   ""
       Top             =   0
       Visible         =   True
-      Width           =   1068
+      Width           =   1116
       _mDesignHeight  =   0
       _mDesignWidth   =   0
-      _mPanelIndex    =   -1
-   End
-   Begin WebListBox lstUsers
-      AllowRowReordering=   False
-      ColumnCount     =   4
-      ColumnWidths    =   ""
-      ControlID       =   ""
-      CSSClasses      =   ""
-      DefaultRowHeight=   49
-      Enabled         =   True
-      GridLineStyle   =   3
-      HasBorder       =   True
-      HasHeader       =   True
-      HeaderHeight    =   0
-      Height          =   524
-      HighlightSortedColumn=   True
-      Index           =   -2147483648
-      Indicator       =   0
-      InitialValue    =   "Full Name	Username	Email	Title"
-      LastAddedRowIndex=   0
-      LastColumnIndex =   0
-      LastRowIndex    =   0
-      Left            =   0
-      LockBottom      =   True
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   True
-      LockTop         =   True
-      LockVertical    =   False
-      NoRowsMessage   =   ""
-      PanelIndex      =   0
-      ProcessingMessage=   ""
-      RowCount        =   0
-      RowSelectionType=   1
-      Scope           =   0
-      SearchCriteria  =   ""
-      SelectedRowColor=   &c0d6efd
-      SelectedRowIndex=   0
-      TabIndex        =   1
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   164
-      Visible         =   True
-      Width           =   1068
-      _mPanelIndex    =   -1
-   End
-   Begin WebSegmentedButton SegmentedButton2
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      Height          =   38
-      Index           =   -2147483648
-      Indicator       =   0
-      LastSegmentIndex=   0
-      Left            =   20
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      LockVertical    =   False
-      Outlined        =   True
-      PanelIndex      =   0
-      Scope           =   0
-      SegmentCount    =   0
-      Segments        =   "New\n\nFalse\rDelete\n\nFalse"
-      SelectedSegmentIndex=   0
-      SelectionStyle  =   1
-      TabIndex        =   9
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   104
-      Visible         =   True
-      Width           =   199
-      _mPanelIndex    =   -1
-   End
-   Begin WebButton Button1
-      AllowAutoDisable=   False
-      Cancel          =   False
-      Caption         =   "Button"
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Default         =   False
-      Enabled         =   True
-      Height          =   38
-      Index           =   -2147483648
-      Indicator       =   0
-      Left            =   401
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      LockVertical    =   False
-      Outlined        =   False
-      PanelIndex      =   0
-      Scope           =   0
-      TabIndex        =   10
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   104
-      Visible         =   True
-      Width           =   100
       _mPanelIndex    =   -1
    End
 End
 #tag EndWebPage
 
 #tag WindowCode
-	#tag Event
-		Sub Shown()
-		  populateUsers
-		End Sub
-	#tag EndEvent
-
-
-	#tag Method, Flags = &h21
-		Private Sub HandleUserSaved(sender as WebDialog)
-		  Var dlg As dlg_user = dlg_user(sender)
-		  If dlg.WasSaved Then
-		    populateUsers  // Or however you refresh your listbox
-		    dlg.WasSaved = False
-		  End If
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
-		Private Sub populateUsers()
-		  var sql As string = "Select * from users"
-		  var rs as RowSet =  Session.db.SelectSQL(sql)
-		  
-		  lstUsers.RemoveAllRows
-		  while not rs.AfterLastRow
-		    lstUsers.AddRow(rs.Column("name").StringValue)
-		    lstUsers.CellTextAt(lstUsers.LastAddedRowIndex, 1) = rs.Column("username").StringValue
-		    lstUsers.CellTextAt(lstUsers.LastAddedRowIndex, 2) = rs.Column("email").StringValue
-		    lstUsers.CellTextAt(lstUsers.LastAddedRowIndex, 3) = rs.Column("title").StringValue
-		    lstUsers.RowTagAt(lstUsers.LastAddedRowIndex) = rs.Column("id").IntegerValue
-		    rs.MoveToNextRow
-		  wend
-		  
-		End Sub
-	#tag EndMethod
-
-
 #tag EndWindowCode
 
-#tag Events lstUsers
-	#tag Event
-		Sub DoublePressed(row As Integer, column As Integer)
-		  var id as integer = me.RowTagAt(me.SelectedRowIndex)
-		  var dlg as new dlg_user
-		  AddHandler dlg.UserSaved, AddressOf HandleUserSaved
-		  dlg.UserID = id
-		  dlg.Show
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events Button1
-	#tag Event
-		Sub Pressed()
-		  Var sql As String = "INSERT INTO users (name, username, email, password_hash, title) VALUES (?,?,?, SHA2(?, 256),?)"
-		  Var ps As MySQLPreparedStatement = session.db.Prepare(sql)
-		  
-		  ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		  ps.BindType(1, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		  ps.BindType(2, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		  ps.BindType(3, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		  ps.BindType(4, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		  
-		  ps.Bind(0, "Stam Kapetanakis")
-		  ps.Bind(1, "SKapetanakis")
-		  ps.Bind(2, "skapetanakis@nhs.net")
-		  ps.Bind(3, "reject66")
-		  ps.Bind(4, "ECHO Lead GSTT")
-		  
-		  ps.ExecuteSQL
-		  populateUsers
-		End Sub
-	#tag EndEvent
-#tag EndEvents
 #tag ViewBehavior
 	#tag ViewProperty
 		Name="PanelIndex"
