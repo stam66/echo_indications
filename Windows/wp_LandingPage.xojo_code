@@ -89,7 +89,7 @@ Begin WebPage wp_LandingPage
          LockVertical    =   False
          Multiline       =   False
          PanelIndex      =   0
-         Parent          =   "Rectangle1"
+         Parent          =   "rect_topmenu"
          Scope           =   0
          TabIndex        =   1
          TabPanelIndex   =   -1
@@ -126,7 +126,7 @@ Begin WebPage wp_LandingPage
          LockVertical    =   False
          Multiline       =   False
          PanelIndex      =   0
-         Parent          =   "Rectangle1"
+         Parent          =   "rect_topmenu"
          Scope           =   0
          TabIndex        =   2
          TabPanelIndex   =   -1
@@ -205,6 +205,38 @@ Begin WebPage wp_LandingPage
       _mDesignWidth   =   0
       _mPanelIndex    =   -1
    End
+   Begin WebSegmentedButton segAdminButtons
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      Height          =   38
+      Index           =   -2147483648
+      Indicator       =   0
+      LastSegmentIndex=   0
+      Left            =   788
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      LockVertical    =   False
+      Outlined        =   True
+      PanelIndex      =   0
+      Parent          =   "nil"
+      Scope           =   0
+      SegmentCount    =   0
+      Segments        =   "Users\n\nFalse\rSettings\n\nFalse\rAudit\n\nFalse"
+      SelectedSegmentIndex=   0
+      SelectionStyle  =   1
+      TabIndex        =   4
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   237
+      Visible         =   True
+      Width           =   298
+      _mPanelIndex    =   -1
+   End
 End
 #tag EndWebPage
 
@@ -239,6 +271,24 @@ End
 
 #tag EndWindowCode
 
+#tag Events segAdminButtons
+	#tag Event
+		Sub Pressed(segmentIndex As Integer)
+		  var w as webpage
+		  
+		  select case segmentIndex
+		  case 0
+		     w = new wp_users
+		  case 1
+		     w = new wp_settings
+		  case 2
+		     w = new wp_audit
+		  end Select
+		  
+		  Session.NavigationManager.NavigateToPage(w)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
 #tag ViewBehavior
 	#tag ViewProperty
 		Name="PanelIndex"

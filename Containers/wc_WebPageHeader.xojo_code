@@ -189,6 +189,37 @@ Begin WebContainer wc_WebPageHeader
       Width           =   361
       _mPanelIndex    =   -1
    End
+   Begin WebSegmentedButton segAdminButtons
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      Height          =   38
+      Index           =   -2147483648
+      Indicator       =   0
+      LastSegmentIndex=   0
+      Left            =   273
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      LockVertical    =   False
+      Outlined        =   True
+      PanelIndex      =   0
+      Scope           =   0
+      SegmentCount    =   0
+      Segments        =   "Users\n\nFalse\rSettings\n\nFalse\rAudit\n\nFalse"
+      SelectedSegmentIndex=   0
+      SelectionStyle  =   1
+      TabIndex        =   6
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   18
+      Visible         =   True
+      Width           =   298
+      _mPanelIndex    =   -1
+   End
 End
 #tag EndWebContainerControl
 
@@ -197,7 +228,7 @@ End
 		Sub Opening()
 		  me.style.backgroundcolor = EchoIndicationsApp.NHSBlue
 		  lblSection.Text = SectionTitle
-		  
+		  segAdminButtons.Visible = Session.IsAuthenticated
 		End Sub
 	#tag EndEvent
 

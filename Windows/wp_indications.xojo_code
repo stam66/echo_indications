@@ -227,7 +227,7 @@ Begin WebPage wp_indications
       TabIndex        =   7
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   96
+      Top             =   111
       Visible         =   True
       Width           =   100
       _mPanelIndex    =   -1
@@ -257,67 +257,7 @@ Begin WebPage wp_indications
       TabIndex        =   8
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   96
-      Visible         =   True
-      Width           =   100
-      _mPanelIndex    =   -1
-   End
-   Begin WebButton Button3
-      AllowAutoDisable=   False
-      Cancel          =   False
-      Caption         =   "Users"
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Default         =   False
-      Enabled         =   True
-      Height          =   38
-      Index           =   -2147483648
-      Indicator       =   0
-      Left            =   344
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      LockVertical    =   False
-      Outlined        =   False
-      PanelIndex      =   0
-      Scope           =   2
-      TabIndex        =   9
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   96
-      Visible         =   True
-      Width           =   100
-      _mPanelIndex    =   -1
-   End
-   Begin WebButton Button4
-      AllowAutoDisable=   False
-      Cancel          =   False
-      Caption         =   "Audit"
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Default         =   False
-      Enabled         =   True
-      Height          =   38
-      Index           =   -2147483648
-      Indicator       =   0
-      Left            =   236
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      LockVertical    =   False
-      Outlined        =   False
-      PanelIndex      =   0
-      Scope           =   2
-      TabIndex        =   10
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   96
+      Top             =   111
       Visible         =   True
       Width           =   100
       _mPanelIndex    =   -1
@@ -494,6 +434,20 @@ End
 		    Var indicationID As Integer = me.RowTagAt(me.SelectedRowIndex)
 		    
 		  End If
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events Button1
+	#tag Event
+		Sub Opening()
+		  me.Enabled = session.IsAuthenticated
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events Button2
+	#tag Event
+		Sub Opening()
+		  me.Enabled = session.IsAuthenticated
 		End Sub
 	#tag EndEvent
 #tag EndEvents
