@@ -205,7 +205,7 @@ Begin WebPage wp_LandingPage
       _mDesignWidth   =   0
       _mPanelIndex    =   -1
    End
-   Begin WebSegmentedButton segAdminButtons
+   Begin WebSegmentedButton segAdminButtons_debug
       ControlID       =   ""
       CSSClasses      =   ""
       Enabled         =   True
@@ -213,13 +213,13 @@ Begin WebPage wp_LandingPage
       Index           =   -2147483648
       Indicator       =   0
       LastSegmentIndex=   0
-      Left            =   788
-      LockBottom      =   False
+      Left            =   20
+      LockBottom      =   True
       LockedInPosition=   False
       LockHorizontal  =   False
-      LockLeft        =   False
-      LockRight       =   True
-      LockTop         =   True
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   False
       LockVertical    =   False
       Outlined        =   True
       PanelIndex      =   0
@@ -232,8 +232,8 @@ Begin WebPage wp_LandingPage
       TabIndex        =   4
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   237
-      Visible         =   True
+      Top             =   653
+      Visible         =   False
       Width           =   298
       _mPanelIndex    =   -1
    End
@@ -271,18 +271,18 @@ End
 
 #tag EndWindowCode
 
-#tag Events segAdminButtons
+#tag Events segAdminButtons_debug
 	#tag Event
 		Sub Pressed(segmentIndex As Integer)
 		  var w as webpage
 		  
 		  select case segmentIndex
 		  case 0
-		     w = new wp_users
+		    w = new wp_users
 		  case 1
-		     w = new wp_settings
+		    w = new wp_settings
 		  case 2
-		     w = new wp_audit
+		    w = new wp_audit
 		  end Select
 		  
 		  Session.NavigationManager.NavigateToPage(w)

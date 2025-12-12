@@ -216,7 +216,9 @@ End
 #tag Events lstUsers
 	#tag Event
 		Sub DoublePressed(row As Integer, column As Integer)
-		  var id as integer = me.RowTagAt(me.SelectedRowIndex)
+		  #Pragma Unused column
+		  
+		  var id as integer = me.RowTagAt(row)
 		  var dlg as new dlg_user
 		  AddHandler dlg.UserSaved, AddressOf HandleUserSaved
 		  dlg.UserID = id

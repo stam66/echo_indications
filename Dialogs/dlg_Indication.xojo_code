@@ -84,8 +84,9 @@ Begin WebDialog dlg_Indication
          Parent          =   "Rectangle2"
          Scope           =   0
          TabIndex        =   0
+         TabPanelIndex   =   0
          TabStop         =   True
-         Text            =   "Indication"
+         Text            =   "Indication Details"
          TextAlignment   =   0
          TextColor       =   &cFFFFFF00
          Tooltip         =   ""
@@ -818,8 +819,95 @@ End
 #tag EndWebPage
 
 #tag WindowCode
+	#tag Event
+		Sub Shown()
+		  var rs as RowSet
+		  if IndicationID = 0 then
+		    ResetUI
+		  else
+		    var sql as string = "select * from indications where id = ?"
+		    var ps as MySQLPreparedStatement = session.db.Prepare(sql)
+		    ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_LONG)
+		    ps.Bind(0, IndicationID)
+		    rs = ps.SelectSQL
+		    
+		    txtIndication.Text = rs.Column("title").StringValue
+		    txtComments.Text = rs.Column("comments").StringValue
+		    txtKeywords.Text = rs.Column("keywords").StringValue
+		    
+		    chkSourceASE.Value = (rs.Column("source_ase").IntegerValue = 1)
+		    chkSourceBSE.Value =  (rs.Column("source_bse").IntegerValue = 1)
+		    chkSourceEACVI.Value =  (rs.Column("source_eacvi").IntegerValue = 1)
+		    chkSourceConsensus.Value =  (rs.Column("source_consensus").IntegerValue = 1)
+		    
+		    select case rs.Column("primary_care").StringValue
+		    case "indicated"
+		      popPrimaryCare.SelectRowWithText("Indicated")
+		    case "not_indicated"
+		      popPrimaryCare.SelectRowWithText("Not indicated")
+		    case "can_be_considered"
+		      popPrimaryCare.SelectRowWithText("May be considered")
+		    end Select
+		    
+		    select case rs.Column("secondary_inpatient").StringValue
+		    case "indicated"
+		      popSecondaryIP.SelectRowWithText("Indicated")
+		    case "not_indicated"
+		      popSecondaryIP.SelectRowWithText("Not indicated")
+		    case "can_be_considered"
+		      popSecondaryIP.SelectRowWithText("May be considered")
+		    end Select
+		    
+		    select case rs.Column("secondary_outpatient").StringValue
+		    case "indicated"
+		      popSecondaryOP.SelectRowWithText("Indicated")
+		    case "not_indicated"
+		      popSecondaryOP.SelectRowWithText("Not indicated")
+		    case "can_be_considered"
+		      popSecondaryOP.SelectRowWithText("May be considered")
+		    end Select
+		    
+		    
+		    ' TODO: implement loading and saving for many-to-many Contexts
+		    
+		  end If
+		End Sub
+	#tag EndEvent
+
+
+	#tag Method, Flags = &h0
+		Sub ResetUI()
+		  txtIndication.Text = ""
+		  txtComments.Text = ""
+		  txtKeywords.Text = ""
+		  lstContexts.RemoveAllRows
+		  chkSourceASE.Value = False
+		  chkSourceBSE.Value = False
+		  chkSourceEACVI.Value = False
+		  chkSourceConsensus.Value = False
+		  popPrimaryCare.SelectedRowIndex = -1
+		  popSecondaryIP.SelectedRowIndex = -1
+		  popSecondaryOP.SelectedRowIndex = -1
+		End Sub
+	#tag EndMethod
+
+
+	#tag Property, Flags = &h0
+		IndicationID As Integer
+	#tag EndProperty
+
+
 #tag EndWindowCode
 
+#tag Events btnCancel
+	#tag Event
+		Sub Pressed()
+		  ResetUI
+		  IndicationID = 0
+		  self.Close
+		End Sub
+	#tag EndEvent
+#tag EndEvents
 #tag ViewBehavior
 	#tag ViewProperty
 		Name="PanelIndex"
@@ -1062,5 +1150,13 @@ End
 			"2 - TopToBottom"
 			"3 - BottomToTop"
 		#tag EndEnumValues
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="IndicationID"
+		Visible=false
+		Group="Behavior"
+		InitialValue=""
+		Type="Integer"
+		EditorType=""
 	#tag EndViewProperty
 #tag EndViewBehavior

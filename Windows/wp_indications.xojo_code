@@ -202,7 +202,7 @@ Begin WebPage wp_indications
       _mDesignWidth   =   0
       _mPanelIndex    =   -1
    End
-   Begin WebButton Button1
+   Begin WebButton btnNew
       AllowAutoDisable=   False
       Cancel          =   False
       Caption         =   "New"
@@ -232,7 +232,7 @@ Begin WebPage wp_indications
       Width           =   100
       _mPanelIndex    =   -1
    End
-   Begin WebButton Button2
+   Begin WebButton btnDelete
       AllowAutoDisable=   False
       Cancel          =   False
       Caption         =   "Delete"
@@ -270,23 +270,22 @@ End
 		Sub Opening()
 		  LoadContexts
 		  LoadIndications
+		  
+		End Sub
+	#tag EndEvent
+
+	#tag Event
+		Sub Shown()
+		  MessageBox(Session.IsAuthenticated.ToString)
 		End Sub
 	#tag EndEvent
 
 
-	#tag Method, Flags = &h21
-		Private Function FormatAppropriateness(value As String) As String
-		  Select Case value
-		  Case "indicated"
-		    Return "✓ Indicated"
-		  Case "not_indicated"
-		    Return "✗ Not Indicated"
-		  Case "can_be_considered"
-		    Return "◐ Can Consider"
-		  Else
-		    Return "-"
-		  End Select
-		End Function
+	#tag Method, Flags = &h0
+		Sub Initialise()
+		  btnNew.Enabled = session.IsAuthenticated
+		  btnDelete.Enabled = session.IsAuthenticated
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -402,6 +401,10 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
+		IndicationID As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
 		SearchText As String
 	#tag EndProperty
 
@@ -420,6 +423,8 @@ End
 #tag Events popContext
 	#tag Event
 		Sub SelectionChanged(item As WebMenuItem)
+		  #Pragma Unused item
+		  
 		  If popContext.SelectedRowIndex >= 0 Then
 		    FilterContextID = Val(popContext.RowValueAt(popContext.SelectedRowIndex))
 		    LoadIndications()
@@ -430,21 +435,34 @@ End
 #tag Events lstIndications
 	#tag Event
 		Sub SelectionChanged(rows() As Integer)
+		  #Pragma Unused rows
+		  
 		  If me.SelectedRowIndex >= 0 Then
-		    Var indicationID As Integer = me.RowTagAt(me.SelectedRowIndex)
-		    
+		    IndicationID = me.RowTagAt(me.SelectedRowIndex)
+		  else
+		    IndicationID = 0
 		  End If
 		End Sub
 	#tag EndEvent
+	#tag Event
+		Sub DoublePressed(row As Integer, column As Integer)
+		  #Pragma Unused row
+		  #Pragma Unused column
+		  
+		  var dlg as new dlg_Indication
+		  dlg.IndicationID = IndicationID
+		  session.NavigationManager.NavigateToPage(dlg)
+		End Sub
+	#tag EndEvent
 #tag EndEvents
-#tag Events Button1
+#tag Events btnNew
 	#tag Event
 		Sub Opening()
 		  me.Enabled = session.IsAuthenticated
 		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events Button2
+#tag Events btnDelete
 	#tag Event
 		Sub Opening()
 		  me.Enabled = session.IsAuthenticated
