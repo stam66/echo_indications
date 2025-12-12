@@ -25,7 +25,6 @@ Begin WebDialog dlg_Reset
    Width           =   600
    _mDesignHeight  =   0
    _mDesignWidth   =   0
-   _mName          =   ""
    _mPanelIndex    =   -1
    Begin WebLabel lblEmail
       Bold            =   False
@@ -280,7 +279,7 @@ End
 		  while not rs.AfterLastRow
 		    if rs.Column("email").StringValue = email then
 		      var tempPass as string = app.RandomString(8)
-		      var tempPassHashed as string = app.hashPassword( tempPass, "")
+		      var tempPassHashed as string = app.hashPassword( tempPass)
 		      
 		      rs.EditRow
 		      rs.Column("password_hash").StringValue = tempPassHashed

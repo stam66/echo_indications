@@ -12,6 +12,8 @@ Inherits WebSession
 #tag EndSession
 	#tag Event
 		Sub Closing(appQuitting As Boolean)
+		  #Pragma Unused appQuitting
+		  
 		  Disconnect
 		End Sub
 	#tag EndEvent

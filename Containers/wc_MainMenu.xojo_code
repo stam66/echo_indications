@@ -158,9 +158,8 @@ End
 
 	#tag Method, Flags = &h0
 		Sub UpdateIssuesBadge()
-		  var sdb as database, rs as RowSet
-		  sdb = Session.DB
-		  ' rs = sdb.SelectSQL("select count(*) from changes where changes_status = 'New' or changes_status = 'In Progress'")
+		  
+		  ' rs = session.DB.SelectSQL("select count(*) from changes where changes_status = 'New' or changes_status = 'In Progress'")
 		  ' self.issues.SetBadge(rs.ColumnAt(0).StringValue)
 		  
 		End Sub
@@ -187,9 +186,6 @@ End
 #tag Events issues
 	#tag Event
 		Sub Pressed()
-		  ' var w as new wChanges
-		  ' w.Show
-		  
 		  var w as new wp_issues
 		  session.NavigationManager.NavigateToPage(w)
 		End Sub
@@ -203,22 +199,16 @@ End
 #tag Events change
 	#tag Event
 		Sub Pressed()
-		  ' var w as new dlg_ChangeRequest
-		  ' w.Show
-		  
-		  var w as new dlg_ChangeRequest
-		  Session.NavigationManager.NavigateToPage(w)
+		  var dlg as new dlg_ChangeRequest
+		  Session.NavigationManager.NavigateToPage(dlg)
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events admin
 	#tag Event
 		Sub Pressed()
-		  ' var w as new dlg_Login
-		  ' w.Show
-		  
-		  var w as new dlg_Login
-		  Session.NavigationManager.NavigateToPage(w)
+		  var dlg as new dlg_Login
+		  Session.NavigationManager.NavigateToPage(dlg)
 		End Sub
 	#tag EndEvent
 #tag EndEvents

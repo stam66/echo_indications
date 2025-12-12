@@ -25,7 +25,6 @@ Begin WebDialog dlg_NewPassword
    Width           =   600
    _mDesignHeight  =   0
    _mDesignWidth   =   0
-   _mName          =   ""
    _mPanelIndex    =   -1
    Begin WebLabel lblPasswordAgain
       Bold            =   False
@@ -315,9 +314,9 @@ End
 		  if txtPassword.Text <> txtPasswordAgain.Text then
 		    messageBox("Passwords do not match. Please correct and try again")
 		  else
-		    var passHashed as String = app.hashPassword(self.txtPassword.Text, "")
+		    var passHashed as String = app.hashPassword(self.txtPassword.Text)
 		    
-		    var sql as string = "UPDATE users SET password = ?, OTP = ? WHERE username = ?"
+		    var sql as string = "UPDATE users SET password_hash = ?, OTP = ? WHERE username = ?"
 		    var ps as MySQLPreparedStatement = session.db.Prepare(sql)
 		    ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_STRING)
 		    ps.BindType(1, MySQLPreparedStatement.MYSQL_TYPE_TINY)

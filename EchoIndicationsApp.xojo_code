@@ -3,6 +3,8 @@ Protected Class EchoIndicationsApp
 Inherits WebApplication
 	#tag Event
 		Sub Opening(args() As String)
+		  #Pragma Unused args
+		  
 		  ' Semaphore is used to ensure that only one session at a time tries
 		  ' to send an email.
 		  MailSemaphore = New Semaphore ' Mail Semaphore is a Property: MailSemaphore As Semaphore
@@ -22,8 +24,12 @@ Inherits WebApplication
 
 
 	#tag Method, Flags = &h0
-		Function hashPassword(password as string, salt as string) As string
-		  return EncodeHex(Crypto.Hash(password+salt, Crypto.HashAlgorithms.SHA512))
+		Function hashPassword(password as string) As string
+		  var ps as MySQLPreparedStatement = session.db.Prepare("SELECT SHA2(?, 256) AS password_hash")
+		  ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		  ps.Bind(0, password)
+		  var rs as RowSet = ps.SelectSQL
+		  return rs.Column("password_hash").StringValue
 		End Function
 	#tag EndMethod
 
@@ -38,54 +44,21 @@ Inherits WebApplication
 
 	#tag Method, Flags = &h0
 		Sub MailSentHandler(m As SMTPSecureSocket)
+		  #Pragma Unused m
+		  
 		  MailSemaphore.Release ' Release the Semaphore to make the socket available for use
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub MailServerErrorHandler(m As SMTPSecureSocket, errorID As Integer, errorMessage As String, email As EmailMessage)
+		  #Pragma Unused m
+		  #Pragma Unused errorID
+		  #Pragma Unused email
+		  
 		  MailSemaphore.Release ' Release the Semaphore to make the socket available for use
 		  MessageBox(errorMessage)
 		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function NewDBConnection() As MySQLCommunityServer
-		  Var db As New MySQLCommunityServer
-		  db.Host = "127.0.0.1"
-		  db.Port = 3306
-		  db.DatabaseName = "ECHOAUC"
-		  db.UserName = "admin"
-		  db.Password = "reject66"
-		  Try
-		    db.Connect
-		    Return db
-		  Catch error As DatabaseException
-		    ' Connection error
-		    MessageBox(error.Message)
-		    return nil
-		  End Try
-		  
-		  
-		  
-		  ' var sdb as new SQLiteDatabase
-		  ' 
-		  ' #if DebugBuild then
-		  ' var f as new FolderItem("/Users/stam/Documents/Developer/echoIndicationsSQLite/auc.sqlite")
-		  ' #else
-		  ' var f as new FolderItem(SpecialFolder.SharedDocuments.child("auc.sqlite")) 
-		  ' #endif
-		  ' 
-		  ' sdb.DatabaseFile = f
-		  ' try
-		  ' sdb.Connect
-		  ' return sdb
-		  ' 
-		  ' catch dbError as DatabaseException
-		  ' MessageBox(dbError.Message)
-		  ' return nil
-		  ' end try
-		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0

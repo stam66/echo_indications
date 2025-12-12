@@ -235,6 +235,7 @@ End
 	#tag Event
 		Sub Shown()
 		  btnAdminLogin.Enabled = not(session.IsAuthenticated) 
+		  segAdminButtons.Visible = session.IsAuthenticated
 		End Sub
 	#tag EndEvent
 
@@ -249,6 +250,9 @@ End
 #tag Events imgLogo
 	#tag Event
 		Sub Pressed(x As Integer, y As Integer)
+		  #pragma Unused x
+		  #Pragma Unused y
+		  
 		  Var w as new wp_indications
 		  session.NavigationManager.NavigateToPage(w)
 		End Sub
@@ -264,15 +268,34 @@ End
 #tag Events btnAdminLogin
 	#tag Event
 		Sub Pressed()
-		  var d as new dlg_Login
-		  session.NavigationManager.NavigateToPage(d)
+		  var dlg as new dlg_Login
+		  session.NavigationManager.NavigateToPage(dlg)
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events btnIssues
 	#tag Event
 		Sub Pressed()
-		  Self.GoToURL("/LoginPage")
+		  var w as new wp_issues
+		  session.NavigationManager.NavigateToPage(w)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events segAdminButtons
+	#tag Event
+		Sub Pressed(segmentIndex As Integer)
+		  var wp as new webpage
+		  
+		  select case segmentIndex
+		  case 0 // Users
+		    wp = new wp_users
+		  case 1 // Settings
+		    wp = new wp_settings
+		  case 2 // Audit
+		    wp = new wp_audit
+		  end Select
+		  
+		  wp.Show
 		End Sub
 	#tag EndEvent
 #tag EndEvents
