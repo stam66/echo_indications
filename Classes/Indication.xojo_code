@@ -3,8 +3,8 @@ Protected Class Indication
 	#tag Method, Flags = &h0
 		Function Delete(db As MySQLCommunityServer) As Boolean
 		  Try
-		    // Soft delete
-		    Var sql As String = "UPDATE indications SET is_active = FALSE WHERE id = ?"
+		    // Hard delete
+		    Var sql As String = "DELETE FROM indications WHERE id = ?"
 		    Var ps As PreparedSQLStatement = db.Prepare(sql)
 		    ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_LONG)
 		    ps.Bind(0, Me.ID)
@@ -19,11 +19,28 @@ Protected Class Indication
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function DeleteWithAudit(db As MySQLCommunityServer, username As String) As Boolean
+		  If Self.ID = 0 Then Return False
+		  
+		  // Get current data before deletion
+		  Var oldData As Dictionary = Self.GetFieldValues
+		  
+		  // Perform the actual delete
+		  If Not Self.Delete(db) Then Return False
+		  
+		  // Log to audit
+		  Call AuditTracker.LogDelete("indications", Self.ID, username, oldData)
+		  
+		  Return True
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Shared Function GetAll(db As MySQLCommunityServer) As Indication()
 		  Var results() As Indication
 		  
 		  Try
-		    Var sql As String = "SELECT * FROM indications WHERE is_active = TRUE ORDER BY title"
+		    Var sql As String = "SELECT * FROM indications ORDER BY title"
 		    Var rs As RowSet = db.SelectSQL(sql)
 		    
 		    While Not rs.AfterLastRow
@@ -40,7 +57,6 @@ Protected Class Indication
 		      ind.SourceEACVI = rs.Column("source_eacvi").BooleanValue
 		      ind.SourceBSE = rs.Column("source_bse").BooleanValue
 		      ind.SourceConsensus = rs.Column("source_consensus").BooleanValue
-		      ind.IsActive = rs.Column("is_active").BooleanValue
 		      
 		      // Load contexts
 		      ind.LoadContexts db
@@ -81,7 +97,6 @@ Protected Class Indication
 		      ind.SourceEACVI = rs.Column("source_eacvi").BooleanValue
 		      ind.SourceBSE = rs.Column("source_bse").BooleanValue
 		      ind.SourceConsensus = rs.Column("source_consensus").BooleanValue
-		      ind.IsActive = rs.Column("is_active").BooleanValue
 		      ind.LoadContexts db
 		      Return ind
 		    End If
@@ -91,6 +106,27 @@ Protected Class Indication
 		  End Try
 		  
 		  Return Nil
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetFieldValues() As Dictionary
+		  Var data As New Dictionary
+		  
+		  data.Value("title") = Self.Title
+		  data.Value("description") = If(Self.Description = "", "", Self.Description)
+		  data.Value("keywords") = If(Self.Keywords = "", "", Self.Keywords)
+		  data.Value("comments") = If(Self.Comments = "", "", Self.Comments)
+		  data.Value("primary_care") = Self.PrimaryCare
+		  data.Value("secondary_inpatient") = Self.SecondaryInpatient
+		  data.Value("secondary_outpatient") = Self.SecondaryOutpatient
+		  data.Value("source_ase") = If(Self.SourceASE, "1", "0")
+		  data.Value("source_eacvi") = If(Self.SourceEACVI, "1", "0")
+		  data.Value("source_bse") = If(Self.SourceBSE, "1", "0")
+		  data.Value("source_consensus") = If(Self.SourceConsensus, "1", "0")
+		  data.Value("contexts") = String.FromArray(Self.ContextNames, ", ")
+		  
+		  Return data
 		End Function
 	#tag EndMethod
 
@@ -130,8 +166,8 @@ Protected Class Indication
 		      // Insert
 		      Var sql As String = "INSERT INTO indications (title, description, keywords, comments, " + _
 		      "primary_care, secondary_inpatient, secondary_outpatient, " + _
-		      "source_ase, source_eacvi, source_bse, source_consensus, is_active) " + _
-		      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+		      "source_ase, source_eacvi, source_bse, source_consensus) " + _
+		      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
 		      
 		      Var ps As PreparedSQLStatement = db.Prepare(sql)
 		      ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_STRING)
@@ -145,7 +181,6 @@ Protected Class Indication
 		      ps.BindType(8, MySQLPreparedStatement.MYSQL_TYPE_TINY)
 		      ps.BindType(9, MySQLPreparedStatement.MYSQL_TYPE_TINY)
 		      ps.BindType(10, MySQLPreparedStatement.MYSQL_TYPE_TINY)
-		      ps.BindType(11, MySQLPreparedStatement.MYSQL_TYPE_TINY)
 		      
 		      ps.Bind(0, Me.Title)
 		      ps.Bind(1, Me.Description)
@@ -158,7 +193,6 @@ Protected Class Indication
 		      ps.Bind(8, Me.SourceEACVI)
 		      ps.Bind(9, Me.SourceBSE)
 		      ps.Bind(10, Me.SourceConsensus)
-		      ps.Bind(11, Me.IsActive)
 		      
 		      ps.SQLExecute
 		      Me.ID = db.LastInsertedRowID
@@ -167,7 +201,7 @@ Protected Class Indication
 		      // Update
 		      Var sql As String = "UPDATE indications SET title=?, description=?, keywords=?, comments=?, " + _
 		      "primary_care=?, secondary_inpatient=?, secondary_outpatient=?, " + _
-		      "source_ase=?, source_eacvi=?, source_bse=?, source_consensus=?, is_active=? " + _
+		      "source_ase=?, source_eacvi=?, source_bse=?, source_consensus=? " + _
 		      "WHERE id=?"
 		      
 		      Var ps As PreparedSQLStatement = db.Prepare(sql)
@@ -182,8 +216,7 @@ Protected Class Indication
 		      ps.BindType(8, MySQLPreparedStatement.MYSQL_TYPE_TINY)
 		      ps.BindType(9, MySQLPreparedStatement.MYSQL_TYPE_TINY)
 		      ps.BindType(10, MySQLPreparedStatement.MYSQL_TYPE_TINY)
-		      ps.BindType(11, MySQLPreparedStatement.MYSQL_TYPE_TINY)
-		      ps.BindType(12, MySQLPreparedStatement.MYSQL_TYPE_LONG)
+		      ps.BindType(11, MySQLPreparedStatement.MYSQL_TYPE_LONG)
 		      
 		      ps.Bind(0, Me.Title)
 		      ps.Bind(1, Me.Description)
@@ -196,8 +229,7 @@ Protected Class Indication
 		      ps.Bind(8, Me.SourceEACVI)
 		      ps.Bind(9, Me.SourceBSE)
 		      ps.Bind(10, Me.SourceConsensus)
-		      ps.Bind(11, Me.IsActive)
-		      ps.Bind(12, Me.ID)
+		      ps.Bind(11, Me.ID)
 		      
 		      ps.SQLExecute
 		    End If
@@ -241,6 +273,37 @@ Protected Class Indication
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function SaveWithAudit(db As MySQLCommunityServer, username As String) As Boolean
+		  // Store old data if updating
+		  Var oldData As Dictionary
+		  Var isNew As Boolean = (Self.ID = 0)
+		  
+		  If Not isNew Then
+		    // Load current state for comparison
+		    Var existing As Indication = Indication.GetByID(db, Self.ID)
+		    If existing <> Nil Then
+		      oldData = existing.GetFieldValues
+		    End If
+		  End If
+		  
+		  // Perform the actual save
+		  If Not Self.Save(db) Then Return False
+		  
+		  // Build new data dictionary
+		  Var newData As Dictionary = Self.GetFieldValues
+		  
+		  // Log to audit
+		  If isNew Then
+		    Call AuditTracker.LogCreate("indications", Self.ID, username, newData)
+		  Else
+		    Call AuditTracker.LogUpdate("indications", Self.ID, username, oldData, newData)
+		  End If
+		  
+		  Return True
+		End Function
+	#tag EndMethod
+
 
 	#tag Property, Flags = &h0
 		Comments As String
@@ -260,10 +323,6 @@ Protected Class Indication
 
 	#tag Property, Flags = &h0
 		ID As Integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		IsActive As Boolean
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -358,7 +417,7 @@ Protected Class Indication
 			Group="Behavior"
 			InitialValue=""
 			Type="String"
-			EditorType=""
+			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Description"
@@ -366,15 +425,7 @@ Protected Class Indication
 			Group="Behavior"
 			InitialValue=""
 			Type="String"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="IsActive"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="Boolean"
-			EditorType=""
+			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Keywords"
@@ -382,7 +433,7 @@ Protected Class Indication
 			Group="Behavior"
 			InitialValue=""
 			Type="String"
-			EditorType=""
+			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="PrimaryCare"
@@ -390,7 +441,7 @@ Protected Class Indication
 			Group="Behavior"
 			InitialValue=""
 			Type="String"
-			EditorType=""
+			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="SecondaryInpatient"
@@ -398,7 +449,7 @@ Protected Class Indication
 			Group="Behavior"
 			InitialValue=""
 			Type="String"
-			EditorType=""
+			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="SecondaryOutpatient"
@@ -406,7 +457,7 @@ Protected Class Indication
 			Group="Behavior"
 			InitialValue=""
 			Type="String"
-			EditorType=""
+			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="SourceASE"
@@ -446,7 +497,7 @@ Protected Class Indication
 			Group="Behavior"
 			InitialValue=""
 			Type="String"
-			EditorType=""
+			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

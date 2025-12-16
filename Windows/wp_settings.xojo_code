@@ -54,7 +54,7 @@ Begin WebPage wp_settings
       PanelIndex      =   0
       Scope           =   2
       ScrollDirection =   0
-      SectionTitle    =   "Issues / Change requests"
+      SectionTitle    =   "Settings"
       TabIndex        =   0
       TabStop         =   True
       Tooltip         =   ""

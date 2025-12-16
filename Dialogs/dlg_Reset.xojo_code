@@ -302,6 +302,11 @@ End
 	#tag EndMethod
 
 
+	#tag Property, Flags = &h21
+		Private ButtonClicked As WebButton
+	#tag EndProperty
+
+
 #tag EndWindowCode
 
 #tag Events btnReset

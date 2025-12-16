@@ -299,6 +299,18 @@ End
 #tag EndWebPage
 
 #tag WindowCode
+	#tag Method, Flags = &h21
+		Private Function ButtonClicked() As WebButton
+		  
+		End Function
+	#tag EndMethod
+
+
+	#tag Property, Flags = &h0
+		IndicationID As Integer
+	#tag EndProperty
+
+
 #tag EndWindowCode
 
 #tag Events btnCancel
@@ -311,13 +323,44 @@ End
 #tag Events btnSubmit
 	#tag Event
 		Sub Pressed()
-		  var change as string = txtIssue.Text
-		  var cUser as string = txtUsername.Text
-		  app.submitChangeRequest(change, cUser)
+		  If txtIssue.Text.Trim = "" Then
+		    MessageBox("Please enter a change request")
+		    Return
+		  End If
 		  
-		  wp_LandingPage.wc_menu.UpdateIssuesBadge
+		  If txtUsername.Text.Trim = "" Then
+		    MessageBox("Please enter your name")
+		    Return
+		  End If
 		  
-		  self.Close
+		  Try
+		    Var sql As String = "INSERT INTO changes (changes_request, changes_requestor, changes_status) VALUES (?, ?, ?)"
+		    Var ps As MySQLPreparedStatement = Session.DB.Prepare(sql)
+		    
+		    ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		    ps.BindType(1, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		    ps.BindType(2, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		    
+		    ps.Bind(0, txtIssue.Text)
+		    ps.Bind(1, txtUsername.Text)
+		    ps.Bind(2, "Open")
+		    
+		    ps.ExecuteSQL
+		    
+		    MessageBox("Change request submitted successfully")
+		    
+		    // Update badge if on landing page
+		    If wp_LandingPage <> Nil Then
+		      wp_LandingPage.wc_menu.UpdateIssuesBadge
+		    End If
+		    
+		    Self.Close
+		    
+		  Catch err As DatabaseException
+		    MessageBox("Error submitting request: " + err.Message)
+		    System.DebugLog("SubmitChangeRequest Error: " + err.Message)
+		  End Try
+		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -563,5 +606,13 @@ End
 			"2 - TopToBottom"
 			"3 - BottomToTop"
 		#tag EndEnumValues
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="IndicationID"
+		Visible=false
+		Group="Behavior"
+		InitialValue=""
+		Type="Integer"
+		EditorType=""
 	#tag EndViewProperty
 #tag EndViewBehavior

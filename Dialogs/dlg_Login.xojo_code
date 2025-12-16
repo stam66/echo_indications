@@ -327,6 +327,13 @@ End
 #tag EndWebPage
 
 #tag WindowCode
+	#tag Event
+		Sub Shown()
+		  txtUsername.SetFocus
+		End Sub
+	#tag EndEvent
+
+
 	#tag Method, Flags = &h0
 		Sub doLogin()
 		  var username as string = txtUsername.Text, LoginUser as string
@@ -387,6 +394,11 @@ End
 		  end if
 		End Sub
 	#tag EndMethod
+
+
+	#tag Property, Flags = &h21
+		Private ButtonClicked As WebButton
+	#tag EndProperty
 
 
 #tag EndWindowCode

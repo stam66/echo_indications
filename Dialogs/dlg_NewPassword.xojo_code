@@ -297,6 +297,10 @@ End
 #tag EndWebPage
 
 #tag WindowCode
+	#tag Property, Flags = &h21
+		Private ButtonClicked As WebButton
+	#tag EndProperty
+
 	#tag Property, Flags = &h0
 		email As String
 	#tag EndProperty

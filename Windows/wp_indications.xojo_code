@@ -33,6 +33,40 @@ Begin WebPage wp_indications
    _mDesignHeight  =   0
    _mDesignWidth   =   0
    _mPanelIndex    =   -1
+   Begin WebLabel Label1
+      Bold            =   False
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      FontName        =   ""
+      FontSize        =   12.0
+      Height          =   38
+      Index           =   -2147483648
+      Indicator       =   ""
+      Italic          =   True
+      Left            =   261
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      Multiline       =   False
+      PanelIndex      =   0
+      Scope           =   0
+      TabIndex        =   9
+      TabStop         =   True
+      Text            =   "Separate search terms with a comma"
+      TextAlignment   =   0
+      TextColor       =   &c000000FF
+      Tooltip         =   ""
+      Top             =   125
+      Underline       =   False
+      Visible         =   True
+      Width           =   252
+      _mPanelIndex    =   -1
+   End
    Begin WebSearchField txtSearch
       ControlID       =   ""
       CSSClasses      =   ""
@@ -41,12 +75,12 @@ Begin WebPage wp_indications
       Hint            =   "Search by title or keywords..."
       Index           =   -2147483648
       Indicator       =   ""
-      Left            =   20
+      Left            =   250
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
       LockLeft        =   True
-      LockRight       =   False
+      LockRight       =   True
       LockTop         =   True
       LockVertical    =   False
       PanelIndex      =   0
@@ -55,9 +89,9 @@ Begin WebPage wp_indications
       TabStop         =   True
       Text            =   ""
       Tooltip         =   ""
-      Top             =   185
+      Top             =   97
       Visible         =   True
-      Width           =   400
+      Width           =   453
       _mPanelIndex    =   -1
    End
    Begin WebPopupMenu popContext
@@ -70,7 +104,7 @@ Begin WebPage wp_indications
       InitialValue    =   "All Contexts"
       LastAddedRowIndex=   0
       LastRowIndex    =   0
-      Left            =   693
+      Left            =   729
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -86,9 +120,9 @@ Begin WebPage wp_indications
       TabIndex        =   3
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   185
+      Top             =   97
       Visible         =   True
-      Width           =   283
+      Width           =   247
       _mPanelIndex    =   -1
    End
    Begin WebLabel lblFoundCount
@@ -119,7 +153,7 @@ Begin WebPage wp_indications
       TextAlignment   =   0
       TextColor       =   &c000000FF
       Tooltip         =   ""
-      Top             =   251
+      Top             =   174
       Underline       =   False
       Visible         =   True
       Width           =   275
@@ -128,7 +162,7 @@ Begin WebPage wp_indications
    Begin WebListBox lstIndications
       AllowRowReordering=   False
       ColumnCount     =   3
-      ColumnWidths    =   "70%, 15%, 15%"
+      ColumnWidths    =   "60%, 20%, 20%"
       ControlID       =   ""
       CSSClasses      =   ""
       DefaultRowHeight=   49
@@ -137,7 +171,7 @@ Begin WebPage wp_indications
       HasBorder       =   True
       HasHeader       =   True
       HeaderHeight    =   0
-      Height          =   380
+      Height          =   456
       HighlightSortedColumn=   True
       Index           =   -2147483648
       Indicator       =   0
@@ -165,7 +199,7 @@ Begin WebPage wp_indications
       TabIndex        =   5
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   289
+      Top             =   213
       Visible         =   True
       Width           =   956
       _mPanelIndex    =   -1
@@ -191,7 +225,7 @@ Begin WebPage wp_indications
       PanelIndex      =   0
       Scope           =   0
       ScrollDirection =   0
-      SectionTitle    =   "Indications"
+      SectionTitle    =   "ECHO indications"
       TabIndex        =   6
       TabStop         =   True
       Tooltip         =   ""
@@ -212,7 +246,7 @@ Begin WebPage wp_indications
       Enabled         =   True
       Height          =   38
       Index           =   -2147483648
-      Indicator       =   0
+      Indicator       =   8
       Left            =   20
       LockBottom      =   False
       LockedInPosition=   False
@@ -227,7 +261,7 @@ Begin WebPage wp_indications
       TabIndex        =   7
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   111
+      Top             =   97
       Visible         =   True
       Width           =   100
       _mPanelIndex    =   -1
@@ -242,7 +276,7 @@ Begin WebPage wp_indications
       Enabled         =   True
       Height          =   38
       Index           =   -2147483648
-      Indicator       =   0
+      Indicator       =   4
       Left            =   128
       LockBottom      =   False
       LockedInPosition=   False
@@ -251,13 +285,13 @@ Begin WebPage wp_indications
       LockRight       =   False
       LockTop         =   True
       LockVertical    =   False
-      Outlined        =   False
+      Outlined        =   True
       PanelIndex      =   0
       Scope           =   2
       TabIndex        =   8
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   111
+      Top             =   97
       Visible         =   True
       Width           =   100
       _mPanelIndex    =   -1
@@ -276,10 +310,82 @@ End
 
 	#tag Event
 		Sub Shown()
-		  MessageBox(Session.IsAuthenticated.ToString)
+		  btnNew.Enabled = session.IsAuthenticated
+		  btnDelete.Enabled = session.IsAuthenticated
+		  
 		End Sub
 	#tag EndEvent
 
+
+	#tag Method, Flags = &h21
+		Private Function GetContextsForIndication(indicationID As Integer) As String
+		  Try
+		    Var sql As String = _
+		    "SELECT c.name FROM contexts c " + _
+		    "INNER JOIN indication_contexts ic ON c.id = ic.context_id " + _
+		    "WHERE ic.indication_id = ? ORDER BY c.sort_order"
+		    
+		    Var ps As PreparedSQLStatement = Session.DB.Prepare(sql)
+		    ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_LONG)
+		    ps.Bind(0, indicationID)
+		    Var rs As RowSet = ps.SelectSQL
+		    
+		    Var contextNames() As String
+		    While Not rs.AfterLastRow
+		      contextNames.Add(rs.Column("name").StringValue)
+		      rs.MoveToNextRow
+		    Wend
+		    
+		    Return String.FromArray(contextNames, ", ")
+		    
+		  Catch err As DatabaseException
+		    Return ""
+		  End Try
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub HandleDeleteIndicationConfirm(dialog as WebMessageDialog, button as WebMessageDialogButton)
+		  
+		  if button = dialog.ActionButton then
+		    Try
+		      Var ind As Indication = Indication.GetByID(Session.DB, IndicationID)
+		      
+		      If ind <> Nil Then
+		        if ind.DeleteWithAudit(Session.DB, Session.CurrentUsername) Then
+		          If ind.Delete(Session.DB) Then
+		            MessageBox("Indication deleted successfully")
+		            LoadIndications
+		          Else
+		            MessageBox("Error deleting indication")
+		          End If
+		        end if
+		      End If
+		      
+		    Catch err As RuntimeException
+		      MessageBox("Error: " + err.Message)
+		    End Try
+		  end if
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub HandleIndicationSaved(sender As dlg_Indication, indicationID As Integer)
+		  // Refresh the list when an indication is saved
+		  LoadIndications
+		  
+		  // Optional: Select the saved indication in the list
+		  For i As Integer = 0 To lstIndications.LastRowIndex
+		    If lstIndications.RowTagAt(i) = indicationID Then
+		      lstIndications.SelectedRowIndex = i
+		      lstIndications.scrollToRow(i)
+		      Exit
+		    End If
+		  Next
+		End Sub
+	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Initialise()
@@ -311,89 +417,143 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub LoadIndications()
+		Sub LoadIndications(Optional contextFilter As Integer = 0)
 		  lstIndications.RemoveAllRows
 		  
-		  If Not Session.IsConnected Then
-		    MessageBox("Database connection error. Please refresh the page.")
-		    Return
-		  End If
-		  
 		  Try
-		    Var sql As String = "SELECT DISTINCT i.* FROM indications i "
-		    Var params() As Variant
-		    
-		    If FilterContextID > 0 Then
-		      sql = sql + "INNER JOIN indication_contexts ic ON i.id = ic.indication_id "
-		    End If
-		    
-		    sql = sql + "WHERE i.is_active = TRUE "
-		    
-		    If FilterContextID > 0 Then
-		      sql = sql + "AND ic.context_id = ? "
-		      params.Add(FilterContextID)
-		    End If
-		    
-		    If SearchText.Trim <> "" Then
-		      Var searchTerm As String = "%" + SearchText.Trim + "%"
-		      sql = sql + "AND (i.title LIKE ? OR i.keywords LIKE ?) "
-		      params.Add(searchTerm)
-		      params.Add(searchTerm)
-		    End If
-		    
-		    sql = sql + "ORDER BY i.title"
-		    
+		    Var searchTerm As String = txtSearch.Text.Trim
+		    Var sql As String
 		    Var rs As RowSet
 		    
-		    If params.Count > 0 Then
-		      Var ps As PreparedSQLStatement = Session.DB.Prepare(sql)
-		      
-		      For i As Integer = 0 To params.LastIndex
-		        ps.BindType(i, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		        ps.Bind(i, params(i))
-		      Next
-		      
-		      rs = ps.SelectSQL
-		    Else
+		    // Build base query with context filter if needed
+		    If contextFilter = 0 Then
+		      // Load all indications
+		      sql = "SELECT i.id, i.title, " + _
+		      "GROUP_CONCAT(c.name ORDER BY c.sort_order SEPARATOR ', ') as contexts, " + _
+		      "i.keywords " + _
+		      "FROM indications i " + _
+		      "LEFT JOIN indication_contexts ic ON i.id = ic.indication_id " + _
+		      "LEFT JOIN contexts c ON ic.context_id = c.id " + _
+		      "GROUP BY i.id, i.title, i.keywords " + _
+		      "ORDER BY i.title"
 		      rs = Session.DB.SelectSQL(sql)
+		    Else
+		      // Filter by context
+		      sql = "SELECT DISTINCT i.id, i.title, " + _
+		      "GROUP_CONCAT(c.name ORDER BY c.sort_order SEPARATOR ', ') as contexts, " + _
+		      "i.keywords " + _
+		      "FROM indications i " + _
+		      "INNER JOIN indication_contexts ic ON i.id = ic.indication_id " + _
+		      "INNER JOIN contexts c ON ic.context_id = c.id " + _
+		      "WHERE i.id IN (SELECT indication_id FROM indication_contexts WHERE context_id = ?) " + _
+		      "GROUP BY i.id, i.title, i.keywords " + _
+		      "ORDER BY i.title"
+		      
+		      Var ps As MySQLPreparedStatement = Session.DB.Prepare(sql)
+		      ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_LONG)
+		      ps.Bind(0, contextFilter)
+		      rs = ps.SelectSQL
 		    End If
 		    
-		    Var count As Integer = 0
+		    // If no search term, add all results
+		    If searchTerm = "" Then
+		      While Not rs.AfterLastRow
+		        Var title As String = rs.Column("title").StringValue
+		        Var contexts As String = If(rs.Column("contexts").Value = Nil, "", rs.Column("contexts").StringValue)
+		        Var keywords As String = If(rs.Column("keywords").Value = Nil, "", rs.Column("keywords").StringValue)
+		        Var id As Integer = rs.Column("id").IntegerValue
+		        
+		        lstIndications.AddRow(title, contexts, keywords)
+		        lstIndications.RowTagAt(lstIndications.LastAddedRowIndex) = id
+		        
+		        rs.MoveToNextRow
+		      Wend
+		    Else
+		      // Apply search with phrase matching and AND logic
+		      // Split by comma to get individual search terms
+		      Var searchTerms() As String = searchTerm.Split(",")
+		      Var maxDistance As Integer = 2 // Allow 2 character differences for single words
+		      
+		      While Not rs.AfterLastRow
+		        Var id As Integer = rs.Column("id").IntegerValue
+		        Var title As String = rs.Column("title").StringValue
+		        Var contexts As String = If(rs.Column("contexts").Value = Nil, "", rs.Column("contexts").StringValue)
+		        Var keywords As String = If(rs.Column("keywords").Value = Nil, "", rs.Column("keywords").StringValue)
+		        
+		        // Combine all searchable text
+		        Var searchableText As String = title + " " + keywords + " " + contexts
+		        Var searchableTextLower As String = searchableText.Lowercase
+		        
+		        // Check if ALL search terms match (AND logic)
+		        Var allTermsMatch As Boolean = True
+		        
+		        For Each term As String In searchTerms
+		          term = term.Trim
+		          If term = "" Then Continue
+		          
+		          Var termMatched As Boolean = False
+		          
+		          // Check if term contains spaces (phrase) or is a single word
+		          If term.IndexOf(" ") > -1 Then
+		            // It's a phrase - do substring match
+		            If searchableTextLower.IndexOf(term.Lowercase) > -1 Then
+		              termMatched = True
+		            End If
+		          Else
+		            // It's a single word - do fuzzy word matching
+		            Var termLower As String = term.Lowercase
+		            
+		            // Split searchable text into words
+		            Var searchableWords() As String = searchableText.Split(" ")
+		            
+		            For Each word As String In searchableWords
+		              word = word.Trim.Lowercase
+		              word = word.ReplaceAll(",", "")  // Remove commas from words
+		              If word = "" Then Continue
+		              
+		              // Check Levenshtein distance
+		              Var distance As Integer = app.LevenshteinDistance(termLower, word)
+		              If distance <= maxDistance Then
+		                termMatched = True
+		                Exit For word
+		              End If
+		            Next
+		          End If
+		          
+		          // If this term didn't match, record fails AND logic
+		          If Not termMatched Then
+		            allTermsMatch = False
+		            Exit For term
+		          End If
+		        Next
+		        
+		        // Add row only if ALL terms matched
+		        If allTermsMatch Then
+		          lstIndications.AddRow(title, contexts, keywords)
+		          lstIndications.RowTagAt(lstIndications.LastAddedRowIndex) = id
+		        End If
+		        
+		        rs.MoveToNextRow
+		      Wend
+		    End If
 		    
-		    While Not rs.AfterLastRow
-		      Var ind As New Indication
-		      ind.ID = rs.Column("id").IntegerValue
-		      ind.Title = rs.Column("title").StringValue
-		      ind.Keywords = rs.Column("keywords").StringValue
-		      ind.LoadContexts Session.DB
-		      
-		      // Add row: Indication | Contexts | Keywords
-		      lstIndications.AddRow ind.Title
-		      Var lastRow As Integer = lstIndications.LastAddedRowIndex
-		      
-		      // Contexts column
-		      Var contextList As String = String.FromArray(ind.ContextNames, ", ")
-		      lstIndications.CellValueAt(lastRow, 1) = contextList
-		      
-		      // Keywords column
-		      lstIndications.CellValueAt(lastRow, 2) = ind.Keywords
-		      
-		      // Store ID in RowTag
-		      lstIndications.RowTagAt(lastRow) = ind.ID
-		      
-		      count = count + 1
-		      rs.MoveToNextRow
-		    Wend
-		    
-		    lblFoundCount.text = str(count) + " indication(s) found"
+		    // Update found count
+		    lblFoundCount.Text = "Found: " + lstIndications.RowCount.ToString + " indications"
 		    
 		  Catch err As DatabaseException
 		    MessageBox("Error loading indications: " + err.Message)
-		    System.DebugLog("Error in LoadIndications: " + err.Message)
+		    System.DebugLog("LoadIndications Error: " + err.Message)
 		  End Try
-		  
 		End Sub
 	#tag EndMethod
+
+
+	#tag Note, Name = NewRecord
+		var dlg as new dlg_Indication
+		dlg.IndicationID = 0
+		dlg.Show
+		
+	#tag EndNote
 
 
 	#tag Property, Flags = &h0
@@ -408,13 +568,17 @@ End
 		SearchText As String
 	#tag EndProperty
 
+	#tag Property, Flags = &h0
+		SelectdRowIndex As Integer
+	#tag EndProperty
+
 
 #tag EndWindowCode
 
 #tag Events txtSearch
 	#tag Event
 		Sub TextChanged()
-		  SearchText = txtSearch.Value.Trim
+		  SearchText = txtSearch.Text.Trim
 		  LoadIndications
 		  
 		End Sub
@@ -426,8 +590,8 @@ End
 		  #Pragma Unused item
 		  
 		  If popContext.SelectedRowIndex >= 0 Then
-		    FilterContextID = Val(popContext.RowValueAt(popContext.SelectedRowIndex))
-		    LoadIndications()
+		    FilterContextID = popContext.RowTagAt(popContext.SelectedRowIndex)
+		    LoadIndications(FilterContextID)  // Pass the filter parameter!
 		  End If
 		End Sub
 	#tag EndEvent
@@ -439,8 +603,12 @@ End
 		  
 		  If me.SelectedRowIndex >= 0 Then
 		    IndicationID = me.RowTagAt(me.SelectedRowIndex)
+		    session.SelectedIndicationID = IndicationID
+		    self.SelectdRowIndex = me.SelectedRowIndex
 		  else
 		    IndicationID = 0
+		    session.SelectedIndicationID = 0
+		    self.SelectdRowIndex = -1
 		  End If
 		End Sub
 	#tag EndEvent
@@ -451,21 +619,70 @@ End
 		  
 		  var dlg as new dlg_Indication
 		  dlg.IndicationID = IndicationID
+		  AddHandler dlg.IndicationSaved, AddressOf HandleIndicationSaved 
 		  session.NavigationManager.NavigateToPage(dlg)
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub ContextualMenuSelected(hitItem As WebMenuItem)
+		  Var selectedID As Integer = Session.SelectedIndicationID
+		  
+		  Select Case hititem.Text
+		  Case "Request Change"
+		    Var dlg As New dlg_ChangeRequest
+		    dlg.IndicationID = selectedID
+		    dlg.Show
+		    
+		  Case "View Details"
+		    var dlg as new dlg_Indication
+		    dlg.IndicationID = IndicationID
+		    AddHandler dlg.IndicationSaved, AddressOf HandleIndicationSaved 
+		    session.NavigationManager.NavigateToPage(dlg)
+		  End Select
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub Opening()
+		  var m as new WebMenuItem("actions")
+		  m.AddMenuItem("Request change")
+		  m.AddMenuItem("View details")
+		  me.ContextualMenu = m
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events btnNew
 	#tag Event
-		Sub Opening()
-		  me.Enabled = session.IsAuthenticated
+		Sub Pressed()
+		  var dlg as new dlg_Indication
+		  dlg.IndicationID = 0
+		  AddHandler dlg.IndicationSaved, AddressOf HandleIndicationSaved 
+		  dlg.Show
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events btnDelete
 	#tag Event
-		Sub Opening()
-		  me.Enabled = session.IsAuthenticated
+		Sub Pressed()
+		  // btnDelete.Pressed event
+		  If lstIndications.SelectedRowIndex < 0 Then
+		    MessageBox("Please select an indication to delete")
+		    Return
+		  End If
+		  
+		  // Store in PROPERTY, not local variable
+		  IndicationID = lstIndications.RowTagAt(lstIndications.SelectedRowIndex)
+		  
+		  Var dlg As New WebMessageDialog
+		  dlg.Message = "Delete this indication?"
+		  dlg.Explanation = "This will permanently delete the indication. This action cannot be undone."
+		  dlg.ActionButton.Caption = "Delete"
+		  dlg.CancelButton.Caption = "Cancel"
+		  dlg.CancelButton.Visible = true
+		  dlg.ActionButton.Indicator = WebUIControl.Indicators.Danger
+		  
+		  AddHandler dlg.buttonpressed, AddressOf HandleDeleteIndicationConfirm
+		  dlg.Show
+		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents
