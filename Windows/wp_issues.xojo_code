@@ -1,5 +1,5 @@
 #tag WebPage
-Begin WebPage wp_audit
+Begin WebPage wp_issues
    AllowTabOrderWrap=   True
    Compatibility   =   ""
    ControlCount    =   0
@@ -54,7 +54,7 @@ Begin WebPage wp_audit
       PanelIndex      =   0
       Scope           =   2
       ScrollDirection =   0
-      SectionTitle    =   "Audit of changes"
+      SectionTitle    =   "Issues / Change requests"
       TabIndex        =   0
       TabStop         =   True
       Tooltip         =   ""
@@ -65,10 +65,10 @@ Begin WebPage wp_audit
       _mDesignWidth   =   0
       _mPanelIndex    =   -1
    End
-   Begin WebListBox lstAudit
+   Begin WebListBox lstIssues
       AllowRowReordering=   False
-      ColumnCount     =   4
-      ColumnWidths    =   ""
+      ColumnCount     =   3
+      ColumnWidths    =   "60%,20%,20%"
       ControlID       =   ""
       CSSClasses      =   ""
       DefaultRowHeight=   49
@@ -77,20 +77,20 @@ Begin WebPage wp_audit
       HasBorder       =   True
       HasHeader       =   True
       HeaderHeight    =   0
-      Height          =   566
+      Height          =   461
       HighlightSortedColumn=   True
       Index           =   -2147483648
       Indicator       =   0
-      InitialValue    =   "Timestamp	Action	User	Table"
+      InitialValue    =   "Change request/Issue	Status	Date submitted"
       LastAddedRowIndex=   0
       LastColumnIndex =   0
       LastRowIndex    =   0
       Left            =   20
-      LockBottom      =   False
+      LockBottom      =   True
       LockedInPosition=   False
       LockHorizontal  =   False
       LockLeft        =   True
-      LockRight       =   False
+      LockRight       =   True
       LockTop         =   True
       LockVertical    =   False
       NoRowsMessage   =   ""
@@ -105,9 +105,107 @@ Begin WebPage wp_audit
       TabIndex        =   1
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   128
+      Top             =   233
       Visible         =   True
       Width           =   1076
+      _mPanelIndex    =   -1
+   End
+   Begin WebLabel lblFoundCount
+      Bold            =   False
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      FontName        =   ""
+      FontSize        =   0.0
+      Height          =   38
+      Index           =   -2147483648
+      Indicator       =   ""
+      Italic          =   False
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      Multiline       =   False
+      PanelIndex      =   0
+      Scope           =   2
+      TabIndex        =   2
+      TabStop         =   True
+      Text            =   "Found count"
+      TextAlignment   =   0
+      TextColor       =   &c000000FF
+      Tooltip         =   ""
+      Top             =   187
+      Underline       =   False
+      Visible         =   True
+      Width           =   244
+      _mPanelIndex    =   -1
+   End
+   Begin WebSearchField txtSearch
+      Columns         =   ""
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      ErrorMessage    =   "Something went wrong with the search."
+      Height          =   38
+      Hint            =   "Search"
+      HintPrefix      =   "Search"
+      Index           =   -2147483648
+      Indicator       =   0
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   True
+      LockTop         =   True
+      LockVertical    =   False
+      PanelIndex      =   0
+      Scope           =   2
+      ShowAllRowsByDefault=   "True"
+      TabIndex        =   4
+      Table           =   ""
+      TabStop         =   True
+      Text            =   ""
+      Tooltip         =   ""
+      Top             =   123
+      Visible         =   True
+      Width           =   464
+      _mPanelIndex    =   -1
+   End
+   Begin WebSegmentedButton segStatusSelector
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      Height          =   38
+      Index           =   -2147483648
+      Indicator       =   1
+      LastSegmentIndex=   0
+      Left            =   536
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      LockVertical    =   False
+      Outlined        =   True
+      PanelIndex      =   0
+      Parent          =   "nil"
+      Scope           =   0
+      SegmentCount    =   0
+      Segments        =   "Not closed\n\nTrue\rNew\n\nFalse\rIn Progress\n\nFalse\rClosed\n\nFalse\rAll\n\nFalse"
+      SelectedSegmentIndex=   0
+      SelectionStyle  =   1
+      TabIndex        =   5
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   123
+      Visible         =   True
+      Width           =   560
       _mPanelIndex    =   -1
    End
 End
@@ -115,86 +213,189 @@ End
 
 #tag WindowCode
 	#tag Event
+		Sub Opening()
+		  segStatusSelector.SelectedSegmentIndex = 0  // Default to "Not Closed"
+		  LoadIssues("Not Closed")
+		End Sub
+	#tag EndEvent
+
+	#tag Event
 		Sub Shown()
-		  lstAudit.RemoveAllRows
-		  
-		  Try
-		    Var sql As String = "SELECT * FROM audit ORDER BY audit_timestamp DESC LIMIT 100"
-		    Var rs As RowSet = Session.DB.SelectSQL(sql)
-		    
-		    // Define styles for action types
-		    Var darkMode As Boolean = Session.IsDarkMode
-		    Var createStyle As New WebStyle
-		    Var updateStyle As New WebStyle
-		    Var deleteStyle As New WebStyle
-		    Var defaultStyle As New WebStyle
-		    
-		    createStyle.ForegroundColor = Color.RGB(34, 139, 34) // Green
-		    updateStyle.ForegroundColor = Color.RGB(255, 140, 0) // Orange
-		    deleteStyle.ForegroundColor = Color.RGB(220, 20, 60) // Red
-		    defaultStyle.ForegroundColor = If(darkMode, Color.White, Color.Black)
-		    
-		    While Not rs.AfterLastRow
-		      // Add empty row first
-		      lstAudit.AddRow()
-		      Var rowIdx As Integer = lstAudit.LastAddedRowIndex
-		      
-		      // Read data
-		      Var ts As DateTime = rs.Column("audit_timestamp").DateTimeValue
-		      Var action As String = rs.Column("action").StringValue.Uppercase
-		      Var username As String = rs.Column("audit_user").StringValue
-		      If username = "" Then username = "(system)"
-		      Var tableName As String = rs.Column("audit_table").StringValue
-		      
-		      // Store audit ID in RowTag for later retrieval
-		      lstAudit.RowTagAt(rowIdx) = rs.Column("id").IntegerValue
-		      
-		      // Choose style for action column
-		      Var actionStyle As WebStyle
-		      Select Case action
-		      Case "CREATE"
-		        actionStyle = createStyle
-		      Case "UPDATE"
-		        actionStyle = updateStyle
-		      Case "DELETE"
-		        actionStyle = deleteStyle
-		      Else
-		        actionStyle = defaultStyle
-		      End Select
-		      
-		      // Format timestamp
-		      Var timestampText As String = ts.ToString(Locale.Current, DateTime.FormatStyles.Short, DateTime.FormatStyles.Short)
-		      
-		      // Apply styled text to columns
-		      lstAudit.CellValueAt(rowIdx, 0) = New WebListBoxStyleRenderer(defaultStyle, timestampText)
-		      lstAudit.CellValueAt(rowIdx, 1) = New WebListBoxStyleRenderer(actionStyle, action)
-		      lstAudit.CellValueAt(rowIdx, 2) = New WebListBoxStyleRenderer(defaultStyle, username)
-		      lstAudit.CellValueAt(rowIdx, 3) = New WebListBoxStyleRenderer(defaultStyle, tableName)
-		      
-		      rs.MoveToNextRow
-		    Wend
-		    
-		  Catch err As DatabaseException
-		    MessageBox("Error loading audit log: " + err.Message)
-		  End Try
+		  lstIssues.Enabled = Session.IsAuthenticated Or True  // Allow viewing by all 
+		  // TODO - move functionality from line above to dlg_issue as that shuld be viewable as well, just not editable or saveable by non-authenticated users
 		End Sub
 	#tag EndEvent
 
 
+	#tag Method, Flags = &h21
+		Private Sub FillListRow(rs As RowSet)
+		  Var changeRequest As String = rs.Column("changes_request").StringValue
+		  Var requestor As String = rs.Column("changes_requestor").StringValue
+		  Var status As String = rs.Column("changes_status").StringValue
+		  Var issueID As Integer = rs.Column("id").IntegerValue
+		  
+		  // Format date
+		  Var createdAt As String
+		  Try
+		    Var dt As DateTime = rs.Column("created_at").DateTimeValue
+		    createdAt = dt.ToString("yyyy-MM-dd HH:mm", Locale.Current)
+		  Catch
+		    createdAt = "N/A"
+		  End Try
+		  
+		  // Truncate request if too long
+		  If changeRequest.Length > 100 Then
+		    changeRequest = changeRequest.Left(97) + "..."
+		  End If
+		  
+		  lstIssues.AddRow(changeRequest, requestor, status, createdAt, issueID.ToString)
+		  lstIssues.RowTagAt(lstIssues.LastAddedRowIndex) = issueID
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub HandleIssueSaved(sender As dlg_Issue, issueID As Integer)
+		  #Pragma Unused sender
+		  #Pragma Unused issueID
+		  
+		  // Reload with current filter
+		  Var currentFilter As String
+		  Select Case segStatusSelector.SelectedSegmentIndex
+		  Case 0
+		    currentFilter = "Not Closed"
+		  Case 1
+		    currentFilter = "New"
+		  Case 2
+		    currentFilter = "In Progress"
+		  Case 3
+		    currentFilter = "Closed"
+		  Case 4
+		    currentFilter = "All"
+		  Else
+		    currentFilter = "Not Closed"  // Default
+		  End Select
+		  
+		  LoadIssues(currentFilter)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub LoadIssues(statusFilter As String)
+		  lstIssues.RemoveAllRows
+		  
+		  Try
+		    Var sql As String
+		    Var ps As MySQLPreparedStatement
+		    
+		    If statusFilter = "All" Then
+		      sql = "SELECT id, changes_request, changes_requestor, changes_status, " + _
+		      "created_at FROM changes ORDER BY created_at DESC"
+		      Var rs As RowSet = Session.DB.SelectSQL(sql)
+		      
+		      While Not rs.AfterLastRow
+		        FillListRow(rs)
+		        rs.MoveToNextRow
+		      Wend
+		      
+		    ElseIf statusFilter = "Not Closed" Then
+		      sql = "SELECT id, changes_request, changes_requestor, changes_status, " + _
+		      "created_at FROM changes WHERE changes_status != 'Closed' ORDER BY created_at DESC"
+		      Var rs As RowSet = Session.DB.SelectSQL(sql)
+		      
+		      While Not rs.AfterLastRow
+		        FillListRow(rs)
+		        rs.MoveToNextRow
+		      Wend
+		      
+		    Else
+		      sql = "SELECT id, changes_request, changes_requestor, changes_status, " + _
+		      "created_at FROM changes WHERE changes_status = ? ORDER BY created_at DESC"
+		      ps = Session.DB.Prepare(sql)
+		      ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		      ps.Bind(0, statusFilter)
+		      
+		      Var rs As RowSet = ps.SelectSQL
+		      
+		      While Not rs.AfterLastRow
+		        FillListRow(rs)
+		        rs.MoveToNextRow
+		      Wend
+		    End If
+		    
+		    lblFoundCount.Text = "Found: " + lstIssues.RowCount.ToString + " issues"
+		    
+		  Catch err As DatabaseException
+		    MessageBox("Error loading issues: " + err.Message)
+		    System.DebugLog("LoadIssues Error: " + err.Message)
+		  End Try
+		End Sub
+	#tag EndMethod
+
+
 #tag EndWindowCode
 
-#tag Events lstAudit
+#tag Events lstIssues
 	#tag Event
 		Sub DoublePressed(row As Integer, column As Integer)
-		  If row < 0 Then Return
+		  #Pragma Unused column
 		  
-		  // Get audit ID from RowTag
-		  Var auditID As Integer = lstAudit.RowTagAt(row)
+		  If row >= 0 And row <= lstIssues.LastRowIndex Then
+		    Var issueID As Integer = lstIssues.RowTagAt(row)
+		    
+		    Var dlg As New dlg_Issue
+		    dlg.IssueID = issueID
+		    AddHandler dlg.IssueSaved, AddressOf HandleIssueSaved
+		    Session.NavigationManager.NavigateToPage(dlg)
+		  End If
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub ContextualMenuSelected(hitItem As WebMenuItem)
+		  If lstIssues.SelectedRowIndex < 0 Then Return
 		  
-		  // Show detail dialog
-		  Var dlg As New dlg_AuditEntry
-		  dlg.auditID = auditID
-		  dlg.Show
+		  Var issueID As Integer = lstIssues.RowTagAt(lstIssues.SelectedRowIndex)
+		  
+		  Select Case hitItem.Text
+		  Case "View/Edit"
+		    Var dlg As New dlg_Issue
+		    dlg.IssueID = issueID
+		    AddHandler dlg.IssueSaved, AddressOf HandleIssueSaved
+		    Session.NavigationManager.NavigateToPage(dlg)
+		  End Select
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub Opening()
+		  Var m As New WebMenuItem("actions")
+		  m.AddMenuItem("View/Edit")
+		  me.ContextualMenu = m
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events segStatusSelector
+	#tag Event
+		Sub Opening()
+		  me.Style.BorderColor = app.NHSBlue
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub Pressed(segmentIndex As Integer)
+		  Var status As String
+		  
+		  Select Case segmentIndex
+		  Case 0
+		    status = "Not Closed"
+		  Case 1
+		    status = "New"
+		  Case 2
+		    status = "In Progress"
+		  Case 3
+		    status = "Closed"
+		  Case 4
+		    status = "All"
+		  End Select
+		  
+		  LoadIssues(status)
 		End Sub
 	#tag EndEvent
 #tag EndEvents

@@ -67,7 +67,7 @@ Begin WebPage wp_LandingPage
       _mDesignHeight  =   0
       _mDesignWidth   =   0
       _mPanelIndex    =   -1
-      Begin WebLabel Label2
+      Begin WebLabel lblSubTitle
          Bold            =   False
          ControlID       =   ""
          CSSClasses      =   ""
@@ -104,7 +104,7 @@ Begin WebPage wp_LandingPage
          Width           =   1066
          _mPanelIndex    =   -1
       End
-      Begin WebLabel Label1
+      Begin WebLabel lblTitle
          Bold            =   True
          ControlID       =   ""
          CSSClasses      =   ""
@@ -205,38 +205,6 @@ Begin WebPage wp_LandingPage
       _mDesignWidth   =   0
       _mPanelIndex    =   -1
    End
-   Begin WebSegmentedButton segAdminButtons_debug
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      Height          =   38
-      Index           =   -2147483648
-      Indicator       =   0
-      LastSegmentIndex=   0
-      Left            =   20
-      LockBottom      =   True
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   False
-      LockVertical    =   False
-      Outlined        =   True
-      PanelIndex      =   0
-      Parent          =   "nil"
-      Scope           =   0
-      SegmentCount    =   0
-      Segments        =   "Users\n\nFalse\rSettings\n\nFalse\rAudit\n\nFalse"
-      SelectedSegmentIndex=   0
-      SelectionStyle  =   1
-      TabIndex        =   4
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   653
-      Visible         =   False
-      Width           =   298
-      _mPanelIndex    =   -1
-   End
 End
 #tag EndWebPage
 
@@ -271,24 +239,6 @@ End
 
 #tag EndWindowCode
 
-#tag Events segAdminButtons_debug
-	#tag Event
-		Sub Pressed(segmentIndex As Integer)
-		  var w as webpage
-		  
-		  select case segmentIndex
-		  case 0
-		    w = new wp_users
-		  case 1
-		    w = new wp_settings
-		  case 2
-		    w = new wp_audit
-		  end Select
-		  
-		  Session.NavigationManager.NavigateToPage(w)
-		End Sub
-	#tag EndEvent
-#tag EndEvents
 #tag ViewBehavior
 	#tag ViewProperty
 		Name="PanelIndex"

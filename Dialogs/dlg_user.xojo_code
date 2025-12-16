@@ -5,7 +5,7 @@ Begin WebDialog dlg_user
    ControlID       =   ""
    CSSClasses      =   ""
    Enabled         =   True
-   Height          =   486
+   Height          =   552
    Index           =   -2147483648
    Indicator       =   0
    LayoutDirection =   0
@@ -354,7 +354,7 @@ Begin WebDialog dlg_user
          LockVertical    =   False
          Multiline       =   False
          PanelIndex      =   0
-         Parent          =   "Rectangle2"
+         Parent          =   "rectHeader"
          Scope           =   0
          TabIndex        =   9
          TabPanelIndex   =   -1
@@ -395,7 +395,7 @@ Begin WebDialog dlg_user
       TabIndex        =   10
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   428
+      Top             =   494
       Visible         =   True
       Width           =   100
       _mPanelIndex    =   -1
@@ -425,9 +425,37 @@ Begin WebDialog dlg_user
       TabIndex        =   11
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   428
+      Top             =   494
       Visible         =   True
       Width           =   100
+      _mPanelIndex    =   -1
+   End
+   Begin WebCheckbox chkIsActive
+      Caption         =   "Active user"
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      Height          =   34
+      Indeterminate   =   False
+      Index           =   -2147483648
+      Indicator       =   ""
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      PanelIndex      =   0
+      Scope           =   2
+      TabIndex        =   12
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   435
+      Value           =   False
+      Visible         =   True
+      Width           =   157
       _mPanelIndex    =   -1
    End
 End
@@ -436,19 +464,60 @@ End
 #tag WindowCode
 	#tag Event
 		Sub Shown()
-		  if UserID > 0 then //edit
-		    var sql as string = "select * from users where id = " + str(UserID)
-		    var rs as RowSet = Session.db.SelectSQL(sql)
-		    if rs <> nil then
-		      txtName.Text = rs.Column("name").StringValue
-		      txtUsername.Text = rs.Column("username").StringValue
-		      txtEmail.Text = rs.Column("email").StringValue
-		      txtTitle.Text = rs.Column("title").StringValue
-		    end if
-		  else
-		    ClearUI
-		  end if
+		  If UserID > 0 Then
+		    // Loading existing user
+		    Try
+		      Var user As User = User.GetByID(Session.DB, UserID)
+		      If user <> Nil Then
+		        txtName.Text = user.Name
+		        txtUsername.Text = user.Username
+		        txtEmail.Text = user.Email
+		        txtTitle.Text = user.Title
+		        chkIsActive.Value = user.IsActive
+		      Else
+		        MessageBox("User not found")
+		        Self.Close
+		      End If
+		    Catch err As DatabaseException
+		      MessageBox("Error loading user: " + err.Message)
+		      Self.Close
+		    End Try
+		  Else
+		    // New user - set defaults
+		    chkIsActive.Value = True
+		  End If
+		  
 		  btnSave.Enabled = False
+		  
+		  ' If UserID > 0 Then // edit
+		  ' Var sql As String = "SELECT * FROM users WHERE id = " + Str(UserID)
+		  ' Var rs As RowSet = Session.db.SelectSQL(sql)
+		  ' If rs <> Nil And Not rs.AfterLastRow Then
+		  ' txtName.Text = rs.Column("name").StringValue
+		  ' txtUsername.Text = rs.Column("username").StringValue
+		  ' txtEmail.Text = rs.Column("email").StringValue
+		  ' txtTitle.Text = rs.Column("title").StringValue
+		  ' chkIsActive.Value = rs.Column("is_active").BooleanValue
+		  ' End If
+		  ' Else
+		  ' ClearUI
+		  ' End If
+		  ' btnSave.Enabled = False
+		  
+		  
+		  ' if UserID > 0 then //edit
+		  ' var sql as string = "select * from users where id = " + str(UserID)
+		  ' var rs as RowSet = Session.db.SelectSQL(sql)
+		  ' if rs <> nil then
+		  ' txtName.Text = rs.Column("name").StringValue
+		  ' txtUsername.Text = rs.Column("username").StringValue
+		  ' txtEmail.Text = rs.Column("email").StringValue
+		  ' txtTitle.Text = rs.Column("title").StringValue
+		  ' end if
+		  ' else
+		  ' ClearUI
+		  ' end if
+		  ' btnSave.Enabled = False
 		End Sub
 	#tag EndEvent
 
@@ -459,6 +528,7 @@ End
 		  txtUsername.Text = ""
 		  txtEmail.Text = ""
 		  txtTitle.Text = ""
+		  chkIsActive.Value = True
 		End Sub
 	#tag EndMethod
 
@@ -467,6 +537,10 @@ End
 		Event UserSaved()
 	#tag EndHook
 
+
+	#tag Property, Flags = &h21
+		Private ButtonClicked As WebButton
+	#tag EndProperty
 
 	#tag Property, Flags = &h0
 		UserID As Integer
@@ -510,46 +584,135 @@ End
 #tag Events btnSave
 	#tag Event
 		Sub Pressed()
-		  var sql as string
-		  var ps as MySQLPreparedStatement
-		  if UserID = 0 then
-		    sql  = "INSERT INTO users (name, email, username, title) VALUES (?, ?, ?,?)"
-		    ps = session.db.Prepare(sql)
+		  // Validate
+		  If txtName.Text.Trim = "" Then
+		    MessageBox("Please enter a name")
+		    Return
+		  End If
+		  
+		  If txtUsername.Text.Trim = "" Then
+		    MessageBox("Please enter a username")
+		    Return
+		  End If
+		  
+		  Try
+		    // Create or load user object
+		    Var user As User
+		    If UserID = 0 Then
+		      user = New User
+		    Else
+		      user = User.GetByID(Session.DB, UserID)
+		      If user = Nil Then
+		        MessageBox("User not found")
+		        Return
+		      End If
+		    End If
 		    
-		    ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		    ps.BindType(1, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		    ps.BindType(2, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		    ps.BindType(3, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		    // Populate from form
+		    user.Name = txtName.Text.Trim
+		    user.Username = txtUsername.Text.Trim
+		    user.Email = txtEmail.Text.Trim
+		    user.Title = txtTitle.Text.Trim
+		    user.IsActive = chkIsActive.Value
 		    
-		    ps.Bind(0, txtName.text)
-		    ps.Bind(1, txtEmail.Text)
-		    ps.Bind(2, txtUsername.Text)
-		    ps.Bind(3, txtTitle.Text)
-		  else
-		    sql = "UPDATE users SET name = ?, email = ?, username = ?, title = ? WHERE id = ?"
-		    ps = session.db.Prepare(sql)
+		    // Save with audit
+		    If user.SaveWithAudit(Session.DB, Session.CurrentUsername) Then
+		      WasSaved = True
+		      UserID = 0
+		      Self.Close
+		    Else
+		      MessageBox("Error saving user")
+		    End If
 		    
-		    ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		    ps.BindType(1, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		    ps.BindType(2, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		    ps.BindType(3, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		    ps.BindType(4, MySQLPreparedStatement.MYSQL_TYPE_LONG)
-		    
-		    ps.Bind(0, txtName.text)
-		    ps.Bind(1, txtEmail.Text)
-		    ps.Bind(2, txtUsername.Text)
-		    ps.Bind(3, txtTitle.Text)
-		    ps.Bind(4, UserID)
-		  end if
+		  Catch err As DatabaseException
+		    MessageBox("Error saving user: " + err.Message)
+		  End Try
 		  
-		  
-		  
-		  ps.ExecuteSQL
-		  
-		  WasSaved = True
-		  UserID = 0
-		  
-		  self.Close
+		  ' Var sql As String
+		  ' Var ps As MySQLPreparedStatement
+		  ' 
+		  ' If UserID = 0 Then
+		  ' sql = "INSERT INTO users (name, email, username, title, is_active) VALUES (?, ?, ?, ?, ?)"
+		  ' ps = Session.db.Prepare(sql)
+		  ' 
+		  ' ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		  ' ps.BindType(1, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		  ' ps.BindType(2, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		  ' ps.BindType(3, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		  ' ps.BindType(4, MySQLPreparedStatement.MYSQL_TYPE_TINY)
+		  ' 
+		  ' ps.Bind(0, txtName.Text)
+		  ' ps.Bind(1, txtEmail.Text)
+		  ' ps.Bind(2, txtUsername.Text)
+		  ' ps.Bind(3, txtTitle.Text)
+		  ' ps.Bind(4, If(chkIsActive.Value, 1, 0))
+		  ' Else
+		  ' sql = "UPDATE users SET name = ?, email = ?, username = ?, title = ?, is_active = ? WHERE id = ?"
+		  ' ps = Session.db.Prepare(sql)
+		  ' 
+		  ' ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		  ' ps.BindType(1, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		  ' ps.BindType(2, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		  ' ps.BindType(3, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		  ' ps.BindType(4, MySQLPreparedStatement.MYSQL_TYPE_TINY)
+		  ' ps.BindType(5, MySQLPreparedStatement.MYSQL_TYPE_LONG)
+		  ' 
+		  ' ps.Bind(0, txtName.Text)
+		  ' ps.Bind(1, txtEmail.Text)
+		  ' ps.Bind(2, txtUsername.Text)
+		  ' ps.Bind(3, txtTitle.Text)
+		  ' ps.Bind(4, If(chkIsActive.Value, 1, 0))
+		  ' ps.Bind(5, UserID)
+		  ' End If
+		  ' 
+		  ' ps.ExecuteSQL
+		  ' 
+		  ' WasSaved = True
+		  ' UserID = 0
+		  ' 
+		  ' Self.Close
+		  ' 
+		  ' 
+		  ' ' var sql as string
+		  ' ' var ps as MySQLPreparedStatement
+		  ' ' if UserID = 0 then
+		  ' ' sql  = "INSERT INTO users (name, email, username, title) VALUES (?, ?, ?,?)"
+		  ' ' ps = session.db.Prepare(sql)
+		  ' ' 
+		  ' ' ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		  ' ' ps.BindType(1, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		  ' ' ps.BindType(2, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		  ' ' ps.BindType(3, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		  ' ' 
+		  ' ' ps.Bind(0, txtName.text)
+		  ' ' ps.Bind(1, txtEmail.Text)
+		  ' ' ps.Bind(2, txtUsername.Text)
+		  ' ' ps.Bind(3, txtTitle.Text)
+		  ' ' else
+		  ' ' sql = "UPDATE users SET name = ?, email = ?, username = ?, title = ? WHERE id = ?"
+		  ' ' ps = session.db.Prepare(sql)
+		  ' ' 
+		  ' ' ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		  ' ' ps.BindType(1, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		  ' ' ps.BindType(2, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		  ' ' ps.BindType(3, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		  ' ' ps.BindType(4, MySQLPreparedStatement.MYSQL_TYPE_LONG)
+		  ' ' 
+		  ' ' ps.Bind(0, txtName.text)
+		  ' ' ps.Bind(1, txtEmail.Text)
+		  ' ' ps.Bind(2, txtUsername.Text)
+		  ' ' ps.Bind(3, txtTitle.Text)
+		  ' ' ps.Bind(4, UserID)
+		  ' ' end if
+		  ' ' 
+		  ' ' 
+		  ' ' 
+		  ' ' ps.ExecuteSQL
+		  ' ' 
+		  ' ' WasSaved = True
+		  ' ' UserID = 0
+		  ' ' 
+		  ' ' self.Close
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -564,6 +727,13 @@ End
 	#tag Event
 		Sub Pressed()
 		  self.Close
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events chkIsActive
+	#tag Event
+		Sub ValueChanged()
+		  btnSave.Enabled = True
 		End Sub
 	#tag EndEvent
 #tag EndEvents

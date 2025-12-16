@@ -68,7 +68,7 @@ Begin WebContainer wc_WebPageHeader
       Height          =   38
       Index           =   -2147483648
       Indicator       =   8
-      Left            =   827
+      Left            =   790
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -86,7 +86,7 @@ Begin WebContainer wc_WebPageHeader
       Tooltip         =   ""
       Top             =   17
       Visible         =   True
-      Width           =   86
+      Width           =   116
       _mPanelIndex    =   -1
    End
    Begin WebButton btnAdminLogin
@@ -100,7 +100,7 @@ Begin WebContainer wc_WebPageHeader
       Height          =   38
       Index           =   -2147483648
       Indicator       =   8
-      Left            =   703
+      Left            =   666
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -132,7 +132,7 @@ Begin WebContainer wc_WebPageHeader
       Height          =   38
       Index           =   -2147483648
       Indicator       =   8
-      Left            =   579
+      Left            =   542
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -195,9 +195,9 @@ Begin WebContainer wc_WebPageHeader
       Enabled         =   True
       Height          =   38
       Index           =   -2147483648
-      Indicator       =   0
+      Indicator       =   8
       LastSegmentIndex=   0
-      Left            =   273
+      Left            =   256
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -205,17 +205,17 @@ Begin WebContainer wc_WebPageHeader
       LockRight       =   True
       LockTop         =   True
       LockVertical    =   False
-      Outlined        =   True
+      Outlined        =   False
       PanelIndex      =   0
       Scope           =   0
       SegmentCount    =   0
       Segments        =   "Users\n\nFalse\rSettings\n\nFalse\rAudit\n\nFalse"
       SelectedSegmentIndex=   0
-      SelectionStyle  =   1
+      SelectionStyle  =   0
       TabIndex        =   6
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   18
+      Top             =   17
       Visible         =   True
       Width           =   298
       _mPanelIndex    =   -1
@@ -253,7 +253,7 @@ End
 		  #pragma Unused x
 		  #Pragma Unused y
 		  
-		  Var w as new wp_indications
+		  Var w as new wp_LandingPage
 		  session.NavigationManager.NavigateToPage(w)
 		End Sub
 	#tag EndEvent
@@ -295,7 +295,7 @@ End
 		    wp = new wp_audit
 		  end Select
 		  
-		  wp.Show
+		  session.NavigationManager.NavigateToPage(wp)
 		End Sub
 	#tag EndEvent
 #tag EndEvents

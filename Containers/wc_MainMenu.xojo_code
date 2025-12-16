@@ -88,7 +88,7 @@ Begin WebContainer wc_MainMenu
    Begin WebButton change
       AllowAutoDisable=   False
       Cancel          =   False
-      Caption         =   "Propose Changes"
+      Caption         =   "Request Changes"
       ControlID       =   ""
       CSSClasses      =   ""
       Default         =   False
@@ -158,10 +158,22 @@ End
 
 	#tag Method, Flags = &h0
 		Sub UpdateIssuesBadge()
-		  
-		  ' rs = session.DB.SelectSQL("select count(*) from changes where changes_status = 'New' or changes_status = 'In Progress'")
-		  ' self.issues.SetBadge(rs.ColumnAt(0).StringValue)
-		  
+		  Try
+		    Var sql As String = "SELECT COUNT(*) as count FROM changes WHERE changes_status = 'Open' OR changes_status = 'In Progress'"
+		    Var rs As RowSet = Session.DB.SelectSQL(sql)
+		    
+		    If Not rs.AfterLastRow Then
+		      Var count As Integer = rs.Column("count").IntegerValue
+		      If count > 0 Then
+		        issues.SetBadge(count.ToString)
+		      Else
+		        issues.SetBadge("")
+		      End If
+		    End If
+		    
+		  Catch err As DatabaseException
+		    System.DebugLog("UpdateIssuesBadge Error: " + err.Message)
+		  End Try
 		End Sub
 	#tag EndMethod
 

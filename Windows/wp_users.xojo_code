@@ -54,7 +54,7 @@ Begin WebPage wp_users
       PanelIndex      =   0
       Scope           =   2
       ScrollDirection =   0
-      SectionTitle    =   "Manage Admins"
+      SectionTitle    =   "Manage admin access"
       TabIndex        =   0
       TabStop         =   True
       Tooltip         =   ""
@@ -77,7 +77,7 @@ Begin WebPage wp_users
       HasBorder       =   True
       HasHeader       =   True
       HeaderHeight    =   0
-      Height          =   524
+      Height          =   456
       HighlightSortedColumn=   True
       Index           =   -2147483648
       Indicator       =   0
@@ -85,7 +85,7 @@ Begin WebPage wp_users
       LastAddedRowIndex=   0
       LastColumnIndex =   0
       LastRowIndex    =   0
-      Left            =   0
+      Left            =   20
       LockBottom      =   True
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -105,46 +105,42 @@ Begin WebPage wp_users
       TabIndex        =   1
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   164
+      Top             =   213
       Visible         =   True
-      Width           =   1068
+      Width           =   1028
       _mPanelIndex    =   -1
    End
-   Begin WebSegmentedButton SegmentedButton2
+   Begin WebSearchField txtSearch
       ControlID       =   ""
       CSSClasses      =   ""
       Enabled         =   True
       Height          =   38
+      Hint            =   "Search Users..."
       Index           =   -2147483648
       Indicator       =   0
-      LastSegmentIndex=   0
-      Left            =   20
+      Left            =   303
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
+      LockLeft        =   False
+      LockRight       =   True
       LockTop         =   True
       LockVertical    =   False
-      Outlined        =   True
       PanelIndex      =   0
       Scope           =   0
-      SegmentCount    =   0
-      Segments        =   "New\n\nFalse\rDelete\n\nFalse"
-      SelectedSegmentIndex=   0
-      SelectionStyle  =   1
-      TabIndex        =   9
+      TabIndex        =   2
       TabStop         =   True
+      Text            =   ""
       Tooltip         =   ""
-      Top             =   104
+      Top             =   97
       Visible         =   True
-      Width           =   199
+      Width           =   400
       _mPanelIndex    =   -1
    End
-   Begin WebButton Button1
+   Begin WebButton btnNew
       AllowAutoDisable=   False
       Cancel          =   False
-      Caption         =   "Button"
+      Caption         =   "New"
       ControlID       =   ""
       CSSClasses      =   ""
       Default         =   False
@@ -152,7 +148,7 @@ Begin WebPage wp_users
       Height          =   38
       Index           =   -2147483648
       Indicator       =   0
-      Left            =   401
+      Left            =   20
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -162,13 +158,77 @@ Begin WebPage wp_users
       LockVertical    =   False
       Outlined        =   False
       PanelIndex      =   0
-      Scope           =   0
-      TabIndex        =   10
+      Scope           =   2
+      TabIndex        =   3
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   104
+      Top             =   97
       Visible         =   True
       Width           =   100
+      _mPanelIndex    =   -1
+   End
+   Begin WebButton btnDelete
+      AllowAutoDisable=   False
+      Cancel          =   False
+      Caption         =   "Delete"
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Default         =   False
+      Enabled         =   True
+      Height          =   38
+      Index           =   -2147483648
+      Indicator       =   0
+      Left            =   128
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      Outlined        =   False
+      PanelIndex      =   0
+      Scope           =   2
+      TabIndex        =   4
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   97
+      Visible         =   True
+      Width           =   100
+      _mPanelIndex    =   -1
+   End
+   Begin WebLabel lblFoundCount
+      Bold            =   False
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      FontName        =   ""
+      FontSize        =   0.0
+      Height          =   38
+      Index           =   -2147483648
+      Indicator       =   0
+      Italic          =   False
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      Multiline       =   False
+      PanelIndex      =   0
+      Scope           =   0
+      TabIndex        =   5
+      TabStop         =   True
+      Text            =   "Found count"
+      TextAlignment   =   0
+      TextColor       =   &c000000FF
+      Tooltip         =   ""
+      Top             =   174
+      Underline       =   False
+      Visible         =   True
+      Width           =   275
       _mPanelIndex    =   -1
    End
 End
@@ -183,10 +243,69 @@ End
 
 
 	#tag Method, Flags = &h21
+		Private Sub HandleDeleteUserConfirm(sender As WebMessageDialog, button As WebMessageDialogButton)
+		  If button = sender.ActionButton Then
+		    Try
+		      // Load user first for audit
+		      Var user As User = User.GetByID(Session.DB, SelectedUserID)
+		      If user <> Nil Then
+		        If user.DeleteWithAudit(Session.DB, Session.CurrentUsername) Then
+		          // Refresh the list
+		          If txtSearch.Value.Trim = "" Then
+		            populateUsers
+		          Else
+		            SearchUsers
+		          End If
+		          MessageBox("User deleted successfully")
+		        Else
+		          MessageBox("Error deleting user")
+		        End If
+		      Else
+		        MessageBox("User not found")
+		      End If
+		    Catch err As DatabaseException
+		      MessageBox("Error deleting user: " + err.Message)
+		    End Try
+		  End If
+		  
+		  SelectedUserID = 0
+		  
+		  ' If button = sender.ActionButton Then
+		  ' Try
+		  ' Var sql As String = "DELETE FROM users WHERE id = ?"
+		  ' Var ps As MySQLPreparedStatement = Session.db.Prepare(sql)
+		  ' ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_LONG)
+		  ' ps.Bind(0, SelectedUserID)
+		  ' ps.ExecuteSQL
+		  ' 
+		  ' // Refresh the list
+		  ' If txtSearch.Value.Trim = "" Then
+		  ' populateUsers
+		  ' Else
+		  ' SearchUsers
+		  ' End If
+		  ' 
+		  ' MessageBox("User deleted successfully")
+		  ' 
+		  ' Catch err As DatabaseException
+		  ' MessageBox("Error deleting user: " + err.Message)
+		  ' End Try
+		  ' End If
+		  ' 
+		  ' SelectedUserID = 0
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
 		Private Sub HandleUserSaved(sender as WebDialog)
 		  Var dlg As dlg_user = dlg_user(sender)
 		  If dlg.WasSaved Then
-		    populateUsers  // Or however you refresh your listbox
+		    If txtSearch.Value.Trim = "" Then
+		      populateUsers
+		    Else
+		      SearchUsers
+		    End If
 		    dlg.WasSaved = False
 		  End If
 		End Sub
@@ -194,21 +313,236 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub populateUsers()
-		  var sql As string = "Select * from users"
-		  var rs as RowSet =  Session.db.SelectSQL(sql)
+		  Var sql As String = "SELECT * FROM users ORDER BY name"
+		  Var rs As RowSet = Session.db.SelectSQL(sql)
 		  
 		  lstUsers.RemoveAllRows
-		  while not rs.AfterLastRow
-		    lstUsers.AddRow(rs.Column("name").StringValue)
-		    lstUsers.CellTextAt(lstUsers.LastAddedRowIndex, 1) = rs.Column("username").StringValue
-		    lstUsers.CellTextAt(lstUsers.LastAddedRowIndex, 2) = rs.Column("email").StringValue
-		    lstUsers.CellTextAt(lstUsers.LastAddedRowIndex, 3) = rs.Column("title").StringValue
-		    lstUsers.RowTagAt(lstUsers.LastAddedRowIndex) = rs.Column("id").IntegerValue
+		  
+		  // Define styles
+		  Var darkMode As Boolean = Session.IsDarkMode
+		  Var activeStyle As New WebStyle
+		  Var inactiveStyle As New WebStyle
+		  
+		  activeStyle.ForegroundColor = If(darkMode, Color.White, Color.Black)
+		  inactiveStyle.ForegroundColor = Color.LightGray
+		  inactiveStyle.Italic = True
+		  
+		  While Not rs.AfterLastRow
+		    // Add empty row first
+		    lstUsers.AddRow()
+		    Var rowIdx As Integer = lstUsers.LastAddedRowIndex
+		    
+		    // Read data
+		    Var fullName As String = rs.Column("name").StringValue
+		    Var username As String = rs.Column("username").StringValue
+		    Var email As String = rs.Column("email").StringValue
+		    Var title As String = rs.Column("title").StringValue
+		    Var isActive As Boolean = rs.Column("is_active").BooleanValue
+		    Var userId As Integer = rs.Column("id").IntegerValue
+		    
+		    // Store primary key
+		    lstUsers.RowTagAt(rowIdx) = userId
+		    
+		    // Choose style
+		    Var cellStyle As WebStyle = If(isActive, activeStyle, inactiveStyle)
+		    
+		    // Apply styled text to every column
+		    lstUsers.CellValueAt(rowIdx, 0) = New WebListBoxStyleRenderer(cellStyle, fullName)
+		    lstUsers.CellValueAt(rowIdx, 1) = New WebListBoxStyleRenderer(cellStyle, username)
+		    lstUsers.CellValueAt(rowIdx, 2) = New WebListBoxStyleRenderer(cellStyle, email)
+		    lstUsers.CellValueAt(rowIdx, 3) = New WebListBoxStyleRenderer(cellStyle, title)
+		    
 		    rs.MoveToNextRow
-		  wend
+		  Wend
+		  
+		  UpdateFoundCount
+		  
+		  
+		  
+		  
+		  ' Var sql As String = "SELECT * FROM users ORDER BY name"
+		  ' Var rs As RowSet = Session.db.SelectSQL(sql)
+		  ' 
+		  ' lstUsers.RemoveAllRows
+		  ' While Not rs.AfterLastRow
+		  ' lstUsers.AddRow(rs.Column("name").StringValue)
+		  ' lstUsers.CellTextAt(lstUsers.LastAddedRowIndex, 1) = rs.Column("username").StringValue
+		  ' lstUsers.CellTextAt(lstUsers.LastAddedRowIndex, 2) = rs.Column("email").StringValue
+		  ' lstUsers.CellTextAt(lstUsers.LastAddedRowIndex, 3) = rs.Column("title").StringValue
+		  ' lstUsers.RowTagAt(lstUsers.LastAddedRowIndex) = rs.Column("id").IntegerValue
+		  ' 
+		  ' // Style inactive users
+		  ' If Not rs.Column("is_active").BooleanValue Then
+		  ' For col As Integer = 0 To 3
+		  ' lstUsers.CellStyleAt(lstUsers.LastAddedRowIndex, col) = InactiveUserStyle
+		  ' Next
+		  ' End If
+		  ' 
+		  ' rs.MoveToNextRow
+		  ' Wend
+		  ' 
+		  ' UpdateFoundCount
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub SearchUsers()
+		  Var searchTerm As String = txtSearch.Value.Trim.Lowercase
+		  
+		  If searchTerm = "" Then
+		    populateUsers
+		    Return
+		  End If
+		  
+		  // Build SQL with LIKE clauses for all searchable fields
+		  Var sql As String = "SELECT * FROM users WHERE " + _
+		  "LOWER(name) LIKE ? OR " + _
+		  "LOWER(username) LIKE ? OR " + _
+		  "LOWER(email) LIKE ? OR " + _
+		  "LOWER(title) LIKE ? " + _
+		  "ORDER BY name"
+		  
+		  Var ps As MySQLPreparedStatement = Session.db.Prepare(sql)
+		  
+		  // Bind the search term with wildcards for each parameter
+		  Var wildcard As String = "%" + searchTerm + "%"
+		  For i As Integer = 0 To 3
+		    ps.BindType(i, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		    ps.Bind(i, wildcard)
+		  Next
+		  
+		  Var rs As RowSet = ps.SelectSQL
+		  
+		  lstUsers.RemoveAllRows
+		  
+		  // Define styles
+		  Var darkMode As Boolean = Session.IsDarkMode
+		  Var activeStyle As New WebStyle
+		  Var inactiveStyle As New WebStyle
+		  
+		  activeStyle.ForegroundColor = If(darkMode, Color.White, Color.Black)
+		  inactiveStyle.ForegroundColor = Color.LightGray
+		  inactiveStyle.Italic = True
+		  
+		  While Not rs.AfterLastRow
+		    // Add empty row first
+		    lstUsers.AddRow()
+		    Var rowIdx As Integer = lstUsers.LastAddedRowIndex
+		    
+		    // Read data
+		    Var fullName As String = rs.Column("name").StringValue
+		    Var username As String = rs.Column("username").StringValue
+		    Var email As String = rs.Column("email").StringValue
+		    Var title As String = rs.Column("title").StringValue
+		    Var isActive As Boolean = rs.Column("is_active").BooleanValue
+		    Var userId As Integer = rs.Column("id").IntegerValue
+		    
+		    // Store primary key
+		    lstUsers.RowTagAt(rowIdx) = userId
+		    
+		    // Choose style
+		    Var cellStyle As WebStyle = If(isActive, activeStyle, inactiveStyle)
+		    
+		    // Apply styled text to every column
+		    lstUsers.CellValueAt(rowIdx, 0) = New WebListBoxStyleRenderer(cellStyle, fullName)
+		    lstUsers.CellValueAt(rowIdx, 1) = New WebListBoxStyleRenderer(cellStyle, username)
+		    lstUsers.CellValueAt(rowIdx, 2) = New WebListBoxStyleRenderer(cellStyle, email)
+		    lstUsers.CellValueAt(rowIdx, 3) = New WebListBoxStyleRenderer(cellStyle, title)
+		    
+		    rs.MoveToNextRow
+		  Wend
+		  
+		  UpdateFoundCount
+		  
+		  
+		  ' Var searchTerm As String = txtSearch.Value.Trim.Lowercase
+		  ' 
+		  ' If searchTerm = "" Then
+		  ' populateUsers
+		  ' Return
+		  ' End If
+		  ' 
+		  ' // Build SQL with LIKE clauses for all searchable fields
+		  ' Var sql As String = "SELECT * FROM users WHERE " + _
+		  ' "LOWER(name) LIKE ? OR " + _
+		  ' "LOWER(username) LIKE ? OR " + _
+		  ' "LOWER(email) LIKE ? OR " + _
+		  ' "LOWER(title) LIKE ? " + _
+		  ' "ORDER BY name"
+		  ' 
+		  ' Var ps As MySQLPreparedStatement = Session.db.Prepare(sql)
+		  ' 
+		  ' // Bind the search term with wildcards for each parameter
+		  ' Var wildcard As String = "%" + searchTerm + "%"
+		  ' For i As Integer = 0 To 3
+		  ' ps.BindType(i, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		  ' ps.Bind(i, wildcard)
+		  ' Next
+		  ' 
+		  ' Var rs As RowSet = ps.ExecuteSQL
+		  ' 
+		  ' lstUsers.RemoveAllRows
+		  ' While Not rs.AfterLastRow
+		  ' lstUsers.AddRow(rs.Column("name").StringValue)
+		  ' lstUsers.CellTextAt(lstUsers.LastAddedRowIndex, 1) = rs.Column("username").StringValue
+		  ' lstUsers.CellTextAt(lstUsers.LastAddedRowIndex, 2) = rs.Column("email").StringValue
+		  ' lstUsers.CellTextAt(lstUsers.LastAddedRowIndex, 3) = rs.Column("title").StringValue
+		  ' lstUsers.RowTagAt(lstUsers.LastAddedRowIndex) = rs.Column("id").IntegerValue
+		  ' 
+		  ' // Style inactive users
+		  ' If Not rs.Column("is_active").BooleanValue Then
+		  ' For col As Integer = 0 To 3
+		  ' lstUsers.CellTextColorAt(lstUsers.LastAddedRowIndex, col) = Color.RGB(128, 128, 128)
+		  ' lstUsers.CellItalicAt(lstUsers.LastAddedRowIndex, col) = True
+		  ' Next
+		  ' End If
+		  ' 
+		  ' rs.MoveToNextRow
+		  ' Wend
+		  ' 
+		  ' UpdateFoundCount
+		  
+		  
 		  
 		End Sub
 	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub UpdateFoundCount()
+		  Var count As Integer = lstUsers.RowCount
+		  If count = 1 Then
+		    lblFoundCount.Text = "1 user"
+		  Else
+		    lblFoundCount.Text = count.ToString + " users"
+		  End If
+		  
+		End Sub
+	#tag EndMethod
+
+
+	#tag ComputedProperty, Flags = &h0
+		#tag Getter
+			Get
+			  Var style As New WebStyle
+			  style.ForegroundColor = Color.RGB(128, 128, 128)
+			  style.Italic = True
+			  Return style
+			End Get
+		#tag EndGetter
+		InactiveUserStyle As WebStyle
+	#tag EndComputedProperty
+
+	#tag Property, Flags = &h0
+		SearchText As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		SelectdRowIndex As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		SelectedUserID As Integer
+	#tag EndProperty
 
 
 #tag EndWindowCode
@@ -218,34 +552,55 @@ End
 		Sub DoublePressed(row As Integer, column As Integer)
 		  #Pragma Unused column
 		  
-		  var id as integer = me.RowTagAt(row)
-		  var dlg as new dlg_user
+		  Var id As Integer = me.RowTagAt(row)
+		  Var dlg As New dlg_user
 		  AddHandler dlg.UserSaved, AddressOf HandleUserSaved
 		  dlg.UserID = id
 		  dlg.Show
 		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events Button1
+#tag Events txtSearch
+	#tag Event
+		Sub TextChanged()
+		  SearchUsers
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnNew
 	#tag Event
 		Sub Pressed()
-		  Var sql As String = "INSERT INTO users (name, username, email, password_hash, title) VALUES (?,?,?, SHA2(?, 256),?)"
-		  Var ps As MySQLPreparedStatement = session.db.Prepare(sql)
+		  Var dlg As New dlg_user
+		  dlg.UserID = 0
+		  AddHandler dlg.UserSaved, AddressOf HandleUserSaved 
+		  dlg.Show
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnDelete
+	#tag Event
+		Sub Pressed()
+		  If lstUsers.SelectedRowIndex < 0 Then
+		    MessageBox("Please select a user to delete")
+		    Return
+		  End If
 		  
-		  ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		  ps.BindType(1, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		  ps.BindType(2, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		  ps.BindType(3, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		  ps.BindType(4, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		  // Store selected user ID
+		  SelectedUserID = lstUsers.RowTagAt(lstUsers.SelectedRowIndex)
 		  
-		  ps.Bind(0, "Stam Kapetanakis")
-		  ps.Bind(1, "SKapetanakis")
-		  ps.Bind(2, "skapetanakis@nhs.net")
-		  ps.Bind(3, "reject66")
-		  ps.Bind(4, "ECHO Lead GSTT")
+		  // Get user name for confirmation message
+		  Var userName As String = lstUsers.CellTextAt(lstUsers.SelectedRowIndex, 0)
 		  
-		  ps.ExecuteSQL
-		  populateUsers
+		  Var dlg As New WebMessageDialog
+		  dlg.Message = "Delete user: " + userName + "?"
+		  dlg.Explanation = "This will permanently delete this user. This action cannot be undone."
+		  dlg.ActionButton.Caption = "Delete"
+		  dlg.CancelButton.Caption = "Cancel"
+		  dlg.CancelButton.Visible = True
+		  dlg.ActionButton.Indicator = WebUIControl.Indicators.Danger
+		  
+		  AddHandler dlg.ButtonPressed, AddressOf HandleDeleteUserConfirm
+		  dlg.Show
 		End Sub
 	#tag EndEvent
 #tag EndEvents

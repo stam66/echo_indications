@@ -1,11 +1,11 @@
 #tag WebPage
-Begin WebDialog dlg_ChangeIndication
+Begin WebDialog dlg_AuditEntry
    Compatibility   =   ""
    ControlCount    =   0
    ControlID       =   ""
    CSSClasses      =   ""
    Enabled         =   True
-   Height          =   492
+   Height          =   702
    Index           =   -2147483648
    Indicator       =   0
    LayoutDirection =   0
@@ -18,15 +18,117 @@ Begin WebDialog dlg_ChangeIndication
    LockTop         =   False
    LockVertical    =   False
    PanelIndex      =   0
-   Position        =   0
+   Position        =   1
    TabIndex        =   0
    Top             =   0
    Visible         =   True
-   Width           =   636
+   Width           =   752
    _mDesignHeight  =   0
    _mDesignWidth   =   0
    _mPanelIndex    =   -1
-   Begin WebRectangle Rectangle1
+   Begin WebLabel lblNewValues
+      Bold            =   True
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      FontName        =   ""
+      FontSize        =   0.0
+      Height          =   38
+      Index           =   -2147483648
+      Indicator       =   ""
+      Italic          =   False
+      Left            =   386
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      Multiline       =   False
+      PanelIndex      =   0
+      Scope           =   0
+      TabIndex        =   41
+      TabStop         =   True
+      Text            =   "New values"
+      TextAlignment   =   0
+      TextColor       =   &c000000FF
+      Tooltip         =   ""
+      Top             =   420
+      Underline       =   False
+      Visible         =   True
+      Width           =   192
+      _mPanelIndex    =   -1
+   End
+   Begin WebLabel lblOldValues
+      Bold            =   True
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      FontName        =   ""
+      FontSize        =   0.0
+      Height          =   38
+      Index           =   -2147483648
+      Indicator       =   ""
+      Italic          =   False
+      Left            =   32
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      Multiline       =   False
+      PanelIndex      =   0
+      Scope           =   0
+      TabIndex        =   38
+      TabStop         =   True
+      Text            =   "Old values"
+      TextAlignment   =   0
+      TextColor       =   &c000000FF
+      Tooltip         =   ""
+      Top             =   420
+      Underline       =   False
+      Visible         =   True
+      Width           =   192
+      _mPanelIndex    =   -1
+   End
+   Begin WebLabel lblChangedFields
+      Bold            =   True
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      FontName        =   ""
+      FontSize        =   0.0
+      Height          =   38
+      Index           =   -2147483648
+      Indicator       =   ""
+      Italic          =   False
+      Left            =   32
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      Multiline       =   False
+      PanelIndex      =   0
+      Scope           =   0
+      TabIndex        =   32
+      TabStop         =   True
+      Text            =   "Fields affected"
+      TextAlignment   =   0
+      TextColor       =   &c000000FF
+      Tooltip         =   ""
+      Top             =   291
+      Underline       =   False
+      Visible         =   True
+      Width           =   192
+      _mPanelIndex    =   -1
+   End
+   Begin WebRectangle Rectangle2
       BorderColor     =   &c000000FF
       BorderThickness =   0
       ControlCount    =   0
@@ -51,12 +153,12 @@ Begin WebDialog dlg_ChangeIndication
       LockVertical    =   False
       PanelIndex      =   0
       Scope           =   0
-      TabIndex        =   0
+      TabIndex        =   24
       TabStop         =   True
       Tooltip         =   ""
       Top             =   0
       Visible         =   True
-      Width           =   636
+      Width           =   752
       _mDesignHeight  =   0
       _mDesignWidth   =   0
       _mPanelIndex    =   -1
@@ -66,7 +168,7 @@ Begin WebDialog dlg_ChangeIndication
          CSSClasses      =   ""
          Enabled         =   True
          FontName        =   ""
-         FontSize        =   24.0
+         FontSize        =   22.0
          Height          =   38
          Index           =   -2147483648
          Indicator       =   0
@@ -81,268 +183,26 @@ Begin WebDialog dlg_ChangeIndication
          LockVertical    =   False
          Multiline       =   False
          PanelIndex      =   0
-         Parent          =   "Rectangle1"
+         Parent          =   "Rectangle2"
          Scope           =   0
-         TabIndex        =   1
-         TabPanelIndex   =   -1
+         TabIndex        =   0
+         TabPanelIndex   =   0
          TabStop         =   True
-         Text            =   "Request change for existing indication"
+         Text            =   "Audit Entry"
          TextAlignment   =   0
-         TextColor       =   &cFAFAFA00
+         TextColor       =   &cFFFFFF00
          Tooltip         =   ""
          Top             =   12
          Underline       =   False
          Visible         =   True
-         Width           =   560
+         Width           =   315
          _mPanelIndex    =   -1
       End
    End
-   Begin WebTextField txtExistingContexts
-      AllowAutoComplete=   False
-      AllowReturnKey  =   "True"
-      AllowSpellChecking=   False
-      Caption         =   ""
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      FieldType       =   0
-      Height          =   38
-      Hint            =   ""
-      Index           =   -2147483648
-      Indicator       =   0
-      Left            =   20
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      LockVertical    =   False
-      Mandatory       =   "False"
-      MaximumCharactersAllowed=   0
-      PanelIndex      =   0
-      ReadOnly        =   True
-      Scope           =   2
-      TabIndex        =   2
-      TabStop         =   True
-      Text            =   ""
-      TextAlignment   =   0
-      Tooltip         =   ""
-      Top             =   271
-      Visible         =   True
-      Width           =   259
-      _mPanelIndex    =   -1
-   End
-   Begin WebLabel lblExistingIndication
-      Bold            =   True
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      FontName        =   ""
-      FontSize        =   14.0
-      Height          =   22
-      Index           =   -2147483648
-      Indicator       =   0
-      Italic          =   False
-      Left            =   20
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   False
-      LockRight       =   True
-      LockTop         =   True
-      LockVertical    =   False
-      Multiline       =   False
-      PanelIndex      =   0
-      Scope           =   2
-      TabIndex        =   3
-      TabStop         =   True
-      Text            =   "Existing Indication"
-      TextAlignment   =   0
-      TextColor       =   &c000000FF
-      Tooltip         =   ""
-      Top             =   79
-      Underline       =   False
-      Visible         =   True
-      Width           =   132
-      _mPanelIndex    =   -1
-   End
-   Begin WebLabel lblExistingContexts
-      Bold            =   True
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      FontName        =   ""
-      FontSize        =   14.0
-      Height          =   22
-      Index           =   -2147483648
-      Indicator       =   0
-      Italic          =   False
-      Left            =   20
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      LockVertical    =   False
-      Multiline       =   False
-      PanelIndex      =   0
-      Scope           =   2
-      TabIndex        =   4
-      TabStop         =   True
-      Text            =   "Existing Contexts"
-      TextAlignment   =   0
-      TextColor       =   &c000000FF
-      Tooltip         =   ""
-      Top             =   245
-      Underline       =   False
-      Visible         =   True
-      Width           =   132
-      _mPanelIndex    =   -1
-   End
-   Begin WebTextArea txtNewIndication
-      AllowReturnKey  =   True
-      AllowSpellChecking=   True
-      Caption         =   ""
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      Height          =   128
-      Hint            =   ""
-      Index           =   -2147483648
-      Indicator       =   0
-      Left            =   357
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      LockVertical    =   False
-      Mandatory       =   "False"
-      MaximumCharactersAllowed=   0
-      PanelIndex      =   0
-      ReadOnly        =   False
-      Scope           =   2
-      TabIndex        =   5
-      TabStop         =   True
-      Text            =   ""
-      TextAlignment   =   0
-      Tooltip         =   ""
-      Top             =   109
-      Visible         =   True
-      Width           =   259
-      _mPanelIndex    =   -1
-   End
-   Begin WebTextField txtNewContexts
-      AllowAutoComplete=   False
-      AllowReturnKey  =   "True"
-      AllowSpellChecking=   False
-      Caption         =   ""
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      FieldType       =   0
-      Height          =   38
-      Hint            =   ""
-      Index           =   -2147483648
-      Indicator       =   0
-      Left            =   357
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      LockVertical    =   False
-      Mandatory       =   "False"
-      MaximumCharactersAllowed=   0
-      PanelIndex      =   0
-      ReadOnly        =   False
-      Scope           =   2
-      TabIndex        =   6
-      TabStop         =   True
-      Text            =   ""
-      TextAlignment   =   0
-      Tooltip         =   ""
-      Top             =   271
-      Visible         =   True
-      Width           =   259
-      _mPanelIndex    =   -1
-   End
-   Begin WebLabel lblRevisedIndication
-      Bold            =   True
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      FontName        =   ""
-      FontSize        =   14.0
-      Height          =   22
-      Index           =   -2147483648
-      Indicator       =   0
-      Italic          =   False
-      Left            =   357
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   False
-      LockRight       =   True
-      LockTop         =   True
-      LockVertical    =   False
-      Multiline       =   False
-      PanelIndex      =   0
-      Scope           =   2
-      TabIndex        =   7
-      TabStop         =   True
-      Text            =   "Revised Indication"
-      TextAlignment   =   0
-      TextColor       =   &c000000FF
-      Tooltip         =   ""
-      Top             =   79
-      Underline       =   False
-      Visible         =   True
-      Width           =   132
-      _mPanelIndex    =   -1
-   End
-   Begin WebLabel lblRevisedContexts
-      Bold            =   True
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      FontName        =   ""
-      FontSize        =   14.0
-      Height          =   22
-      Index           =   -2147483648
-      Indicator       =   0
-      Italic          =   False
-      Left            =   357
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      LockVertical    =   False
-      Multiline       =   False
-      PanelIndex      =   0
-      Scope           =   2
-      TabIndex        =   8
-      TabStop         =   True
-      Text            =   "Revised Contexts"
-      TextAlignment   =   0
-      TextColor       =   &c000000FF
-      Tooltip         =   ""
-      Top             =   245
-      Underline       =   False
-      Visible         =   True
-      Width           =   132
-      _mPanelIndex    =   -1
-   End
-   Begin WebButton btnCancel
+   Begin WebButton btnClose
       AllowAutoDisable=   False
       Cancel          =   True
-      Caption         =   "Cancel"
+      Caption         =   "Close"
       ControlID       =   ""
       CSSClasses      =   ""
       Default         =   False
@@ -350,56 +210,26 @@ Begin WebDialog dlg_ChangeIndication
       Height          =   38
       Index           =   -2147483648
       Indicator       =   0
-      Left            =   347
-      LockBottom      =   False
+      Left            =   632
+      LockBottom      =   True
       LockedInPosition=   False
       LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   False
       LockVertical    =   False
       Outlined        =   False
       PanelIndex      =   0
-      Scope           =   2
-      TabIndex        =   9
+      Scope           =   0
+      TabIndex        =   25
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   434
+      Top             =   644
       Visible         =   True
       Width           =   100
       _mPanelIndex    =   -1
    End
-   Begin WebButton btnSubmit
-      AllowAutoDisable=   False
-      Cancel          =   False
-      Caption         =   "Submit request"
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Default         =   True
-      Enabled         =   True
-      Height          =   38
-      Index           =   -2147483648
-      Indicator       =   1
-      Left            =   455
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      LockVertical    =   False
-      Outlined        =   False
-      PanelIndex      =   0
-      Scope           =   2
-      TabIndex        =   10
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   434
-      Visible         =   True
-      Width           =   161
-      _mPanelIndex    =   -1
-   End
-   Begin WebLabel lblID
+   Begin WebLabel lblTimestamp
       Bold            =   True
       ControlID       =   ""
       CSSClasses      =   ""
@@ -408,9 +238,9 @@ Begin WebDialog dlg_ChangeIndication
       FontSize        =   0.0
       Height          =   38
       Index           =   -2147483648
-      Indicator       =   0
+      Indicator       =   ""
       Italic          =   False
-      Left            =   20
+      Left            =   32
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -420,21 +250,21 @@ Begin WebDialog dlg_ChangeIndication
       LockVertical    =   False
       Multiline       =   False
       PanelIndex      =   0
-      Scope           =   2
-      TabIndex        =   11
+      Scope           =   0
+      TabIndex        =   26
       TabStop         =   True
-      Text            =   "ID"
+      Text            =   "Timestamp"
       TextAlignment   =   0
       TextColor       =   &c000000FF
       Tooltip         =   ""
-      Top             =   434
+      Top             =   84
       Underline       =   False
       Visible         =   True
-      Width           =   37
+      Width           =   100
       _mPanelIndex    =   -1
    End
-   Begin WebLabel lblPrimaryKey
-      Bold            =   False
+   Begin WebLabel lblUser
+      Bold            =   True
       ControlID       =   ""
       CSSClasses      =   ""
       Enabled         =   True
@@ -442,9 +272,9 @@ Begin WebDialog dlg_ChangeIndication
       FontSize        =   0.0
       Height          =   38
       Index           =   -2147483648
-      Indicator       =   0
+      Indicator       =   ""
       Italic          =   False
-      Left            =   43
+      Left            =   32
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -452,34 +282,33 @@ Begin WebDialog dlg_ChangeIndication
       LockRight       =   False
       LockTop         =   True
       LockVertical    =   False
-      Mandatory       =   "False"
       Multiline       =   False
       PanelIndex      =   0
-      Scope           =   2
-      TabIndex        =   12
+      Scope           =   0
+      TabIndex        =   28
       TabStop         =   True
-      Text            =   "Primary Key "
+      Text            =   "User"
       TextAlignment   =   0
       TextColor       =   &c000000FF
       Tooltip         =   ""
-      Top             =   434
+      Top             =   130
       Underline       =   False
       Visible         =   True
-      Width           =   214
+      Width           =   100
       _mPanelIndex    =   -1
    End
-   Begin WebTextArea txtExistingIndication
-      AllowReturnKey  =   True
-      AllowSpellChecking=   True
-      Caption         =   ""
+   Begin WebLabel lblAction
+      Bold            =   True
       ControlID       =   ""
       CSSClasses      =   ""
       Enabled         =   True
-      Height          =   128
-      Hint            =   ""
+      FontName        =   ""
+      FontSize        =   0.0
+      Height          =   38
       Index           =   -2147483648
-      Indicator       =   0
-      Left            =   20
+      Indicator       =   ""
+      Italic          =   False
+      Left            =   32
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -487,24 +316,23 @@ Begin WebDialog dlg_ChangeIndication
       LockRight       =   False
       LockTop         =   True
       LockVertical    =   False
-      Mandatory       =   "False"
-      MaximumCharactersAllowed=   0
+      Multiline       =   False
       PanelIndex      =   0
-      ReadOnly        =   False
-      Scope           =   2
-      TabIndex        =   13
+      Scope           =   0
+      TabIndex        =   30
       TabStop         =   True
-      Text            =   ""
+      Text            =   "Action"
       TextAlignment   =   0
+      TextColor       =   &c000000FF
       Tooltip         =   ""
-      Top             =   109
+      Top             =   176
+      Underline       =   False
       Visible         =   True
-      Width           =   259
+      Width           =   100
       _mPanelIndex    =   -1
    End
-   Begin WebTextField txtRequestor
+   Begin WebTextField txtTimestamp
       AllowAutoComplete=   False
-      AllowReturnKey  =   "True"
       AllowSpellChecking=   False
       Caption         =   ""
       ControlID       =   ""
@@ -512,10 +340,10 @@ Begin WebDialog dlg_ChangeIndication
       Enabled         =   True
       FieldType       =   0
       Height          =   38
-      Hint            =   "Enter name and/or email"
+      Hint            =   ""
       Index           =   -2147483648
-      Indicator       =   0
-      Left            =   20
+      Indicator       =   ""
+      Left            =   159
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -523,33 +351,199 @@ Begin WebDialog dlg_ChangeIndication
       LockRight       =   False
       LockTop         =   True
       LockVertical    =   False
-      Mandatory       =   "False"
       MaximumCharactersAllowed=   0
       PanelIndex      =   0
       ReadOnly        =   True
-      Scope           =   2
-      TabIndex        =   14
+      Scope           =   0
+      TabIndex        =   34
+      TabStop         =   True
+      Text            =   "2025-12-16T15:34:00"
+      TextAlignment   =   0
+      Tooltip         =   ""
+      Top             =   84
+      Visible         =   True
+      Width           =   207
+      _mPanelIndex    =   -1
+   End
+   Begin WebTextField txtUser
+      AllowAutoComplete=   False
+      AllowSpellChecking=   False
+      Caption         =   ""
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      FieldType       =   0
+      Height          =   38
+      Hint            =   ""
+      Index           =   -2147483648
+      Indicator       =   ""
+      Left            =   159
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      MaximumCharactersAllowed=   0
+      PanelIndex      =   0
+      ReadOnly        =   True
+      Scope           =   0
+      TabIndex        =   35
+      TabStop         =   True
+      Text            =   "Stam Kapetanakis"
+      TextAlignment   =   0
+      Tooltip         =   ""
+      Top             =   130
+      Visible         =   True
+      Width           =   207
+      _mPanelIndex    =   -1
+   End
+   Begin WebTextField txtAction
+      AllowAutoComplete=   False
+      AllowSpellChecking=   False
+      Caption         =   ""
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      FieldType       =   0
+      Height          =   38
+      Hint            =   ""
+      Index           =   -2147483648
+      Indicator       =   ""
+      Left            =   159
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      MaximumCharactersAllowed=   0
+      PanelIndex      =   0
+      ReadOnly        =   True
+      Scope           =   0
+      TabIndex        =   36
+      TabStop         =   True
+      Text            =   "Update"
+      TextAlignment   =   0
+      Tooltip         =   ""
+      Top             =   176
+      Visible         =   True
+      Width           =   207
+      _mPanelIndex    =   -1
+   End
+   Begin WebTextArea txtChangedFields
+      AllowReturnKey  =   True
+      AllowSpellChecking=   False
+      Caption         =   ""
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      Height          =   75
+      Hint            =   ""
+      Index           =   -2147483648
+      Indicator       =   ""
+      Left            =   32
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      MaximumCharactersAllowed=   0
+      PanelIndex      =   0
+      ReadOnly        =   True
+      Scope           =   0
+      TabIndex        =   37
       TabStop         =   True
       Text            =   ""
       TextAlignment   =   0
       Tooltip         =   ""
-      Top             =   367
+      Top             =   326
       Visible         =   True
-      Width           =   596
+      Width           =   688
       _mPanelIndex    =   -1
    End
-   Begin WebLabel lblReqeustor
+   Begin WebTextArea txtOldValues
+      AllowReturnKey  =   True
+      AllowSpellChecking=   False
+      Caption         =   ""
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      Height          =   181
+      Hint            =   ""
+      Index           =   -2147483648
+      Indicator       =   ""
+      Left            =   32
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      MaximumCharactersAllowed=   0
+      PanelIndex      =   0
+      ReadOnly        =   True
+      Scope           =   0
+      TabIndex        =   39
+      TabStop         =   True
+      Text            =   ""
+      TextAlignment   =   0
+      Tooltip         =   ""
+      Top             =   455
+      Visible         =   True
+      Width           =   346
+      _mPanelIndex    =   -1
+   End
+   Begin WebTextArea txtNewValues
+      AllowReturnKey  =   True
+      AllowSpellChecking=   False
+      Caption         =   ""
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      Height          =   181
+      Hint            =   ""
+      Index           =   -2147483648
+      Indicator       =   ""
+      Left            =   386
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      MaximumCharactersAllowed=   0
+      PanelIndex      =   0
+      ReadOnly        =   True
+      Scope           =   0
+      TabIndex        =   40
+      TabStop         =   True
+      Text            =   ""
+      TextAlignment   =   0
+      Tooltip         =   ""
+      Top             =   455
+      Visible         =   True
+      Width           =   346
+      _mPanelIndex    =   -1
+   End
+   Begin WebLabel lblTable
       Bold            =   True
       ControlID       =   ""
       CSSClasses      =   ""
       Enabled         =   True
       FontName        =   ""
-      FontSize        =   14.0
-      Height          =   22
+      FontSize        =   0.0
+      Height          =   38
       Index           =   -2147483648
-      Indicator       =   0
+      Indicator       =   ""
       Italic          =   False
-      Left            =   20
+      Left            =   32
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -559,17 +553,119 @@ Begin WebDialog dlg_ChangeIndication
       LockVertical    =   False
       Multiline       =   False
       PanelIndex      =   0
-      Scope           =   2
-      TabIndex        =   15
+      Scope           =   0
+      TabIndex        =   42
       TabStop         =   True
-      Text            =   "Requested by"
+      Text            =   "Table"
       TextAlignment   =   0
       TextColor       =   &c000000FF
       Tooltip         =   ""
-      Top             =   341
+      Top             =   222
       Underline       =   False
       Visible         =   True
-      Width           =   259
+      Width           =   109
+      _mPanelIndex    =   -1
+   End
+   Begin WebTextField txtTable
+      AllowAutoComplete=   False
+      AllowSpellChecking=   False
+      Caption         =   ""
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      FieldType       =   0
+      Height          =   38
+      Hint            =   ""
+      Index           =   -2147483648
+      Indicator       =   ""
+      Left            =   159
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      MaximumCharactersAllowed=   0
+      PanelIndex      =   0
+      ReadOnly        =   True
+      Scope           =   0
+      TabIndex        =   43
+      TabStop         =   True
+      Text            =   "indications"
+      TextAlignment   =   0
+      Tooltip         =   ""
+      Top             =   222
+      Visible         =   True
+      Width           =   207
+      _mPanelIndex    =   -1
+   End
+   Begin WebLabel lblPrimarykey
+      Bold            =   True
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      FontName        =   ""
+      FontSize        =   0.0
+      Height          =   38
+      Index           =   -2147483648
+      Indicator       =   ""
+      Italic          =   False
+      Left            =   386
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      Multiline       =   False
+      PanelIndex      =   0
+      Scope           =   0
+      TabIndex        =   44
+      TabStop         =   True
+      Text            =   "Primary key"
+      TextAlignment   =   0
+      TextColor       =   &c000000FF
+      Tooltip         =   ""
+      Top             =   222
+      Underline       =   False
+      Visible         =   True
+      Width           =   109
+      _mPanelIndex    =   -1
+   End
+   Begin WebTextField txtPrimarykey
+      AllowAutoComplete=   False
+      AllowSpellChecking=   False
+      Caption         =   ""
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      FieldType       =   0
+      Height          =   38
+      Hint            =   ""
+      Index           =   -2147483648
+      Indicator       =   ""
+      Left            =   513
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      MaximumCharactersAllowed=   0
+      PanelIndex      =   0
+      ReadOnly        =   False
+      Scope           =   0
+      TabIndex        =   45
+      TabStop         =   True
+      Text            =   "12341"
+      TextAlignment   =   0
+      Tooltip         =   ""
+      Top             =   222
+      Visible         =   True
+      Width           =   207
       _mPanelIndex    =   -1
    End
 End
@@ -577,223 +673,182 @@ End
 
 #tag WindowCode
 	#tag Event
-		Sub Opening()
+		Sub Shown()
+		  If auditID = 0 Then
+		    MessageBox("No audit entry selected")
+		    Self.Close
+		    Return
+		  End If
+		  
 		  Try
-		    // Load existing indication details
-		    Var sql As String = "SELECT title FROM indications WHERE id = ?"
+		    Var sql As String = "SELECT * FROM audit WHERE id = ?"
 		    Var ps As MySQLPreparedStatement = Session.DB.Prepare(sql)
 		    ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_LONG)
-		    ps.Bind(0, Session.SelectedIndicationID)
-		    
+		    ps.Bind(0, auditID)
 		    Var rs As RowSet = ps.SelectSQL
 		    
 		    If Not rs.AfterLastRow Then
-		      txtExistingIndication.Text = rs.Column("title").StringValue
-		    End If
-		    
-		    // Load existing contexts
-		    sql = "SELECT c.name FROM contexts c " + _
-		    "INNER JOIN indication_contexts ic ON c.id = ic.context_id " + _
-		    "WHERE ic.indication_id = ? ORDER BY c.sort_order"
-		    
-		    ps = Session.DB.Prepare(sql)
-		    ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_LONG)
-		    ps.Bind(0, Session.SelectedIndicationID)
-		    
-		    rs = ps.SelectSQL
-		    
-		    Var contextNames() As String
-		    While Not rs.AfterLastRow
-		      contextNames.Add(rs.Column("name").StringValue)
-		      rs.MoveToNextRow
-		    Wend
-		    
-		    txtExistingContexts.Text = String.FromArray(contextNames, ", ")
-		    
-		    lblPrimaryKey.Text = "Indication ID: " + Session.SelectedIndicationID.ToString
-		    
-		  Catch err As DatabaseException
-		    MessageBox("Error loading indication: " + err.Message)
-		    System.DebugLog("LoadIndication Error: " + err.Message)
-		  End Try
-		End Sub
-	#tag EndEvent
-
-	#tag Event
-		Sub Shown()
-		  // Pre-populate requestor if authenticated
-		  If Session.IsAuthenticated Then
-		    txtRequestor.Text = Session.CurrentUsername
-		    txtRequestor.ReadOnly = True
-		  Else
-		    txtRequestor.Text = ""
-		    txtRequestor.ReadOnly = False
-		    btnSubmit.Enabled = False  // Disable until name is entered
-		  End If
-		  
-		  If Session.SelectedIndicationID > 0 Then
-		    Try
-		      // Load existing indication details
-		      Var sql As String = "SELECT title FROM indications WHERE id = ?"
-		      Var ps As MySQLPreparedStatement = Session.DB.Prepare(sql)
-		      ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_LONG)
-		      ps.Bind(0, Session.SelectedIndicationID)
+		      // Populate fields
+		      Var ts As DateTime = rs.Column("audit_timestamp").DateTimeValue
+		      txtTimestamp.Text = ts.ToString(Locale.Current, DateTime.FormatStyles.Long, DateTime.FormatStyles.Long)
 		      
-		      Var rs As RowSet = ps.SelectSQL
+		      Var username As String = rs.Column("audit_user").StringValue
+		      If username = "" Then username = "(system)"
+		      txtUser.Text = username
 		      
-		      If Not rs.AfterLastRow Then
-		        txtExistingIndication.Text = rs.Column("title").StringValue
+		      txtAction.Text = rs.Column("action").StringValue.Uppercase
+		      txtTable.Text = rs.Column("audit_table").StringValue
+		      txtPrimarykey.Text = rs.Column("audit_primarykey").IntegerValue.ToString
+		      
+		      // Changed fields
+		      Var changedFields As String = rs.Column("changed_fields").StringValue
+		      If changedFields <> "" Then
+		        txtChangedFields.Text = changedFields.ReplaceAll(",", ", ")
+		      Else
+		        txtChangedFields.Text = "(all fields)"
 		      End If
 		      
-		      // Load existing contexts
-		      sql = "SELECT c.name FROM contexts c " + _
-		      "INNER JOIN indication_contexts ic ON c.id = ic.context_id " + _
-		      "WHERE ic.indication_id = ? ORDER BY c.sort_order"
+		      // Old values
+		      Var oldVals As String = rs.Column("old_values").StringValue
+		      If oldVals <> "" Then
+		        txtOldValues.Text = FormatJSON(oldVals)
+		      Else
+		        txtOldValues.Text = "(none)"
+		        lblOldValues.Visible = False
+		        txtOldValues.Visible = False
+		      End If
 		      
-		      ps = Session.DB.Prepare(sql)
-		      ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_LONG)
-		      ps.Bind(0, Session.SelectedIndicationID)
-		      
-		      rs = ps.SelectSQL
-		      
-		      Var contextNames() As String
-		      While Not rs.AfterLastRow
-		        contextNames.Add(rs.Column("name").StringValue)
-		        rs.MoveToNextRow
-		      Wend
-		      
-		      txtExistingContexts.Text = String.FromArray(contextNames, ", ")
-		      
-		      lblPrimaryKey.Text = "Indication ID: " + Session.SelectedIndicationID.ToString
-		      
-		    Catch err As DatabaseException
-		      MessageBox("Error loading indication: " + err.Message)
-		      System.DebugLog("LoadIndication Error: " + err.Message)
-		    End Try
-		  End If
+		      // New values
+		      Var newVals As String = rs.Column("new_values").StringValue
+		      If newVals <> "" Then
+		        txtNewValues.Text = FormatJSON(newVals)
+		      Else
+		        txtNewValues.Text = "(none)"
+		        lblNewValues.Visible = False
+		        txtNewValues.Visible = False
+		      End If
+		    End If
+		    
+		  Catch err As DatabaseException
+		    MessageBox("Error loading audit details: " + err.Message)
+		    Self.Close
+		  End Try
+		  
+		  ' If auditID = 0 Then
+		  ' MessageBox("No audit entry selected")
+		  ' Self.Close
+		  ' Return
+		  ' End If
+		  ' 
+		  ' Try
+		  ' Var sql As String = "SELECT * FROM audit WHERE id = ?"
+		  ' Var ps As MySQLPreparedStatement = Session.DB.Prepare(sql)
+		  ' ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_LONG)
+		  ' ps.Bind(0, auditID)
+		  ' Var rs As RowSet = ps.SelectSQL
+		  ' 
+		  ' If Not rs.AfterLastRow Then
+		  ' // Populate fields
+		  ' Var ts As DateTime = rs.Column("audit_timestamp").DateTimeValue
+		  ' txtTimestamp.Text = ts.ToString(Locale.Current, DateTime.FormatStyles.Long, DateTime.FormatStyles.Long)
+		  ' 
+		  ' Var username As String = rs.Column("audit_user").StringValue
+		  ' If username = "" Then username = "(system)"
+		  ' txtUser.Text = username
+		  ' 
+		  ' txtAction.Text = rs.Column("action").StringValue.Uppercase
+		  ' txtTable.Text = rs.Column("audit_table").StringValue
+		  ' txtPrimarykey.Text = rs.Column("audit_primarykey").IntegerValue.ToString
+		  ' 
+		  ' // Changed fields
+		  ' Var changedFields As String = rs.Column("changed_fields").StringValue
+		  ' If changedFields <> "" Then
+		  ' txtChangedFields.Text = changedFields.ReplaceAll(",", ", ")
+		  ' Else
+		  ' txtChangedFields.Text = "(all fields)"
+		  ' End If
+		  ' 
+		  ' // Old values
+		  ' Var oldVals As String = rs.Column("old_values").StringValue
+		  ' If oldVals <> "" Then
+		  ' txtOldValues.Text = FormatJSON(oldVals)
+		  ' Else
+		  ' txtOldValues.Text = "(none)"
+		  ' lblOldValues.Visible = False
+		  ' txtOldValues.Visible = False
+		  ' End If
+		  ' 
+		  ' // New values
+		  ' Var newVals As String = rs.Column("new_values").StringValue
+		  ' If newVals <> "" Then
+		  ' txtNewValues.Text = FormatJSON(newVals)
+		  ' Else
+		  ' txtNewValues.Text = "(none)"
+		  ' lblNewValues.Visible = False
+		  ' txtNewValues.Visible = False
+		  ' End If
+		  ' End If
+		  ' 
+		  ' Catch err As DatabaseException
+		  ' MessageBox("Error loading audit details: " + err.Message)
+		  ' Self.Close
+		  ' End Try
 		End Sub
 	#tag EndEvent
 
 
-	#tag Method, Flags = &h21
-		Private Sub ValidateForm()
-		  // For non-authenticated users, require:
-		  // 1. Name/requestor
-		  // 2. At least one change (indication or contexts)
+	#tag Method, Flags = &h0
+		Function FormatJSON(jsonString As String) As String
+		  // Simple JSON formatter for display
+		  Try
+		    Var result As String = jsonString
+		    
+		    // Add line breaks after commas
+		    result = result.ReplaceAll(",", "," + EndOfLine)
+		    
+		    // Remove braces and quotes for cleaner display
+		    result = result.ReplaceAll("{", "")
+		    result = result.ReplaceAll("}", "")
+		    result = result.ReplaceAll("""", "")
+		    
+		    Return result.Trim
+		    
+		  Catch
+		    Return jsonString
+		  End Try
 		  
-		  Var hasRequestor As Boolean = txtRequestor.Text.Trim <> ""
-		  Var hasChange As Boolean = (txtNewIndication.Text.Trim <> "") Or (txtNewContexts.Text.Trim <> "")
-		  
-		  If Session.IsAuthenticated Then
-		    // Authenticated users only need at least one change
-		    btnSubmit.Enabled = hasChange
-		  Else
-		    // Non-authenticated users need both name and at least one change
-		    btnSubmit.Enabled = hasRequestor And hasChange
-		  End If
-		End Sub
+		  ' // Simple JSON formatter for display
+		  ' Try
+		  ' Var result As String = jsonString
+		  ' 
+		  ' // Add line breaks after commas
+		  ' result = result.ReplaceAll(",", "," + EndOfLine)
+		  ' 
+		  ' // Remove braces and quotes for cleaner display
+		  ' result = result.ReplaceAll("{", "")
+		  ' result = result.ReplaceAll("}", "")
+		  ' result = result.ReplaceAll("""", "")
+		  ' 
+		  ' Return result.Trim
+		  ' 
+		  ' Catch
+		  ' Return jsonString
+		  ' End Try
+		End Function
 	#tag EndMethod
 
 
-	#tag Property, Flags = &h21
-		Private ButtonClicked As WebButton
+	#tag Property, Flags = &h0
+		auditID As Integer = 0
 	#tag EndProperty
 
 
 #tag EndWindowCode
 
-#tag Events txtNewIndication
-	#tag Event
-		Sub TextChanged()
-		  If Not Session.IsAuthenticated Then
-		    ValidateForm
-		  End If
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events txtNewContexts
-	#tag Event
-		Sub TextChanged()
-		  If Not Session.IsAuthenticated Then
-		    ValidateForm
-		  End If
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events btnCancel
+#tag Events btnClose
 	#tag Event
 		Sub Pressed()
-		  self.close
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events btnSubmit
-	#tag Event
-		Sub Pressed()
-		  // Validate requestor name
-		  If txtRequestor.Text.Trim = "" Then
-		    MessageBox("Please enter your name")
-		    txtRequestor.SetFocus
-		    Return
-		  End If
-		  
-		  // Validate at least one change
-		  If txtNewIndication.Text.Trim = "" And txtNewContexts.Text.Trim = "" Then
-		    MessageBox("You must enter at least one change to submit")
-		    Return
-		  End If
-		  
-		  Try
-		    Var sql As String = "INSERT INTO changes (changes_request, changes_requestor, changes_status, " + _
-		    "indication_existing, indication_new, contexts_existing, contexts_new, Indication_id) " + _
-		    "VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
-		    
-		    Var ps As MySQLPreparedStatement = Session.DB.Prepare(sql)
-		    
-		    ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		    ps.BindType(1, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		    ps.BindType(2, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		    ps.BindType(3, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		    ps.BindType(4, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		    ps.BindType(5, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		    ps.BindType(6, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		    ps.BindType(7, MySQLPreparedStatement.MYSQL_TYPE_LONG)
-		    
-		    Var requestText As String = "Change request for indication: " + txtExistingIndication.Text.Left(50)
-		    
-		    ps.Bind(0, requestText)
-		    ps.Bind(1, txtRequestor.Text.Trim)
-		    ps.Bind(2, "Open")
-		    ps.Bind(3, txtExistingIndication.Text)
-		    ps.Bind(4, txtNewIndication.Text)
-		    ps.Bind(5, txtExistingContexts.Text)
-		    ps.Bind(6, txtNewContexts.Text)
-		    ps.Bind(7, Session.SelectedIndicationID)
-		    
-		    ps.ExecuteSQL
-		    
-		    MessageBox("Change request submitted successfully")
-		    
-		    // Update badge if on landing page
-		    If wp_LandingPage <> Nil Then
-		      wp_LandingPage.wc_menu.UpdateIssuesBadge
-		    End If
-		    
-		    Self.Close
-		    
-		  Catch err As DatabaseException
-		    MessageBox("Error submitting change request: " + err.Message)
-		    System.DebugLog("SubmitIndicationChange Error: " + err.Message)
-		  End Try
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events txtRequestor
-	#tag Event
-		Sub TextChanged()
-		  If Not Session.IsAuthenticated Then
-		    ValidateForm
-		  End If
+		  Self.Close
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -1039,5 +1094,13 @@ End
 			"2 - TopToBottom"
 			"3 - BottomToTop"
 		#tag EndEnumValues
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="auditID"
+		Visible=false
+		Group="Behavior"
+		InitialValue="0"
+		Type="Integer"
+		EditorType=""
 	#tag EndViewProperty
 #tag EndViewBehavior

@@ -57,14 +57,13 @@ CREATE TABLE `indications`(
 	`source_eacvi` TinyInt( 1 ) NULL DEFAULT 0,
 	`source_bse` TinyInt( 1 ) NULL DEFAULT 0,
 	`source_consensus` TinyInt( 1 ) NULL DEFAULT 0,
-	`is_active` TinyInt( 1 ) NULL DEFAULT 1,
 	`created_at` Timestamp NULL DEFAULT CURRENT_TIMESTAMP,
 	`updated_at` Timestamp NULL ON UPDATE CURRENT_TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY ( `id` ) )
 CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci
 ENGINE = InnoDB
-AUTO_INCREMENT = 138;
+AUTO_INCREMENT = 276;
 -- -------------------------------------------------------------
 
 
@@ -72,17 +71,20 @@ AUTO_INCREMENT = 138;
 CREATE TABLE `users`( 
 	`id` Int( 0 ) AUTO_INCREMENT NOT NULL,
 	`username` VarChar( 100 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-	`password_hash` VarChar( 255 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+	`password_hash` VarChar( 255 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
 	`email` VarChar( 255 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
 	`is_active` TinyInt( 1 ) NULL DEFAULT 1,
 	`created_at` Timestamp NULL DEFAULT CURRENT_TIMESTAMP,
 	`updated_at` Timestamp NULL ON UPDATE CURRENT_TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	`title` VarChar( 255 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+	`OTP` TinyInt( 0 ) NOT NULL DEFAULT 0,
+	`name` VarChar( 255 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
 	PRIMARY KEY ( `id` ),
 	CONSTRAINT `username` UNIQUE( `username` ) )
 CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci
 ENGINE = InnoDB
-AUTO_INCREMENT = 2;
+AUTO_INCREMENT = 1;
 -- -------------------------------------------------------------
 
 
@@ -93,11 +95,6 @@ CREATE INDEX `idx_contexts_sort` USING BTREE ON `contexts`( `sort_order` );
 
 -- CREATE INDEX "context_id" -----------------------------------
 CREATE INDEX `context_id` USING BTREE ON `indication_contexts`( `context_id` );
--- -------------------------------------------------------------
-
-
--- CREATE INDEX "idx_indications_active" -----------------------
-CREATE INDEX `idx_indications_active` USING BTREE ON `indications`( `is_active` );
 -- -------------------------------------------------------------
 
 
