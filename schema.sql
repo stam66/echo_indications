@@ -23,6 +23,7 @@ CREATE TABLE `contexts`(
 	`name` VarChar( 100 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
 	`description` Text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
 	`sort_order` Int( 0 ) NULL DEFAULT 0,
+	`is_active` TinyInt( 0 ) NOT NULL DEFAULT 1,
 	PRIMARY KEY ( `id` ),
 	CONSTRAINT `name` UNIQUE( `name` ) )
 CHARACTER SET = utf8mb4
@@ -63,7 +64,7 @@ CREATE TABLE `indications`(
 CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci
 ENGINE = InnoDB
-AUTO_INCREMENT = 276;
+AUTO_INCREMENT = 281;
 -- -------------------------------------------------------------
 
 
@@ -84,7 +85,46 @@ CREATE TABLE `users`(
 CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci
 ENGINE = InnoDB
+AUTO_INCREMENT = 6;
+-- -------------------------------------------------------------
+
+
+-- CREATE TABLE "changes" --------------------------------------
+CREATE TABLE `changes`( 
+	`changes_request` MediumText CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+	`changes_requestor` VarChar( 255 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+	`changes_status` VarChar( 255 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+	`contexts_existing` MediumText CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+	`contexts_new` MediumText CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+	`id` Int( 0 ) AUTO_INCREMENT NOT NULL,
+	`indication_existing` VarChar( 255 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+	`indication_new` VarChar( 255 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+	`Indication_id` Int( 0 ) NULL DEFAULT NULL,
+	`reason_for_close` VarChar( 255 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+	`created_at` Timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY ( `id` ) )
+CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_unicode_ci
+ENGINE = InnoDB
 AUTO_INCREMENT = 1;
+-- -------------------------------------------------------------
+
+
+-- CREATE TABLE "audit" ----------------------------------------
+CREATE TABLE `audit`( 
+	`id` Int( 0 ) AUTO_INCREMENT NOT NULL,
+	`audit_timestamp` Timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`audit_user` VarChar( 255 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+	`audit_table` VarChar( 255 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+	`audit_primarykey` Int( 0 ) NOT NULL,
+	`action` Enum( 'create', 'update', 'delete' ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+	`changed_fields` Text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+	`old_values` Text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+	`new_values` Text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+	PRIMARY KEY ( `id` ) )
+CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_unicode_ci
+ENGINE = InnoDB;
 -- -------------------------------------------------------------
 
 
@@ -110,6 +150,21 @@ CREATE INDEX `idx_indications_secondary_in` USING BTREE ON `indications`( `secon
 
 -- CREATE INDEX "idx_indications_secondary_out" ----------------
 CREATE INDEX `idx_indications_secondary_out` USING BTREE ON `indications`( `secondary_outpatient` );
+-- -------------------------------------------------------------
+
+
+-- CREATE INDEX "idx_audit_pk" ---------------------------------
+CREATE INDEX `idx_audit_pk` USING BTREE ON `audit`( `audit_primarykey` );
+-- -------------------------------------------------------------
+
+
+-- CREATE INDEX "idx_audit_table" ------------------------------
+CREATE INDEX `idx_audit_table` USING BTREE ON `audit`( `audit_table` );
+-- -------------------------------------------------------------
+
+
+-- CREATE INDEX "idx_audit_timestamp" --------------------------
+CREATE INDEX `idx_audit_timestamp` USING BTREE ON `audit`( `audit_timestamp` );
 -- -------------------------------------------------------------
 
 

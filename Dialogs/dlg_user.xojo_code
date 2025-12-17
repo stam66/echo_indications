@@ -48,7 +48,7 @@ Begin WebDialog dlg_user
       Multiline       =   False
       PanelIndex      =   0
       Scope           =   0
-      TabIndex        =   0
+      TabIndex        =   1
       TabStop         =   True
       Text            =   "Name"
       TextAlignment   =   0
@@ -84,7 +84,7 @@ Begin WebDialog dlg_user
       PanelIndex      =   0
       ReadOnly        =   False
       Scope           =   0
-      TabIndex        =   1
+      TabIndex        =   2
       TabStop         =   True
       Text            =   ""
       TextAlignment   =   0
@@ -116,7 +116,7 @@ Begin WebDialog dlg_user
       Multiline       =   False
       PanelIndex      =   0
       Scope           =   0
-      TabIndex        =   2
+      TabIndex        =   5
       TabStop         =   True
       Text            =   "Email"
       TextAlignment   =   0
@@ -152,7 +152,7 @@ Begin WebDialog dlg_user
       PanelIndex      =   0
       ReadOnly        =   False
       Scope           =   0
-      TabIndex        =   3
+      TabIndex        =   6
       TabStop         =   True
       Text            =   ""
       TextAlignment   =   0
@@ -184,7 +184,7 @@ Begin WebDialog dlg_user
       Multiline       =   False
       PanelIndex      =   0
       Scope           =   0
-      TabIndex        =   4
+      TabIndex        =   3
       TabStop         =   True
       Text            =   "Username"
       TextAlignment   =   0
@@ -220,7 +220,7 @@ Begin WebDialog dlg_user
       PanelIndex      =   0
       ReadOnly        =   False
       Scope           =   0
-      TabIndex        =   5
+      TabIndex        =   4
       TabStop         =   True
       Text            =   ""
       TextAlignment   =   0
@@ -252,7 +252,7 @@ Begin WebDialog dlg_user
       Multiline       =   False
       PanelIndex      =   0
       Scope           =   0
-      TabIndex        =   6
+      TabIndex        =   7
       TabStop         =   True
       Text            =   "Title"
       TextAlignment   =   0
@@ -288,7 +288,7 @@ Begin WebDialog dlg_user
       PanelIndex      =   0
       ReadOnly        =   False
       Scope           =   0
-      TabIndex        =   7
+      TabIndex        =   8
       TabStop         =   True
       Text            =   ""
       TextAlignment   =   0
@@ -323,7 +323,7 @@ Begin WebDialog dlg_user
       LockVertical    =   False
       PanelIndex      =   0
       Scope           =   0
-      TabIndex        =   8
+      TabIndex        =   0
       TabStop         =   True
       Tooltip         =   ""
       Top             =   0
@@ -356,7 +356,7 @@ Begin WebDialog dlg_user
          PanelIndex      =   0
          Parent          =   "rectHeader"
          Scope           =   0
-         TabIndex        =   9
+         TabIndex        =   0
          TabPanelIndex   =   -1
          TabStop         =   True
          Text            =   "User details"
@@ -392,7 +392,7 @@ Begin WebDialog dlg_user
       Outlined        =   False
       PanelIndex      =   0
       Scope           =   0
-      TabIndex        =   10
+      TabIndex        =   11
       TabStop         =   True
       Tooltip         =   ""
       Top             =   494
@@ -422,7 +422,7 @@ Begin WebDialog dlg_user
       Outlined        =   False
       PanelIndex      =   0
       Scope           =   0
-      TabIndex        =   11
+      TabIndex        =   10
       TabStop         =   True
       Tooltip         =   ""
       Top             =   494
@@ -449,7 +449,7 @@ Begin WebDialog dlg_user
       LockVertical    =   False
       PanelIndex      =   0
       Scope           =   2
-      TabIndex        =   12
+      TabIndex        =   9
       TabStop         =   True
       Tooltip         =   ""
       Top             =   435

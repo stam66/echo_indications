@@ -77,7 +77,7 @@ Begin WebPage wp_issues
       HasBorder       =   True
       HasHeader       =   True
       HeaderHeight    =   0
-      Height          =   461
+      Height          =   485
       HighlightSortedColumn=   True
       Index           =   -2147483648
       Indicator       =   0
@@ -105,7 +105,7 @@ Begin WebPage wp_issues
       TabIndex        =   1
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   233
+      Top             =   209
       Visible         =   True
       Width           =   1076
       _mPanelIndex    =   -1
@@ -138,7 +138,7 @@ Begin WebPage wp_issues
       TextAlignment   =   0
       TextColor       =   &c000000FF
       Tooltip         =   ""
-      Top             =   187
+      Top             =   172
       Underline       =   False
       Visible         =   True
       Width           =   244
@@ -171,7 +171,7 @@ Begin WebPage wp_issues
       TabStop         =   True
       Text            =   ""
       Tooltip         =   ""
-      Top             =   123
+      Top             =   98
       Visible         =   True
       Width           =   464
       _mPanelIndex    =   -1
@@ -203,7 +203,7 @@ Begin WebPage wp_issues
       TabIndex        =   5
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   123
+      Top             =   98
       Visible         =   True
       Width           =   560
       _mPanelIndex    =   -1
