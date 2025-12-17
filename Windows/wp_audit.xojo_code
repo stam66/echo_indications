@@ -86,11 +86,11 @@ Begin WebPage wp_audit
       LastColumnIndex =   0
       LastRowIndex    =   0
       Left            =   20
-      LockBottom      =   False
+      LockBottom      =   True
       LockedInPosition=   False
       LockHorizontal  =   False
       LockLeft        =   True
-      LockRight       =   False
+      LockRight       =   True
       LockTop         =   True
       LockVertical    =   False
       NoRowsMessage   =   ""

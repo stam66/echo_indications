@@ -177,7 +177,7 @@ Begin WebPage wp_users
       Enabled         =   True
       Height          =   38
       Index           =   -2147483648
-      Indicator       =   0
+      Indicator       =   4
       Left            =   128
       LockBottom      =   False
       LockedInPosition=   False
@@ -186,7 +186,7 @@ Begin WebPage wp_users
       LockRight       =   False
       LockTop         =   True
       LockVertical    =   False
-      Outlined        =   False
+      Outlined        =   True
       PanelIndex      =   0
       Scope           =   2
       TabIndex        =   4

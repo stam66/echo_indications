@@ -246,7 +246,7 @@ Begin WebPage wp_indications
       Enabled         =   True
       Height          =   38
       Index           =   -2147483648
-      Indicator       =   8
+      Indicator       =   0
       Left            =   20
       LockBottom      =   False
       LockedInPosition=   False
@@ -312,7 +312,7 @@ End
 		Sub Shown()
 		  btnNew.Enabled = session.IsAuthenticated
 		  btnDelete.Enabled = session.IsAuthenticated
-		  
+		  LoadContexts
 		End Sub
 	#tag EndEvent
 
@@ -323,7 +323,8 @@ End
 		    Var sql As String = _
 		    "SELECT c.name FROM contexts c " + _
 		    "INNER JOIN indication_contexts ic ON c.id = ic.context_id " + _
-		    "WHERE ic.indication_id = ? ORDER BY c.sort_order"
+		    "WHERE ic.indication_id = ? AND c.is_active = 1 " + _
+		    "ORDER BY c.sort_order, c.name"  // ADD THIS LINE
 		    
 		    Var ps As PreparedSQLStatement = Session.DB.Prepare(sql)
 		    ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_LONG)
@@ -403,7 +404,7 @@ End
 		  popContext.RowTagAt(0) = 0
 		  
 		  If Session.IsConnected Then
-		    Var contexts() As Context = Context.GetAll(Session.DB)
+		    Var contexts() As Context = Context.GetAllActive(Session.DB)
 		    For Each ctx As Context In contexts
 		      // Add context name as display text, store database ID in RowTag
 		      popContext.AddRow(ctx.Name)

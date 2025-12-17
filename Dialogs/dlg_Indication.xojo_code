@@ -927,7 +927,7 @@ End
 		  If Not Session.IsConnected Then Return
 		  
 		  Try
-		    Var contexts() As Context = Context.GetAll(Session.DB)
+		    Var contexts() As Context = Context.GetAllActive(Session.DB)
 		    For Each ctx As Context In contexts
 		      lstContexts.AddRow ctx.Name
 		      lstContexts.RowTagAt(lstContexts.LastAddedRowIndex) = ctx.ID
@@ -1020,41 +1020,91 @@ End
 #tag Events btnSave
 	#tag Event
 		Sub Pressed()
-		  // Validate required fields
-		  If txtTitle.Text.Trim = "" Then
-		    MessageBox("Please enter a title")
+		  If Not Session.IsAuthenticated Then
+		    MessageBox("You must be authenticated to save changes")
 		    Return
 		  End If
 		  
-		  var myIndication as new Indication
-		  // Populate indication object from form
-		  myIndication.Title = txtTitle.Text.Trim
-		  myIndication.Keywords = txtKeywords.Text.Trim
-		  myIndication.Comments = txtComments.Text.Trim
-		  
-		  // Get selected contexts from your UI controls
-		  // (adjust based on your actual implementation)
-		  myIndication.ContextIDs.ResizeTo(-1)
-		  // Add context selection code here...
-		  
-		  // Get care level selections
-		  myIndication.PrimaryCare = popPrimaryCare.SelectedRowText
-		  myIndication.SecondaryInpatient = popSecondaryIP.SelectedRowText
-		  myIndication.SecondaryOutpatient = popSecondaryOP.SelectedRowText
-		  
-		  // Get sources
-		  myIndication.SourceASE = chkSourceASE.Value
-		  myIndication.SourceEACVI = chkSourceEACVI.Value
-		  myIndication.SourceBSE = chkSourceBSE.Value
-		  myIndication.SourceConsensus = chkSourceConsensus.Value
-		  
-		  // Save with audit tracking
-		  If myIndication.SaveWithAudit(Session.DB, Session.CurrentUsername) Then
-		    MessageBox("Indication saved successfully")
-		    Self.Close
-		  Else
-		    MessageBox("Error saving indication")
-		  End If
+		  Try
+		    // Create or load Indication object
+		    Var ind As Indication
+		    If IndicationID > 0 Then
+		      ind = Indication.GetByID(Session.DB, IndicationID)
+		      If ind = Nil Then
+		        MessageBox("Indication not found")
+		        Return
+		      End If
+		    Else
+		      ind = New Indication
+		    End If
+		    
+		    // Populate from UI
+		    ind.Title = txtTitle.Text.Trim
+		    ind.Comments = txtComments.Text.Trim
+		    ind.Keywords = txtKeywords.Text.Trim
+		    
+		    ind.SourceASE = chkSourceASE.Value
+		    ind.SourceBSE = chkSourceBSE.Value
+		    ind.SourceEACVI = chkSourceEACVI.Value
+		    ind.SourceConsensus = chkSourceConsensus.Value
+		    
+		    // Map popup selections to ENUM values
+		    Select Case popPrimaryCare.SelectedRowText
+		    Case "Indicated"
+		      ind.PrimaryCare = "indicated"
+		    Case "Not indicated"
+		      ind.PrimaryCare = "not_indicated"
+		    Case "May be considered"
+		      ind.PrimaryCare = "can_be_considered"
+		    Else
+		      ind.PrimaryCare = "not_indicated"
+		    End Select
+		    
+		    Select Case popSecondaryIP.SelectedRowText
+		    Case "Indicated"
+		      ind.SecondaryInpatient = "indicated"
+		    Case "Not indicated"
+		      ind.SecondaryInpatient = "not_indicated"
+		    Case "May be considered"
+		      ind.SecondaryInpatient = "can_be_considered"
+		    Else
+		      ind.SecondaryInpatient = "not_indicated"
+		    End Select
+		    
+		    Select Case popSecondaryOP.SelectedRowText
+		    Case "Indicated"
+		      ind.SecondaryOutpatient = "indicated"
+		    Case "Not indicated"
+		      ind.SecondaryOutpatient = "not_indicated"
+		    Case "May be considered"
+		      ind.SecondaryOutpatient = "can_be_considered"
+		    Else
+		      ind.SecondaryOutpatient = "not_indicated"
+		    End Select
+		    
+		    // Collect selected context IDs from lstContexts
+		    ind.ContextIDs.ResizeTo(-1)
+		    For i As Integer = 0 To lstContexts.LastRowIndex
+		      If lstContexts.CellCheckBoxValueAt(i, 0) = True Then
+		        Var contextID As Integer = lstContexts.RowTagAt(i).IntegerValue
+		        ind.ContextIDs.Add(contextID)
+		      End If
+		    Next
+		    
+		    // Save with audit tracking
+		    If ind.SaveWithAudit(Session.DB, Session.CurrentUsername) Then
+		      IndicationID = ind.ID
+		      MessageBox("Indication saved successfully")
+		      RaiseEvent IndicationSaved(ind.ID)
+		      Self.Close
+		    Else
+		      MessageBox("Error saving indication. Please check the log.")
+		    End If
+		    
+		  Catch err As RuntimeException
+		    MessageBox("Error: " + err.Message)
+		    System.DebugLog("Error in dlg_Indication.btnSave: " + err.Message)
+		  End Try
 		  
 		  
 		  ' If Not Session.IsAuthenticated Then
