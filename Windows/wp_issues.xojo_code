@@ -67,8 +67,8 @@ Begin WebPage wp_issues
    End
    Begin WebListBox lstIssues
       AllowRowReordering=   False
-      ColumnCount     =   3
-      ColumnWidths    =   "60%,20%,20%"
+      ColumnCount     =   4
+      ColumnWidths    =   "45%,20%,15%,20%"
       ControlID       =   ""
       CSSClasses      =   ""
       DefaultRowHeight=   49
@@ -81,7 +81,7 @@ Begin WebPage wp_issues
       HighlightSortedColumn=   True
       Index           =   -2147483648
       Indicator       =   0
-      InitialValue    =   "Change request/Issue	Status	Date submitted"
+      InitialValue    =   "Change request/Issue	Requestor	Status	Date submitted"
       LastAddedRowIndex=   0
       LastColumnIndex =   0
       LastRowIndex    =   0
@@ -197,7 +197,7 @@ Begin WebPage wp_issues
       Parent          =   "nil"
       Scope           =   0
       SegmentCount    =   0
-      Segments        =   "Not closed\n\nTrue\rNew\n\nFalse\rIn Progress\n\nFalse\rClosed\n\nFalse\rAll\n\nFalse"
+      Segments        =   "All Open\n\nTrue\rNew\n\nFalse\rIn Progress\n\nFalse\rClosed\n\nFalse\rAll\n\nFalse"
       SelectedSegmentIndex=   0
       SelectionStyle  =   1
       TabIndex        =   5
@@ -214,15 +214,18 @@ End
 #tag WindowCode
 	#tag Event
 		Sub Opening()
-		  segStatusSelector.SelectedSegmentIndex = 0  // Default to "Not Closed"
-		  LoadIssues("Not Closed")
+		  segStatusSelector.SelectedSegmentIndex = 0  // Default to "All open"
+		  LoadIssues("All open")
 		End Sub
 	#tag EndEvent
 
 	#tag Event
 		Sub Shown()
 		  lstIssues.Enabled = Session.IsAuthenticated Or True  // Allow viewing by all 
-		  // TODO - move functionality from line above to dlg_issue as that shuld be viewable as well, just not editable or saveable by non-authenticated users
+		  
+		  
+		  // Update header
+		  wc_header.UpdateAuthenticationStatus(session.IsAuthenticated)
 		End Sub
 	#tag EndEvent
 
@@ -262,7 +265,7 @@ End
 		  Var currentFilter As String
 		  Select Case segStatusSelector.SelectedSegmentIndex
 		  Case 0
-		    currentFilter = "Not Closed"
+		    currentFilter = "All open"
 		  Case 1
 		    currentFilter = "New"
 		  Case 2
@@ -272,10 +275,13 @@ End
 		  Case 4
 		    currentFilter = "All"
 		  Else
-		    currentFilter = "Not Closed"  // Default
+		    currentFilter = "All open"  // Default
 		  End Select
 		  
 		  LoadIssues(currentFilter)
+		  
+		  // Update badges
+		  Session.UpdateAllIssuesBadges
 		End Sub
 	#tag EndMethod
 
@@ -297,9 +303,9 @@ End
 		        rs.MoveToNextRow
 		      Wend
 		      
-		    ElseIf statusFilter = "Not Closed" Then
+		    ElseIf statusFilter = "All open" Then
 		      sql = "SELECT id, changes_request, changes_requestor, changes_status, " + _
-		      "created_at FROM changes WHERE changes_status != 'Closed' ORDER BY created_at DESC"
+		      "created_at FROM changes WHERE changes_status != 'Closed' AND changes_status != 'Rejected' ORDER BY created_at DESC"
 		      Var rs As RowSet = Session.DB.SelectSQL(sql)
 		      
 		      While Not rs.AfterLastRow
@@ -384,7 +390,7 @@ End
 		  
 		  Select Case segmentIndex
 		  Case 0
-		    status = "Not Closed"
+		    status = "All Open"
 		  Case 1
 		    status = "New"
 		  Case 2

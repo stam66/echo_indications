@@ -6,7 +6,7 @@ Begin WebPage wp_LandingPage
    ControlID       =   ""
    CSSClasses      =   ""
    Enabled         =   False
-   Height          =   720
+   Height          =   742
    ImplicitInstance=   True
    Index           =   -2147483648
    Indicator       =   0
@@ -184,7 +184,7 @@ Begin WebPage wp_LandingPage
       Indicator       =   0
       LayoutDirection =   0
       LayoutType      =   0
-      Left            =   282
+      Left            =   489
       LockBottom      =   True
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -198,11 +198,37 @@ Begin WebPage wp_LandingPage
       TabIndex        =   3
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   248
+      Top             =   263
       Visible         =   True
       Width           =   541
       _mDesignHeight  =   0
       _mDesignWidth   =   0
+      _mPanelIndex    =   -1
+   End
+   Begin WebHTMLViewer HTMLViewer1
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      Height          =   437
+      Index           =   -2147483648
+      Indicator       =   ""
+      Left            =   52
+      LockBottom      =   True
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      PanelIndex      =   0
+      Scope           =   0
+      TabIndex        =   6
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   305
+      UseSandbox      =   False
+      Visible         =   True
+      Width           =   439
       _mPanelIndex    =   -1
    End
 End
@@ -224,21 +250,64 @@ End
 	#tag Event
 		Sub Shown()
 		  SetMenuVertical
+		  
 		End Sub
 	#tag EndEvent
 
 
 	#tag Method, Flags = &h0
 		Sub SetMenuVertical()
+		  
+		  ' var left as integer = (self.width - wc_Menu.width)/2
+		  
+		  ' var leftOnset as integer = txtInfo.Left + txtInfo.Width
+		  ' var areaWidth as integer = self.width - leftonset
+		  ' 
+		  ' var left as integer = (areaWidth - wc_menu.width)/2 + leftOnset
+		  ' wc_Menu.Left = left
+		  
+		  
 		  var topOffset as integer = rect_topmenu.Height + wc_logos.Height
 		  var top as integer = (self.Height - topOffset)/2
 		  wc_menu.Top = top - 20
+		  
 		End Sub
 	#tag EndMethod
 
 
 #tag EndWindowCode
 
+#tag Events HTMLViewer1
+	#tag Event
+		Sub Opening()
+		  Var html As String = "<html><head><style>" + _
+		  "body { margin: 0; padding: 10px; font-family: Arial, sans-serif; font-size: 14px; line-height: 1.6; }" + _
+		  "</style></head><body>" + _
+		  "<div style='font-size: 24px; font-weight: bold;'>ECHOindications web app</div>" + _
+		  "<div style='font-style: italic; font-size: 14px; margin-bottom: 15px;'>Version 1.5</div>" + _
+		  "<div style='margin-bottom: 15px;'>Appropriate Use Criteria for Echocardiography drawn from national and international guidelines and consensus across trusts in SE London.</div>" + _
+		  "<div style='font-weight: bold; margin-bottom: 5px;'>View Appropriate Use Criteria</div>" + _
+		  "<div>• Indications for echocardiography with appropriate use criteria for primary care, outpatient and inpatient secondary care, and appropriate priority/urgency.</div>" + _
+		  "<div>• Fuzzy search, context filtering</div>" + _
+		  "<div>• Double-click to view all details.</div>" + _
+		  "<div style='margin-bottom: 15px;'>• Right-click to request changes for the specific context.</div>" + _
+		  "<div style='font-weight: bold; margin-bottom: 5px;'>Admin Login</div>" + _
+		  "<div style='margin-bottom: 15px;'>Authenticate to make changes.</div>" + _
+		  "<div style='font-weight: bold; margin-bottom: 5px;'>Request Changes</div>" + _
+		  "<div style='margin-bottom: 15px;'>Feature requests or bug reports</div>" + _
+		  "<div style='font-weight: bold; margin-bottom: 5px;'>Issues</div>" + _
+		  "<div>View all reported issues.</div>" + _
+		  "</body></html>"
+		  
+		  me.LoadHTML(html)
+		  
+		  
+		  ' me.LoadURL("https://www.medicalconcepts.co.uk/infotext.html")
+		  
+		  ' me.LoadHTML(app.kInfoText)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
 #tag ViewBehavior
 	#tag ViewProperty
 		Name="PanelIndex"

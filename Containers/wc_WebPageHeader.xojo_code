@@ -132,7 +132,7 @@ Begin WebContainer wc_WebPageHeader
       Height          =   38
       Index           =   -2147483648
       Indicator       =   8
-      Left            =   542
+      Left            =   537
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -197,7 +197,7 @@ Begin WebContainer wc_WebPageHeader
       Index           =   -2147483648
       Indicator       =   8
       LastSegmentIndex=   0
-      Left            =   256
+      Left            =   251
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -228,16 +228,55 @@ End
 		Sub Opening()
 		  me.style.backgroundcolor = EchoIndicationsApp.NHSBlue
 		  lblSection.Text = SectionTitle
-		  segAdminButtons.Visible = Session.IsAuthenticated
 		End Sub
 	#tag EndEvent
 
 	#tag Event
 		Sub Shown()
-		  btnAdminLogin.Enabled = not(session.IsAuthenticated) 
-		  segAdminButtons.Visible = session.IsAuthenticated
+		  segAdminButtons.Visible = Session.IsAuthenticated
+		  UpdateAuthenticationStatus(session.IsAuthenticated)
+		  UpdateIssuesBadge
 		End Sub
 	#tag EndEvent
+
+
+	#tag Method, Flags = &h21
+		Private Sub HandleLoginSuccess(sender as dlg_login)
+		  // Update the header controls immediately
+		  if sender.successfulLogin then
+		    UpdateAuthenticationStatus(True)
+		  end if
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub UpdateAuthenticationStatus(isAuthenticated As Boolean)
+		  btnAdminLogin.Enabled = Not IsAuthenticated
+		  segAdminButtons.Visible = IsAuthenticated
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub UpdateIssuesBadge()
+		  Try
+		    Var sql As String = "SELECT COUNT(*) as count FROM changes WHERE changes_status = 'Open' OR changes_status = 'In Progress'"
+		    Var rs As RowSet = Session.DB.SelectSQL(sql)
+		    
+		    If Not rs.AfterLastRow Then
+		      Var count As Integer = rs.Column("count").IntegerValue
+		      If count > 0 Then
+		        btnIssues.SetBadge(count.ToString)
+		      Else
+		        btnIssues.RemoveBadge  // REMOVE badge when count is 0
+		      End If
+		    End If
+		    
+		  Catch err As DatabaseException
+		    System.DebugLog("UpdateIssuesBadge Error: " + err.Message)
+		  End Try
+		End Sub
+	#tag EndMethod
 
 
 	#tag Property, Flags = &h0
@@ -268,8 +307,12 @@ End
 #tag Events btnAdminLogin
 	#tag Event
 		Sub Pressed()
+		  ' var dlg as new dlg_Login
+		  ' session.NavigationManager.NavigateToPage(dlg)
+		  
 		  var dlg as new dlg_Login
-		  session.NavigationManager.NavigateToPage(dlg)
+		  AddHandler dlg.dismissed, WeakAddressOf HandleLoginSuccess
+		  dlg.Show  // Changed from NavigateToPage to Show for modal behavior
 		End Sub
 	#tag EndEvent
 #tag EndEvents

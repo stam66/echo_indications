@@ -122,8 +122,8 @@ Begin WebPage wp_users
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
-      LockLeft        =   False
-      LockRight       =   True
+      LockLeft        =   True
+      LockRight       =   False
       LockTop         =   True
       LockVertical    =   False
       PanelIndex      =   0
@@ -238,6 +238,9 @@ End
 	#tag Event
 		Sub Shown()
 		  populateUsers
+		  
+		  // Update header
+		  wc_header.UpdateAuthenticationStatus(session.IsAuthenticated)
 		End Sub
 	#tag EndEvent
 
@@ -889,6 +892,30 @@ End
 		Group="Behavior"
 		InitialValue=""
 		Type="Double"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="SearchText"
+		Visible=false
+		Group="Behavior"
+		InitialValue=""
+		Type="String"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="SelectdRowIndex"
+		Visible=false
+		Group="Behavior"
+		InitialValue=""
+		Type="Integer"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="SelectedUserID"
+		Visible=false
+		Group="Behavior"
+		InitialValue=""
+		Type="Integer"
 		EditorType=""
 	#tag EndViewProperty
 #tag EndViewBehavior

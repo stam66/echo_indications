@@ -25,7 +25,7 @@ Begin WebPage wp_audit
    PanelIndex      =   0
    ScaleFactor     =   0.0
    TabIndex        =   0
-   Title           =   "Issues - Changes"
+   Title           =   "Audit of all changes"
    Top             =   0
    Visible         =   True
    Width           =   1116
@@ -177,6 +177,10 @@ End
 		  Catch err As DatabaseException
 		    MessageBox("Error loading audit log: " + err.Message)
 		  End Try
+		  
+		  
+		  // Update header
+		  wc_header.UpdateAuthenticationStatus(session.IsAuthenticated)
 		End Sub
 	#tag EndEvent
 
@@ -186,6 +190,8 @@ End
 #tag Events lstAudit
 	#tag Event
 		Sub DoublePressed(row As Integer, column As Integer)
+		  #Pragma Unused column
+		  
 		  If row < 0 Then Return
 		  
 		  // Get audit ID from RowTag
