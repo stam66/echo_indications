@@ -58,6 +58,33 @@ Inherits WebSession
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub UpdateAllIssuesBadges()
+		  // Update landing page badge if exists
+		  If wp_LandingPage <> Nil Then
+		    wp_LandingPage.wc_menu.UpdateIssuesBadge
+		  End If
+		  
+		  // Update any visible page headers
+		  If Session.CurrentPage IsA WebPage Then
+		    Var wp As WebPage = WebPage(Session.CurrentPage)
+		    
+		    // Check if the page has a header with badge
+		    If wp IsA wp_indications Then
+		      wp_indications(wp).wc_header.UpdateIssuesBadge
+		    ElseIf wp IsA wp_issues Then
+		      wp_issues(wp).wc_header.UpdateIssuesBadge
+		    ElseIf wp IsA wp_users Then
+		      wp_users(wp).wc_header.UpdateIssuesBadge
+		    ElseIf wp IsA wp_audit Then
+		      wp_audit(wp).wc_header.UpdateIssuesBadge
+		    ElseIf wp IsA wp_settings Then
+		      wp_settings(wp).wc_header.UpdateIssuesBadge
+		    End If
+		  End If
+		End Sub
+	#tag EndMethod
+
 
 	#tag Property, Flags = &h0
 		CurrentUserID As Integer = 0

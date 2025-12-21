@@ -159,7 +159,7 @@ End
 	#tag Method, Flags = &h0
 		Sub UpdateIssuesBadge()
 		  Try
-		    Var sql As String = "SELECT COUNT(*) as count FROM changes WHERE changes_status = 'Open' OR changes_status = 'In Progress'"
+		    Var sql As String = "SELECT COUNT(*) as count FROM changes WHERE changes_status = 'New' OR changes_status = 'In Progress'"
 		    Var rs As RowSet = Session.DB.SelectSQL(sql)
 		    
 		    If Not rs.AfterLastRow Then
@@ -167,7 +167,7 @@ End
 		      If count > 0 Then
 		        issues.SetBadge(count.ToString)
 		      Else
-		        issues.SetBadge("")
+		        issues.RemoveBadge // REMOVE badge when count is 0
 		      End If
 		    End If
 		    

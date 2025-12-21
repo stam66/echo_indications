@@ -394,7 +394,7 @@ Begin WebDialog dlg_Issue
       Height          =   41
       Index           =   -2147483648
       Indicator       =   0
-      InitialValue    =   "Open\nIn progress\nClosed\nRejected"
+      InitialValue    =   "New\nIn progress\nClosed\nRejected"
       LastAddedRowIndex=   0
       LastRowIndex    =   0
       Left            =   84
@@ -774,6 +774,8 @@ End
 	#tag Event
 		Sub Shown()
 		  btnSave.Enabled = Session.IsAuthenticated
+		  popStatus.Enabled = session.IsAuthenticated
+		  popReasonForClose.Enabled = session.IsAuthenticated
 		  
 		  If IssueID > 0 Then
 		    LoadIssue
@@ -781,7 +783,6 @@ End
 		    MessageBox("No issue specified")
 		    Self.Close
 		  End If
-		  
 		  
 		End Sub
 	#tag EndEvent
@@ -805,7 +806,7 @@ End
 		      // Set status
 		      Var status As String = rs.Column("changes_status").StringValue
 		      Select Case status
-		      Case "Open"
+		      Case "New"
 		        popStatus.SelectedRowIndex = 0
 		      Case "In Progress"
 		        popStatus.SelectedRowIndex = 1
@@ -879,8 +880,8 @@ End
 	#tag EndHook
 
 
-	#tag Property, Flags = &h21
-		Private ButtonClicked As WebButton
+	#tag Property, Flags = &h0
+		ButtonClicked As WebButton
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -902,7 +903,7 @@ End
 		    Var status As String
 		    Select Case popStatus.SelectedRowIndex
 		    Case 0
-		      status = "Open"
+		      status = "New"
 		    Case 1
 		      status = "In Progress"
 		    Case 2
@@ -910,7 +911,7 @@ End
 		    Case 3
 		      status = "Rejected"
 		    Else
-		      status = "Open"
+		      status = "New"
 		    End Select
 		    
 		    // Get reason for close from popup (if selected)
@@ -933,6 +934,8 @@ End
 		    ps.ExecuteSQL
 		    
 		    MessageBox("Issue updated successfully")
+		    Session.UpdateAllIssuesBadges // update all Issues buttons' badges
+		    
 		    RaiseEvent IssueSaved(IssueID)
 		    Self.Close
 		    
@@ -947,15 +950,6 @@ End
 	#tag Event
 		Sub Pressed()
 		  self.Close
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events popStatus
-	#tag Event
-		Sub Opening()
-		  me.addrow ("New")
-		  me.addrow("In progress")
-		  me.addrow("Closed")
 		End Sub
 	#tag EndEvent
 #tag EndEvents

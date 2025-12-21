@@ -381,11 +381,14 @@ End
 		      w.username = username
 		      w.Show
 		    else
-		      ' var w as new wIndications
-		      var w as new wp_indications
+		      var wpi as new wp_indications
 		      Session.IsAuthenticated = true
+		      successfulLogin = True  // flag for successful login to be handled in LoginSuccessful event
+		       RaiseEvent LoginSuccessful
 		      session.CurrentUsername = username
-		      session.NavigationManager.NavigateToPage(w)
+		      // if on landing page then navigate to indications
+		      var wp as  WebPage = session.CurrentPage
+		      if wp isa wp_LandingPage then session.NavigationManager.NavigateToPage(wpi)
 		    end if
 		    
 		    self.Close
@@ -396,8 +399,17 @@ End
 	#tag EndMethod
 
 
-	#tag Property, Flags = &h21
-		Private ButtonClicked As WebButton
+	#tag Hook, Flags = &h0
+		Event LoginSuccessful()
+	#tag EndHook
+
+
+	#tag Property, Flags = &h0
+		ButtonClicked As WebButton
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		successfulLogin As Boolean = False
 	#tag EndProperty
 
 
@@ -668,5 +680,13 @@ End
 			"2 - TopToBottom"
 			"3 - BottomToTop"
 		#tag EndEnumValues
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="successfulLogin"
+		Visible=false
+		Group="Behavior"
+		InitialValue="False"
+		Type="Boolean"
+		EditorType=""
 	#tag EndViewProperty
 #tag EndViewBehavior

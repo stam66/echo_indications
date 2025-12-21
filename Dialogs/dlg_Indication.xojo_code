@@ -5,7 +5,7 @@ Begin WebDialog dlg_Indication
    ControlID       =   ""
    CSSClasses      =   ""
    Enabled         =   True
-   Height          =   702
+   Height          =   758
    Index           =   -2147483648
    Indicator       =   0
    LayoutDirection =   0
@@ -22,7 +22,7 @@ Begin WebDialog dlg_Indication
    TabIndex        =   0
    Top             =   0
    Visible         =   True
-   Width           =   960
+   Width           =   942
    _mDesignHeight  =   0
    _mDesignWidth   =   0
    _mPanelIndex    =   -1
@@ -56,7 +56,7 @@ Begin WebDialog dlg_Indication
       Tooltip         =   ""
       Top             =   0
       Visible         =   True
-      Width           =   960
+      Width           =   942
       _mDesignHeight  =   0
       _mDesignWidth   =   0
       _mPanelIndex    =   -1
@@ -96,6 +96,68 @@ Begin WebDialog dlg_Indication
          Width           =   315
          _mPanelIndex    =   -1
       End
+      Begin WebButton btnNext
+         AllowAutoDisable=   False
+         Cancel          =   False
+         Caption         =   "❯"
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Default         =   False
+         Enabled         =   True
+         Height          =   38
+         Index           =   -2147483648
+         Indicator       =   8
+         Left            =   894
+         LockBottom      =   False
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         Outlined        =   True
+         PanelIndex      =   0
+         Parent          =   "Rectangle2"
+         Scope           =   0
+         TabIndex        =   1
+         TabStop         =   True
+         Tooltip         =   ""
+         Top             =   12
+         Visible         =   True
+         Width           =   38
+         _mPanelIndex    =   -1
+      End
+      Begin WebButton btnPrevious
+         AllowAutoDisable=   False
+         Cancel          =   False
+         Caption         =   "❮"
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Default         =   False
+         Enabled         =   True
+         Height          =   38
+         Index           =   -2147483648
+         Indicator       =   8
+         Left            =   847
+         LockBottom      =   False
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         Outlined        =   True
+         PanelIndex      =   0
+         Parent          =   "Rectangle2"
+         Scope           =   0
+         TabIndex        =   28
+         TabStop         =   True
+         Tooltip         =   ""
+         Top             =   12
+         Visible         =   True
+         Width           =   38
+         _mPanelIndex    =   -1
+      End
    End
    Begin WebRectangle Rectangle1
       BorderColor     =   &c000000FF
@@ -107,16 +169,16 @@ Begin WebDialog dlg_Indication
       Enabled         =   True
       FillColor       =   &cEBEBEB00
       HasFillColor    =   True
-      Height          =   160
+      Height          =   223
       Index           =   -2147483648
       Indicator       =   ""
       LayoutDirection =   "LayoutDirections.LeftToRight"
       LayoutType      =   "LayoutTypes.Fixed"
-      Left            =   218
+      Left            =   232
       LockBottom      =   True
       LockedInPosition=   False
       LockHorizontal  =   False
-      LockLeft        =   True
+      LockLeft        =   False
       LockRight       =   True
       LockTop         =   False
       LockVertical    =   False
@@ -125,9 +187,9 @@ Begin WebDialog dlg_Indication
       TabIndex        =   23
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   466
+      Top             =   459
       Visible         =   True
-      Width           =   722
+      Width           =   690
       _mDesignHeight  =   0
       _mDesignWidth   =   0
       _mPanelIndex    =   -1
@@ -142,13 +204,13 @@ Begin WebDialog dlg_Indication
          Index           =   -2147483648
          Indicator       =   ""
          Italic          =   False
-         Left            =   236
-         LockBottom      =   True
+         Left            =   252
+         LockBottom      =   False
          LockedInPosition=   False
          LockHorizontal  =   False
-         LockLeft        =   False
-         LockRight       =   True
-         LockTop         =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
          LockVertical    =   False
          Multiline       =   False
          PanelIndex      =   0
@@ -161,7 +223,7 @@ Begin WebDialog dlg_Indication
          TextAlignment   =   0
          TextColor       =   &c42424200
          Tooltip         =   ""
-         Top             =   476
+         Top             =   469
          Underline       =   False
          Visible         =   True
          Width           =   226
@@ -177,26 +239,27 @@ Begin WebDialog dlg_Indication
          InitialValue    =   "Indicated\nNot Indicated\nMay be considered"
          LastAddedRowIndex=   0
          LastRowIndex    =   0
-         Left            =   467
-         LockBottom      =   True
+         Left            =   470
+         LockBottom      =   False
          LockedInPosition=   False
          LockHorizontal  =   False
-         LockLeft        =   False
-         LockRight       =   True
-         LockTop         =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
          LockVertical    =   False
          PanelIndex      =   0
          Parent          =   "Rectangle1"
          RowCount        =   0
          Scope           =   0
-         SelectedRowIndex=   0
+         SelectedRowIndex=   -1
          SelectedRowText =   ""
          TabIndex        =   1
+         TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
-         Top             =   568
+         Top             =   545
          Visible         =   True
-         Width           =   226
+         Width           =   211
          _mPanelIndex    =   -1
       End
       Begin WebLabel lblSecondaryOP
@@ -210,25 +273,26 @@ Begin WebDialog dlg_Indication
          Index           =   -2147483648
          Indicator       =   ""
          Italic          =   True
-         Left            =   467
-         LockBottom      =   True
+         Left            =   470
+         LockBottom      =   False
          LockedInPosition=   False
          LockHorizontal  =   False
-         LockLeft        =   False
-         LockRight       =   True
-         LockTop         =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
          LockVertical    =   False
          Multiline       =   False
          PanelIndex      =   0
          Parent          =   "Rectangle1"
          Scope           =   0
          TabIndex        =   2
+         TabPanelIndex   =   0
          TabStop         =   True
          Text            =   "Secondary Care (OP)"
          TextAlignment   =   0
          TextColor       =   &c42424200
          Tooltip         =   ""
-         Top             =   522
+         Top             =   509
          Underline       =   False
          Visible         =   True
          Width           =   226
@@ -244,26 +308,27 @@ Begin WebDialog dlg_Indication
          InitialValue    =   "Indicated\nNot Indicated\nMay be considered"
          LastAddedRowIndex=   0
          LastRowIndex    =   0
-         Left            =   236
-         LockBottom      =   True
+         Left            =   252
+         LockBottom      =   False
          LockedInPosition=   False
          LockHorizontal  =   False
-         LockLeft        =   False
-         LockRight       =   True
-         LockTop         =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
          LockVertical    =   False
          PanelIndex      =   0
          Parent          =   "Rectangle1"
          RowCount        =   0
          Scope           =   0
-         SelectedRowIndex=   0
+         SelectedRowIndex=   -1
          SelectedRowText =   ""
          TabIndex        =   3
+         TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
-         Top             =   568
+         Top             =   545
          Visible         =   True
-         Width           =   226
+         Width           =   211
          _mPanelIndex    =   -1
       End
       Begin WebLabel lblPrimaryCare
@@ -277,25 +342,26 @@ Begin WebDialog dlg_Indication
          Index           =   -2147483648
          Indicator       =   ""
          Italic          =   True
-         Left            =   236
-         LockBottom      =   True
+         Left            =   252
+         LockBottom      =   False
          LockedInPosition=   False
          LockHorizontal  =   False
-         LockLeft        =   False
-         LockRight       =   True
-         LockTop         =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
          LockVertical    =   False
          Multiline       =   False
          PanelIndex      =   0
          Parent          =   "Rectangle1"
          Scope           =   0
          TabIndex        =   4
+         TabPanelIndex   =   0
          TabStop         =   True
          Text            =   "Primary Care"
          TextAlignment   =   0
          TextColor       =   &c42424200
          Tooltip         =   ""
-         Top             =   522
+         Top             =   509
          Underline       =   False
          Visible         =   True
          Width           =   226
@@ -311,26 +377,27 @@ Begin WebDialog dlg_Indication
          InitialValue    =   "Indicated\nNot Indicated\nMay be considered"
          LastAddedRowIndex=   0
          LastRowIndex    =   0
-         Left            =   698
-         LockBottom      =   True
+         Left            =   687
+         LockBottom      =   False
          LockedInPosition=   False
          LockHorizontal  =   False
-         LockLeft        =   False
-         LockRight       =   True
-         LockTop         =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
          LockVertical    =   False
          PanelIndex      =   0
          Parent          =   "Rectangle1"
          RowCount        =   0
          Scope           =   0
-         SelectedRowIndex=   0
+         SelectedRowIndex=   -1
          SelectedRowText =   ""
          TabIndex        =   5
+         TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
-         Top             =   568
+         Top             =   545
          Visible         =   True
-         Width           =   226
+         Width           =   211
          _mPanelIndex    =   -1
       End
       Begin WebLabel lblSecondaryIP
@@ -344,28 +411,98 @@ Begin WebDialog dlg_Indication
          Index           =   -2147483648
          Indicator       =   ""
          Italic          =   True
-         Left            =   698
-         LockBottom      =   True
+         Left            =   687
+         LockBottom      =   False
          LockedInPosition=   False
          LockHorizontal  =   False
-         LockLeft        =   False
-         LockRight       =   True
-         LockTop         =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
          LockVertical    =   False
          Multiline       =   False
          PanelIndex      =   0
          Parent          =   "Rectangle1"
          Scope           =   0
          TabIndex        =   6
+         TabPanelIndex   =   0
          TabStop         =   True
          Text            =   "Secondary Care (IP)"
          TextAlignment   =   0
          TextColor       =   &c42424200
          Tooltip         =   ""
-         Top             =   522
+         Top             =   509
          Underline       =   False
          Visible         =   True
          Width           =   226
+         _mPanelIndex    =   -1
+      End
+      Begin WebLabel lblUrgency
+         Bold            =   True
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         FontName        =   ""
+         FontSize        =   14.0
+         Height          =   38
+         Index           =   -2147483648
+         Indicator       =   0
+         Italic          =   True
+         Left            =   470
+         LockBottom      =   False
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         Multiline       =   False
+         PanelIndex      =   0
+         Parent          =   "Rectangle1"
+         Scope           =   0
+         TabIndex        =   26
+         TabPanelIndex   =   0
+         TabStop         =   True
+         Text            =   "Priority / Urgency"
+         TextAlignment   =   0
+         TextColor       =   &c42424200
+         Tooltip         =   ""
+         Top             =   591
+         Underline       =   False
+         Visible         =   True
+         Width           =   211
+         _mPanelIndex    =   -1
+      End
+      Begin WebPopupMenu popUrgency
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         Height          =   38
+         Index           =   -2147483648
+         Indicator       =   0
+         InitialValue    =   "Not indicated\nCan be considered\nRoutine\nSoon\nUrgent"
+         LastAddedRowIndex=   0
+         LastRowIndex    =   0
+         Left            =   470
+         LockBottom      =   False
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         PanelIndex      =   0
+         Parent          =   "Rectangle1"
+         RowCount        =   0
+         Scope           =   0
+         SelectedRowIndex=   -1
+         SelectedRowText =   ""
+         TabIndex        =   27
+         TabPanelIndex   =   0
+         TabStop         =   True
+         Tooltip         =   ""
+         Top             =   624
+         Visible         =   True
+         Width           =   211
          _mPanelIndex    =   -1
       End
    End
@@ -384,7 +521,7 @@ Begin WebDialog dlg_Indication
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
-      LockLeft        =   True
+      LockLeft        =   False
       LockRight       =   True
       LockTop         =   True
       LockVertical    =   False
@@ -399,7 +536,7 @@ Begin WebDialog dlg_Indication
       Tooltip         =   ""
       Top             =   98
       Visible         =   True
-      Width           =   722
+      Width           =   704
       _mPanelIndex    =   -1
    End
    Begin WebListBox lstContexts
@@ -414,7 +551,7 @@ Begin WebDialog dlg_Indication
       HasBorder       =   True
       HasHeader       =   False
       HeaderHeight    =   0
-      Height          =   584
+      Height          =   640
       HighlightSortedColumn=   True
       Index           =   -2147483648
       Indicator       =   0
@@ -444,7 +581,7 @@ Begin WebDialog dlg_Indication
       Tooltip         =   ""
       Top             =   98
       Visible         =   True
-      Width           =   160
+      Width           =   190
       _mPanelIndex    =   -1
    End
    Begin WebLabel lblContexts
@@ -490,11 +627,11 @@ Begin WebDialog dlg_Indication
       Indeterminate   =   False
       Index           =   -2147483648
       Indicator       =   ""
-      Left            =   218
+      Left            =   232
       LockBottom      =   False
       LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   True
+      LockHorizontal  =   True
+      LockLeft        =   False
       LockRight       =   False
       LockTop         =   True
       LockVertical    =   False
@@ -503,7 +640,7 @@ Begin WebDialog dlg_Indication
       TabIndex        =   4
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   302
+      Top             =   294
       Value           =   False
       Visible         =   True
       Width           =   100
@@ -518,11 +655,11 @@ Begin WebDialog dlg_Indication
       Indeterminate   =   False
       Index           =   -2147483648
       Indicator       =   ""
-      Left            =   218
+      Left            =   232
       LockBottom      =   False
       LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   True
+      LockHorizontal  =   True
+      LockLeft        =   False
       LockRight       =   False
       LockTop         =   True
       LockVertical    =   False
@@ -531,7 +668,7 @@ Begin WebDialog dlg_Indication
       TabIndex        =   5
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   251
+      Top             =   243
       Value           =   False
       Visible         =   True
       Width           =   100
@@ -546,11 +683,11 @@ Begin WebDialog dlg_Indication
       Indeterminate   =   False
       Index           =   -2147483648
       Indicator       =   ""
-      Left            =   218
+      Left            =   232
       LockBottom      =   False
       LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   True
+      LockHorizontal  =   True
+      LockLeft        =   False
       LockRight       =   False
       LockTop         =   True
       LockVertical    =   False
@@ -559,7 +696,7 @@ Begin WebDialog dlg_Indication
       TabIndex        =   6
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   353
+      Top             =   345
       Value           =   False
       Visible         =   True
       Width           =   100
@@ -574,11 +711,11 @@ Begin WebDialog dlg_Indication
       Indeterminate   =   False
       Index           =   -2147483648
       Indicator       =   ""
-      Left            =   218
+      Left            =   232
       LockBottom      =   False
       LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   True
+      LockHorizontal  =   True
+      LockLeft        =   False
       LockRight       =   False
       LockTop         =   True
       LockVertical    =   False
@@ -587,7 +724,7 @@ Begin WebDialog dlg_Indication
       TabIndex        =   7
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   404
+      Top             =   396
       Value           =   False
       Visible         =   True
       Width           =   139
@@ -604,11 +741,11 @@ Begin WebDialog dlg_Indication
       Hint            =   ""
       Index           =   -2147483648
       Indicator       =   ""
-      Left            =   393
+      Left            =   407
       LockBottom      =   False
       LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   True
+      LockHorizontal  =   True
+      LockLeft        =   False
       LockRight       =   False
       LockTop         =   True
       LockVertical    =   False
@@ -621,7 +758,7 @@ Begin WebDialog dlg_Indication
       Text            =   ""
       TextAlignment   =   0
       Tooltip         =   ""
-      Top             =   251
+      Top             =   243
       Visible         =   True
       Width           =   192
       _mPanelIndex    =   -1
@@ -637,11 +774,11 @@ Begin WebDialog dlg_Indication
       Index           =   -2147483648
       Indicator       =   ""
       Italic          =   False
-      Left            =   218
+      Left            =   232
       LockBottom      =   False
       LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   True
+      LockHorizontal  =   True
+      LockLeft        =   False
       LockRight       =   False
       LockTop         =   True
       LockVertical    =   False
@@ -654,7 +791,7 @@ Begin WebDialog dlg_Indication
       TextAlignment   =   0
       TextColor       =   &c000000FF
       Tooltip         =   ""
-      Top             =   217
+      Top             =   209
       Underline       =   False
       Visible         =   True
       Width           =   139
@@ -688,7 +825,7 @@ Begin WebDialog dlg_Indication
       TextAlignment   =   0
       TextColor       =   &c000000FF
       Tooltip         =   ""
-      Top             =   217
+      Top             =   209
       Underline       =   False
       Visible         =   True
       Width           =   171
@@ -705,11 +842,11 @@ Begin WebDialog dlg_Indication
       Hint            =   ""
       Index           =   -2147483648
       Indicator       =   ""
-      Left            =   629
+      Left            =   657
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
-      LockLeft        =   True
+      LockLeft        =   False
       LockRight       =   True
       LockTop         =   True
       LockVertical    =   False
@@ -722,9 +859,9 @@ Begin WebDialog dlg_Indication
       Text            =   ""
       TextAlignment   =   0
       Tooltip         =   ""
-      Top             =   251
+      Top             =   243
       Visible         =   True
-      Width           =   311
+      Width           =   265
       _mPanelIndex    =   -1
    End
    Begin WebLabel lblComments
@@ -755,7 +892,7 @@ Begin WebDialog dlg_Indication
       TextAlignment   =   0
       TextColor       =   &c000000FF
       Tooltip         =   ""
-      Top             =   217
+      Top             =   209
       Underline       =   False
       Visible         =   True
       Width           =   171
@@ -768,11 +905,11 @@ Begin WebDialog dlg_Indication
       ControlID       =   ""
       CSSClasses      =   ""
       Default         =   True
-      Enabled         =   True
+      Enabled         =   False
       Height          =   38
       Index           =   -2147483648
       Indicator       =   1
-      Left            =   840
+      Left            =   822
       LockBottom      =   True
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -786,7 +923,7 @@ Begin WebDialog dlg_Indication
       TabIndex        =   21
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   644
+      Top             =   700
       Visible         =   True
       Width           =   100
       _mPanelIndex    =   -1
@@ -802,7 +939,7 @@ Begin WebDialog dlg_Indication
       Height          =   38
       Index           =   -2147483648
       Indicator       =   0
-      Left            =   732
+      Left            =   714
       LockBottom      =   True
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -816,7 +953,7 @@ Begin WebDialog dlg_Indication
       TabIndex        =   22
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   644
+      Top             =   700
       Visible         =   True
       Width           =   100
       _mPanelIndex    =   -1
@@ -912,13 +1049,54 @@ End
 		        popSecondaryOP.SelectRowWithText("May be considered")
 		      End Select
 		      
+		      Select Case rs.Column("urgency").StringValue
+		      Case "not_indicated"
+		        popUrgency.SelectRowWithText("Not indicated")
+		      Case "can_be_considered"
+		        popUrgency.SelectRowWithText("Can be considered")
+		      Case "routine"
+		        popUrgency.SelectRowWithText("Routine")
+		      Case "soon"
+		        popUrgency.SelectRowWithText("Soon")
+		      Case "urgent"
+		        popUrgency.SelectRowWithText("Urgent")
+		      End Select
+		      
 		      // Load and check selected contexts
 		      LoadSelectedContexts
+		        MarkAsClean()
 		    End If
 		  End If
 		End Sub
 	#tag EndEvent
 
+
+	#tag Method, Flags = &h21
+		Private Sub HandleNavigationConfirm(dialog As WebMessageDialog, button As WebMessageDialogButton)
+		  #Pragma unused dialog
+		  
+		  If button.Caption = "Save" Then
+		    // Save first, then navigate
+		    If SaveIndication() Then
+		      If PendingNavigationIndex >= 0 Then
+		        LoadIndicationByIndex(PendingNavigationIndex)
+		        PendingNavigationIndex = -1
+		      End If
+		    End If
+		    
+		  ElseIf button.Caption = "Don't Save" Then
+		    // Discard changes and navigate
+		    If PendingNavigationIndex >= 0 Then
+		      LoadIndicationByIndex(PendingNavigationIndex)
+		      PendingNavigationIndex = -1
+		    End If
+		    
+		  Else
+		    // Cancel - just clear pending navigation
+		    PendingNavigationIndex = -1
+		  End If
+		End Sub
+	#tag EndMethod
 
 	#tag Method, Flags = &h21
 		Private Sub LoadAvailableContexts()
@@ -941,6 +1119,186 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
+		Private Sub LoadIndicationByIndex(index As Integer)
+		  If IndicationIDs.Count = 0 Then Return
+		  
+		  // Wrap around: if index goes below 0, go to last; if beyond last, go to first
+		  If index < 0 Then
+		    index = IndicationIDs.Count - 1
+		  ElseIf index >= IndicationIDs.Count Then
+		    index = 0
+		  End If
+		  
+		  // Check for unsaved changes before navigating
+		  If HasUnsavedChanges Then
+		    PendingNavigationIndex = index
+		    
+		    Var dlg As New WebMessageDialog
+		    dlg.Message = "You have unsaved changes"
+		    dlg.Explanation = "Do you want to save your changes before navigating?"
+		    
+		    dlg.ActionButton.Caption = "Save"
+		    dlg.ActionButton.Visible = True
+		    
+		    dlg.AlternateActionButton.Caption = "Don't Save"
+		    dlg.AlternateActionButton.Visible = True
+		    
+		    dlg.CancelButton.Caption = "Cancel"
+		    dlg.CancelButton.Visible = True
+		    
+		    AddHandler dlg.ButtonPressed, AddressOf HandleNavigationConfirm
+		    dlg.Show
+		    Return
+		  End If
+		  
+		  CurrentIndex = index
+		  IndicationID = IndicationIDs(index)
+		  
+		  // Reload the dialog with new indication
+		  Var rs As RowSet
+		  Var sql As String = "SELECT * FROM indications WHERE id = ?"
+		  Var ps As MySQLPreparedStatement = Session.DB.Prepare(sql)
+		  ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_LONG)
+		  ps.Bind(0, IndicationID)
+		  rs = ps.SelectSQL
+		  
+		  If Not rs.AfterLastRow Then
+		    txtTitle.Text = rs.Column("title").StringValue
+		    txtComments.Text = rs.Column("comments").StringValue
+		    txtKeywords.Text = rs.Column("keywords").StringValue
+		    
+		    chkSourceASE.Value = (rs.Column("source_ase").IntegerValue = 1)
+		    chkSourceBSE.Value = (rs.Column("source_bse").IntegerValue = 1)
+		    chkSourceEACVI.Value = (rs.Column("source_eacvi").IntegerValue = 1)
+		    chkSourceConsensus.Value = (rs.Column("source_consensus").IntegerValue = 1)
+		    
+		    Select Case rs.Column("primary_care").StringValue
+		    Case "indicated"
+		      popPrimaryCare.SelectRowWithText("Indicated")
+		    Case "not_indicated"
+		      popPrimaryCare.SelectRowWithText("Not indicated")
+		    Case "can_be_considered"
+		      popPrimaryCare.SelectRowWithText("May be considered")
+		    End Select
+		    
+		    Select Case rs.Column("secondary_inpatient").StringValue
+		    Case "indicated"
+		      popSecondaryIP.SelectRowWithText("Indicated")
+		    Case "not_indicated"
+		      popSecondaryIP.SelectRowWithText("Not indicated")
+		    Case "can_be_considered"
+		      popSecondaryIP.SelectRowWithText("May be considered")
+		    End Select
+		    
+		    Select Case rs.Column("secondary_outpatient").StringValue
+		    Case "indicated"
+		      popSecondaryOP.SelectRowWithText("Indicated")
+		    Case "not_indicated"
+		      popSecondaryOP.SelectRowWithText("Not indicated")
+		    Case "can_be_considered"
+		      popSecondaryOP.SelectRowWithText("May be considered")
+		    End Select
+		    
+		    Select Case rs.Column("urgency").StringValue
+		    Case "not_indicated"
+		      popUrgency.SelectRowWithText("Not indicated")
+		    Case "can_be_considered"
+		      popUrgency.SelectRowWithText("Can be considered")
+		    Case "routine"
+		      popUrgency.SelectRowWithText("Routine")
+		    Case "soon"
+		      popUrgency.SelectRowWithText("Soon")
+		    Case "urgent"
+		      popUrgency.SelectRowWithText("Urgent")
+		    End Select
+		    
+		    // Load and check selected contexts
+		    LoadSelectedContexts
+		    
+		    // Mark as clean after loading
+		    MarkAsClean()
+		  End If
+		  
+		  
+		  
+		  
+		  ' If IndicationIDs.Count = 0 Then Return
+		  ' 
+		  ' // Wrap around: if index goes below 0, go to last; if beyond last, go to first
+		  ' If index < 0 Then
+		  ' index = IndicationIDs.Count - 1
+		  ' ElseIf index >= IndicationIDs.Count Then
+		  ' index = 0
+		  ' End If
+		  ' 
+		  ' CurrentIndex = index
+		  ' IndicationID = IndicationIDs(index)
+		  ' 
+		  ' // Reload the dialog with new indication
+		  ' Var rs As RowSet
+		  ' Var sql As String = "SELECT * FROM indications WHERE id = ?"
+		  ' Var ps As MySQLPreparedStatement = Session.DB.Prepare(sql)
+		  ' ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_LONG)
+		  ' ps.Bind(0, IndicationID)
+		  ' rs = ps.SelectSQL
+		  ' 
+		  ' If Not rs.AfterLastRow Then
+		  ' txtTitle.Text = rs.Column("title").StringValue
+		  ' txtComments.Text = rs.Column("comments").StringValue
+		  ' txtKeywords.Text = rs.Column("keywords").StringValue
+		  ' 
+		  ' chkSourceASE.Value = (rs.Column("source_ase").IntegerValue = 1)
+		  ' chkSourceBSE.Value = (rs.Column("source_bse").IntegerValue = 1)
+		  ' chkSourceEACVI.Value = (rs.Column("source_eacvi").IntegerValue = 1)
+		  ' chkSourceConsensus.Value = (rs.Column("source_consensus").IntegerValue = 1)
+		  ' 
+		  ' Select Case rs.Column("primary_care").StringValue
+		  ' Case "indicated"
+		  ' popPrimaryCare.SelectRowWithText("Indicated")
+		  ' Case "not_indicated"
+		  ' popPrimaryCare.SelectRowWithText("Not indicated")
+		  ' Case "can_be_considered"
+		  ' popPrimaryCare.SelectRowWithText("May be considered")
+		  ' End Select
+		  ' 
+		  ' Select Case rs.Column("secondary_inpatient").StringValue
+		  ' Case "indicated"
+		  ' popSecondaryIP.SelectRowWithText("Indicated")
+		  ' Case "not_indicated"
+		  ' popSecondaryIP.SelectRowWithText("Not indicated")
+		  ' Case "can_be_considered"
+		  ' popSecondaryIP.SelectRowWithText("May be considered")
+		  ' End Select
+		  ' 
+		  ' Select Case rs.Column("secondary_outpatient").StringValue
+		  ' Case "indicated"
+		  ' popSecondaryOP.SelectRowWithText("Indicated")
+		  ' Case "not_indicated"
+		  ' popSecondaryOP.SelectRowWithText("Not indicated")
+		  ' Case "can_be_considered"
+		  ' popSecondaryOP.SelectRowWithText("May be considered")
+		  ' End Select
+		  ' 
+		  ' Select Case rs.Column("urgency").StringValue
+		  ' Case "not_indicated"
+		  ' popUrgency.SelectRowWithText("Not indicated")
+		  ' Case "can_be_considered"
+		  ' popUrgency.SelectRowWithText("Can be considered")
+		  ' Case "routine"
+		  ' popUrgency.SelectRowWithText("Routine")
+		  ' Case "soon"
+		  ' popUrgency.SelectRowWithText("Soon")
+		  ' Case "urgent"
+		  ' popUrgency.SelectRowWithText("Urgent")
+		  ' End Select
+		  ' 
+		  ' // Load and check selected contexts
+		  ' LoadSelectedContexts
+		  ' End If
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
 		Private Sub LoadSelectedContexts()
 		  If IndicationID = 0 Then Return
 		  
@@ -958,11 +1316,13 @@ End
 		      rs.MoveToNextRow
 		    Wend
 		    
-		    // Check the boxes for selected contexts
+		    // First UNCHECK all boxes, then check only the selected ones
 		    For i As Integer = 0 To lstContexts.LastRowIndex
 		      Var contextID As Integer = lstContexts.RowTagAt(i).IntegerValue
 		      If selectedIDs.IndexOf(contextID) >= 0 Then
 		        lstContexts.CellCheckBoxValueAt(i, 0) = True
+		      Else
+		        lstContexts.CellCheckBoxValueAt(i, 0) = False  // ADD THIS LINE
 		      End If
 		    Next
 		    
@@ -970,6 +1330,49 @@ End
 		    System.DebugLog("Error loading selected contexts: " + err.Message)
 		  End Try
 		  
+		  
+		  ' If IndicationID = 0 Then Return
+		  ' 
+		  ' Try
+		  ' Var sql As String = "SELECT context_id FROM indication_contexts WHERE indication_id = ?"
+		  ' Var ps As MySQLPreparedStatement = Session.DB.Prepare(sql)
+		  ' ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_LONG)
+		  ' ps.Bind(0, IndicationID)
+		  ' Var rs As RowSet = ps.SelectSQL
+		  ' 
+		  ' // Build array of selected context IDs
+		  ' Var selectedIDs() As Integer
+		  ' While Not rs.AfterLastRow
+		  ' selectedIDs.Add rs.Column("context_id").IntegerValue
+		  ' rs.MoveToNextRow
+		  ' Wend
+		  ' 
+		  ' // Check the boxes for selected contexts
+		  ' For i As Integer = 0 To lstContexts.LastRowIndex
+		  ' Var contextID As Integer = lstContexts.RowTagAt(i).IntegerValue
+		  ' If selectedIDs.IndexOf(contextID) >= 0 Then
+		  ' lstContexts.CellCheckBoxValueAt(i, 0) = True
+		  ' End If
+		  ' Next
+		  ' 
+		  ' Catch err As DatabaseException
+		  ' System.DebugLog("Error loading selected contexts: " + err.Message)
+		  ' End Try
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub MarkAsChanged()
+		  HasUnsavedChanges = True
+		  btnSave.Enabled = Session.IsAuthenticated And HasUnsavedChanges
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub MarkAsClean()
+		  HasUnsavedChanges = False
+		  btnSave.Enabled = False
 		End Sub
 	#tag EndMethod
 
@@ -985,44 +1388,22 @@ End
 		  popPrimaryCare.SelectedRowIndex = -1
 		  popSecondaryIP.SelectedRowIndex = -1
 		  popSecondaryOP.SelectedRowIndex = -1
+		  popUrgency.SelectedRowIndex = -1
 		  // Uncheck all contexts
 		  For i As Integer = 0 To lstContexts.LastRowIndex
 		    lstContexts.CellCheckBoxValueAt(i, 0) = False
 		  Next
+		  
+		    MarkAsClean()
 		End Sub
 	#tag EndMethod
 
-
-	#tag Hook, Flags = &h0
-		Event IndicationSaved(indicationID As Integer)
-	#tag EndHook
-
-
-	#tag Property, Flags = &h21
-		Private ButtonClicked As WebButton
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		IndicationID As Integer
-	#tag EndProperty
-
-
-#tag EndWindowCode
-
-#tag Events lstContexts
-	#tag Event
-		Sub Opening()
-		  me.ColumnTypeAt(0) = WebListBox.CellTypes.CheckBox
-		  ' me.ColumnTypeAt(1) =WebListBox.CellTypes.Default
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events btnSave
-	#tag Event
-		Sub Pressed()
+	#tag Method, Flags = &h21
+		Private Function SaveIndication() As Boolean
+		  
 		  If Not Session.IsAuthenticated Then
 		    MessageBox("You must be authenticated to save changes")
-		    Return
+		    Return False
 		  End If
 		  
 		  Try
@@ -1032,7 +1413,7 @@ End
 		      ind = Indication.GetByID(Session.DB, IndicationID)
 		      If ind = Nil Then
 		        MessageBox("Indication not found")
-		        Return
+		        Return False
 		      End If
 		    Else
 		      ind = New Indication
@@ -1082,6 +1463,21 @@ End
 		      ind.SecondaryOutpatient = "not_indicated"
 		    End Select
 		    
+		    Select Case popUrgency.SelectedRowText
+		    Case "Not indicated"
+		      ind.Urgency = "not_indicated"
+		    Case "Can be considered"
+		      ind.Urgency = "can_be_considered"
+		    Case "Routine"
+		      ind.Urgency = "routine"
+		    Case "Soon"
+		      ind.Urgency = "soon"
+		    Case "Urgent"
+		      ind.Urgency = "urgent"
+		    Else
+		      ind.Urgency = "not_indicated"
+		    End Select
+		    
 		    // Collect selected context IDs from lstContexts
 		    ind.ContextIDs.ResizeTo(-1)
 		    For i As Integer = 0 To lstContexts.LastRowIndex
@@ -1094,104 +1490,178 @@ End
 		    // Save with audit tracking
 		    If ind.SaveWithAudit(Session.DB, Session.CurrentUsername) Then
 		      IndicationID = ind.ID
-		      MessageBox("Indication saved successfully")
+		      ' MessageBox("Indication saved successfully")
+		      MarkAsClean()  // Mark as clean after successful save
 		      RaiseEvent IndicationSaved(ind.ID)
-		      Self.Close
+		      Return True
 		    Else
 		      MessageBox("Error saving indication. Please check the log.")
+		      Return False
 		    End If
 		    
 		  Catch err As RuntimeException
 		    MessageBox("Error: " + err.Message)
-		    System.DebugLog("Error in dlg_Indication.btnSave: " + err.Message)
+		    System.DebugLog("Error in dlg_Indication.SaveIndication: " + err.Message)
+		    Return False
 		  End Try
+		End Function
+	#tag EndMethod
+
+
+	#tag Hook, Flags = &h0
+		Event DialogClosed(lastViewedIndicationID As Integer)
+	#tag EndHook
+
+	#tag Hook, Flags = &h0
+		Event IndicationSaved(indicationID As Integer)
+	#tag EndHook
+
+
+	#tag Property, Flags = &h0
+		ButtonClicked As WebButton
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		CurrentIndex As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private HasUnsavedChanges As Boolean = False
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		IndicationID As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		IndicationIDs() As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private PendingNavigationIndex As Integer = -1
+	#tag EndProperty
+
+
+#tag EndWindowCode
+
+#tag Events btnNext
+	#tag Event
+		Sub Pressed()
+		  LoadIndicationByIndex(CurrentIndex + 1)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnPrevious
+	#tag Event
+		Sub Pressed()
+		    LoadIndicationByIndex(CurrentIndex - 1)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events popSecondaryOP
+	#tag Event
+		Sub SelectionChanged(item As WebMenuItem)
+		  #Pragma unused item  
+		  MarkAsChanged()
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events popPrimaryCare
+	#tag Event
+		Sub SelectionChanged(item As WebMenuItem)
+		  #Pragma unused item  
+		  MarkAsChanged()
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events popSecondaryIP
+	#tag Event
+		Sub SelectionChanged(item As WebMenuItem)
+		  #Pragma unused item  
+		  MarkAsChanged()
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events popUrgency
+	#tag Event
+		Sub SelectionChanged(item As WebMenuItem)
+		  #Pragma unused item
+		   MarkAsChanged()
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events txtTitle
+	#tag Event
+		Sub TextChanged()
+		    MarkAsChanged()
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events lstContexts
+	#tag Event
+		Sub Opening()
+		  me.ColumnTypeAt(0) = WebListBox.CellTypes.CheckBox
+		  ' me.ColumnTypeAt(1) =WebListBox.CellTypes.Default
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub CellAction(row As Integer, column As Integer, value As Variant)
+		  #Pragma Unused row
+		  #Pragma Unused column
+		  #Pragma Unused value
 		  
-		  
-		  ' If Not Session.IsAuthenticated Then
-		  ' MessageBox("You must be authenticated to save changes")
-		  ' Return
-		  ' End If
-		  ' 
-		  ' Try
-		  ' // Create Indication object
-		  ' Var ind As Indication
-		  ' If IndicationID > 0 Then
-		  ' ind = Indication.GetByID(Session.DB, IndicationID)
-		  ' Else
-		  ' ind = New Indication
-		  ' End If
-		  ' 
-		  ' // Populate from UI
-		  ' ind.Title = txtIndication.Text.Trim
-		  ' ind.Comments = txtComments.Text.Trim
-		  ' ind.Keywords = txtKeywords.Text.Trim
-		  ' 
-		  ' ind.SourceASE = chkSourceASE.Value
-		  ' ind.SourceBSE = chkSourceBSE.Value
-		  ' ind.SourceEACVI = chkSourceEACVI.Value
-		  ' ind.SourceConsensus = chkSourceConsensus.Value
-		  ' 
-		  ' // Map popup selections to ENUM values
-		  ' Select Case popPrimaryCare.SelectedRowText
-		  ' Case "Indicated"
-		  ' ind.PrimaryCare = "indicated"
-		  ' Case "Not indicated"
-		  ' ind.PrimaryCare = "not_indicated"
-		  ' Case "May be considered"
-		  ' ind.PrimaryCare = "can_be_considered"
-		  ' Else
-		  ' ind.PrimaryCare = "not_indicated"  // DEFAULT
-		  ' End Select
-		  ' 
-		  ' Select Case popSecondaryIP.SelectedRowText
-		  ' Case "Indicated"
-		  ' ind.SecondaryInpatient = "indicated"
-		  ' Case "Not indicated"
-		  ' ind.SecondaryInpatient = "not_indicated"
-		  ' Case "May be considered"
-		  ' ind.SecondaryInpatient = "can_be_considered"
-		  ' Else
-		  ' ind.SecondaryInpatient = "not_indicated"  // DEFAULT
-		  ' End Select
-		  ' 
-		  ' Select Case popSecondaryOP.SelectedRowText
-		  ' Case "Indicated"
-		  ' ind.SecondaryOutpatient = "indicated"
-		  ' Case "Not indicated"
-		  ' ind.SecondaryOutpatient = "not_indicated"
-		  ' Case "May be considered"
-		  ' ind.SecondaryOutpatient = "can_be_considered"
-		  ' Else
-		  ' ind.SecondaryOutpatient = "not_indicated"  // DEFAULT
-		  ' End Select
-		  ' 
-		  ' // Collect selected context IDs from lstContexts
-		  ' ind.ContextIDs.ResizeTo(-1)
-		  ' For i As Integer = 0 To lstContexts.LastRowIndex
-		  ' If lstContexts.CellCheckBoxValueAt(i, 0) = true Then
-		  ' Var contextID As Integer = Integer(lstContexts.RowTagAt(i).IntegerValue)
-		  ' ind.ContextIDs.Add(contextID)
-		  ' End If
-		  ' Next
-		  ' 
-		  ' // Save to database
-		  ' If ind.Save(Session.DB) Then
-		  ' IndicationID = ind.ID
-		  ' 
-		  ' // Log to audit trail
-		  ' ' LogAuditEntry("indication", ind.ID, If(IndicationID > 0, "updated", "created")) // TODO
-		  ' 
-		  ' MessageBox("Indication saved successfully")
-		  ' RaiseEvent IndicationSaved(ind.ID)
-		  ' Self.Close
-		  ' Else
-		  ' MessageBox("Error saving indication. Please check the log.")
-		  ' End If
-		  ' 
-		  ' Catch err As RuntimeException
-		  ' MessageBox("Error: " + err.Message)
-		  ' System.DebugLog("Error in dlg_Indication.btnSave: " + err.Message)
-		  ' End Try
+		  MarkAsChanged()
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events chkSourceEACVI
+	#tag Event
+		Sub ValueChanged()
+		    MarkAsChanged()
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events chkSourceBSE
+	#tag Event
+		Sub ValueChanged()
+		    MarkAsChanged()
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events chkSourceASE
+	#tag Event
+		Sub ValueChanged()
+		    MarkAsChanged()
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events chkSourceConsensus
+	#tag Event
+		Sub ValueChanged()
+		    MarkAsChanged()
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events txtKeywords
+	#tag Event
+		Sub TextChanged()
+		    MarkAsChanged()
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events txtComments
+	#tag Event
+		Sub TextChanged()
+		    MarkAsChanged()
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnSave
+	#tag Event
+		Sub Pressed()
+		  If SaveIndication() Then
+		    Self.Close
+		  End If
 		  
 		End Sub
 	#tag EndEvent
@@ -1199,8 +1669,15 @@ End
 #tag Events btnCancel
 	#tag Event
 		Sub Pressed()
+		  // Remember the last viewed ID before resetting
+		  Var lastViewedID As Integer = IndicationID
+		  
 		  ResetUI
 		  IndicationID = 0
+		  
+		  // Raise event so parent can scroll to last viewed record
+		  RaiseEvent DialogClosed(lastViewedID)
+		  
 		  self.Close
 		End Sub
 	#tag EndEvent
@@ -1450,6 +1927,14 @@ End
 	#tag EndViewProperty
 	#tag ViewProperty
 		Name="IndicationID"
+		Visible=false
+		Group="Behavior"
+		InitialValue=""
+		Type="Integer"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="CurrentIndex"
 		Visible=false
 		Group="Behavior"
 		InitialValue=""

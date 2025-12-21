@@ -1,0 +1,14 @@
+﻿id	name	description	sort_order	is_active
+1	ACHD	"Adult Congenital Heart Disease"	2	1
+2	Arrhythmia	"Cardiac rhythm disorders"	3	1
+3	Arterial	"Arterial conditions, aortic disease & hypertension"	4	1
+4	Cardio-Oncology	"Oncology-related indications"	5	1
+5	Coronary	"Coronary artery disease"	6	1
+6	General	"General indications"	7	1
+7	ICC	"Inherited Cardiac Conditions (eg DCM)"	8	1
+8	Myocardial	"Myocardial disease, heart failure"	9	1
+9	Pericardial	"Pericardial disease"	10	1
+10	Systemic	"Systemic conditions (sarcoid, amyloid etc)"	11	1
+11	Valve	"Valvular heart disease & endocarditis"	12	1
+12	"PHTN & right heart"	"Pulmonary hypertension, right heart"	13	1
+13	"Primary Care"	"A context for locating indications relevant to primary care"	1	0

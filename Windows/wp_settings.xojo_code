@@ -25,7 +25,7 @@ Begin WebPage wp_settings
    PanelIndex      =   0
    ScaleFactor     =   0.0
    TabIndex        =   0
-   Title           =   "Issues - Changes"
+   Title           =   "Settings / context managment"
    Top             =   0
    Visible         =   True
    Width           =   1116
@@ -67,8 +67,8 @@ Begin WebPage wp_settings
    End
    Begin WebListBox lstContexts
       AllowRowReordering=   False
-      ColumnCount     =   3
-      ColumnWidths    =   "60,*,110"
+      ColumnCount     =   4
+      ColumnWidths    =   "60, 230, *, 110"
       ControlID       =   ""
       CSSClasses      =   ""
       DefaultRowHeight=   49
@@ -81,7 +81,7 @@ Begin WebPage wp_settings
       HighlightSortedColumn=   True
       Index           =   -2147483648
       Indicator       =   0
-      InitialValue    =   "#	Context	Active"
+      InitialValue    =   "#	Context	Description	Active"
       LastAddedRowIndex=   0
       LastColumnIndex =   0
       LastRowIndex    =   0
@@ -90,7 +90,7 @@ Begin WebPage wp_settings
       LockedInPosition=   False
       LockHorizontal  =   False
       LockLeft        =   True
-      LockRight       =   False
+      LockRight       =   True
       LockTop         =   True
       LockVertical    =   False
       NoRowsMessage   =   ""
@@ -107,7 +107,7 @@ Begin WebPage wp_settings
       Tooltip         =   ""
       Top             =   121
       Visible         =   True
-      Width           =   425
+      Width           =   742
       _mPanelIndex    =   -1
    End
    Begin WebButton btnAddContext
@@ -121,12 +121,12 @@ Begin WebPage wp_settings
       Height          =   50
       Index           =   -2147483648
       Indicator       =   3
-      Left            =   453
+      Left            =   770
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
+      LockLeft        =   False
+      LockRight       =   True
       LockTop         =   True
       LockVertical    =   False
       Outlined        =   True
@@ -151,12 +151,12 @@ Begin WebPage wp_settings
       Height          =   50
       Index           =   -2147483648
       Indicator       =   2
-      Left            =   453
+      Left            =   770
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
+      LockLeft        =   False
+      LockRight       =   True
       LockTop         =   True
       LockVertical    =   False
       Outlined        =   True
@@ -181,12 +181,12 @@ Begin WebPage wp_settings
       Height          =   50
       Index           =   -2147483648
       Indicator       =   2
-      Left            =   453
+      Left            =   770
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
+      LockLeft        =   False
+      LockRight       =   True
       LockTop         =   True
       LockVertical    =   False
       Outlined        =   True
@@ -250,6 +250,9 @@ End
 		  btnAddContext.Enabled = Session.IsAuthenticated
 		  btnMoveUp.Enabled = Session.IsAuthenticated
 		  btnMoveDown.Enabled = Session.IsAuthenticated
+		  
+		  // Update header
+		  wc_header.UpdateAuthenticationStatus(session.IsAuthenticated)
 		End Sub
 	#tag EndEvent
 
@@ -278,6 +281,7 @@ End
 		      
 		      // Read data
 		      Var contextName As String = rs.Column("name").StringValue
+		      Var description As String = rs.Column("description").StringValue
 		      Var isActive As Boolean = rs.Column("is_active").BooleanValue
 		      Var sortOrder As Integer = rs.Column("sort_order").IntegerValue
 		      Var contextID As Integer = rs.Column("id").IntegerValue
@@ -290,8 +294,9 @@ End
 		      
 		      // Apply styled text to columns
 		      lstContexts.CellValueAt(rowIdx, 0) = New WebListBoxStyleRenderer(cellStyle, sortOrder.ToString)  // Order number first
-		      lstContexts.CellValueAt(rowIdx, 1) = New WebListBoxStyleRenderer(cellStyle, contextName)         // Name second
-		      lstContexts.CellCheckBoxValueAt(rowIdx, 2) = isActive 
+		      lstContexts.CellValueAt(rowIdx, 1) = New WebListBoxStyleRenderer(cellStyle, contextName)           // Name second
+		      lstContexts.CellValueAt(rowIdx, 2) = New WebListBoxStyleRenderer(cellStyle, description)                // Description 3rd
+		      lstContexts.CellCheckBoxValueAt(rowIdx, 3) = isActive 
 		      
 		      rs.MoveToNextRow
 		    Wend
@@ -349,8 +354,10 @@ End
 #tag Events lstContexts
 	#tag Event
 		Sub Opening()
-		  me.ColumnTypeAt(1) = WebListBox.CellTypes.TextField  // Make name column editable (now column 1)
-		  me.ColumnTypeAt(2) = WebListBox.CellTypes.CheckBox   // Make active column a checkbox (now column 2)
+		  me.ColumnTypeAt(1) = WebListBox.CellTypes.TextField  // Make name column editable (column 1)
+		  me.ColumnTypeAt(2) = WebListBox.CellTypes.TextField
+		  me.ColumnTypeAt(3) = WebListBox.CellTypes.CheckBox   // Make active column a checkbox  column 2)
+		  
 		  
 		End Sub
 	#tag EndEvent
@@ -402,9 +409,39 @@ End
 		      LoadContextsAndRestoreSelection(contextID)
 		    End Try
 		    
-		    // Handle checkbox toggling (column 2)
+		    // Handle description editing (column 2) - NEW
 		  ElseIf column = 2 Then
-		    Var newIsActive As Boolean = me.CellCheckBoxValueAt(row, 2)
+		    Var newDescription As String = str(value).Trim
+		    
+		    Try
+		      // Load the context
+		      Var ctx As Context = Context.GetByID(Session.DB, contextID)
+		      If ctx = Nil Then
+		        MessageBox("Context not found")
+		        LoadContextsAndRestoreSelection(contextID)
+		        Return
+		      End If
+		      
+		      // Update the description
+		      ctx.Description = newDescription
+		      
+		      // Save with audit
+		      If ctx.SaveWithAudit(Session.DB, Session.CurrentUsername) Then
+		        // Reload to show updated style and restore selection
+		        LoadContextsAndRestoreSelection(contextID)
+		      Else
+		        MessageBox("Error saving context")
+		        LoadContextsAndRestoreSelection(contextID)
+		      End If
+		      
+		    Catch err As DatabaseException
+		      MessageBox("Error: " + err.Message)
+		      LoadContextsAndRestoreSelection(contextID)
+		    End Try
+		    
+		    // Handle checkbox toggling (column 3) - FIXED from column 2
+		  ElseIf column = 3 Then
+		    Var newIsActive As Boolean = me.CellCheckBoxValueAt(row, 3)
 		    
 		    Try
 		      // Load the context
@@ -432,14 +469,95 @@ End
 		      LoadContextsAndRestoreSelection(contextID)
 		    End Try
 		  End If
+		  
+		  
+		  
+		  
+		  
+		  ' If Not Session.IsAuthenticated Then
+		  ' MessageBox("You must be authenticated to make changes")
+		  ' LoadContexts
+		  ' Return
+		  ' End If
+		  ' 
+		  ' If row < 0 Then Return
+		  ' 
+		  ' Var contextID As Integer = me.RowTagAt(row)
+		  ' 
+		  ' // Handle name editing (column 1)
+		  ' If column = 1 Then
+		  ' Var newName As String = str(value).Trim
+		  ' 
+		  ' If newName = "" Then
+		  ' MessageBox("Context name cannot be empty")
+		  ' LoadContextsAndRestoreSelection(contextID)
+		  ' Return
+		  ' End If
+		  ' 
+		  ' Try
+		  ' // Load the context
+		  ' Var ctx As Context = Context.GetByID(Session.DB, contextID)
+		  ' If ctx = Nil Then
+		  ' MessageBox("Context not found")
+		  ' LoadContextsAndRestoreSelection(contextID)
+		  ' Return
+		  ' End If
+		  ' 
+		  ' // Update the name
+		  ' ctx.Name = newName
+		  ' 
+		  ' // Save with audit
+		  ' If ctx.SaveWithAudit(Session.DB, Session.CurrentUsername) Then
+		  ' // Reload to show updated style and restore selection
+		  ' LoadContextsAndRestoreSelection(contextID)
+		  ' Else
+		  ' MessageBox("Error saving context")
+		  ' LoadContextsAndRestoreSelection(contextID)
+		  ' End If
+		  ' 
+		  ' Catch err As DatabaseException
+		  ' MessageBox("Error: " + err.Message)
+		  ' LoadContextsAndRestoreSelection(contextID)
+		  ' End Try
+		  ' 
+		  ' // Handle checkbox toggling (column 2)
+		  ' ElseIf column = 2 Then
+		  ' Var newIsActive As Boolean = me.CellCheckBoxValueAt(row, 2)
+		  ' 
+		  ' Try
+		  ' // Load the context
+		  ' Var ctx As Context = Context.GetByID(Session.DB, contextID)
+		  ' If ctx = Nil Then
+		  ' MessageBox("Context not found")
+		  ' LoadContextsAndRestoreSelection(contextID)
+		  ' Return
+		  ' End If
+		  ' 
+		  ' // Update is_active
+		  ' ctx.IsActive = newIsActive
+		  ' 
+		  ' // Save with audit
+		  ' If ctx.SaveWithAudit(Session.DB, Session.CurrentUsername) Then
+		  ' // Reload to show updated style (grey/italic for inactive) and restore selection
+		  ' LoadContextsAndRestoreSelection(contextID)
+		  ' Else
+		  ' MessageBox("Error updating context status")
+		  ' LoadContextsAndRestoreSelection(contextID)
+		  ' End If
+		  ' 
+		  ' Catch err As DatabaseException
+		  ' MessageBox("Error: " + err.Message)
+		  ' LoadContextsAndRestoreSelection(contextID)
+		  ' End Try
+		  ' End If
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub DoublePressed(row As Integer, column As Integer)
 		  If Not Session.IsAuthenticated Then Return
 		  
-		  // Allow inline editing of name column (column 0)
-		  If column = 1 Then
+		  // Allow inline editing of name (column 1) and description (column 2)
+		  If column = 1 Or column = 2 Then
 		    me.EditCellAt(row, column)
 		  End If
 		End Sub
@@ -477,7 +595,7 @@ End
 		      lstContexts.SelectedRowIndex = lstContexts.LastRowIndex
 		      
 		      // Scroll to the new row
-		      lstContexts.scrollToRow(lstContexts.LastRowIndex)
+		      lstContexts.ScrollTo(lstContexts.LastRowIndex)
 		      
 		      // Put it in edit mode so user can rename immediately
 		      lstContexts.EditCellAt(lstContexts.LastRowIndex, 1)

@@ -47,7 +47,6 @@ Protected Class Indication
 		      Var ind As New Indication
 		      ind.ID = rs.Column("id").IntegerValue
 		      ind.Title = rs.Column("title").StringValue
-		      ind.Description = rs.Column("description").StringValue
 		      ind.Keywords = rs.Column("keywords").StringValue
 		      ind.Comments = rs.Column("comments").StringValue
 		      ind.PrimaryCare = rs.Column("primary_care").StringValue
@@ -87,7 +86,6 @@ Protected Class Indication
 		      Var ind As New Indication
 		      ind.ID = rs.Column("id").IntegerValue
 		      ind.Title = rs.Column("title").StringValue
-		      ind.Description = rs.Column("description").StringValue
 		      ind.Keywords = rs.Column("keywords").StringValue
 		      ind.Comments = rs.Column("comments").StringValue
 		      ind.PrimaryCare = rs.Column("primary_care").StringValue
@@ -114,7 +112,6 @@ Protected Class Indication
 		  Var data As New Dictionary
 		  
 		  data.Value("title") = Self.Title
-		  data.Value("description") = If(Self.Description = "", "", Self.Description)
 		  data.Value("keywords") = If(Self.Keywords = "", "", Self.Keywords)
 		  data.Value("comments") = If(Self.Comments = "", "", Self.Comments)
 		  data.Value("primary_care") = Self.PrimaryCare
@@ -164,9 +161,9 @@ Protected Class Indication
 		  Try
 		    If Me.ID = 0 Then
 		      // Insert
-		      Var sql As String = "INSERT INTO indications (title, description, keywords, comments, " + _
+		      Var sql As String = "INSERT INTO indications (title, keywords, comments, " + _
 		      "primary_care, secondary_inpatient, secondary_outpatient, " + _
-		      "source_ase, source_eacvi, source_bse, source_consensus) " + _
+		      "source_ase, source_eacvi, source_bse, source_consensus, urgency) " + _
 		      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
 		      
 		      Var ps As PreparedSQLStatement = db.Prepare(sql)
@@ -176,32 +173,32 @@ Protected Class Indication
 		      ps.BindType(3, MySQLPreparedStatement.MYSQL_TYPE_STRING)
 		      ps.BindType(4, MySQLPreparedStatement.MYSQL_TYPE_STRING)
 		      ps.BindType(5, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		      ps.BindType(6, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		      ps.BindType(6, MySQLPreparedStatement.MYSQL_TYPE_TINY)
 		      ps.BindType(7, MySQLPreparedStatement.MYSQL_TYPE_TINY)
 		      ps.BindType(8, MySQLPreparedStatement.MYSQL_TYPE_TINY)
 		      ps.BindType(9, MySQLPreparedStatement.MYSQL_TYPE_TINY)
-		      ps.BindType(10, MySQLPreparedStatement.MYSQL_TYPE_TINY)
+		      ps.BindType(10, MySQLPreparedStatement.MYSQL_TYPE_STRING)
 		      
 		      ps.Bind(0, Me.Title)
-		      ps.Bind(1, Me.Description)
-		      ps.Bind(2, Me.Keywords)
-		      ps.Bind(3, Me.Comments)
-		      ps.Bind(4, Me.PrimaryCare)
-		      ps.Bind(5, Me.SecondaryInpatient)
-		      ps.Bind(6, Me.SecondaryOutpatient)
-		      ps.Bind(7, Me.SourceASE)
-		      ps.Bind(8, Me.SourceEACVI)
-		      ps.Bind(9, Me.SourceBSE)
-		      ps.Bind(10, Me.SourceConsensus)
+		      ps.Bind(1, Me.Keywords)
+		      ps.Bind(2, Me.Comments)
+		      ps.Bind(3, Me.PrimaryCare)
+		      ps.Bind(4, Me.SecondaryInpatient)
+		      ps.Bind(5, Me.SecondaryOutpatient)
+		      ps.Bind(6, Me.SourceASE)
+		      ps.Bind(7, Me.SourceEACVI)
+		      ps.Bind(8, Me.SourceBSE)
+		      ps.Bind(9, Me.SourceConsensus)
+		      ps.Bind(10, Me.Urgency)
 		      
 		      ps.SQLExecute
 		      Me.ID = db.LastInsertedRowID
 		      
 		    Else
 		      // Update
-		      Var sql As String = "UPDATE indications SET title=?, description=?, keywords=?, comments=?, " + _
+		      Var sql As String = "UPDATE indications SET title=?, keywords=?, comments=?, " + _
 		      "primary_care=?, secondary_inpatient=?, secondary_outpatient=?, " + _
-		      "source_ase=?, source_eacvi=?, source_bse=?, source_consensus=? " + _
+		      "source_ase=?, source_eacvi=?, source_bse=?, source_consensus=?, urgency=? " + _
 		      "WHERE id=?"
 		      
 		      Var ps As PreparedSQLStatement = db.Prepare(sql)
@@ -211,24 +208,24 @@ Protected Class Indication
 		      ps.BindType(3, MySQLPreparedStatement.MYSQL_TYPE_STRING)
 		      ps.BindType(4, MySQLPreparedStatement.MYSQL_TYPE_STRING)
 		      ps.BindType(5, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		      ps.BindType(6, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		      ps.BindType(6, MySQLPreparedStatement.MYSQL_TYPE_TINY)
 		      ps.BindType(7, MySQLPreparedStatement.MYSQL_TYPE_TINY)
 		      ps.BindType(8, MySQLPreparedStatement.MYSQL_TYPE_TINY)
 		      ps.BindType(9, MySQLPreparedStatement.MYSQL_TYPE_TINY)
-		      ps.BindType(10, MySQLPreparedStatement.MYSQL_TYPE_TINY)
+		      ps.BindType(10, MySQLPreparedStatement.MYSQL_TYPE_STRING)
 		      ps.BindType(11, MySQLPreparedStatement.MYSQL_TYPE_LONG)
 		      
 		      ps.Bind(0, Me.Title)
-		      ps.Bind(1, Me.Description)
-		      ps.Bind(2, Me.Keywords)
-		      ps.Bind(3, Me.Comments)
-		      ps.Bind(4, Me.PrimaryCare)
-		      ps.Bind(5, Me.SecondaryInpatient)
-		      ps.Bind(6, Me.SecondaryOutpatient)
-		      ps.Bind(7, Me.SourceASE)
-		      ps.Bind(8, Me.SourceEACVI)
-		      ps.Bind(9, Me.SourceBSE)
-		      ps.Bind(10, Me.SourceConsensus)
+		      ps.Bind(1, Me.Keywords)
+		      ps.Bind(2, Me.Comments)
+		      ps.Bind(3, Me.PrimaryCare)
+		      ps.Bind(4, Me.SecondaryInpatient)
+		      ps.Bind(5, Me.SecondaryOutpatient)
+		      ps.Bind(6, Me.SourceASE)
+		      ps.Bind(7, Me.SourceEACVI)
+		      ps.Bind(8, Me.SourceBSE)
+		      ps.Bind(9, Me.SourceConsensus)
+		      ps.Bind(10, Me.Urgency)
 		      ps.Bind(11, Me.ID)
 		      
 		      ps.SQLExecute
@@ -318,10 +315,6 @@ Protected Class Indication
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		Description As String
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		ID As Integer
 	#tag EndProperty
 
@@ -359,6 +352,10 @@ Protected Class Indication
 
 	#tag Property, Flags = &h0
 		Title As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Urgency As String
 	#tag EndProperty
 
 
@@ -413,14 +410,6 @@ Protected Class Indication
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Comments"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="String"
-			EditorType="MultiLineEditor"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="Description"
 			Visible=false
 			Group="Behavior"
 			InitialValue=""
@@ -493,6 +482,14 @@ Protected Class Indication
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Title"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="String"
+			EditorType="MultiLineEditor"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Urgency"
 			Visible=false
 			Group="Behavior"
 			InitialValue=""

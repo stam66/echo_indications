@@ -48,7 +48,6 @@ ENGINE = InnoDB;
 CREATE TABLE `indications`( 
 	`id` Int( 0 ) AUTO_INCREMENT NOT NULL,
 	`title` VarChar( 500 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-	`description` Text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
 	`keywords` Text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
 	`comments` Text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
 	`primary_care` Enum( 'indicated', 'not_indicated', 'can_be_considered' ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT 'not_indicated',
@@ -60,11 +59,12 @@ CREATE TABLE `indications`(
 	`source_consensus` TinyInt( 1 ) NULL DEFAULT 0,
 	`created_at` Timestamp NULL DEFAULT CURRENT_TIMESTAMP,
 	`updated_at` Timestamp NULL ON UPDATE CURRENT_TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	`urgency` Enum( 'urgent', 'soon', 'routine', 'can_be_considered', 'not_indicated' ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT 'not_indicated',
 	PRIMARY KEY ( `id` ) )
 CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci
 ENGINE = InnoDB
-AUTO_INCREMENT = 281;
+AUTO_INCREMENT = 282;
 -- -------------------------------------------------------------
 
 

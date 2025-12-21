@@ -1,0 +1,197 @@
+id	title	comments	keywords	primary_care	secondary_inpatient	secondary_outpatient	urgency	source_bse	source_ase	source_eacvi	source_consensus
+138	Any indication where the patients clinical status/prognosis precludes intervention			not_indicated	not_indicated	not_indicated	not_indicated	1	1	1	1
+139	High VE burden gt 10% on recent Holter	Refer to electrophyisiology for review	ectopy, PVCs, VE burden	not_indicated	indicated	indicated	routine	0	0	0	1
+140	Exercise-induced VE burden	Refer to electrophysiology instead	ectopy, PVCs, VE burden	not_indicated	indicated	indicated	routine	0	0	0	1
+141	Sustained or paroxysmal AF or atrial flutter with new onset or change in clinical status		AFL, atrial flutter	indicated	indicated	indicated	soon	1	1	1	1
+142	Sustained or paroxysmal SVT with previous ECHO and no change in clinical status			not_indicated	not_indicated	not_indicated	not_indicated	1	1	1	1
+143	Ventricular arrhythmia	Refer to electrophysiology		not_indicated	indicated	indicated	routine	0	1	1	1
+144	LBBB with no previous echocardiogram		LBBB	indicated	indicated	indicated	soon	0	0	0	1
+145	RBBB with clinical suspicion of heart disease		RBBB	indicated	indicated	indicated	soon	0	0	0	1
+146	RBBB without clinical suspicion of heart disease	Primary care should refer to cardiology for review	RBBB	not_indicated	indicated	indicated	routine	1	1	1	1
+147	Inherited channelopathy (e.g. Long QT)			not_indicated	indicated	indicated	routine	0	0	0	1
+148	Pre device implant			not_indicated	indicated	indicated	soon	0	0	0	1
+149	Infrequent supraventricular or ventricular ectopy with no clinical suspicion of heart disease		ectopy, PVCs, VE, VE burden	not_indicated	not_indicated	not_indicated	not_indicated	1	1	1	1
+150	Sinus bradycardia	Referral after discussion with specialist cardiology team. For discussion - consider not_indicated in all groups.		not_indicated	can_be_considered	can_be_considered	can_be_considered	0	1	0	1
+151	Tented T-waves in absence of history suggesting cardiac disease			not_indicated	not_indicated	not_indicated	not_indicated	1	1	0	1
+152	LAFB in absence of history suggesting cardiac disease			not_indicated	not_indicated	not_indicated	not_indicated	1	1	0	1
+153	Palpitations without proof of arrhythmia			not_indicated	not_indicated	not_indicated	not_indicated	1	0	0	1
+154	Suspected heart failure and elevated NT-proBNP *	"""Refer to 1-stop HF clinic where available. Where not available, reasonable for primary care to refer direct for ECHO. Timing of referral as per NICE Guidance 2018"""	cardiac failure, heart failure, HF	can_be_considered	indicated	indicated	soon	0	1	1	1
+155	Surveillance of known LV dysfunction to monitor effect of medical or device therapy		follow-up, monitoring, surveillance	not_indicated	indicated	indicated	routine	1	1	1	1
+156	Surveillance of known LV dysfunction with change in clinical status		follow-up, monitoring, surveillance	not_indicated	indicated	indicated	soon	1	1	1	1
+157	Family screening in subjects with 1st degree relative with inherited cardiac disease, inherited valvulopathy or inherited aortopathy.			indicated	indicated	indicated	routine	1	1	1	1
+158	Initial investigation in patient with suspected hypertensive heart disease			indicated	indicated	indicated	soon	1	1	1	1
+159	Baseline and serial re-evaluations in patients undergoing therapy with cardiotoxic agents			not_indicated	indicated	indicated	soon	1	1	1	1
+160	Reassessment  in patients on cancer therapies with significant (gt x2 ULN) rise in cardiac biomarkers [Troponin, NT-proBNP].		cancer, malignancy, oncology	not_indicated	indicated	indicated	routine	0	1	1	1
+161	Hypotension in the absence of shock, clinical evidence of significant valvular disease or evidence of acute cardiac pathology such as AMI.			not_indicated	not_indicated	not_indicated	not_indicated	1	1	1	1
+162	Routine surveillance in patients with HFPEF		follow-up, monitoring, surveillance	not_indicated	not_indicated	not_indicated	not_indicated	0	1	1	1
+163	Routine surveillance of maximally treated patients with HFREF in whom no further intervention is being contemplated and whose clinical status remains satisfactory		follow-up, monitoring, surveillance	not_indicated	not_indicated	not_indicated	not_indicated	1	1	1	1
+164	Routine re-evaluation in hypertension without symptoms or signs of hypertensive heart disease			not_indicated	not_indicated	not_indicated	not_indicated	1	1	1	1
+165	Sinus arrhythmia			not_indicated	not_indicated	not_indicated	not_indicated	0	1	0	1
+166	Syncope with previous ECHO and no clinical suspicion of heart disease and/or history of possible ICC		blackout, syncope	not_indicated	not_indicated	not_indicated	not_indicated	1	1	1	1
+167	Syncope with clinical suspicion of cardiac disease		blackout, syncope	not_indicated	indicated	indicated	soon	1	1	1	1
+168	Syncope with family history suggestve of ICC		blackout, family history, syncope	indicated	indicated	indicated	soon	0	0	0	1
+169	Probable neurocardiogenic syncope		blackout, syncope	not_indicated	can_be_considered	can_be_considered	can_be_considered	0	0	0	1
+170	Chest pain with no other symptoms and no signs of cardiac disease and normal ECG		angina, chest pain	not_indicated	not_indicated	not_indicated	not_indicated	1	1	1	1
+171	Chest pain with abnormal ECG	"""ECG abnormalties do not include: sinus bradycardia, sinus arrhythmia or other changes not linked to coronary disease"""	angina, chest pain	not_indicated	indicated	indicated	soon	0	1	0	1
+172	Exertional chest pain		angina, chest pain	not_indicated	indicated	indicated	soon	0	1	0	1
+173	Non-exertional, non-pleuritic chest pain.		angina, chest pain	not_indicated	not_indicated	not_indicated	not_indicated	0	0	0	1
+174	Chest pain with FH of SCD or DCM		angina, chest pain, family history	indicated	indicated	indicated	routine	0	1	1	1
+175	Chest pain with recent recreational drug use		angina, chest pain	not_indicated	indicated	indicated	routine	0	1	0	1
+176	Murmur with no clinical suspicion of cardiovascular disease and benign family history under the age of 50y and with no previous ECHO.		family history, heart murmur, murmur	indicated	indicated	indicated	routine	1	1	1	1
+177	Murmur with clinical suspicion of cardiovascular disease	Removed the word innocent for semantic reasons.	heart murmur, murmur	indicated	indicated	indicated	soon	1	1	1	1
+178	Pathological murmur		heart murmur, murmur	indicated	indicated	indicated	soon	0	0	0	1
+179	Chest wall deformities and scoliosis pre-operatively			not_indicated	can_be_considered	can_be_considered	can_be_considered	0	1	0	1
+180	Fatigue with no other signs and symptoms of cardiovascular disease, a normal ECG, and a benign family history.		family history	not_indicated	not_indicated	not_indicated	not_indicated	1	1	1	1
+181	History suggestive of endocarditis with other findings that would fulfill Duke's criteria with or without ECHO		endocarditis, IE, infective endocarditis	not_indicated	indicated	indicated	soon	1	1	1	1
+182	Fever screen or CRP screen without findings to fulfil Duke's Criterial for Endocarditis with or without ECHO		endocarditis, IE, infective endocarditis	not_indicated	not_indicated	not_indicated	not_indicated	1	1	1	1
+183	Central cyanosis			indicated	indicated	indicated	soon	0	1	0	1
+184	Isolated peripheral cyanosis			not_indicated	not_indicated	not_indicated	not_indicated	0	0	0	1
+185	Genotype positive screen for ICC			indicated	indicated	indicated	soon	0	0	0	1
+186	Desaturation on pulse oximetry with no signs of cardiac decompensation	indicated if suspicion of platypnoea orthodeoxia		not_indicated	can_be_considered	can_be_considered	can_be_considered	0	1	0	1
+187	Chromosomal abnormality known to be associated with cardiovascular disease			indicated	indicated	indicated	routine	0	1	1	1
+188	Chromosomal abnormality with undefined risk for cardiovascular disease			not_indicated	can_be_considered	can_be_considered	can_be_considered	0	1	0	1
+189	Cancer with suspicion of cardiac involvment on axial imaging		cancer, malignancy, oncology	not_indicated	indicated	indicated	soon	0	0	1	1
+190	Muscular dystrophy			not_indicated	indicated	indicated	routine	0	1	0	1
+191	CKD IV or V with clinical suspicion of cardiovascular disease	Referral via secondary care		not_indicated	indicated	indicated	routine	0	0	0	1
+192	Obstructive sleep apnoea			not_indicated	can_be_considered	can_be_considered	can_be_considered	0	0	0	1
+193	Diabetes with no clinical suspicion of cardiac disease			not_indicated	not_indicated	not_indicated	not_indicated	1	1	1	1
+194	Dyslipidaemia with no clnical suspicion of cardiac disease			not_indicated	not_indicated	not_indicated	not_indicated	0	0	0	1
+195	Suspected thromboembolic CVA, with no previous ECHO at, or after, event.	For guideline review		not_indicated	can_be_considered	indicated	soon	1	1	1	1
+196	Peripheral arterial embolus with no obvious cause			not_indicated	indicated	indicated	soon	0	1	0	1
+197	Seizures, other neurologic disorders, or psychiatric disorders with no clnical suspicion of cardiac disese.			not_indicated	not_indicated	not_indicated	not_indicated	0	1	0	1
+198	Storage diseases, mitochondrial and metabolic disorders.			not_indicated	indicated	indicated	routine	0	1	0	1
+199	Suspected PE, not confirmed.			not_indicated	can_be_considered	not_indicated	can_be_considered	0	0	0	1
+200	Confirmed acute PE where thrombolysis or thrombectomy may be considered (severe hypoxaemia, haemodynamic instability)			not_indicated	indicated	indicated	urgent	1	1	1	1
+201	Confirmed PE where thombecomy or thrombolysis will not be considered regardless of ECHO findings			not_indicated	can_be_considered	not_indicated	can_be_considered	0	1	1	1
+202	Severe deceleration injury or chest trauma where cardiac injury is possible or suspected			not_indicated	indicated	indicated	soon	1	1	1	1
+203	Routine evaluation in the setting of mild chest trauma with no electrocardiographic changes or biomarker elevation			not_indicated	not_indicated	not_indicated	not_indicated	1	1	1	1
+204	Initial evaluation when there is a reasonable suspicion of valvular or structural heart disease			indicated	indicated	indicated	soon	1	1	1	1
+205	Routine surveillance (lessThan 5 year) of mild valvular stenosis without a change in clinical status or cardiac exam		follow-up, monitoring, narrowing, stenosis, surveillance	not_indicated	not_indicated	not_indicated	not_indicated	1	1	1	1
+206	Routine surveillance (gtorequal 5 y) of mild valvular stenosis without a change in clinical status or cardiac exam		follow-up, monitoring, narrowing, stenosis, surveillance	indicated	indicated	indicated	soon	1	1	1	1
+207	Routine surveillance (lessThan1 y) of moderate valvular stenosis without a change in clinical status or cardiac exam		follow-up, monitoring, narrowing, stenosis, surveillance	not_indicated	not_indicated	not_indicated	not_indicated	1	1	1	1
+208	Routine surveillance (gtorequal 1 y) of moderate valvular stenosis without a change in clinical status or cardiac exam		follow-up, monitoring, narrowing, stenosis, surveillance	not_indicated	indicated	indicated	soon	1	1	1	1
+209	Routine surveillance of trace valvular regurgitation with structurally normal valves		follow-up, insufficiency, monitoring, regurgitation, surveillance, valve, valvular	not_indicated	not_indicated	not_indicated	not_indicated	1	1	1	1
+210	Routine surveillance (lessThan 5 y) of mild valvular regurgitation without a change in clinical status or cardiac exam		follow-up, insufficiency, monitoring, regurgitation, surveillance	not_indicated	not_indicated	not_indicated	not_indicated	1	1	1	1
+211	Routine surveillance (gtorequal 5 y) of mild valvular regurgitation without a change in clinical status or cardiac exam		follow-up, insufficiency, monitoring, regurgitation, surveillance	indicated	indicated	indicated	soon	1	1	1	1
+212	Routine surveillance (lessThan 1 y) of moderate  valvular regurgitation without a change in clinical status or cardiac exam		follow-up, insufficiency, monitoring, regurgitation, surveillance	not_indicated	not_indicated	not_indicated	not_indicated	1	1	1	1
+213	Routine surveillance (gtorequal 1 y) of moderate  valvular regurgitation without change in clinical status or cardiac exam		follow-up, insufficiency, monitoring, regurgitation, surveillance	not_indicated	indicated	indicated	soon	1	1	1	1
+214	Initial postoperative evaluation of prosthetic valve for establishment of baseline		valve, valvular	not_indicated	indicated	indicated	soon	1	1	1	1
+215	Routine surveillance (lessThan 5 y after valve implantation) of bioprosthetic valve if no known or suspected valve dysfunction on post operative scan (excludes TAVI)		follow-up, monitoring, surveillance, TAVI, valve, valve intervention, valvular	not_indicated	not_indicated	not_indicated	not_indicated	1	1	1	1
+216	Routine surveillance (gtorequal 5 y after valve implantation) of bioprosthetic valve if no known or suspected valve dysfunction on post operative scan (excludes TAVI)		follow-up, monitoring, surveillance, TAVI, valve, valve intervention, valvular	indicated	indicated	indicated	soon	1	1	1	1
+217	Evaluation of prosthetic valve with suspected dysfunction or a change in clinical status or cardiac exam		valve, valvular	not_indicated	indicated	indicated	soon	1	1	1	1
+218	Re-evaluation of known prosthetic valve dysfunction when it would change management or guide therapy		valve, valvular	not_indicated	indicated	indicated	routine	1	1	1	1
+219	Suspected cardiac mass			not_indicated	indicated	indicated	soon	0	1	0	1
+220	Suspected pericardial disease			not_indicated	indicated	indicated	soon	0	0	0	1
+221	Evaluation of the ascending aorta in the setting of a known or suspected connective tissue disease or genetic condition that predisposes to aortic aneurysm or dissection (e.g., Marfan syndrome).		aorta, aortic, Marfan, Marfan syndrome	indicated	indicated	indicated	soon	1	1	1	1
+222	Re-evaluation of known ascending aortic dilation or history of aortic dissection to establish a baseline rate of expansion or when the rate of expansion is excessive		aorta, aortic	not_indicated	indicated	indicated	soon	1	1	1	1
+223	Re-evaluation of known ascending aortic dilation or history of aortic dissection with a change in clinical status or cardiac exam or when findings may alter management or therapy		aorta, aortic	not_indicated	indicated	indicated	soon	1	1	1	1
+224	Routine re-evaluation for surveillance of known ascending aortic dilation or history of aortic dissection without a change in clinical status or cardiac exam when findings would not change management or therapy (excludes bicuspid aortic valve related disease)		aorta, aortic, follow-up, monitoring, surveillance, valve, valvular	not_indicated	not_indicated	can_be_considered	can_be_considered	1	1	1	1
+225	Routine re-evaluation of systemic hypertension without symptoms or signs of hypertensive heart disease			not_indicated	not_indicated	not_indicated	not_indicated	1	1	1	1
+226	Re-evaluation of known hypertensive heart disease without a change in clinical status or cardiac exam			not_indicated	not_indicated	not_indicated	not_indicated	1	1	1	1
+227	To determine candidacy for ventricular assist device			not_indicated	indicated	indicated	routine	0	1	1	1
+228	Optimization of ventricular assist device settings			not_indicated	indicated	indicated	routine	0	1	0	1
+229	Re-evaluation for signs/symptoms suggestive of ventricular assist device-related complications			not_indicated	indicated	indicated	routine	1	1	1	1
+230	Monitoring for rejection in a cardiac transplant recipient			not_indicated	indicated	indicated	routine	0	1	1	1
+231	Cardiac structure and function evaluation in a potential heart donor			not_indicated	indicated	indicated	routine	1	1	1	1
+232	Routine surveillance (lessThan1 y) of known cardiomyopathy without a change in clinical status or cardiac exam or change in therapy		cardiomyopathy, CM, follow-up, monitoring, surveillance	not_indicated	not_indicated	not_indicated	not_indicated	1	1	1	1
+233	Initial evaluation of known or suspected adult congenital heart disease		ACHD, CHD, congenital	not_indicated	indicated	indicated	soon	1	1	1	1
+234	Known adult congenital heart disease with a change in clinical status or cardiac exam		ACHD, CHD, congenital	not_indicated	indicated	indicated	soon	1	1	1	1
+235	Re-evaluation to guide therapy in known adult congenital heart disease		ACHD, CHD, congenital	not_indicated	indicated	indicated	routine	1	1	1	1
+236	Routine surveillance (lessThan2 y) of adult congenital heart disease following complete repair with no residual significant defect and no change in clinical status		ACHD, CHD, congenital, follow-up, monitoring, surveillance	not_indicated	not_indicated	can_be_considered	can_be_considered	1	1	1	1
+237	Routine surveillance (gtorequal 1y) of adult congenital heart disease following complete repair with residual signficant defect or change in clinical status		ACHD, CHD, congenital, follow-up, monitoring, surveillance	not_indicated	indicated	indicated	soon	1	1	1	1
+238	Unchanged murmur in an asymptomatic individual with previous normal echocardiogram		heart murmur, murmur	not_indicated	not_indicated	not_indicated	not_indicated	1	1	1	1
+239	Periodic repeat assessment of asymptomatic individual with haemodynamically-insignificant lesions, eg mitral annular calcification.		mitral, MV	not_indicated	not_indicated	not_indicated	not_indicated	1	1	1	1
+240	Chest pain with haemodynamic instability		angina, chest pain	not_indicated	indicated	indicated	urgent	1	0	1	1
+241	New murmur following acute or recent myocardial infarction		heart attack, heart murmur, MI, murmur, myocardial infarction	indicated	indicated	indicated	urgent	1	1	1	1
+242	Assessment of infarct size, presence of complications and baseline LV function following MI.			not_indicated	indicated	indicated	soon	1	1	1	1
+243	Evaluation of non-cardiac chest pain		angina, chest pain	not_indicated	not_indicated	not_indicated	not_indicated	1	1	1	1
+244	Minor radiographic cardiomegaly in the absence of symptoms or signs of heart failure		cardiac failure, heart failure, HF	not_indicated	not_indicated	not_indicated	not_indicated	1	1	1	1
+245	Assessment of patients with oedema, normal venous pressure and no evidence of cardiac disease.	Referral based on BNP pathway		not_indicated	not_indicated	not_indicated	not_indicated	1	1	1	1
+246	Repeat assessment of small pericardial effusion without clinical change.	Consider changing to trivial rather than small.	effusion, pericardial effusion	not_indicated	can_be_considered	can_be_considered	can_be_considered	1	1	1	1
+247	Lung disease with no clinical suspicion of cardiac involvement			not_indicated	not_indicated	can_be_considered	can_be_considered	1	1	1	1
+248	Lung disease with clinical suspicion of cardiac involvement (cor pulmonale)			not_indicated	indicated	indicated	soon	1	1	1	1
+249	Suspected or established pulmonary hypertension		PA, PH, PHTN, pulmonary, pulmonary hypertension	not_indicated	indicated	indicated	soon	1	0	0	1
+250	Evaluation of clinically suspected aortic coarctation		aorta, aortic	not_indicated	indicated	indicated	soon	1	1	1	1
+251	Routine assessment in hypertension			not_indicated	not_indicated	not_indicated	not_indicated	0	0	0	1
+252	Repeat assessment for LV mass regression with treated HTN			not_indicated	not_indicated	not_indicated	not_indicated	1	0	0	1
+253	Sustained or paroxysmal AF or atrial flutter without change in clinical status		AFL, atrial flutter	not_indicated	not_indicated	not_indicated	not_indicated	1	1	1	1
+254	Sustained or paroxysmal SVT - new onset or change in clinical status			indicated	indicated	indicated	soon	0	1	1	1
+255	Any indication where echocardiography will not change management			not_indicated	not_indicated	not_indicated	not_indicated	0	0	0	1
+256	Routine surveillance (lessThan 6 months) of severe valvular stenosis or regurgitation without red flag symptoms	"""RED FLAGS: Breathlessness; chest pain, palpitations or heart failure signs require urgent cardiology review. Presyncope; syncope: consider in-patient admission; New LV dysfunction (LVEF lessThan55% without other cause); Reducing LV ejection fraction"""	angina, blackout, cardiac failure, chest pain, follow-up, heart failure, HF, insufficiency, monitoring, narrowing, regurgitation, stenosis, surveillance, syncope	not_indicated	not_indicated	not_indicated	not_indicated	1	1	1	1
+257	Routine surveillance (gtorequal 6 months) of severe valvular stenosis or regurgitation without red flag symptoms	"""RED FLAGS: Breathlessness; chest pain, palpitations or heart failure signs require urgent cardiology review; Presyncope; syncope: consider in-patient admission; New LV dysfunction (LVEF lessThan55% without other cause); Reducing LV ejection fraction"""	angina, blackout, cardiac failure, chest pain, follow-up, heart failure, HF, insufficiency, monitoring, narrowing, regurgitation, stenosis, surveillance, syncope	not_indicated	indicated	indicated	routine	1	1	1	1
+258	Re-evaluation of severe valvular stenosis or regurgitation (lessThan 6 months) where red flag symptoms are present	"""RED FLAGS: Breathlessness; chest pain, palpitations or heart failure signs require urgent cardiology review; Presyncope; syncope: consider in-patient admission; New LV dysfunction (LVEF lessThan55% without other cause); Reducing LV ejection fraction"""	angina, blackout, cardiac failure, chest pain, heart failure, HF, insufficiency, narrowing, regurgitation, stenosis, syncope	can_be_considered	indicated	indicated	routine	1	1	1	1
+259	Surveillance (lessThan 3 years) of bicuspid aortic valve with no stenosis and no more than mild regurgitation		aorta, aortic, follow-up, insufficiency, monitoring, narrowing, regurgitation, stenosis, surveillance, valve, valvular	not_indicated	not_indicated	not_indicated	not_indicated	1	1	1	1
+260	Surveillance (gtorequal3 years) of bicuspid aortic valve with no stenosis and no more than mild regurgitation		aorta, aortic, follow-up, insufficiency, monitoring, narrowing, regurgitation, stenosis, surveillance, valve, valvular	indicated	indicated	indicated	routine	1	1	1	1
+261	Surveillance (lessThan 2 years) of bicuspid aortic valve with valve thickening and mild stenosis		aorta, aortic, follow-up, monitoring, narrowing, stenosis, surveillance, valve, valvular	not_indicated	not_indicated	not_indicated	not_indicated	1	1	1	1
+262	Surveillance (gtorequal 2 years) of bicuspid aortic valve with early degenerative and mild stenosis		aorta, aortic, follow-up, monitoring, narrowing, stenosis, surveillance, valve, valvular	not_indicated	indicated	indicated	routine	1	1	1	1
+263	Bicuspid valve with signficant stenosis or regurgitation (lessThan 6 months) and no red flag signs		insufficiency, narrowing, regurgitation, stenosis, valve, valvular	indicated	indicated	indicated	routine	1	1	1	1
+264	Bisucpid valve with aortopathy (gtorequal 12 months)		valve, valvular	not_indicated	indicated	indicated	routine	0	0	0	1
+265	Annual surveillance of bioprosthetic valve replacement from year 5 onwards (excludes TAVI)		follow-up, monitoring, surveillance, TAVI, valve, valve intervention, valvular	not_indicated	indicated	indicated	routine	1	1	1	1
+266	Routine surveillance of mechanical valve replacement, normal postoperative scan and no change in clinical status lessThan 10 years since implant.		follow-up, monitoring, surveillance, valve, valvular	not_indicated	not_indicated	not_indicated	not_indicated	1	1	1	1
+267	Annual surveillance of TAVI valve if clinically appropriate		follow-up, monitoring, surveillance, TAVI, valve, valve intervention, valvular	not_indicated	indicated	indicated	routine	1	1	1	1
+268	LBBB with previous satisfactory ECHO and no change in clinical status or where device therapy is not being considered.		LBBB	not_indicated	not_indicated	can_be_considered	can_be_considered	1	1	1	1
+269	LBBB with previous ECHO and change in clinical status or where device therapy is being considered		LBBB	not_indicated	indicated	indicated	soon	1	1	1	1
+270	Routine surveillance in patient-prosthesis mismatch and no change in clinical status lessThan 1 year		follow-up, monitoring, surveillance	not_indicated	not_indicated	not_indicated	not_indicated	1	1	1	1
+271	Shortness of breath with normal NT-proBNP			not_indicated	not_indicated	not_indicated	not_indicated	0	0	0	1
+272	P-wave abnormalities excepting bifid p-waves			not_indicated	not_indicated	not_indicated	not_indicated	0	0	0	1
+273	Bifid p-wave suggestive of mitral stenosis		mitral, MV, narrowing, stenosis	indicated	indicated	indicated	routine	0	0	0	1
+274	Left atrial thrombus		clot, LA, left atrium, thrombus	not_indicated	not_indicated	indicated	routine	0	0	0	1
+275	Surveillance echocardiography during anthracycline therapy	BSE/British Cardio-Oncology Society guideline - typically 3-6 monthly during therapy	anthracycline, cardiotoxicity, doxorubicin, follow-up, monitoring, surveillance	not_indicated	indicated	indicated	routine	1	1	1	1
+276	Baseline assessment before immune checkpoint inhibitor therapy	Especially if pre-existing cardiac disease	checkpoint inhibitor, immunotherapy, myocarditis	not_indicated	indicated	indicated	routine	0	1	1	1
+277	Suspected checkpoint inhibitor myocarditis	Urgent assessment - high mortality if untreated	checkpoint inhibitor, immunotherapy, myocarditis	not_indicated	indicated	indicated	urgent	0	0	0	1
+278	Assessment after completion of potentially cardiotoxic therapy	BSE guidance - typically 6-12 months post-therapy		not_indicated	indicated	indicated	routine	1	1	1	1
+279	Radiotherapy-related heart disease	Particularly after mediastinal/chest radiation		not_indicated	indicated	indicated	routine	0	0	0	1
+280	HER2-targeted therapy (trastuzumab, pertuzumab)	3-monthly assessment typical		not_indicated	indicated	indicated	routine	0	0	0	1
+281	Tyrosine kinase inhibitor therapy monitoring	Variable schedule based on agent		not_indicated	indicated	indicated	routine	0	0	0	1
+282	Right heart assessment for prognostication in known pulmonary hypertension	2025 ASE guidelines - prognostic markers	PA, PH, PHTN, pulmonary, pulmonary hypertension	not_indicated	indicated	indicated	routine	1	1	1	0
+283	Assessment of tricuspid regurgitation severity pre-intervention	Pre-TTVR/TEER assessment	insufficiency, regurgitation, TR, tricuspid, TV	not_indicated	indicated	indicated	soon	0	0	1	0
+284	Chronic thromboembolic pulmonary hypertension (CTEPH)	May show RV dysfunction, TR, raised pressures	PA, PH, PHTN, pulmonary, pulmonary hypertension	not_indicated	indicated	indicated	soon	0	0	0	1
+285	Native valve endocarditis - baseline assessment	First-line imaging per Duke criteria	endocarditis, IE, infective endocarditis, valve, valvular	not_indicated	indicated	indicated	urgent	1	1	1	0
+286	Prosthetic valve endocarditis suspicion	TEE often required - TTE first line	endocarditis, IE, infective endocarditis, valve, valvular	not_indicated	indicated	indicated	urgent	1	1	1	0
+287	Endocarditis - repeat assessment for complications	Repeat if clinical deterioration	endocarditis, IE, infective endocarditis	not_indicated	indicated	indicated	urgent	1	1	1	0
+288	Endocarditis - pre-operative surgical planning	Often requires TEE	endocarditis, IE, infective endocarditis	not_indicated	indicated	indicated	urgent	0	1	1	0
+289	Staphylococcus aureus bacteremia	High prevalence of undiagnosed IE		not_indicated	indicated	indicated	urgent	0	0	0	1
+290	STEMI - immediate assessment for complications	Urgent if hemodynamic instability		not_indicated	indicated	indicated	urgent	0	0	0	1
+291	Acute coronary syndrome with hemodynamic instability	Life-threatening complications	ACS, acute coronary syndrome	not_indicated	indicated	indicated	urgent	0	1	1	0
+292	Post-PCI assessment of LV function	Not routine - selective use	PCI	not_indicated	can_be_considered	can_be_considered	routine	0	0	0	1
+293	Hypertrophic cardiomyopathy - initial diagnosis	Includes stress if obstruction suspected	cardiomyopathy, CM, HCM, hypertrophic	indicated	indicated	indicated	soon	0	0	0	1
+294	HCM - annual surveillance	Annual unless clinical change	follow-up, monitoring, surveillance	not_indicated	indicated	indicated	routine	0	0	0	1
+295	Dilated cardiomyopathy - first presentation	Include strain imaging	cardiomyopathy, CM, DCM, dilated	indicated	indicated	indicated	soon	0	0	0	1
+296	Suspected cardiac amyloidosis	Specific echo features - apical sparing	amyloid, amyloidosis	not_indicated	indicated	indicated	soon	0	0	0	1
+297	Confirmed cardiac amyloidosis - surveillance	Variable frequency based on treatment	amyloid, amyloidosis, follow-up, monitoring, surveillance	not_indicated	indicated	indicated	routine	0	0	1	0
+298	Cardiac sarcoidosis evaluation	Often requires CMR	cardiac sarcoid, sarcoid, sarcoidosis	not_indicated	indicated	indicated	soon	0	0	0	1
+299	Arrhythmogenic right ventricular cardiomyopathy (ARVC)	Requires careful RV assessment	cardiomyopathy, CM, right ventricle, RV	indicated	indicated	indicated	soon	0	0	1	0
+300	Left ventricular non-compaction	Diagnostic criteria assessment	left ventricle, LV	not_indicated	indicated	indicated	soon	0	0	0	1
+301	Takotsubo cardiomyopathy	Characteristic pattern - recovery expected	cardiomyopathy, CM	not_indicated	indicated	indicated	urgent	0	0	1	0
+302	Peripartum cardiomyopathy	Late pregnancy/early post-partum presentation	cardiomyopathy, CM, obstetric, pregnancy, pregnant	not_indicated	indicated	indicated	urgent	0	0	0	1
+303	Acute pericarditis - initial assessment	Mainly to exclude effusion/tamponade	cardiac tamponade, tamponade	not_indicated	indicated	indicated	soon	1	1	1	0
+304	Suspected tamponade	Life-threatening - urgent assessment	cardiac tamponade, tamponade	not_indicated	indicated	indicated	urgent	0	0	0	1
+305	Post-pericardiocentesis assessment	Check for re-accumulation		not_indicated	indicated	indicated	soon	0	0	0	1
+306	Constrictive pericarditis evaluation	Requires comprehensive assessment		not_indicated	indicated	indicated	soon	0	0	0	1
+307	Pericardial effusion - malignant	Often requires drainage	effusion, pericardial effusion	not_indicated	indicated	indicated	urgent	0	0	0	1
+308	Suspected acute aortic syndrome	TTE limited - CT/TEE usually required	aorta, aortic	not_indicated	indicated	indicated	urgent	0	1	1	0
+309	Marfan syndrome - baseline assessment	Establish baseline dimensions	Marfan, Marfan syndrome	indicated	indicated	indicated	soon	0	0	0	1
+310	Marfan syndrome - annual surveillance	Annual unless rapid progression	follow-up, Marfan, Marfan syndrome, monitoring, surveillance	not_indicated	indicated	indicated	routine	0	1	1	0
+311	Bicuspid aortic valve with aortopathy - annual surveillance	Annual if aorta ≥40mm	aorta, aortic, follow-up, monitoring, surveillance, valve, valvular	not_indicated	indicated	indicated	routine	1	1	1	0
+312	Turner syndrome	High prevalence cardiac abnormalities		indicated	indicated	indicated	soon	0	0	0	1
+313	Loeys-Dietz syndrome	More aggressive than Marfan	Marfan, Marfan syndrome	indicated	indicated	indicated	soon	0	0	0	1
+314	Ehlers-Danlos syndrome (vascular type)	Screen for cardiovascular involvement		not_indicated	indicated	indicated	routine	0	0	0	1
+315	Left atrial appendage thrombus suspicion	TEE gold standard	clot, LA, left atrium, thrombus	not_indicated	indicated	indicated	soon	0	0	1	0
+316	Left ventricular thrombus post-MI	Particularly anterior/apical MI	clot, left ventricle, LV, thrombus	not_indicated	indicated	indicated	soon	0	0	0	1
+317	Stroke in young patient (<55y)	Contrast study for PFO	cerebrovascular, CVA, stroke	not_indicated	indicated	indicated	soon	0	0	0	1
+318	Systemic lupus erythematosus with cardiac symptoms	Multiple manifestations possible		not_indicated	indicated	indicated	soon	0	0	1	0
+319	Rheumatoid arthritis with suspected cardiac involvement	Pericarditis most common		not_indicated	indicated	indicated	routine	0	0	1	0
+320	Systemic sclerosis (scleroderma)	PHTN common complication		not_indicated	indicated	indicated	routine	0	0	0	1
+321	Fabry disease	Concentric LVH with unique features		not_indicated	indicated	indicated	routine	0	0	1	0
+322	Hemochromatosis	Variable presentations		not_indicated	indicated	indicated	routine	0	0	0	1
+323	HIV with cardiac symptoms	Multiple potential manifestations		not_indicated	indicated	indicated	routine	0	0	0	1
+324	Chronic kidney disease stage 4-5	High CV risk population		not_indicated	indicated	indicated	routine	0	0	0	1
+325	Congenital heart disease - transition to adult services	Establish adult baseline	ACHD, CHD, congenital	not_indicated	indicated	indicated	routine	0	1	1	0
+326	Fontan circulation surveillance	Annual or biennial	follow-up, monitoring, surveillance	not_indicated	indicated	indicated	routine	0	0	0	1
+327	Tetralogy of Fallot post-repair surveillance	Variable frequency based on lesions	follow-up, monitoring, surveillance	not_indicated	indicated	indicated	routine	0	1	1	0
+328	Transposition of great arteries post-switch	Different considerations per operation		not_indicated	indicated	indicated	routine	0	0	0	1
+329	Pre-pregnancy assessment in known heart disease	Risk assessment per WHO classification	obstetric, pregnancy, pregnant	not_indicated	indicated	indicated	routine	1	1	1	0
+330	Pregnancy with new cardiac symptoms	Physiological changes vs pathology	obstetric, pregnancy, pregnant	not_indicated	indicated	indicated	soon	0	0	0	1
+331	Pre-eclampsia with cardiac symptoms	Can cause acute LV dysfunction		not_indicated	indicated	indicated	urgent	0	0	0	1
+332	Post-cardiac surgery - routine surveillance	Variable based on procedure	follow-up, monitoring, surveillance	not_indicated	indicated	indicated	routine	1	1	1	0
+333	Post-cardiac surgery with new symptoms	Any new symptoms post-cardiac surgery		not_indicated	indicated	indicated	urgent	0	0	0	1

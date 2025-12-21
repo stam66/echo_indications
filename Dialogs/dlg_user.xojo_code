@@ -538,8 +538,8 @@ End
 	#tag EndHook
 
 
-	#tag Property, Flags = &h21
-		Private ButtonClicked As WebButton
+	#tag Property, Flags = &h0
+		ButtonClicked As WebButton
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

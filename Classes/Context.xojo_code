@@ -26,29 +26,6 @@ Protected Class Context
 		  
 		  Return results
 		  
-		  ' Var results() As Context
-		  ' 
-		  ' Try
-		  ' Var sql As String = "SELECT * FROM contexts ORDER BY sort_order, name"
-		  ' Var rs As RowSet = db.SelectSQL(sql)
-		  ' 
-		  ' While Not rs.AfterLastRow
-		  ' Var ctx As New Context
-		  ' ctx.ID = rs.Column("id").IntegerValue
-		  ' ctx.Name = rs.Column("name").StringValue
-		  ' ctx.Description = If(rs.Column("description").Value = Nil, "", rs.Column("description").StringValue)
-		  ' ctx.SortOrder = rs.Column("sort_order").IntegerValue
-		  ' ctx.IsActive = rs.Column("is_active").BooleanValue
-		  ' 
-		  ' results.Add(ctx)
-		  ' rs.MoveToNextRow
-		  ' Wend
-		  ' 
-		  ' Catch err As DatabaseException
-		  ' System.DebugLog("Error loading contexts: " + err.Message)
-		  ' End Try
-		  ' 
-		  ' Return results
 		End Function
 	#tag EndMethod
 
@@ -305,6 +282,14 @@ Protected Class Context
 			Group="Behavior"
 			InitialValue=""
 			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="IsActive"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Boolean"
 			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior

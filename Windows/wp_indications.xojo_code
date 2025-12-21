@@ -5,7 +5,7 @@ Begin WebPage wp_indications
    ControlCount    =   0
    ControlID       =   ""
    CSSClasses      =   ""
-   Enabled         =   False
+   Enabled         =   True
    Height          =   689
    ImplicitInstance=   True
    Index           =   -2147483648
@@ -301,18 +301,16 @@ End
 
 #tag WindowCode
 	#tag Event
-		Sub Opening()
-		  LoadContexts
-		  LoadIndications
-		  
-		End Sub
-	#tag EndEvent
-
-	#tag Event
 		Sub Shown()
 		  btnNew.Enabled = session.IsAuthenticated
 		  btnDelete.Enabled = session.IsAuthenticated
+		  
 		  LoadContexts
+		  LoadIndications
+		  
+		  
+		  // Update header
+		  wc_header.UpdateAuthenticationStatus(session.IsAuthenticated)
 		End Sub
 	#tag EndEvent
 
@@ -373,18 +371,59 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub HandleIndicationSaved(sender As dlg_Indication, indicationID As Integer)
-		  // Refresh the list when an indication is saved
-		  LoadIndications
+		Private Sub HandleDialogClosed(sender As dlg_Indication, lastViewedIndicationID As Integer)
+		  #Pragma Unused sender
 		  
-		  // Optional: Select the saved indication in the list
+		  // Find and select the last viewed indication (even if not saved)
 		  For i As Integer = 0 To lstIndications.LastRowIndex
-		    If lstIndications.RowTagAt(i) = indicationID Then
+		    If lstIndications.RowTagAt(i) = lastViewedIndicationID Then
 		      lstIndications.SelectedRowIndex = i
-		      lstIndications.scrollToRow(i)
+		      lstIndications.ScrollTo(i)
 		      Exit
 		    End If
 		  Next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub HandleIndicationSaved(sender As dlg_Indication, indicationID As Integer)
+		  #Pragma Unused sender
+		  
+		  // Store the ID we need to find and select after reload
+		  Var idToSelect As Integer = indicationID
+		  
+		  // If sender has navigation data, use the current indication ID from navigation
+		  // This ensures we select the last-viewed record, not necessarily the saved one
+		  If sender.IndicationIDs.Count > 0 And sender.CurrentIndex >= 0 And sender.CurrentIndex < sender.IndicationIDs.Count Then
+		    idToSelect = sender.IndicationIDs(sender.CurrentIndex)
+		  End If
+		  
+		  // Refresh the list when an indication is saved, respecting current filter
+		  LoadIndications(FilterContextID)
+		  
+		  // Find and select the last viewed indication
+		  For i As Integer = 0 To lstIndications.LastRowIndex
+		    If lstIndications.RowTagAt(i) = idToSelect Then
+		      lstIndications.SelectedRowIndex = i
+		      lstIndications.ScrollTo(i)
+		      Exit
+		    End If
+		  Next
+		  
+		  ' #Pragma Unused sender
+		  ' 
+		  ' // Refresh the list when an indication is saved, respecting current filter
+		  ' LoadIndications(FilterContextID)
+		  ' 
+		  ' // Optional: Select the saved indication in the list
+		  ' For i As Integer = 0 To lstIndications.LastRowIndex
+		  ' If lstIndications.RowTagAt(i) = indicationID Then
+		  ' lstIndications.SelectedRowIndex = i
+		  ' lstIndications.ScrollTo(i)
+		  ' Exit
+		  ' End If
+		  ' Next
+		  
 		End Sub
 	#tag EndMethod
 
@@ -501,26 +540,31 @@ End
 		              termMatched = True
 		            End If
 		          Else
-		            // It's a single word - do fuzzy word matching
+		            // It's a single word - do fuzzy word matching + substring matching
 		            Var termLower As String = term.Lowercase
 		            
-		            // Split searchable text into words
-		            Var searchableWords() As String = searchableText.Split(" ")
-		            
-		            For Each word As String In searchableWords
-		              word = word.Trim.Lowercase
-		              word = word.ReplaceAll(",", "")  // Remove commas from words
-		              If word = "" Then Continue
+		            // First check for substring match (fragment matching)
+		            If searchableTextLower.IndexOf(termLower) > -1 Then
+		              termMatched = True
+		            Else
+		              // If no substring match, try fuzzy word matching
+		              // Split searchable text into words
+		              Var searchableWords() As String = searchableText.Split(" ")
 		              
-		              // Check Levenshtein distance
-		              Var distance As Integer = app.LevenshteinDistance(termLower, word)
-		              If distance <= maxDistance Then
-		                termMatched = True
-		                Exit For word
-		              End If
-		            Next
+		              For Each word As String In searchableWords
+		                word = word.Trim.Lowercase
+		                word = word.ReplaceAll(",", "")  // Remove commas from words
+		                If word = "" Then Continue
+		                
+		                // Check Levenshtein distance
+		                Var distance As Integer = app.LevenshteinDistance(termLower, word)
+		                If distance <= maxDistance Then
+		                  termMatched = True
+		                  Exit For word
+		                End If
+		              Next
+		            End If
 		          End If
-		          
 		          // If this term didn't match, record fails AND logic
 		          If Not termMatched Then
 		            allTermsMatch = False
@@ -615,18 +659,31 @@ End
 	#tag EndEvent
 	#tag Event
 		Sub DoublePressed(row As Integer, column As Integer)
-		  #Pragma Unused row
 		  #Pragma Unused column
 		  
-		  var dlg as new dlg_Indication
-		  dlg.IndicationID = IndicationID
-		  AddHandler dlg.IndicationSaved, AddressOf HandleIndicationSaved 
-		  session.NavigationManager.NavigateToPage(dlg)
+		  If row >= 0 And row <= me.LastRowIndex Then
+		    Var clickedID As Integer = me.RowTagAt(row)
+		    
+		    // Build array of all current indication IDs
+		    Var allIDs() As Integer
+		    For i As Integer = 0 To me.LastRowIndex
+		      allIDs.Add(me.RowTagAt(i))
+		    Next
+		    
+		    var dlg as new dlg_Indication
+		    dlg.IndicationID = clickedID
+		    dlg.IndicationIDs = allIDs
+		    dlg.CurrentIndex = row
+		    AddHandler dlg.IndicationSaved, AddressOf HandleIndicationSaved
+		    AddHandler dlg.DialogClosed, AddressOf HandleDialogClosed  // ADD THIS
+		    session.NavigationManager.NavigateToPage(dlg)
+		  End If
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub ContextualMenuSelected(hitItem As WebMenuItem)
-		  Var selectedID As Integer = Session.SelectedIndicationID
+		  If lstIndications.SelectedRowIndex < 0 Then Return
+		  Var selectedID As Integer = lstIndications.RowTagAt(lstIndications.SelectedRowIndex)
 		  
 		  Select Case hititem.Text
 		  Case "Request Change"
@@ -635,9 +692,18 @@ End
 		    dlg.Show
 		    
 		  Case "View Details"
+		    // Build array of all current indication IDs
+		    Var allIDs() As Integer
+		    For i As Integer = 0 To lstIndications.LastRowIndex
+		      allIDs.Add(lstIndications.RowTagAt(i))
+		    Next
+		    
 		    var dlg as new dlg_Indication
-		    dlg.IndicationID = IndicationID
-		    AddHandler dlg.IndicationSaved, AddressOf HandleIndicationSaved 
+		    dlg.IndicationID = selectedID
+		    dlg.IndicationIDs = allIDs
+		    dlg.CurrentIndex = lstIndications.SelectedRowIndex
+		    AddHandler dlg.IndicationSaved, AddressOf HandleIndicationSaved
+		    AddHandler dlg.DialogClosed, AddressOf HandleDialogClosed  // ADD THIS
 		    session.NavigationManager.NavigateToPage(dlg)
 		  End Select
 		End Sub
@@ -989,5 +1055,21 @@ End
 		InitialValue=""
 		Type="String"
 		EditorType="MultiLineEditor"
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="IndicationID"
+		Visible=false
+		Group="Behavior"
+		InitialValue=""
+		Type="Integer"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="SelectdRowIndex"
+		Visible=false
+		Group="Behavior"
+		InitialValue=""
+		Type="Integer"
+		EditorType=""
 	#tag EndViewProperty
 #tag EndViewBehavior

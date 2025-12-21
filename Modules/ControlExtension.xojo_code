@@ -8,16 +8,6 @@ Protected Module ControlExtension
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub scrollToRow(extends l as WebListBox, rowIndex as Integer)
-		  '// Call as:  myListbox.scrollToRow(99) 
-		  if Session <> Nil then 
-		    Session.ExecuteJavaScript( "$('#" + l.ControlID + "_table').dataTable().api().scroller.toPosition(" + rowIndex.toString("#0" ) + ")" ) 
-		  end if 
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub selectAll(extends wtf as WebTextField)
 		  wtf.ExecuteJavaScript("document.getElementById('"+wtf.ControlID+"_inner').select();")
 		End Sub

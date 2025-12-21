@@ -167,12 +167,6 @@ Inherits WebApplication
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Sub submitChangeRequest(indicaitonExisting as string, indicationNew as string, contextExisting as string, contextNew as string, primaryKey as string, cUser as string)
-		  
-		End Sub
-	#tag EndMethod
-
 
 	#tag Note, Name = Untitled
 		12/12/2025
@@ -221,6 +215,9 @@ Inherits WebApplication
 		MailSocket As SMTPSecureSocket
 	#tag EndProperty
 
+
+	#tag Constant, Name = kInfoText, Type = String, Dynamic = False, Default = \"<div style\x3D\"margin: 0; padding: 0; font-family: Arial\x2C sans-serif; font-size: 14px; line-height: 1.2;\">\n<span style\x3D\"font-size: 24px; font-weight: bold;\">ECHOindications web app</span><br>\n<span style\x3D\"font-style: italic; font-size: 14px;\">Version 1.5</span><br><br>\nAppropriate Use Criteria for Echocardiography drawn from national and international guidelines and consensus across trusts in SE London.<br><br>\n<span style\x3D\"font-weight: bold;\">View Appropriate Use Criteria</span><br>\n- Indications for echocardiography with appropriate use criteria for primary care\x2C outpatient and inpatient secondary care\x2C and appropriate priority/urgency.<br>\n- Fuzzy search\x2C context filtering<br>\n- Double-click to view all details.<br>\n- Right-click to request changes for the specific context.<br><br>\n<span style\x3D\"font-weight: bold;\">Admin Login</span><br>\nAuthenticate to make changes.<br><br>\n<span style\x3D\"font-weight: bold;\">Request Changes</span><br>\nFeature requests or bug reports<br><br>\n<span style\x3D\"font-weight: bold;\">Issues</span><br>\nView all reported issues.\n</div>", Scope = Public
+	#tag EndConstant
 
 	#tag Constant, Name = LightGrey, Type = Color, Dynamic = False, Default = \"&cD6D6D6", Scope = Public
 	#tag EndConstant
