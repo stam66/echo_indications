@@ -343,7 +343,7 @@ End
 		    
 		    ps.Bind(0, txtIssue.Text)
 		    ps.Bind(1, txtUsername.Text)
-		    ps.Bind(2, "Open")
+		    ps.Bind(2, "New")
 		    
 		    ps.ExecuteSQL
 		    
