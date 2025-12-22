@@ -687,8 +687,9 @@ End
 		  
 		  Select Case hititem.Text
 		  Case "Request Change"
-		    Var dlg As New dlg_ChangeRequest
+		    Var dlg As New dlg_ChangeIndication
 		    dlg.IndicationID = selectedID
+		    Session.SelectedIndicationID = selectedID 
 		    dlg.Show
 		    
 		  Case "View Details"

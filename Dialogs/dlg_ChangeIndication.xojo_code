@@ -695,8 +695,12 @@ End
 	#tag EndMethod
 
 
-	#tag Property, Flags = &h21
-		Private ButtonClicked As WebButton
+	#tag Property, Flags = &h0
+		ButtonClicked As WebButton
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		IndicationID As Integer
 	#tag EndProperty
 
 
@@ -759,11 +763,12 @@ End
 		    ps.BindType(6, MySQLPreparedStatement.MYSQL_TYPE_STRING)
 		    ps.BindType(7, MySQLPreparedStatement.MYSQL_TYPE_LONG)
 		    
-		    Var requestText As String = "Change request for indication: " + txtExistingIndication.Text.Left(50)
+		    // IMPROVED: More descriptive request text with indication ID
+		    Var requestText As String = "Change request for indication ID " + Session.SelectedIndicationID.ToString + ": " + txtExistingIndication.Text.Left(50)
 		    
 		    ps.Bind(0, requestText)
 		    ps.Bind(1, txtRequestor.Text.Trim)
-		    ps.Bind(2, "Open")
+		    ps.Bind(2, "New")  // CHANGED FROM "Open" TO "New"
 		    ps.Bind(3, txtExistingIndication.Text)
 		    ps.Bind(4, txtNewIndication.Text)
 		    ps.Bind(5, txtExistingContexts.Text)
@@ -785,6 +790,62 @@ End
 		    MessageBox("Error submitting change request: " + err.Message)
 		    System.DebugLog("SubmitIndicationChange Error: " + err.Message)
 		  End Try
+		  
+		  ' // Validate requestor name
+		  ' If txtRequestor.Text.Trim = "" Then
+		  ' MessageBox("Please enter your name")
+		  ' txtRequestor.SetFocus
+		  ' Return
+		  ' End If
+		  ' 
+		  ' // Validate at least one change
+		  ' If txtNewIndication.Text.Trim = "" And txtNewContexts.Text.Trim = "" Then
+		  ' MessageBox("You must enter at least one change to submit")
+		  ' Return
+		  ' End If
+		  ' 
+		  ' Try
+		  ' Var sql As String = "INSERT INTO changes (changes_request, changes_requestor, changes_status, " + _
+		  ' "indication_existing, indication_new, contexts_existing, contexts_new, Indication_id) " + _
+		  ' "VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+		  ' 
+		  ' Var ps As MySQLPreparedStatement = Session.DB.Prepare(sql)
+		  ' 
+		  ' ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		  ' ps.BindType(1, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		  ' ps.BindType(2, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		  ' ps.BindType(3, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		  ' ps.BindType(4, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		  ' ps.BindType(5, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		  ' ps.BindType(6, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		  ' ps.BindType(7, MySQLPreparedStatement.MYSQL_TYPE_LONG)
+		  ' 
+		  ' Var requestText As String = "Change request for indication: " + txtExistingIndication.Text.Left(50)
+		  ' 
+		  ' ps.Bind(0, requestText)
+		  ' ps.Bind(1, txtRequestor.Text.Trim)
+		  ' ps.Bind(2, "Open")
+		  ' ps.Bind(3, txtExistingIndication.Text)
+		  ' ps.Bind(4, txtNewIndication.Text)
+		  ' ps.Bind(5, txtExistingContexts.Text)
+		  ' ps.Bind(6, txtNewContexts.Text)
+		  ' ps.Bind(7, Session.SelectedIndicationID)
+		  ' 
+		  ' ps.ExecuteSQL
+		  ' 
+		  ' MessageBox("Change request submitted successfully")
+		  ' 
+		  ' // Update badge if on landing page
+		  ' If wp_LandingPage <> Nil Then
+		  ' wp_LandingPage.wc_menu.UpdateIssuesBadge
+		  ' End If
+		  ' 
+		  ' Self.Close
+		  ' 
+		  ' Catch err As DatabaseException
+		  ' MessageBox("Error submitting change request: " + err.Message)
+		  ' System.DebugLog("SubmitIndicationChange Error: " + err.Message)
+		  ' End Try
 		End Sub
 	#tag EndEvent
 #tag EndEvents
