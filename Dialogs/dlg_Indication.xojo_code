@@ -106,8 +106,8 @@ Begin WebDialog dlg_Indication
          Enabled         =   True
          Height          =   38
          Index           =   -2147483648
-         Indicator       =   8
-         Left            =   894
+         Indicator       =   7
+         Left            =   884
          LockBottom      =   False
          LockedInPosition=   False
          LockHorizontal  =   False
@@ -137,8 +137,8 @@ Begin WebDialog dlg_Indication
          Enabled         =   True
          Height          =   38
          Index           =   -2147483648
-         Indicator       =   8
-         Left            =   847
+         Indicator       =   7
+         Left            =   837
          LockBottom      =   False
          LockedInPosition=   False
          LockHorizontal  =   False
@@ -808,7 +808,7 @@ Begin WebDialog dlg_Indication
       Index           =   -2147483648
       Indicator       =   ""
       Italic          =   False
-      Left            =   393
+      Left            =   407
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -875,7 +875,7 @@ Begin WebDialog dlg_Indication
       Index           =   -2147483648
       Indicator       =   ""
       Italic          =   False
-      Left            =   629
+      Left            =   657
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
