@@ -24,7 +24,7 @@ Inherits WebApplication
 
 
 	#tag Method, Flags = &h0
-		Function AdjustColorBrightness(originalColor As Color, factor As Double) As Color
+		Shared Function AdjustColorBrightness(originalColor As Color, factor As Double) As Color
 		  // Adjust brightness while preserving color identity
 		  // factor > 1.0 makes brighter, < 1.0 makes darker, 1.0 = no change
 		  
@@ -37,7 +37,7 @@ Inherits WebApplication
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetContrastingTextColor(backgroundColor As Color) As Color
+		Shared Function GetContrastingTextColor(backgroundColor As Color) As Color
 		  // Get black or white text color based on background brightness
 		  // Threshold of 128 is midpoint - below is dark, above is light
 		  
@@ -54,7 +54,7 @@ Inherits WebApplication
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetLuminance(backgroundColor As Color) As Double
+		Shared Function GetLuminance(backgroundColor As Color) As Double
 		  // Calculate perceived brightness (luminance) of a color
 		  // Returns value between 0 (black) and 255 (white)
 		  // Uses YIQ formula: (R*299 + G*587 + B*114) / 1000
@@ -71,52 +71,110 @@ Inherits WebApplication
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetReadableColorForBackground(textColor As Color, backgroundColor As Color, preserveHue As Boolean = True) As Color
-		  // Returns a readable version of textColor on backgroundColor
-		  // If preserveHue is True, adjusts brightness while keeping hue
-		  // If preserveHue is False, returns simple black/white contrast
+		Shared Function GetReadableColorForBackground(textColor As Color, backgroundColor As Color, preserveHue As Boolean = True) As Color
+		  Var bgLuminance As Double = GetLuminance(backgroundColor)
 		  
+		  // If not preserving hue, just return simple black or white
 		  If Not preserveHue Then
 		    Return GetContrastingTextColor(backgroundColor)
 		  End If
 		  
-		  // Calculate background luminance
-		  Var bgLuminance As Double = GetLuminance(backgroundColor)
-		  
-		  // Calculate text luminance
+		  // Otherwise, preserve semantic meaning while ensuring readability
 		  Var textLuminance As Double = GetLuminance(textColor)
 		  
-		  // Determine if we need to lighten or darken
-		  Var contrastNeeded As Double = 128 // Minimum luminance difference needed
+		  // Special case: if text is near-black on dark background, use white
+		  If bgLuminance < 128 And textLuminance < 50 Then
+		    Return Color.White
+		  End If
+		  
+		  // Special case: if text is near-white on light background, use black
+		  If bgLuminance >= 128 And textLuminance > 200 Then
+		    Return Color.Black
+		  End If
+		  
+		  // Minimum contrast needed for readability
+		  Var contrastNeeded As Double = 128
 		  
 		  If bgLuminance < 128 Then
-		    // Dark background - need lighter text
+		    // Dark background - brighten text if needed
 		    If textLuminance < bgLuminance + contrastNeeded Then
-		      // Text is too dark for dark background - brighten it
-		      Var factor As Double = (bgLuminance + contrastNeeded) / textLuminance
-		      factor = Min(factor, 3.0) // Cap at 3x to avoid over-brightening
-		      Return AdjustColorBrightness(textColor, factor)
+		      // Calculate brightness factor
+		      Var factor As Double = (bgLuminance + contrastNeeded) / Max(textLuminance, 1)
+		      factor = Min(factor, 3.0) // Cap at 3x
+		      
+		      // Apply brightness adjustment
+		      Var r As Integer = Min(255, textColor.Red * factor)
+		      Var g As Integer = Min(255, textColor.Green * factor)
+		      Var b As Integer = Min(255, textColor.Blue * factor)
+		      
+		      Return Color.RGB(r, g, b)
 		    Else
-		      // Text is already light enough
 		      Return textColor
 		    End If
 		  Else
-		    // Light background - need darker text
+		    // Light background - darken text if needed
 		    If textLuminance > bgLuminance - contrastNeeded Then
-		      // Text is too light for light background - darken it
-		      Var factor As Double = (bgLuminance - contrastNeeded) / textLuminance
-		      factor = Max(factor, 0.3) // Don't go below 30% brightness
-		      Return AdjustColorBrightness(textColor, factor)
+		      // Calculate darkness factor
+		      Var factor As Double = (bgLuminance - contrastNeeded) / Max(textLuminance, 1)
+		      factor = Max(factor, 0.3) // Don't go below 30%
+		      
+		      // Apply darkness adjustment
+		      Var r As Integer = Max(0, textColor.Red * factor)
+		      Var g As Integer = Max(0, textColor.Green * factor)
+		      Var b As Integer = Max(0, textColor.Blue * factor)
+		      
+		      Return Color.RGB(r, g, b)
 		    Else
-		      // Text is already dark enough
 		      Return textColor
 		    End If
 		  End If
+		  
+		  
+		  ' // Returns a readable version of textColor on backgroundColor
+		  ' // If preserveHue is True, adjusts brightness while keeping hue
+		  ' // If preserveHue is False, returns simple black/white contrast
+		  ' 
+		  ' If Not preserveHue Then
+		  ' Return GetContrastingTextColor(backgroundColor)
+		  ' End If
+		  ' 
+		  ' // Calculate background luminance
+		  ' Var bgLuminance As Double = GetLuminance(backgroundColor)
+		  ' 
+		  ' // Calculate text luminance
+		  ' Var textLuminance As Double = GetLuminance(textColor)
+		  ' 
+		  ' // Determine if we need to lighten or darken
+		  ' Var contrastNeeded As Double = 128 // Minimum luminance difference needed
+		  ' 
+		  ' If bgLuminance < 128 Then
+		  ' // Dark background - need lighter text
+		  ' If textLuminance < bgLuminance + contrastNeeded Then
+		  ' // Text is too dark for dark background - brighten it
+		  ' Var factor As Double = (bgLuminance + contrastNeeded) / textLuminance
+		  ' factor = Min(factor, 3.0) // Cap at 3x to avoid over-brightening
+		  ' Return AdjustColorBrightness(textColor, factor)
+		  ' Else
+		  ' // Text is already light enough
+		  ' Return textColor
+		  ' End If
+		  ' Else
+		  ' // Light background - need darker text
+		  ' If textLuminance > bgLuminance - contrastNeeded Then
+		  ' // Text is too light for light background - darken it
+		  ' Var factor As Double = (bgLuminance - contrastNeeded) / textLuminance
+		  ' factor = Max(factor, 0.3) // Don't go below 30% brightness
+		  ' Return AdjustColorBrightness(textColor, factor)
+		  ' Else
+		  ' // Text is already dark enough
+		  ' Return textColor
+		  ' End If
+		  ' End If
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub GetStyleForBackground(textColor As Color, backgroundColor As Color, preserveSemantics As Boolean = True, makeItalic As Boolean = False, makeBold As Boolean = False)
+		Shared Function GetStyleForBackground(textColor As Color, backgroundColor As Color, preserveSemantics As Boolean = True, makeItalic As Boolean = False, makeBold As Boolean = False) As WebStyle
 		  // Create a complete WebStyle with readable colors
 		  Var style As New WebStyle
 		  
@@ -132,7 +190,7 @@ Inherits WebApplication
 		  style.Bold = makeBold
 		  
 		  Return style
-		End Sub
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0

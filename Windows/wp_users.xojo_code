@@ -236,6 +236,12 @@ End
 
 #tag WindowCode
 	#tag Event
+		Sub Opening()
+		  populateUsers
+		End Sub
+	#tag EndEvent
+
+	#tag Event
 		Sub Shown()
 		  populateUsers
 		  
@@ -354,6 +360,10 @@ End
 		    lstUsers.CellValueAt(rowIdx, 1) = New WebListBoxStyleRenderer(cellStyle, username)
 		    lstUsers.CellValueAt(rowIdx, 2) = New WebListBoxStyleRenderer(cellStyle, email)
 		    lstUsers.CellValueAt(rowIdx, 3) = New WebListBoxStyleRenderer(cellStyle, title)
+		    
+		    // Store row state in dictionary
+		    If RowStates = Nil Then RowStates = New Dictionary
+		    RowStates.Value(rowIdx) = isActive
 		    
 		    rs.MoveToNextRow
 		  Wend
@@ -535,6 +545,14 @@ End
 		InactiveUserStyle As WebStyle
 	#tag EndComputedProperty
 
+	#tag Property, Flags = &h21
+		Private PreviousSelectedRow As Integer = -1
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private RowStates As Dictionary
+	#tag EndProperty
+
 	#tag Property, Flags = &h0
 		SearchText As String
 	#tag EndProperty
@@ -560,6 +578,70 @@ End
 		  AddHandler dlg.UserSaved, AddressOf HandleUserSaved
 		  dlg.UserID = id
 		  dlg.Show
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub SelectionChanged(rows() As Integer)
+		  #Pragma Unused rows
+		  
+		  // Restore original colors for previous row
+		  If PreviousSelectedRow >= 0 And PreviousSelectedRow <= me.LastRowIndex Then
+		    If RowStates <> Nil And RowStates.HasKey(PreviousSelectedRow) Then
+		      Var isActive As Boolean = RowStates.Value(PreviousSelectedRow)
+		      Var darkMode As Boolean = Session.IsDarkMode
+		      
+		      // Create original style
+		      Var originalStyle As New WebStyle
+		      If isActive Then
+		        originalStyle.ForegroundColor = If(darkMode, Color.White, Color.Black)
+		      Else
+		        originalStyle.ForegroundColor = Color.LightGray
+		        originalStyle.Italic = True
+		      End If
+		      
+		      // Update all cells in previous row
+		      For col As Integer = 0 To me.ColumnCount - 1
+		        Var cellText As String = me.CellTextAt(PreviousSelectedRow, col)
+		        me.CellValueAt(PreviousSelectedRow, col) = New WebListBoxStyleRenderer(originalStyle, cellText)
+		      Next
+		    End If
+		  End If
+		  
+		  // Apply readable colors to newly selected row
+		  If me.SelectedRowIndex >= 0 Then
+		    If RowStates <> Nil And RowStates.HasKey(me.SelectedRowIndex) Then
+		      Var isActive As Boolean = RowStates.Value(me.SelectedRowIndex)
+		      Var darkMode As Boolean = Session.IsDarkMode
+		      
+		      // Determine original color
+		      Var originalColor As Color
+		      If isActive Then
+		        originalColor = If(darkMode, Color.White, Color.Black)
+		      Else
+		        originalColor = Color.LightGray
+		      End If
+		      
+		      // Get readable color for selection background
+		      Var bgColor As Color = EchoIndicationsApp.NHSBlue
+		      Var readableColor As Color = EchoIndicationsApp.GetReadableColorForBackground(originalColor, bgColor)
+		      
+		      // Create readable style
+		      Var readableStyle As New WebStyle
+		      readableStyle.ForegroundColor = readableColor
+		      If Not isActive Then
+		        readableStyle.Italic = True
+		      End If
+		      
+		      // Update all cells in selected row
+		      For col As Integer = 0 To me.ColumnCount - 1
+		        Var cellText As String = me.CellTextAt(me.SelectedRowIndex, col)
+		        me.CellValueAt(me.SelectedRowIndex, col) = New WebListBoxStyleRenderer(readableStyle, cellText)
+		      Next
+		    End If
+		  End If
+		  
+		  // Store current selection for next time
+		  PreviousSelectedRow = me.SelectedRowIndex
 		End Sub
 	#tag EndEvent
 #tag EndEvents

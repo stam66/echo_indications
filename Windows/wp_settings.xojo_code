@@ -275,28 +275,31 @@ End
 		    Var rs As RowSet = Session.DB.SelectSQL(sql)
 		    
 		    While Not rs.AfterLastRow
-		      // Add empty row first
 		      lstContexts.AddRow()
 		      Var rowIdx As Integer = lstContexts.LastAddedRowIndex
 		      
-		      // Read data
+		      // Read data - ADD DESCRIPTION
 		      Var contextName As String = rs.Column("name").StringValue
-		      Var description As String = rs.Column("description").StringValue
+		      Var contextDesc As String = rs.Column("description").StringValue  // ADD THIS
 		      Var isActive As Boolean = rs.Column("is_active").BooleanValue
 		      Var sortOrder As Integer = rs.Column("sort_order").IntegerValue
 		      Var contextID As Integer = rs.Column("id").IntegerValue
 		      
-		      // Store context ID in RowTag
 		      lstContexts.RowTagAt(rowIdx) = contextID
 		      
-		      // Choose style based on is_active
 		      Var cellStyle As WebStyle = If(isActive, activeStyle, inactiveStyle)
 		      
-		      // Apply styled text to columns
-		      lstContexts.CellValueAt(rowIdx, 0) = New WebListBoxStyleRenderer(cellStyle, sortOrder.ToString)  // Order number first
-		      lstContexts.CellValueAt(rowIdx, 1) = New WebListBoxStyleRenderer(cellStyle, contextName)           // Name second
-		      lstContexts.CellValueAt(rowIdx, 2) = New WebListBoxStyleRenderer(cellStyle, description)                // Description 3rd
-		      lstContexts.CellCheckBoxValueAt(rowIdx, 3) = isActive 
+		      // Apply styled text to ALL THREE TEXT COLUMNS
+		      lstContexts.CellValueAt(rowIdx, 0) = New WebListBoxStyleRenderer(cellStyle, sortOrder.ToString)
+		      lstContexts.CellValueAt(rowIdx, 1) = New WebListBoxStyleRenderer(cellStyle, contextName)
+		      lstContexts.CellValueAt(rowIdx, 2) = New WebListBoxStyleRenderer(cellStyle, contextDesc)  // ADD THIS
+		      lstContexts.CellCheckBoxValueAt(rowIdx, 3) = isActive  // MOVE TO COLUMN 3
+		      
+		      // Store state and text
+		      If RowStates = Nil Then RowStates = New Dictionary
+		      If RowTexts = Nil Then RowTexts = New Dictionary
+		      RowStates.Value(rowIdx) = isActive
+		      RowTexts.Value(rowIdx) = Array(sortOrder.ToString, contextName, contextDesc)  // ALL THREE TEXT COLUMNS
 		      
 		      rs.MoveToNextRow
 		    Wend
@@ -304,6 +307,56 @@ End
 		  Catch err As DatabaseException
 		    MessageBox("Error loading contexts: " + err.Message)
 		  End Try
+		  
+		  ' lstContexts.RemoveAllRows
+		  ' 
+		  ' // Define styles
+		  ' Var darkMode As Boolean = Session.IsDarkMode
+		  ' Var activeStyle As New WebStyle
+		  ' Var inactiveStyle As New WebStyle
+		  ' 
+		  ' activeStyle.ForegroundColor = If(darkMode, Color.White, Color.Black)
+		  ' inactiveStyle.ForegroundColor = Color.LightGray
+		  ' inactiveStyle.Italic = True
+		  ' 
+		  ' Try
+		  ' Var sql As String = "SELECT * FROM contexts ORDER BY sort_order, name"
+		  ' Var rs As RowSet = Session.DB.SelectSQL(sql)
+		  ' 
+		  ' While Not rs.AfterLastRow
+		  ' // Add empty row first
+		  ' lstContexts.AddRow()
+		  ' Var rowIdx As Integer = lstContexts.LastAddedRowIndex
+		  ' 
+		  ' // Read data
+		  ' Var contextName As String = rs.Column("name").StringValue
+		  ' Var description As String = rs.Column("description").StringValue
+		  ' Var isActive As Boolean = rs.Column("is_active").BooleanValue
+		  ' Var sortOrder As Integer = rs.Column("sort_order").IntegerValue
+		  ' Var contextID As Integer = rs.Column("id").IntegerValue
+		  ' 
+		  ' // Store context ID in RowTag
+		  ' lstContexts.RowTagAt(rowIdx) = contextID
+		  ' 
+		  ' // Choose style based on is_active
+		  ' Var cellStyle As WebStyle = If(isActive, activeStyle, inactiveStyle)
+		  ' 
+		  ' // Apply styled text to columns
+		  ' lstContexts.CellValueAt(rowIdx, 0) = New WebListBoxStyleRenderer(cellStyle, sortOrder.ToString)  // Order number first
+		  ' lstContexts.CellValueAt(rowIdx, 1) = New WebListBoxStyleRenderer(cellStyle, contextName)           // Name second
+		  ' lstContexts.CellValueAt(rowIdx, 2) = New WebListBoxStyleRenderer(cellStyle, description)                // Description 3rd
+		  ' lstContexts.CellCheckBoxValueAt(rowIdx, 3) = isActive 
+		  ' 
+		  ' // Store row state in dictionary
+		  ' If RowStates = Nil Then RowStates = New Dictionary
+		  ' RowStates.Value(rowIdx) = isActive
+		  ' 
+		  ' rs.MoveToNextRow
+		  ' Wend
+		  ' 
+		  ' Catch err As DatabaseException
+		  ' MessageBox("Error loading contexts: " + err.Message)
+		  ' End Try
 		End Sub
 	#tag EndMethod
 
@@ -347,6 +400,19 @@ End
 		  End Try
 		End Sub
 	#tag EndMethod
+
+
+	#tag Property, Flags = &h21
+		Private PreviousSelectedRow As Integer = -1
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private RowStates As Dictionary
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		RowTexts As Dictionary
+	#tag EndProperty
 
 
 #tag EndWindowCode
@@ -560,6 +626,59 @@ End
 		  If column = 1 Or column = 2 Then
 		    me.EditCellAt(row, column)
 		  End If
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub SelectionChanged(rows() As Integer)
+		  #Pragma Unused rows
+		  
+		  // Lock updates to prevent flicker
+		  
+		  // Restore original colors for previous row
+		  If PreviousSelectedRow >= 0 And PreviousSelectedRow <= me.LastRowIndex Then
+		    If RowStates <> Nil And RowStates.HasKey(PreviousSelectedRow) And RowTexts <> Nil And RowTexts.HasKey(PreviousSelectedRow) Then
+		      Var isActive As Boolean = RowStates.Value(PreviousSelectedRow)
+		      Var texts() As String = RowTexts.Value(PreviousSelectedRow)
+		      Var darkMode As Boolean = Session.IsDarkMode
+		      
+		      Var originalStyle As New WebStyle
+		      If isActive Then
+		        originalStyle.ForegroundColor = If(darkMode, Color.White, Color.Black)
+		      Else
+		        originalStyle.ForegroundColor = Color.LightGray
+		        originalStyle.Italic = True
+		      End If
+		      
+		      // Update all 3 text columns (0, 1, 2) - skip checkbox column 3
+		      For col As Integer = 0 To 2
+		        me.CellValueAt(PreviousSelectedRow, col) = New WebListBoxStyleRenderer(originalStyle, texts(col))
+		      Next
+		    End If
+		  End If
+		  
+		  // Apply readable colors to newly selected row
+		  If me.SelectedRowIndex >= 0 Then
+		    If RowStates <> Nil And RowStates.HasKey(me.SelectedRowIndex) And RowTexts <> Nil And RowTexts.HasKey(me.SelectedRowIndex) Then
+		      Var isActive As Boolean = RowStates.Value(me.SelectedRowIndex)
+		      Var texts() As String = RowTexts.Value(me.SelectedRowIndex)
+		      Var darkMode As Boolean = Session.IsDarkMode
+		      
+		      Var originalColor As Color = If(isActive, If(darkMode, Color.White, Color.Black), Color.LightGray)
+		      Var bgColor As Color = EchoIndicationsApp.NHSBlue
+		      Var readableColor As Color = EchoIndicationsApp.GetReadableColorForBackground(originalColor, bgColor)
+		      
+		      Var readableStyle As New WebStyle
+		      readableStyle.ForegroundColor = readableColor
+		      If Not isActive Then readableStyle.Italic = True
+		      
+		      // Update all 3 text columns (0, 1, 2) - skip checkbox column 3
+		      For col As Integer = 0 To 2
+		        me.CellValueAt(me.SelectedRowIndex, col) = New WebListBoxStyleRenderer(readableStyle, texts(col))
+		      Next
+		    End If
+		  End If
+		  
+		  PreviousSelectedRow = me.SelectedRowIndex
 		End Sub
 	#tag EndEvent
 #tag EndEvents

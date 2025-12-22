@@ -171,6 +171,10 @@ End
 		      lstAudit.CellValueAt(rowIdx, 2) = New WebListBoxStyleRenderer(defaultStyle, username)
 		      lstAudit.CellValueAt(rowIdx, 3) = New WebListBoxStyleRenderer(defaultStyle, tableName)
 		      
+		      // Store action color for this row
+		      If RowActionColors = Nil Then RowActionColors = New Dictionary
+		      RowActionColors.Value(rowIdx) = actionStyle.ForegroundColor
+		      
 		      rs.MoveToNextRow
 		    Wend
 		    
@@ -183,6 +187,15 @@ End
 		  wc_header.UpdateAuthenticationStatus(session.IsAuthenticated)
 		End Sub
 	#tag EndEvent
+
+
+	#tag Property, Flags = &h21
+		Private PreviousSelectedRow As Integer = -1
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private RowActionColors As Dictionary
+	#tag EndProperty
 
 
 #tag EndWindowCode
@@ -201,6 +214,64 @@ End
 		  Var dlg As New dlg_AuditEntry
 		  dlg.auditID = auditID
 		  dlg.Show
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub SelectionChanged(rows() As Integer)
+		  #Pragma Unused rows
+		  
+		  // Restore original colors for previous row
+		  If PreviousSelectedRow >= 0 And PreviousSelectedRow <= me.LastRowIndex Then
+		    If RowActionColors <> Nil And RowActionColors.HasKey(PreviousSelectedRow) Then
+		      Var darkMode As Boolean = Session.IsDarkMode
+		      Var defaultColor As Color = If(darkMode, Color.White, Color.Black)
+		      
+		      // Update cells - only column 1 (action) has special color
+		      For col As Integer = 0 To me.ColumnCount - 1
+		        Var cellText As String = me.CellTextAt(PreviousSelectedRow, col)
+		        
+		        Var originalStyle As New WebStyle
+		        If col = 1 Then
+		          // Action column - use stored color
+		          originalStyle.ForegroundColor = RowActionColors.Value(PreviousSelectedRow)
+		        Else
+		          // Other columns - use default
+		          originalStyle.ForegroundColor = defaultColor
+		        End If
+		        
+		        me.CellValueAt(PreviousSelectedRow, col) = New WebListBoxStyleRenderer(originalStyle, cellText)
+		      Next
+		    End If
+		  End If
+		  
+		  // Apply readable colors to newly selected row
+		  If me.SelectedRowIndex >= 0 Then
+		    If RowActionColors <> Nil And RowActionColors.HasKey(me.SelectedRowIndex) Then
+		      Var bgColor As Color = EchoIndicationsApp.NHSBlue
+		      Var darkMode As Boolean = Session.IsDarkMode
+		      Var defaultColor As Color = If(darkMode, Color.White, Color.Black)
+		      
+		      // Update cells
+		      For col As Integer = 0 To me.ColumnCount - 1
+		        Var cellText As String = me.CellTextAt(me.SelectedRowIndex, col)
+		        
+		        Var readableStyle As New WebStyle
+		        If col = 1 Then
+		          // Action column - adjust stored color for readability
+		          Var originalColor As Color = RowActionColors.Value(me.SelectedRowIndex)
+		          readableStyle.ForegroundColor = EchoIndicationsApp.GetReadableColorForBackground(originalColor, bgColor)
+		        Else
+		          // Other columns - adjust default color
+		          readableStyle.ForegroundColor = EchoIndicationsApp.GetReadableColorForBackground(defaultColor, bgColor)
+		        End If
+		        
+		        me.CellValueAt(me.SelectedRowIndex, col) = New WebListBoxStyleRenderer(readableStyle, cellText)
+		      Next
+		    End If
+		  End If
+		  
+		  // Store current selection
+		  PreviousSelectedRow = me.SelectedRowIndex
 		End Sub
 	#tag EndEvent
 #tag EndEvents
