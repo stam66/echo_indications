@@ -21,7 +21,7 @@ Begin WebContainer wc_MainMenu
    TabIndex        =   0
    Top             =   0
    Visible         =   True
-   Width           =   879
+   Width           =   807
    _mDesignHeight  =   0
    _mDesignWidth   =   0
    _mPanelIndex    =   -1
@@ -36,7 +36,7 @@ Begin WebContainer wc_MainMenu
       Height          =   58
       Index           =   -2147483648
       Indicator       =   1
-      Left            =   536
+      Left            =   464
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -66,7 +66,7 @@ Begin WebContainer wc_MainMenu
       Height          =   58
       Index           =   -2147483648
       Indicator       =   0
-      Left            =   536
+      Left            =   464
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -96,7 +96,7 @@ Begin WebContainer wc_MainMenu
       Height          =   58
       Index           =   -2147483648
       Indicator       =   0
-      Left            =   536
+      Left            =   464
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -126,7 +126,7 @@ Begin WebContainer wc_MainMenu
       Height          =   58
       Index           =   -2147483648
       Indicator       =   0
-      Left            =   536
+      Left            =   464
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -168,7 +168,7 @@ Begin WebContainer wc_MainMenu
       Top             =   0
       UseSandbox      =   False
       Visible         =   True
-      Width           =   387
+      Width           =   375
       _mPanelIndex    =   -1
    End
 End
@@ -254,7 +254,7 @@ End
 	#tag Event
 		Sub Opening()
 		  Var html As String = "<html><head><style>" + _
-		  "body { margin: 0; padding: 10px; font-family: Arial, sans-serif; font-size: 16px; line-height: 1.4; }" + _
+		  "body { margin: 0; padding: 10px; font-family: Arial, sans-serif; font-size: 16px; line-height: 1.4; color: rgb(66,66,66); }" + _
 		  "</style></head><body>" + _
 		  "<div style='font-size: 28px; font-weight: bold;'>ECHOindications web app</div>" + _
 		  "<div style='font-style: italic; font-size: 14px; margin-bottom: 25px;'>Version 1.5</div>" + _
