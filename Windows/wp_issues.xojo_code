@@ -100,7 +100,7 @@ Begin WebPage wp_issues
       RowSelectionType=   1
       Scope           =   2
       SearchCriteria  =   ""
-      SelectedRowColor=   &c0d6efd
+      SelectedRowColor=   &c006AB500
       SelectedRowIndex=   0
       TabIndex        =   1
       TabStop         =   True
