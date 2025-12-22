@@ -6,7 +6,7 @@ Begin WebPage wp_LandingPage
    ControlID       =   ""
    CSSClasses      =   ""
    Enabled         =   False
-   Height          =   742
+   Height          =   708
    ImplicitInstance=   True
    Index           =   -2147483648
    Indicator       =   0
@@ -28,7 +28,7 @@ Begin WebPage wp_LandingPage
    Title           =   "Appropriate Use Criteria for ECHO"
    Top             =   0
    Visible         =   True
-   Width           =   1106
+   Width           =   1066
    _ImplicitInstance=   False
    _mDesignHeight  =   0
    _mDesignWidth   =   0
@@ -63,7 +63,7 @@ Begin WebPage wp_LandingPage
       Tooltip         =   ""
       Top             =   0
       Visible         =   True
-      Width           =   1106
+      Width           =   1066
       _mDesignHeight  =   0
       _mDesignWidth   =   0
       _mPanelIndex    =   -1
@@ -101,7 +101,7 @@ Begin WebPage wp_LandingPage
          Top             =   73
          Underline       =   False
          Visible         =   True
-         Width           =   1066
+         Width           =   1026
          _mPanelIndex    =   -1
       End
       Begin WebLabel lblTitle
@@ -138,7 +138,7 @@ Begin WebPage wp_LandingPage
          Top             =   1
          Underline       =   False
          Visible         =   True
-         Width           =   1066
+         Width           =   1026
          _mPanelIndex    =   -1
       End
    End
@@ -169,7 +169,7 @@ Begin WebPage wp_LandingPage
       Tooltip         =   ""
       Top             =   131
       Visible         =   True
-      Width           =   1106
+      Width           =   1066
       _mDesignHeight  =   0
       _mDesignWidth   =   0
       _mPanelIndex    =   -1
@@ -179,41 +179,13 @@ Begin WebPage wp_LandingPage
       ControlID       =   ""
       CSSClasses      =   ""
       Enabled         =   True
-      Height          =   443
+      Height          =   415
       Index           =   -2147483648
       Indicator       =   0
       LayoutDirection =   0
       LayoutType      =   0
-      Left            =   489
-      LockBottom      =   True
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   True
-      LockTop         =   True
-      LockVertical    =   False
-      PanelIndex      =   0
-      Scope           =   0
-      ScrollDirection =   0
-      TabIndex        =   3
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   263
-      Visible         =   True
-      Width           =   541
-      _mDesignHeight  =   0
-      _mDesignWidth   =   0
-      _mPanelIndex    =   -1
-   End
-   Begin WebHTMLViewer HTMLViewer1
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      Height          =   437
-      Index           =   -2147483648
-      Indicator       =   ""
-      Left            =   52
-      LockBottom      =   True
+      Left            =   77
+      LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
       LockLeft        =   True
@@ -222,13 +194,15 @@ Begin WebPage wp_LandingPage
       LockVertical    =   False
       PanelIndex      =   0
       Scope           =   0
-      TabIndex        =   6
+      ScrollDirection =   0
+      TabIndex        =   7
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   305
-      UseSandbox      =   False
+      Top             =   273
       Visible         =   True
-      Width           =   439
+      Width           =   913
+      _mDesignHeight  =   0
+      _mDesignWidth   =   0
       _mPanelIndex    =   -1
    End
 End
@@ -269,7 +243,12 @@ End
 		  
 		  var topOffset as integer = rect_topmenu.Height + wc_logos.Height
 		  var top as integer = (self.Height - topOffset)/2
+		  
+		  var left as integer = (self.Width - wc_menu.width)/2
 		  wc_menu.Top = top - 20
+		  wc_menu.Left = left
+		  
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -277,37 +256,6 @@ End
 
 #tag EndWindowCode
 
-#tag Events HTMLViewer1
-	#tag Event
-		Sub Opening()
-		  Var html As String = "<html><head><style>" + _
-		  "body { margin: 0; padding: 10px; font-family: Arial, sans-serif; font-size: 14px; line-height: 1.6; }" + _
-		  "</style></head><body>" + _
-		  "<div style='font-size: 24px; font-weight: bold;'>ECHOindications web app</div>" + _
-		  "<div style='font-style: italic; font-size: 14px; margin-bottom: 15px;'>Version 1.5</div>" + _
-		  "<div style='margin-bottom: 15px;'>Appropriate Use Criteria for Echocardiography drawn from national and international guidelines and consensus across trusts in SE London.</div>" + _
-		  "<div style='font-weight: bold; margin-bottom: 5px;'>View Appropriate Use Criteria</div>" + _
-		  "<div>• Indications for echocardiography with appropriate use criteria for primary care, outpatient and inpatient secondary care, and appropriate priority/urgency.</div>" + _
-		  "<div>• Fuzzy search, context filtering</div>" + _
-		  "<div>• Double-click to view all details.</div>" + _
-		  "<div style='margin-bottom: 15px;'>• Right-click to request changes for the specific context.</div>" + _
-		  "<div style='font-weight: bold; margin-bottom: 5px;'>Admin Login</div>" + _
-		  "<div style='margin-bottom: 15px;'>Authenticate to make changes.</div>" + _
-		  "<div style='font-weight: bold; margin-bottom: 5px;'>Request Changes</div>" + _
-		  "<div style='margin-bottom: 15px;'>Feature requests or bug reports</div>" + _
-		  "<div style='font-weight: bold; margin-bottom: 5px;'>Issues</div>" + _
-		  "<div>View all reported issues.</div>" + _
-		  "</body></html>"
-		  
-		  me.LoadHTML(html)
-		  
-		  
-		  ' me.LoadURL("https://www.medicalconcepts.co.uk/infotext.html")
-		  
-		  ' me.LoadHTML(app.kInfoText)
-		End Sub
-	#tag EndEvent
-#tag EndEvents
 #tag ViewBehavior
 	#tag ViewProperty
 		Name="PanelIndex"

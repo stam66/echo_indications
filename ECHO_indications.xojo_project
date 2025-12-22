@@ -46,6 +46,7 @@ MultiImage=ECHOICONred;Graphics/Logos/ECHOICONred.xojo_image;&h000000005DDBA7FF;
 MultiImage=ECHO_ICON_SMALLER2_blue;Graphics/Logos/ECHO_ICON_SMALLER2_blue.xojo_image;&h000000005103DFFF;&h00000000272CA7FF;false
 MultiImage=ECHO_ICON_SMALLER2_white;Graphics/Logos/ECHO_ICON_SMALLER2_white.xojo_image;&h00000000218F8FFF;&h00000000272CA7FF;false
 WebContainer=wc_MainMenu;Containers/wc_MainMenu.xojo_code;&h00000000120FE7FF;&h000000005C5177FF;false
+WebContainer=wc_MainMenu1;Containers/wc_MainMenu1.xojo_code;&h000000007D2277FF;&h000000005C5177FF;false
 WebContainer=wc_logoContainer;Containers/wc_logoContainer.xojo_code;&h000000000D5CCFFF;&h000000005C5177FF;false
 Module=ControlExtension;Modules/ControlExtension.xojo_code;&h000000007F89D7FF;&h0000000022A40FFF;false
 WebContainer=wc_WebPageHeader;Containers/wc_WebPageHeader.xojo_code;&h00000000631AE7FF;&h000000005C5177FF;false
