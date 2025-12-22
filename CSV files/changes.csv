@@ -1,0 +1,34 @@
+﻿primaryKey	changeRequest	fk_indication	indication_existing	indication_new	contexts_existing	contexts_new	user	status	reason_for_close
+1	"Add indication for suspicion of inherited myocardial or valve disease"		""	""	""	""	SK	"In progress"	""
+2	"Change request for indication id 228"	228	"Syncope with clinical suspicion of cardiac disease"	"Can you add Loss of consciousness? So that search is easy. Often GPs don't put syncope"	Arrhythmia	""	""	New	
+3	"Change request for indication id 228"	228	"Syncope with clinical suspicion of cardiac disease"	"Can you add Loss of consciousness? So that search is easy. Often GPs don't put syncope"	Arrhythmia	""	""	New	
+4	"Change request for indication id 334"	334	"Shortness of breath with normal NT-proBNP"	"Could you put SOB and dyspnoea? Difficult to find this indication.
+
+Please add The 2nd and 3rd options with the level of BNP with SR and in AF"	Myocardial	""	""	New	
+5	"Change request for indication id 225"	225	"Routine re-evaluation in hypertension without symptoms or signs of hypertensive heart disease"	"Please make separate entry for LVH on ECG (frequent GP request) and cardiomegaly on CXR. Can the proposed 14 GP pathologies be in the 'general' pool"	Systemic	""	""	New	
+6	"Change request for indication id 334"	334	"Shortness of breath with normal NT-proBNP"	"what if BNP is raised ? plus ankle oedema ?"	Myocardial	""	""	New	
+7	"Change request for indication id 334"	334	"Shortness of breath with normal NT-proBNP"	"what if BNP is raised ? plus ankle oedema ?"	Myocardial	""	""	New	
+8	"Change request for indication id 205"	205	"LBBB with no previous echocardiogram"	"can we have abbreviations. ?
+it only came up with Bundle branch block in full."	Arrhythmia	""	""	New	
+9	"Change request for indication id 205"	205	"LBBB with no previous echocardiogram"	"can we have abbreviations. ?
+it only came up with Bundle branch block in full."	Arrhythmia	""	""	New	
+10	"Change request for indication id 291"	291	"Monitoring for rejection in a cardiac transplant recipient"	"Rejection in Transplant patient"	Myocardial	""	""	New	
+11	"Change request for indication id 291"	291	"Monitoring for rejection in a cardiac transplant recipient"	"Rejection in Transplant patient"	Myocardial	""	""	New	
+12	"Change request for indication id 305"	305	"Minor radiographic cardiomegaly in the absence of symptoms or signs of heart failure"	"Cardiomegaly in absence of symptoms or signs of heart failure"	Myocardial	""	""	New	
+13	"Change request for indication id 334"	334	"Shortness of breath with normal NT-proBNP"	"SOB "	Myocardial	""	""	New	
+14	"Change request for indication id 314"	314	"Sustained or paroxysmal AF or atrial flutter without change in clinical status"	"AF/atrial flutter"	Arrhythmia	""	""	New	
+15	"Change request for indication id 314"	314	"Sustained or paroxysmal AF or atrial flutter without change in clinical status"	"AF/atrial flutter"	Arrhythmia	""	""	New	
+16	"Change request for indication id 283"	283	"Re-evaluation of known ascending aortic dilation or history of aortic dissection to establish a baseline rate of expansion or when the rate of expansion is excessive"	"Dilated ascending aorta"	Arterial	""	""	New	
+17	"Change request for indication id 313"	313	"Repeat assessment for LV mass regression with treated HTN"	"Please, make separate entry for LVH/cardiomegaly as many GPs come with this request"	"Arterial ; Myocardial"	""	""	New	
+18	"Change request for indication id 227"	227	"Syncope with previous ECHO and no clinical suspicion of heart disease and/or history of possible ICC"	"Please could we add an indication for just 'Syncope' as this is often requested, also maybe 'Syncope with no previous TTE'"	Arrhythmia	""	""	New	
+19	"Change request for indication id 227"	227	"Syncope with previous ECHO and no clinical suspicion of heart disease and/or history of possible ICC"	"Please could we add an indication for just 'Syncope' as this is often requested, also maybe 'Syncope with no previous TTE'"	Arrhythmia	""	""	New	
+20	"Please could you include criteria for post pericarditis/myocarditis scans"						"KCH "	New	
+21	"Please could you add in ones for more simple requests such as: SOB; chest pain; breathlessness; enlarged heart on CXR; syncope; murmur; hypertension. Thank you. "						KCH	New	
+22	"Change request for indication id 237"	237	"Murmur with no clinical suspicion of cardiovascular disease and benign family history under the age of 50y and with no previous ECHO."	"? is this needed for an inpatient if there are no symptoms "	Valve	""	""	New	
+23	"Change request for indication id 237"	237	"Murmur with no clinical suspicion of cardiovascular disease and benign family history under the age of 50y and with no previous ECHO."	"? is this needed for an inpatient if there are no symptoms "	Valve	""	""	New	
+24	"Change request for indication id 257"	257	"Peripheral arterial embolus with no obvious cause"	"Does this include stroke? I can't find the term stroke used anywhere else but it is one of our most common indications"	Systemic	""	""	New	
+25	"Change request for indication id 257"	257	"Peripheral arterial embolus with no obvious cause"	"Does this include stroke? I can't find the term stroke used anywhere else but it is one of our most common indications"	Systemic	""	""	New	
+26	"Abnormal ECG with no symptoms "						KCH	New	
+27	"Change request for indication id 237"	237	"Murmur with no clinical suspicion of cardiovascular disease and benign family history under the age of 50y and with no previous ECHO."	"? should not be indicated"	Valve	""	""	New	
+28	"Change request for indication id 237"	237	"Murmur with no clinical suspicion of cardiovascular disease and benign family history under the age of 50y and with no previous ECHO."	"? should not be indicated"	Valve	""	""	New	
+29	"Does Brugada with no symptoms/FH of Brugada warrant a TTE?"						"KCH "	New	

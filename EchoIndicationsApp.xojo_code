@@ -24,6 +24,118 @@ Inherits WebApplication
 
 
 	#tag Method, Flags = &h0
+		Function AdjustColorBrightness(originalColor As Color, factor As Double) As Color
+		  // Adjust brightness while preserving color identity
+		  // factor > 1.0 makes brighter, < 1.0 makes darker, 1.0 = no change
+		  
+		  Var r As Integer = Min(255, originalColor.Red * factor)
+		  Var g As Integer = Min(255, originalColor.Green * factor)
+		  Var b As Integer = Min(255, originalColor.Blue * factor)
+		  
+		  Return Color.RGB(r, g, b)
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetContrastingTextColor(backgroundColor As Color) As Color
+		  // Get black or white text color based on background brightness
+		  // Threshold of 128 is midpoint - below is dark, above is light
+		  
+		  Var luminance As Double = GetLuminance(backgroundColor)
+		  
+		  If luminance < 128 Then
+		    // Dark background - use white text
+		    Return Color.White
+		  Else
+		    // Light background - use black text
+		    Return Color.Black
+		  End If
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetLuminance(backgroundColor As Color) As Double
+		  // Calculate perceived brightness (luminance) of a color
+		  // Returns value between 0 (black) and 255 (white)
+		  // Uses YIQ formula: (R*299 + G*587 + B*114) / 1000
+		  
+		  Var r As Double = backgroundColor.Red
+		  Var g As Double = backgroundColor.Green
+		  Var b As Double = backgroundColor.Blue
+		  
+		  // YIQ formula weights green most heavily (human eye most sensitive to green)
+		  Var luminance As Double = (r * 0.299) + (g * 0.587) + (b * 0.114)
+		  
+		  Return luminance
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetReadableColorForBackground(textColor As Color, backgroundColor As Color, preserveHue As Boolean = True) As Color
+		  // Returns a readable version of textColor on backgroundColor
+		  // If preserveHue is True, adjusts brightness while keeping hue
+		  // If preserveHue is False, returns simple black/white contrast
+		  
+		  If Not preserveHue Then
+		    Return GetContrastingTextColor(backgroundColor)
+		  End If
+		  
+		  // Calculate background luminance
+		  Var bgLuminance As Double = GetLuminance(backgroundColor)
+		  
+		  // Calculate text luminance
+		  Var textLuminance As Double = GetLuminance(textColor)
+		  
+		  // Determine if we need to lighten or darken
+		  Var contrastNeeded As Double = 128 // Minimum luminance difference needed
+		  
+		  If bgLuminance < 128 Then
+		    // Dark background - need lighter text
+		    If textLuminance < bgLuminance + contrastNeeded Then
+		      // Text is too dark for dark background - brighten it
+		      Var factor As Double = (bgLuminance + contrastNeeded) / textLuminance
+		      factor = Min(factor, 3.0) // Cap at 3x to avoid over-brightening
+		      Return AdjustColorBrightness(textColor, factor)
+		    Else
+		      // Text is already light enough
+		      Return textColor
+		    End If
+		  Else
+		    // Light background - need darker text
+		    If textLuminance > bgLuminance - contrastNeeded Then
+		      // Text is too light for light background - darken it
+		      Var factor As Double = (bgLuminance - contrastNeeded) / textLuminance
+		      factor = Max(factor, 0.3) // Don't go below 30% brightness
+		      Return AdjustColorBrightness(textColor, factor)
+		    Else
+		      // Text is already dark enough
+		      Return textColor
+		    End If
+		  End If
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub GetStyleForBackground(textColor As Color, backgroundColor As Color, preserveSemantics As Boolean = True, makeItalic As Boolean = False, makeBold As Boolean = False)
+		  // Create a complete WebStyle with readable colors
+		  Var style As New WebStyle
+		  
+		  // Set foreground color
+		  If preserveSemantics Then
+		    style.ForegroundColor = GetReadableColorForBackground(textColor, backgroundColor, True)
+		  Else
+		    style.ForegroundColor = GetContrastingTextColor(backgroundColor)
+		  End If
+		  
+		  // Apply optional styling
+		  style.Italic = makeItalic
+		  style.Bold = makeBold
+		  
+		  Return style
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function hashPassword(password as string) As string
 		  var ps as MySQLPreparedStatement = session.db.Prepare("SELECT SHA2(?, 256) AS password_hash")
 		  ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_STRING)
