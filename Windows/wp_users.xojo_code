@@ -237,7 +237,7 @@ End
 #tag WindowCode
 	#tag Event
 		Sub Opening()
-		  populateUsers
+		  ' populateUsers
 		End Sub
 	#tag EndEvent
 
@@ -327,6 +327,9 @@ End
 		  
 		  lstUsers.RemoveAllRows
 		  
+		  // **FIX: Clear and reinitialize RowStates dictionary**
+		  RowStates = New Dictionary
+		  
 		  // Define styles
 		  Var darkMode As Boolean = Session.IsDarkMode
 		  Var activeStyle As New WebStyle
@@ -362,39 +365,12 @@ End
 		    lstUsers.CellValueAt(rowIdx, 3) = New WebListBoxStyleRenderer(cellStyle, title)
 		    
 		    // Store row state in dictionary
-		    If RowStates = Nil Then RowStates = New Dictionary
 		    RowStates.Value(rowIdx) = isActive
 		    
 		    rs.MoveToNextRow
 		  Wend
 		  
 		  UpdateFoundCount
-		  
-		  
-		  
-		  
-		  ' Var sql As String = "SELECT * FROM users ORDER BY name"
-		  ' Var rs As RowSet = Session.db.SelectSQL(sql)
-		  ' 
-		  ' lstUsers.RemoveAllRows
-		  ' While Not rs.AfterLastRow
-		  ' lstUsers.AddRow(rs.Column("name").StringValue)
-		  ' lstUsers.CellTextAt(lstUsers.LastAddedRowIndex, 1) = rs.Column("username").StringValue
-		  ' lstUsers.CellTextAt(lstUsers.LastAddedRowIndex, 2) = rs.Column("email").StringValue
-		  ' lstUsers.CellTextAt(lstUsers.LastAddedRowIndex, 3) = rs.Column("title").StringValue
-		  ' lstUsers.RowTagAt(lstUsers.LastAddedRowIndex) = rs.Column("id").IntegerValue
-		  ' 
-		  ' // Style inactive users
-		  ' If Not rs.Column("is_active").BooleanValue Then
-		  ' For col As Integer = 0 To 3
-		  ' lstUsers.CellStyleAt(lstUsers.LastAddedRowIndex, col) = InactiveUserStyle
-		  ' Next
-		  ' End If
-		  ' 
-		  ' rs.MoveToNextRow
-		  ' Wend
-		  ' 
-		  ' UpdateFoundCount
 		End Sub
 	#tag EndMethod
 
@@ -427,6 +403,9 @@ End
 		  Var rs As RowSet = ps.SelectSQL
 		  
 		  lstUsers.RemoveAllRows
+		  
+		  // **FIX: Clear and reinitialize RowStates dictionary**
+		  RowStates = New Dictionary
 		  
 		  // Define styles
 		  Var darkMode As Boolean = Session.IsDarkMode
@@ -462,6 +441,9 @@ End
 		    lstUsers.CellValueAt(rowIdx, 2) = New WebListBoxStyleRenderer(cellStyle, email)
 		    lstUsers.CellValueAt(rowIdx, 3) = New WebListBoxStyleRenderer(cellStyle, title)
 		    
+		    // Store row state in dictionary
+		    RowStates.Value(rowIdx) = isActive
+		    
 		    rs.MoveToNextRow
 		  Wend
 		  
@@ -492,23 +474,47 @@ End
 		  ' ps.Bind(i, wildcard)
 		  ' Next
 		  ' 
-		  ' Var rs As RowSet = ps.ExecuteSQL
+		  ' Var rs As RowSet = ps.SelectSQL
 		  ' 
 		  ' lstUsers.RemoveAllRows
-		  ' While Not rs.AfterLastRow
-		  ' lstUsers.AddRow(rs.Column("name").StringValue)
-		  ' lstUsers.CellTextAt(lstUsers.LastAddedRowIndex, 1) = rs.Column("username").StringValue
-		  ' lstUsers.CellTextAt(lstUsers.LastAddedRowIndex, 2) = rs.Column("email").StringValue
-		  ' lstUsers.CellTextAt(lstUsers.LastAddedRowIndex, 3) = rs.Column("title").StringValue
-		  ' lstUsers.RowTagAt(lstUsers.LastAddedRowIndex) = rs.Column("id").IntegerValue
 		  ' 
-		  ' // Style inactive users
-		  ' If Not rs.Column("is_active").BooleanValue Then
-		  ' For col As Integer = 0 To 3
-		  ' lstUsers.CellTextColorAt(lstUsers.LastAddedRowIndex, col) = Color.RGB(128, 128, 128)
-		  ' lstUsers.CellItalicAt(lstUsers.LastAddedRowIndex, col) = True
-		  ' Next
-		  ' End If
+		  ' // Define styles
+		  ' Var darkMode As Boolean = Session.IsDarkMode
+		  ' Var activeStyle As New WebStyle
+		  ' Var inactiveStyle As New WebStyle
+		  ' 
+		  ' activeStyle.ForegroundColor = If(darkMode, Color.White, Color.Black)
+		  ' inactiveStyle.ForegroundColor = Color.LightGray
+		  ' inactiveStyle.Italic = True
+		  ' 
+		  ' While Not rs.AfterLastRow
+		  ' // Add empty row first
+		  ' lstUsers.AddRow()
+		  ' Var rowIdx As Integer = lstUsers.LastAddedRowIndex
+		  ' 
+		  ' // Read data
+		  ' Var fullName As String = rs.Column("name").StringValue
+		  ' Var username As String = rs.Column("username").StringValue
+		  ' Var email As String = rs.Column("email").StringValue
+		  ' Var title As String = rs.Column("title").StringValue
+		  ' Var isActive As Boolean = rs.Column("is_active").BooleanValue
+		  ' Var userId As Integer = rs.Column("id").IntegerValue
+		  ' 
+		  ' // Store primary key
+		  ' lstUsers.RowTagAt(rowIdx) = userId
+		  ' 
+		  ' // Choose style
+		  ' Var cellStyle As WebStyle = If(isActive, activeStyle, inactiveStyle)
+		  ' 
+		  ' // Apply styled text to every column
+		  ' lstUsers.CellValueAt(rowIdx, 0) = New WebListBoxStyleRenderer(cellStyle, fullName)
+		  ' lstUsers.CellValueAt(rowIdx, 1) = New WebListBoxStyleRenderer(cellStyle, username)
+		  ' lstUsers.CellValueAt(rowIdx, 2) = New WebListBoxStyleRenderer(cellStyle, email)
+		  ' lstUsers.CellValueAt(rowIdx, 3) = New WebListBoxStyleRenderer(cellStyle, title)
+		  ' 
+		  ' // **FIX: Store row state in dictionary - this was missing!**
+		  ' If RowStates = Nil Then RowStates = New Dictionary
+		  ' RowStates.Value(rowIdx) = isActive
 		  ' 
 		  ' rs.MoveToNextRow
 		  ' Wend
@@ -516,6 +522,122 @@ End
 		  ' UpdateFoundCount
 		  
 		  
+		  ' Var searchTerm As String = txtSearch.Value.Trim.Lowercase
+		  ' 
+		  ' If searchTerm = "" Then
+		  ' populateUsers
+		  ' Return
+		  ' End If
+		  ' 
+		  ' // Build SQL with LIKE clauses for all searchable fields
+		  ' Var sql As String = "SELECT * FROM users WHERE " + _
+		  ' "LOWER(name) LIKE ? OR " + _
+		  ' "LOWER(username) LIKE ? OR " + _
+		  ' "LOWER(email) LIKE ? OR " + _
+		  ' "LOWER(title) LIKE ? " + _
+		  ' "ORDER BY name"
+		  ' 
+		  ' Var ps As MySQLPreparedStatement = Session.db.Prepare(sql)
+		  ' 
+		  ' // Bind the search term with wildcards for each parameter
+		  ' Var wildcard As String = "%" + searchTerm + "%"
+		  ' For i As Integer = 0 To 3
+		  ' ps.BindType(i, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		  ' ps.Bind(i, wildcard)
+		  ' Next
+		  ' 
+		  ' Var rs As RowSet = ps.SelectSQL
+		  ' 
+		  ' lstUsers.RemoveAllRows
+		  ' 
+		  ' // Define styles
+		  ' Var darkMode As Boolean = Session.IsDarkMode
+		  ' Var activeStyle As New WebStyle
+		  ' Var inactiveStyle As New WebStyle
+		  ' 
+		  ' activeStyle.ForegroundColor = If(darkMode, Color.White, Color.Black)
+		  ' inactiveStyle.ForegroundColor = Color.LightGray
+		  ' inactiveStyle.Italic = True
+		  ' 
+		  ' While Not rs.AfterLastRow
+		  ' // Add empty row first
+		  ' lstUsers.AddRow()
+		  ' Var rowIdx As Integer = lstUsers.LastAddedRowIndex
+		  ' 
+		  ' // Read data
+		  ' Var fullName As String = rs.Column("name").StringValue
+		  ' Var username As String = rs.Column("username").StringValue
+		  ' Var email As String = rs.Column("email").StringValue
+		  ' Var title As String = rs.Column("title").StringValue
+		  ' Var isActive As Boolean = rs.Column("is_active").BooleanValue
+		  ' Var userId As Integer = rs.Column("id").IntegerValue
+		  ' 
+		  ' // Store primary key
+		  ' lstUsers.RowTagAt(rowIdx) = userId
+		  ' 
+		  ' // Choose style
+		  ' Var cellStyle As WebStyle = If(isActive, activeStyle, inactiveStyle)
+		  ' 
+		  ' // Apply styled text to every column
+		  ' lstUsers.CellValueAt(rowIdx, 0) = New WebListBoxStyleRenderer(cellStyle, fullName)
+		  ' lstUsers.CellValueAt(rowIdx, 1) = New WebListBoxStyleRenderer(cellStyle, username)
+		  ' lstUsers.CellValueAt(rowIdx, 2) = New WebListBoxStyleRenderer(cellStyle, email)
+		  ' lstUsers.CellValueAt(rowIdx, 3) = New WebListBoxStyleRenderer(cellStyle, title)
+		  ' 
+		  ' rs.MoveToNextRow
+		  ' Wend
+		  ' 
+		  ' UpdateFoundCount
+		  ' 
+		  ' 
+		  ' ' Var searchTerm As String = txtSearch.Value.Trim.Lowercase
+		  ' ' 
+		  ' ' If searchTerm = "" Then
+		  ' ' populateUsers
+		  ' ' Return
+		  ' ' End If
+		  ' ' 
+		  ' ' // Build SQL with LIKE clauses for all searchable fields
+		  ' ' Var sql As String = "SELECT * FROM users WHERE " + _
+		  ' ' "LOWER(name) LIKE ? OR " + _
+		  ' ' "LOWER(username) LIKE ? OR " + _
+		  ' ' "LOWER(email) LIKE ? OR " + _
+		  ' ' "LOWER(title) LIKE ? " + _
+		  ' ' "ORDER BY name"
+		  ' ' 
+		  ' ' Var ps As MySQLPreparedStatement = Session.db.Prepare(sql)
+		  ' ' 
+		  ' ' // Bind the search term with wildcards for each parameter
+		  ' ' Var wildcard As String = "%" + searchTerm + "%"
+		  ' ' For i As Integer = 0 To 3
+		  ' ' ps.BindType(i, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		  ' ' ps.Bind(i, wildcard)
+		  ' ' Next
+		  ' ' 
+		  ' ' Var rs As RowSet = ps.ExecuteSQL
+		  ' ' 
+		  ' ' lstUsers.RemoveAllRows
+		  ' ' While Not rs.AfterLastRow
+		  ' ' lstUsers.AddRow(rs.Column("name").StringValue)
+		  ' ' lstUsers.CellTextAt(lstUsers.LastAddedRowIndex, 1) = rs.Column("username").StringValue
+		  ' ' lstUsers.CellTextAt(lstUsers.LastAddedRowIndex, 2) = rs.Column("email").StringValue
+		  ' ' lstUsers.CellTextAt(lstUsers.LastAddedRowIndex, 3) = rs.Column("title").StringValue
+		  ' ' lstUsers.RowTagAt(lstUsers.LastAddedRowIndex) = rs.Column("id").IntegerValue
+		  ' ' 
+		  ' ' // Style inactive users
+		  ' ' If Not rs.Column("is_active").BooleanValue Then
+		  ' ' For col As Integer = 0 To 3
+		  ' ' lstUsers.CellTextColorAt(lstUsers.LastAddedRowIndex, col) = Color.RGB(128, 128, 128)
+		  ' ' lstUsers.CellItalicAt(lstUsers.LastAddedRowIndex, col) = True
+		  ' ' Next
+		  ' ' End If
+		  ' ' 
+		  ' ' rs.MoveToNextRow
+		  ' ' Wend
+		  ' ' 
+		  ' ' UpdateFoundCount
+		  ' 
+		  ' 
 		  
 		End Sub
 	#tag EndMethod

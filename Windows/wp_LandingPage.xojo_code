@@ -230,6 +230,12 @@ End
 
 
 	#tag Method, Flags = &h0
+		Sub HandleDataChanged(data As Variant)
+		  MessageBox("Event received: " + data.StringValue)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub SetMenuVertical()
 		  
 		  ' var left as integer = (self.width - wc_Menu.width)/2
