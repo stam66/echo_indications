@@ -25,7 +25,7 @@ Protected Module PubSub
 		End Sub
 	#tag EndMethod
 
-	#tag DelegateDeclaration, Flags = &h0
+	#tag DelegateDeclaration, Flags = &h0, Description = 416C6C2063616C6C6261636B206D6574686F6473206D7573742074616B65203120706172616D657465722061732076617269616E74
 		Delegate Sub EventCallback(data As Variant)
 	#tag EndDelegateDeclaration
 

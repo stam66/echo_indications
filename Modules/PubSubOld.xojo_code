@@ -1,5 +1,5 @@
 #tag Module
-Protected Module PubSub1
+Protected Module PubSubOld
 	#tag Method, Flags = &h0
 		Sub Broadcast(eventName As String, data As Variant = Nil)
 		  ' Public Sub Broadcast(eventName As String, data As Variant = Nil)
