@@ -253,9 +253,13 @@ End
 #tag Events html_InfoText
 	#tag Event
 		Sub Opening()
-		  Var html As String = "<html><head><style>" + _
-		  "body { margin: 0; padding: 10px; font-family: Arial, sans-serif; font-size: 16px; line-height: 1.4; color: rgb(66,66,66); }" + _
-		  "</style></head><body>" + _
+		  Var html As String = "<html><head><style>" 
+		  if Session.IsDarkMode then
+		    html = html + "body { margin: 0; padding: 10px; font-family: Arial, sans-serif; font-size: 16px; line-height: 1.4; color: rgb(180,180,180); }"
+		  else
+		    html = html + "body { margin: 0; padding: 10px; font-family: Arial, sans-serif; font-size: 16px; line-height: 1.4; color: rgb(66,66,66); }"
+		  end if
+		  html = html + "</style></head><body>" + _
 		  "<div style='font-size: 28px; font-weight: bold;'>ECHOindications web app</div>" + _
 		  "<div style='font-style: italic; font-size: 14px; margin-bottom: 25px;'>Version 1.5</div>" + _
 		  "<div style='margin-bottom: 15px;'>Appropriate Use Criteria for Echocardiography drawn from national and international guidelines and consensus across trusts in SE London.</div>" + _
@@ -267,6 +271,27 @@ End
 		  "</body></html>"
 		  
 		  me.LoadHTML(html)
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  ' Var html As String = "<html><head><style>" + _
+		  ' "body { margin: 0; padding: 10px; font-family: Arial, sans-serif; font-size: 16px; line-height: 1.4; color: rgb(66,66,66); }" + _
+		  ' "</style></head><body>" + _
+		  ' "<div style='font-size: 28px; font-weight: bold;'>ECHOindications web app</div>" + _
+		  ' "<div style='font-style: italic; font-size: 14px; margin-bottom: 25px;'>Version 1.5</div>" + _
+		  ' "<div style='margin-bottom: 15px;'>Appropriate Use Criteria for Echocardiography drawn from national and international guidelines and consensus across trusts in SE London.</div>" + _
+		  ' "<div style='font-weight: bold; margin-bottom: 5px;'>Appropriate Use Criteria</div>" + _
+		  ' "<div>• Indications for echocardiography grouped by context, with appropriate use criteria for primary care, outpatient and inpatient secondary care, and appropriate priority/urgency.</div>" + _
+		  ' "<div>• Fuzzy search, context filtering</div>" + _
+		  ' "<div>• Double-click to view all details.</div>" + _
+		  ' "<div style='margin-bottom: 15px;'>• Right-click to request changes for an indication.</div>" + _
+		  ' "</body></html>"
+		  ' 
+		  ' me.LoadHTML(html)
 		End Sub
 	#tag EndEvent
 #tag EndEvents

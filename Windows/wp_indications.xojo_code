@@ -311,6 +311,10 @@ End
 		  
 		  // Update header
 		  wc_header.UpdateAuthenticationStatus(session.IsAuthenticated)
+		  
+		  // subscribe to login success
+		  PubSub.Subscribe("loginSuccessful", AddressOf Initialise, self)
+		  
 		End Sub
 	#tag EndEvent
 
@@ -428,7 +432,10 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Initialise()
+		Sub Initialise(data as variant = nil)
+		  ' data parameter added for pub/sub requirement
+		  #Pragma Unused data
+		  
 		  btnNew.Enabled = session.IsAuthenticated
 		  btnDelete.Enabled = session.IsAuthenticated
 		End Sub
@@ -512,7 +519,6 @@ End
 		      // Apply search with phrase matching and AND logic
 		      // Split by comma to get individual search terms
 		      Var searchTerms() As String = searchTerm.Split(",")
-		      Var maxDistance As Integer = 2 // Allow 2 character differences for single words
 		      
 		      While Not rs.AfterLastRow
 		        Var id As Integer = rs.Column("id").IntegerValue
@@ -543,6 +549,18 @@ End
 		            // It's a single word - do fuzzy word matching + substring matching
 		            Var termLower As String = term.Lowercase
 		            
+		            // Calculate adaptive max distance based on term length
+		            Var maxDistance As Integer
+		            Var termLength As Integer = termLower.Length
+		            
+		            If termLength <= 3 Then
+		              maxDistance = 0  // Exact match only for very short terms
+		            ElseIf termLength = 4 Then
+		              maxDistance = 1  // Allow 1 char difference for 4-char terms
+		            Else
+		              maxDistance = 2  // Allow 2 char difference for 5+ char terms
+		            End If
+		            
 		            // First check for substring match (fragment matching)
 		            If searchableTextLower.IndexOf(termLower) > -1 Then
 		              termMatched = True
@@ -565,6 +583,7 @@ End
 		              Next
 		            End If
 		          End If
+		          
 		          // If this term didn't match, record fails AND logic
 		          If Not termMatched Then
 		            allTermsMatch = False

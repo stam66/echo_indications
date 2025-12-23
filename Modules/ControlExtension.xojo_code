@@ -36,6 +36,17 @@ Protected Module ControlExtension
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h21
+		Private Sub SetLineHeight(Extends lbl As WebLabel, lineHeight As String)
+		  If lineHeight.Trim = "" Then Return
+		  
+		  Dim js As String
+		  js = "var el = document.getElementById('" + lbl.ControlID + "');" + _
+		  "if (el) { el.style.lineHeight = '" + lineHeight + "'; }"
+		  lbl.ExecuteJavaScript(js)
+		End Sub
+	#tag EndMethod
+
 
 	#tag ViewBehavior
 		#tag ViewProperty

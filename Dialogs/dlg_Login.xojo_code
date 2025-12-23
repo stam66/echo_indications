@@ -384,7 +384,8 @@ End
 		      var wpi as new wp_indications
 		      Session.IsAuthenticated = true
 		      successfulLogin = True  // flag for successful login to be handled in LoginSuccessful event
-		       RaiseEvent LoginSuccessful
+		      RaiseEvent LoginSuccessful
+		      PubSub.Broadcast("loginSuccessful", nil) // new publish-subscribe model
 		      session.CurrentUsername = username
 		      // if on landing page then navigate to indications
 		      var wp as  WebPage = session.CurrentPage
