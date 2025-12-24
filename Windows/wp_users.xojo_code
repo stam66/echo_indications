@@ -236,12 +236,6 @@ End
 
 #tag WindowCode
 	#tag Event
-		Sub Opening()
-		  ' populateUsers
-		End Sub
-	#tag EndEvent
-
-	#tag Event
 		Sub Shown()
 		  populateUsers
 		  

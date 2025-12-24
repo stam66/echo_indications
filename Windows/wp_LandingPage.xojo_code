@@ -330,7 +330,7 @@ Begin WebPage wp_LandingPage
       CSSClasses      =   ""
       Enabled         =   True
       FontName        =   ""
-      FontSize        =   18.0
+      FontSize        =   0.0
       Height          =   38
       Index           =   -2147483648
       Indicator       =   ""
@@ -432,7 +432,7 @@ Begin WebPage wp_LandingPage
       CSSClasses      =   ""
       Enabled         =   True
       FontName        =   ""
-      FontSize        =   18.0
+      FontSize        =   0.0
       Height          =   38
       Index           =   -2147483648
       Indicator       =   0
@@ -466,7 +466,7 @@ Begin WebPage wp_LandingPage
       CSSClasses      =   ""
       Enabled         =   True
       FontName        =   ""
-      FontSize        =   18.0
+      FontSize        =   0.0
       Height          =   38
       Index           =   -2147483648
       Indicator       =   0
