@@ -36,8 +36,8 @@ Protected Module ControlExtension
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h21
-		Private Sub SetLineHeight(Extends lbl As WebLabel, lineHeight As String)
+	#tag Method, Flags = &h0
+		Sub SetLineHeight(Extends lbl As WebLabel, lineHeight As String)
 		  If lineHeight.Trim = "" Then Return
 		  
 		  Var js As String
