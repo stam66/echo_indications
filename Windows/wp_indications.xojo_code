@@ -61,7 +61,7 @@ Begin WebPage wp_indications
       TextAlignment   =   0
       TextColor       =   &c000000FF
       Tooltip         =   ""
-      Top             =   125
+      Top             =   129
       Underline       =   False
       Visible         =   True
       Width           =   252
@@ -89,7 +89,7 @@ Begin WebPage wp_indications
       TabStop         =   True
       Text            =   ""
       Tooltip         =   ""
-      Top             =   97
+      Top             =   101
       Visible         =   True
       Width           =   453
       _mPanelIndex    =   -1
@@ -120,7 +120,7 @@ Begin WebPage wp_indications
       TabIndex        =   3
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   97
+      Top             =   101
       Visible         =   True
       Width           =   247
       _mPanelIndex    =   -1
@@ -153,7 +153,7 @@ Begin WebPage wp_indications
       TextAlignment   =   0
       TextColor       =   &c000000FF
       Tooltip         =   ""
-      Top             =   174
+      Top             =   199
       Underline       =   False
       Visible         =   True
       Width           =   275
@@ -171,7 +171,7 @@ Begin WebPage wp_indications
       HasBorder       =   True
       HasHeader       =   True
       HeaderHeight    =   0
-      Height          =   456
+      Height          =   424
       HighlightSortedColumn=   True
       Index           =   -2147483648
       Indicator       =   0
@@ -199,7 +199,7 @@ Begin WebPage wp_indications
       TabIndex        =   5
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   213
+      Top             =   245
       Visible         =   True
       Width           =   956
       _mPanelIndex    =   -1
@@ -261,7 +261,7 @@ Begin WebPage wp_indications
       TabIndex        =   7
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   97
+      Top             =   101
       Visible         =   True
       Width           =   100
       _mPanelIndex    =   -1
@@ -291,7 +291,7 @@ Begin WebPage wp_indications
       TabIndex        =   8
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   97
+      Top             =   101
       Visible         =   True
       Width           =   100
       _mPanelIndex    =   -1
