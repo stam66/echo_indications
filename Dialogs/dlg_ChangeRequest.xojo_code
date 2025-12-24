@@ -351,7 +351,7 @@ End
 		    
 		    // Update badge if on landing page
 		    If wp_LandingPage <> Nil Then
-		      wp_LandingPage.wc_menu.UpdateIssuesBadge
+		      wp_LandingPage.UpdateIssuesBadge
 		    End If
 		    
 		    Self.Close

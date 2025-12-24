@@ -62,7 +62,8 @@ Inherits WebSession
 		Sub UpdateAllIssuesBadges()
 		  // Update landing page badge if exists
 		  If wp_LandingPage <> Nil Then
-		    wp_LandingPage.wc_menu.UpdateIssuesBadge
+		    wp_LandingPage.UpdateIssuesBadge
+		    ' wp_LandingPage.wc_menu.UpdateIssuesBadge
 		  End If
 		  
 		  // Update any visible page headers
