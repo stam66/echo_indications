@@ -246,7 +246,7 @@ Begin WebPage wp_indications
       Enabled         =   True
       Height          =   38
       Index           =   -2147483648
-      Indicator       =   0
+      Indicator       =   3
       Left            =   20
       LockBottom      =   False
       LockedInPosition=   False
@@ -255,7 +255,7 @@ Begin WebPage wp_indications
       LockRight       =   False
       LockTop         =   True
       LockVertical    =   False
-      Outlined        =   False
+      Outlined        =   True
       PanelIndex      =   0
       Scope           =   2
       TabIndex        =   7
