@@ -540,7 +540,7 @@ Protected Module AuthManager
 			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="CurrentUserName"
+			Name="CurrentUserFullName"
 			Visible=false
 			Group="Behavior"
 			InitialValue=""
