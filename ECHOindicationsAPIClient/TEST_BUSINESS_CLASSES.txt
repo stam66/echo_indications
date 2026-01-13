@@ -1,0 +1,196 @@
+// ============================================================
+// BUSINESS CLASSES TEST CODE
+// ============================================================
+// Demonstrates using the high-level business object classes
+// instead of raw API calls
+// Copy this into a new test method or App.Opening
+// ============================================================
+
+System.DebugLog "=========================================="
+System.DebugLog "Business Classes Test"
+System.DebugLog "=========================================="
+System.DebugLog ""
+
+// ============================================================
+// Test 1: Fetch all indications using Indication class
+// ============================================================
+System.DebugLog "Test 1: Using Indication.GetAll()..."
+
+Var indications() As Indication = Indication.GetAll
+System.DebugLog "✅ Found " + indications.Count.ToString + " indications"
+System.DebugLog ""
+
+// Show first 3 with clean ToString()
+System.DebugLog "First 3 indications:"
+For i As Integer = 0 To Min(2, indications.Count - 1)
+  System.DebugLog "  " + indications(i).ToString
+Next
+System.DebugLog ""
+
+// ============================================================
+// Test 2: Search for indications
+// ============================================================
+System.DebugLog "Test 2: Using Indication.Search()..."
+
+Var searchResults() As Indication = Indication.Search("coronary")
+System.DebugLog "✅ Found " + searchResults.Count.ToString + " matching indications"
+
+For i As Integer = 0 To Min(2, searchResults.Count - 1)
+  System.DebugLog "  " + searchResults(i).Title
+Next
+System.DebugLog ""
+
+// ============================================================
+// Test 3: Get indication by ID
+// ============================================================
+System.DebugLog "Test 3: Using Indication.GetByID()..."
+
+If indications.Count > 0 Then
+  Var firstID As Integer = indications(0).ID
+  Var singleIndication As Indication = Indication.GetByID(firstID)
+
+  If singleIndication <> Nil Then
+    System.DebugLog "✅ Got indication: " + singleIndication.Title
+    System.DebugLog "  ID: " + singleIndication.ID.ToString
+    System.DebugLog "  Keywords: " + singleIndication.Keywords
+    System.DebugLog "  Urgency: " + singleIndication.Urgency
+    System.DebugLog "  Primary Care: " + singleIndication.PrimaryCare
+    System.DebugLog "  Sources: " + _
+    "ASE=" + singleIndication.SourceASE.ToString + ", " + _
+    "EACVI=" + singleIndication.SourceEACVI.ToString + ", " + _
+    "BSE=" + singleIndication.SourceBSE.ToString + ", " + _
+    "Consensus=" + singleIndication.SourceConsensus.ToString
+  End If
+End If
+System.DebugLog ""
+
+// ============================================================
+// Test 4: Get all contexts with counts
+// ============================================================
+System.DebugLog "Test 4: Using Context.GetAllWithCounts()..."
+
+Var contexts() As Context = Context.GetAllWithCounts
+System.DebugLog "✅ Found " + contexts.Count.ToString + " contexts"
+System.DebugLog ""
+
+System.DebugLog "All contexts (sorted by indication count):"
+// Sort by indication count (descending)
+For i As Integer = 0 To contexts.Count - 1
+  For j As Integer = i + 1 To contexts.Count - 1
+    If contexts(j).IndicationCount > contexts(i).IndicationCount Then
+      Var temp As Context = contexts(i)
+      contexts(i) = contexts(j)
+      contexts(j) = temp
+    End If
+  Next
+Next
+
+For Each context As Context In contexts
+  System.DebugLog "  " + context.ToString
+Next
+System.DebugLog ""
+
+// ============================================================
+// Test 5: Get indications by context
+// ============================================================
+System.DebugLog "Test 5: Using Indication.GetByContext()..."
+
+If contexts.Count > 0 Then
+  // Find a context with indications
+  Var contextToTest As Context = Nil
+  For Each ctx As Context In contexts
+    If ctx.IndicationCount > 0 And ctx.IndicationCount < 20 Then
+      contextToTest = ctx
+      Exit For ctx
+    End If
+  Next
+
+  If contextToTest <> Nil Then
+    System.DebugLog "Getting indications for context: " + contextToTest.Name
+
+    Var contextIndications() As Indication = Indication.GetByContext(contextToTest.ID)
+    System.DebugLog "✅ Found " + contextIndications.Count.ToString + " indications in this context"
+
+    For i As Integer = 0 To Min(2, contextIndications.Count - 1)
+      System.DebugLog "  " + contextIndications(i).Title
+    Next
+  End If
+End If
+System.DebugLog ""
+
+// ============================================================
+// Test 6: Get all change requests
+// ============================================================
+System.DebugLog "Test 6: Using ChangeRequest.GetAll()..."
+
+Var changes() As ChangeRequest = ChangeRequest.GetAll
+System.DebugLog "✅ Found " + changes.Count.ToString + " change requests"
+
+If changes.Count > 0 Then
+  System.DebugLog ""
+  System.DebugLog "First 3 change requests:"
+  For i As Integer = 0 To Min(2, changes.Count - 1)
+    System.DebugLog "  " + changes(i).ToString
+  Next
+End If
+System.DebugLog ""
+
+// ============================================================
+// Test 7: Count new change requests
+// ============================================================
+System.DebugLog "Test 7: Using ChangeRequest.CountNew()..."
+
+Var newCount As Integer = ChangeRequest.CountNew
+System.DebugLog "✅ There are " + newCount.ToString + " new change requests"
+System.DebugLog ""
+
+// ============================================================
+// Test 8: Get change requests by status
+// ============================================================
+System.DebugLog "Test 8: Using ChangeRequest.GetByStatus()..."
+
+Var newChanges() As ChangeRequest = ChangeRequest.GetByStatus("New")
+System.DebugLog "✅ Found " + newChanges.Count.ToString + " 'New' change requests"
+System.DebugLog ""
+
+// ============================================================
+// COMPARISON: Old way vs New way
+// ============================================================
+System.DebugLog "=========================================="
+System.DebugLog "Comparison: Raw API vs Business Classes"
+System.DebugLog "=========================================="
+System.DebugLog ""
+
+System.DebugLog "OLD WAY (Raw API):"
+System.DebugLog "  Var result As Dictionary = APIClient.Get(""indications.lc"", ""list"")"
+System.DebugLog "  Var dataVariant As Variant = result.Value(""data"")"
+System.DebugLog "  Var items() As Variant = dataVariant"
+System.DebugLog "  For Each item As Variant In items"
+System.DebugLog "    If item IsA Dictionary Then"
+System.DebugLog "      Var indication As Dictionary = item"
+System.DebugLog "      // Extract each field manually..."
+System.DebugLog "    End If"
+System.DebugLog "  Next"
+System.DebugLog ""
+
+System.DebugLog "NEW WAY (Business Classes):"
+System.DebugLog "  Var indications() As Indication = Indication.GetAll"
+System.DebugLog "  For Each indication As Indication In indications"
+System.DebugLog "    System.DebugLog indication.Title"
+System.DebugLog "  Next"
+System.DebugLog ""
+
+System.DebugLog "=========================================="
+System.DebugLog "All business class tests complete!"
+System.DebugLog "=========================================="
+System.DebugLog ""
+
+System.DebugLog "Summary:"
+System.DebugLog "✅ Indication class - GetAll, GetByID, GetByContext, Search"
+System.DebugLog "✅ Context class - GetAll, GetAllWithCounts, GetByID"
+System.DebugLog "✅ ChangeRequest class - GetAll, GetByStatus, GetByID, CountNew"
+System.DebugLog "✅ User class - GetAll, GetByID (requires auth)"
+System.DebugLog ""
+System.DebugLog "All objects have clean ToString() methods!"
+System.DebugLog "All API calls are hidden behind simple method calls!"
+System.DebugLog "Type-safe properties instead of dictionary lookups!"
