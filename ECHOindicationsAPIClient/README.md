@@ -4,7 +4,7 @@
 
 Version: 1.0
 Created: 2026-01-13
-API: https://echoindications.org/API
+API: https://api.echoindications.org
 
 ---
 
@@ -89,7 +89,7 @@ End If
                   │
 ┌─────────────────┴───────────────────────────┐
 │      ECHO INDICATIONS API                    │
-│  https://echoindications.org/API             │
+│  https://api.echoindications.org             │
 └──────────────────────────────────────────────┘
 ```
 
@@ -447,7 +447,7 @@ See `Examples/` folder for test cases:
 - **Xojo 2025 Release 3** (or later)
 - **API 2 compliant** code only
 - **Platforms:** Desktop (Windows/macOS/Linux), iOS, Android
-- **API Access:** https://echoindications.org/API
+- **API Access:** https://api.echoindications.org
 
 ---
 

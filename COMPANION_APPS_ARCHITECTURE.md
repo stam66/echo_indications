@@ -109,7 +109,7 @@ Both apps will share:
 ```xojo
 Module APIClient
   // Configuration
-  Property BaseURL As String = "https://echoindications.org/API"
+  Property BaseURL As String = "https://api.echoindications.org"
   Property Timeout As Integer = 30 // seconds
 
   // Methods
@@ -294,7 +294,7 @@ End Class
 ```xojo
 Module AppConfig
   // API Configuration
-  #tag Constant, Name = API_BASE_URL, Type = String, Dynamic = False, Default = \"https://echoindications.org/API", Scope = Protected
+  #tag Constant, Name = API_BASE_URL, Type = String, Dynamic = False, Default = \"https://api.echoindications.org", Scope = Protected
   #tag EndConstant
 
   #tag Constant, Name = API_TIMEOUT, Type = Integer, Dynamic = False, Default = \"30", Scope = Protected
