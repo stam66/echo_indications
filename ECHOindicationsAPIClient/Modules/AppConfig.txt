@@ -11,8 +11,8 @@ Protected Module AppConfig
 	#tag EndNote
 
 
-	#tag Constant, Name = API_BASE_URL, Type = String, Dynamic = False, Default = \"https://echoindications.org/API", Scope = Protected
-		#Tag Instance, Platform = Any, Language = Default, Definition  = \"https://echoindications.org/API"
+	#tag Constant, Name = API_BASE_URL, Type = String, Dynamic = False, Default = \"https://api.echoindications.org", Scope = Protected
+		#Tag Instance, Platform = Any, Language = Default, Definition  = \"https://api.echoindications.org"
 	#tag EndConstant
 
 	#tag Constant, Name = API_TIMEOUT_SECONDS, Type = Integer, Dynamic = False, Default = \"30", Scope = Protected

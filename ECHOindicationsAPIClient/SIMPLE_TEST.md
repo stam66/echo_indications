@@ -23,7 +23,7 @@
 ```xojo
 #tag Module
 Protected Module AppConfig
-	#tag Constant, Name = API_BASE_URL, Type = String, Dynamic = False, Default = \"https://echoindications.org/API", Scope = Protected
+	#tag Constant, Name = API_BASE_URL, Type = String, Dynamic = False, Default = \"https://api.echoindications.org", Scope = Protected
 	#tag EndConstant
 
 	#tag Constant, Name = API_TIMEOUT_SECONDS, Type = Integer, Dynamic = False, Default = \"30", Scope = Protected
@@ -293,7 +293,7 @@ End If
 **Problem:** "API is not reachable"
 - Check internet connection
 - Verify `API_BASE_URL` in AppConfig is correct
-- Test https://echoindications.org/API in browser
+- Test https://api.echoindications.org in browser
 
 **Problem:** "Compile error"
 - Make sure you copied ALL the code including `#tag Module` and `#tag EndModule`

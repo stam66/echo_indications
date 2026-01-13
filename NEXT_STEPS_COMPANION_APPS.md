@@ -480,7 +480,7 @@ favorites (indication_id, added_at)
   - Android license (if available, otherwise web builds)
 
 ### API Access
-- **Base URL:** https://echoindications.org/API
+- **Base URL:** https://api.echoindications.org
 - **Credentials:** Database and JWT secret (from settings.lc)
 - **Test account:** Admin credentials for testing
 

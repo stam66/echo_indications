@@ -13,7 +13,7 @@
 
 #tag Module
 Protected Module AppConfig
-	#tag Constant, Name = API_BASE_URL, Type = String, Dynamic = False, Default = \"https://echoindications.org/API", Scope = Protected
+	#tag Constant, Name = API_BASE_URL, Type = String, Dynamic = False, Default = \"https://api.echoindications.org", Scope = Protected
 	#tag EndConstant
 
 	#tag Constant, Name = API_TIMEOUT_SECONDS, Type = Integer, Dynamic = False, Default = \"30", Scope = Protected
