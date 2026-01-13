@@ -61,7 +61,7 @@ Protected Module APIClient
 		      socket.RequestHeader("Authorization") = AuthManager.GetAuthHeader
 		    End If
 
-		    socket.ConnectionTimeout = AppConfig.API_TIMEOUT_SECONDS
+		    socket.Timeout = AppConfig.API_TIMEOUT_SECONDS
 
 		    Var response As String = socket.SendSync("GET", url)
 
@@ -98,11 +98,14 @@ Protected Module APIClient
 		      socket.RequestHeader("Authorization") = AuthManager.GetAuthHeader
 		    End If
 
-		    socket.ConnectionTimeout = AppConfig.API_TIMEOUT_SECONDS
+		    socket.Timeout = AppConfig.API_TIMEOUT_SECONDS
 
 		    Var jsonData As String = GenerateJSON(data, False)
 
-		    Var response As String = socket.SendSync("POST", url, jsonData)
+		    // Set request body
+		    socket.SetRequestContent(jsonData, "application/json")
+
+		    Var response As String = socket.SendSync("POST", url)
 
 		    Var httpStatus As Integer = socket.HTTPStatusCode
 
@@ -134,7 +137,7 @@ Protected Module APIClient
 		Function IsConnected() As Boolean
 		  Try
 		    Var socket As New URLConnection
-		    socket.ConnectionTimeout = 5
+		    socket.Timeout = 5
 
 		    Var url As String = AppConfig.API_BASE_URL + "/auth.lc?action=refresh"
 		    Var response As String = socket.SendSync("GET", url)

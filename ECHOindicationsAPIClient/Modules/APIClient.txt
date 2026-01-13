@@ -47,7 +47,7 @@ Protected Module APIClient
 		    End If
 
 		    // Set timeout
-		    socket.ConnectionTimeout = AppConfig.API_TIMEOUT_SECONDS
+		    socket.Timeout = AppConfig.API_TIMEOUT_SECONDS
 
 		    // Make request
 		    Var response As String = socket.SendSync("GET", url)
@@ -96,7 +96,7 @@ Protected Module APIClient
 		    End If
 
 		    // Set timeout
-		    socket.ConnectionTimeout = AppConfig.API_TIMEOUT_SECONDS
+		    socket.Timeout = AppConfig.API_TIMEOUT_SECONDS
 
 		    // Convert data to JSON
 		    Var jsonData As String = GenerateJSON(data)
@@ -105,8 +105,11 @@ Protected Module APIClient
 		      System.DebugLog("APIClient.Post body: " + jsonData)
 		    End If
 
+		    // Set request body
+		    socket.SetRequestContent(jsonData, "application/json")
+
 		    // Make request
-		    Var response As String = socket.SendSync("POST", url, jsonData)
+		    Var response As String = socket.SendSync("POST", url)
 
 		    // Check HTTP status
 		    Var httpStatus As Integer = socket.HTTPStatusCode
@@ -145,7 +148,7 @@ Protected Module APIClient
 
 		  Try
 		    Var socket As New URLConnection
-		    socket.ConnectionTimeout = 5 // Short timeout for connectivity check
+		    socket.Timeout = 5 // Short timeout for connectivity check
 
 		    Var url As String = AppConfig.API_BASE_URL + "/auth.lc?action=refresh"
 		    Var response As String = socket.SendSync("GET", url)
