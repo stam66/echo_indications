@@ -1,0 +1,68 @@
+#tag Class
+Protected Class Indication
+	#tag Property, Flags = &h0
+		ID As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Title As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Keywords As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Comments As String
+	#tag EndProperty
+
+	#tag Method, Flags = &h0, Description = 53747562202D20746F20626520696D706C656D656E746564
+		Shared Function GetAll() As Indication()
+		  // Stub - to be implemented
+		  Var result() As Indication
+		  Return result
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0, Description = 53747562202D20746F20626520696D706C656D656E746564
+		Shared Function GetByID(id As Integer) As Indication
+		  // Stub - to be implemented
+		  #Pragma Unused id
+		  Return Nil
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0, Description = 53747562202D20746F20626520696D706C656D656E746564
+		Shared Function GetByContext(contextID As Integer) As Indication()
+		  // Stub - to be implemented
+		  #Pragma Unused contextID
+		  Var result() As Indication
+		  Return result
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0, Description = 53747562202D20746F20626520696D706C656D656E746564
+		Shared Function Search(keyword As String) As Indication()
+		  // Stub - to be implemented
+		  #Pragma Unused keyword
+		  Var result() As Indication
+		  Return result
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0, Description = 53747562202D20746F20626520696D706C656D656E746564
+		Shared Function FromJSON(json As String) As Indication
+		  // Stub - to be implemented
+		  #Pragma Unused json
+		  Return Nil
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0, Description = 53747562202D20746F20626520696D706C656D656E746564
+		Function ToJSON() As String
+		  // Stub - to be implemented
+		  Return "{}"
+		End Function
+	#tag EndMethod
+End Class
+#tag EndClass

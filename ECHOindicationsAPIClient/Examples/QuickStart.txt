@@ -1,0 +1,335 @@
+// ECHO Indications API Client - Quick Start Example
+// Copy this code into a Xojo Desktop or Console app to test the API client
+
+// ============================================================
+// STEP 1: Test API Connectivity
+// ============================================================
+
+Sub TestConnectivity()
+  System.DebugLog("Testing API connectivity...")
+
+  If APIClient.IsConnected Then
+    System.DebugLog("✅ API is reachable")
+  Else
+    System.DebugLog("❌ API is not reachable - check internet connection")
+  End If
+End Sub
+
+
+// ============================================================
+// STEP 2: Login
+// ============================================================
+
+Sub TestLogin()
+  System.DebugLog("Testing login...")
+
+  // Replace with actual credentials
+  Var username As String = "admin@example.com"
+  Var password As String = "your_password_here"
+
+  If AuthManager.Login(username, password) Then
+    System.DebugLog("✅ Login successful!")
+    System.DebugLog("User ID: " + AuthManager.CurrentUserID.ToString)
+    System.DebugLog("Username: " + AuthManager.CurrentUsername)
+    System.DebugLog("Email: " + AuthManager.CurrentUserEmail)
+    System.DebugLog("Name: " + AuthManager.CurrentUserName)
+  Else
+    System.DebugLog("❌ Login failed: " + AuthManager.LastError)
+  End If
+End Sub
+
+
+// ============================================================
+// STEP 3: Fetch All Indications (Public endpoint)
+// ============================================================
+
+Sub TestGetAllIndications()
+  System.DebugLog("Fetching all indications...")
+
+  Var result As Dictionary = APIClient.Get("indications.lc", "list")
+
+  If result.Value("status") = "success" Then
+    Var data As Dictionary = result.Value("data")
+
+    // The API returns indications as an array in the data dictionary
+    If data.HasKey("indications") Then
+      Var indicationsArray As Variant = data.Value("indications")
+
+      If indicationsArray IsA Object() Then
+        Var items() As Variant = Object()(indicationsArray)
+        System.DebugLog("✅ Found " + items.Count.ToString + " indications")
+
+        // Show first 3 indications
+        For i As Integer = 0 To Min(2, items.Count - 1)
+          If items(i) IsA Dictionary Then
+            Var indication As Dictionary = Dictionary(items(i))
+            Var id As Integer = indication.Value("id").IntegerValue
+            Var title As String = indication.Value("title").StringValue
+            System.DebugLog("  [" + id.ToString + "] " + title)
+          End If
+        Next
+
+      End If
+    End If
+  Else
+    System.DebugLog("❌ Error: " + result.Value("message").StringValue)
+  End If
+End Sub
+
+
+// ============================================================
+// STEP 4: Search by Keyword
+// ============================================================
+
+Sub TestSearch()
+  System.DebugLog("Searching for 'coronary'...")
+
+  Var params As New Dictionary
+  params.Value("q") = "coronary"
+
+  Var result As Dictionary = APIClient.Get("search.lc", "keyword", params)
+
+  If result.Value("status") = "success" Then
+    Var data As Dictionary = result.Value("data")
+
+    If data.HasKey("results") Then
+      Var resultsArray As Variant = data.Value("results")
+
+      If resultsArray IsA Object() Then
+        Var items() As Variant = Object()(resultsArray)
+        System.DebugLog("✅ Found " + items.Count.ToString + " results")
+
+        // Show first 3 results
+        For i As Integer = 0 To Min(2, items.Count - 1)
+          If items(i) IsA Dictionary Then
+            Var indication As Dictionary = Dictionary(items(i))
+            Var title As String = indication.Value("title").StringValue
+            System.DebugLog("  • " + title)
+          End If
+        Next
+      End If
+    End If
+  Else
+    System.DebugLog("❌ Error: " + result.Value("message").StringValue)
+  End If
+End Sub
+
+
+// ============================================================
+// STEP 5: Fetch All Contexts
+// ============================================================
+
+Sub TestGetContexts()
+  System.DebugLog("Fetching all contexts...")
+
+  Var result As Dictionary = APIClient.Get("contexts.lc", "with_counts")
+
+  If result.Value("status") = "success" Then
+    Var data As Dictionary = result.Value("data")
+
+    If data.HasKey("contexts") Then
+      Var contextsArray As Variant = data.Value("contexts")
+
+      If contextsArray IsA Object() Then
+        Var items() As Variant = Object()(contextsArray)
+        System.DebugLog("✅ Found " + items.Count.ToString + " contexts")
+
+        // Show all contexts with counts
+        For i As Integer = 0 To items.Count - 1
+          If items(i) IsA Dictionary Then
+            Var context As Dictionary = Dictionary(items(i))
+            Var id As Integer = context.Value("id").IntegerValue
+            Var name As String = context.Value("name").StringValue
+            Var count As Integer = context.Value("indication_count").IntegerValue
+            System.DebugLog("  [" + id.ToString + "] " + name + " (" + count.ToString + " indications)")
+          End If
+        Next
+      End If
+    End If
+  Else
+    System.DebugLog("❌ Error: " + result.Value("message").StringValue)
+  End If
+End Sub
+
+
+// ============================================================
+// STEP 6: Get Change Requests (Public)
+// ============================================================
+
+Sub TestGetChangeRequests()
+  System.DebugLog("Fetching change requests...")
+
+  Var result As Dictionary = APIClient.Get("changes.lc", "list")
+
+  If result.Value("status") = "success" Then
+    Var data As Dictionary = result.Value("data")
+
+    If data.HasKey("changes") Then
+      Var changesArray As Variant = data.Value("changes")
+
+      If changesArray IsA Object() Then
+        Var items() As Variant = Object()(changesArray)
+        System.DebugLog("✅ Found " + items.Count.ToString + " change requests")
+
+        // Show first 5 requests
+        For i As Integer = 0 To Min(4, items.Count - 1)
+          If items(i) IsA Dictionary Then
+            Var change As Dictionary = Dictionary(items(i))
+            Var id As Integer = change.Value("id").IntegerValue
+            Var status As String = change.Value("changes_status").StringValue
+            Var requestor As String = change.Value("changes_requestor").StringValue
+            System.DebugLog("  [" + id.ToString + "] " + status + " - " + requestor)
+          End If
+        Next
+      End If
+    End If
+
+    // Get count of new requests
+    Var countResult As Dictionary = APIClient.Get("changes.lc", "count_new")
+    If countResult.Value("status") = "success" Then
+      Var countData As Dictionary = countResult.Value("data")
+      Var newCount As Integer = countData.Value("count").IntegerValue
+      System.DebugLog("  New requests: " + newCount.ToString)
+    End If
+
+  Else
+    System.DebugLog("❌ Error: " + result.Value("message").StringValue)
+  End If
+End Sub
+
+
+// ============================================================
+// STEP 7: Test Protected Endpoint (Requires Login)
+// ============================================================
+
+Sub TestProtectedEndpoint()
+  System.DebugLog("Testing protected endpoint (users list)...")
+
+  If Not AuthManager.IsAuthenticated Then
+    System.DebugLog("❌ Not authenticated - please login first")
+    Return
+  End If
+
+  Var result As Dictionary = APIClient.Get("users.lc", "list")
+
+  If result.Value("status") = "success" Then
+    Var data As Dictionary = result.Value("data")
+
+    If data.HasKey("users") Then
+      Var usersArray As Variant = data.Value("users")
+
+      If usersArray IsA Object() Then
+        Var items() As Variant = Object()(usersArray)
+        System.DebugLog("✅ Found " + items.Count.ToString + " users")
+
+        For i As Integer = 0 To items.Count - 1
+          If items(i) IsA Dictionary Then
+            Var user As Dictionary = Dictionary(items(i))
+            Var username As String = user.Value("username").StringValue
+            Var name As String = user.Value("name").StringValue
+            Var isActive As Boolean = user.Value("is_active").BooleanValue
+            Var status As String = If(isActive, "Active", "Inactive")
+            System.DebugLog("  • " + name + " (" + username + ") - " + status)
+          End If
+        Next
+      End If
+    End If
+  Else
+    System.DebugLog("❌ Error: " + result.Value("message").StringValue)
+  End If
+End Sub
+
+
+// ============================================================
+// STEP 8: Logout
+// ============================================================
+
+Sub TestLogout()
+  System.DebugLog("Logging out...")
+
+  AuthManager.Logout
+
+  If Not AuthManager.IsAuthenticated Then
+    System.DebugLog("✅ Logged out successfully")
+  Else
+    System.DebugLog("❌ Logout failed")
+  End If
+End Sub
+
+
+// ============================================================
+// RUN ALL TESTS
+// ============================================================
+
+Sub RunAllTests()
+  System.DebugLog("========================================")
+  System.DebugLog("ECHO Indications API Client Tests")
+  System.DebugLog("========================================")
+  System.DebugLog("")
+
+  // Test 1: Connectivity
+  TestConnectivity
+  System.DebugLog("")
+
+  // Test 2: Login (REQUIRED for protected endpoints)
+  TestLogin
+  System.DebugLog("")
+
+  // Test 3: Public endpoints (no auth required)
+  TestGetAllIndications
+  System.DebugLog("")
+
+  TestSearch
+  System.DebugLog("")
+
+  TestGetContexts
+  System.DebugLog("")
+
+  TestGetChangeRequests
+  System.DebugLog("")
+
+  // Test 4: Protected endpoints (auth required)
+  TestProtectedEndpoint
+  System.DebugLog("")
+
+  // Test 5: Logout
+  TestLogout
+  System.DebugLog("")
+
+  System.DebugLog("========================================")
+  System.DebugLog("All tests complete")
+  System.DebugLog("========================================")
+End Sub
+
+
+// ============================================================
+// HOW TO USE THIS CODE
+// ============================================================
+
+/*
+1. Create a new Xojo Desktop or Console project
+2. Import the API client modules:
+   - AppConfig
+   - APIClient
+   - AuthManager
+
+3. Add this code to your App.Opening event or a PushButton.Pressed event:
+   RunAllTests
+
+4. Update the username/password in TestLogin() with real credentials
+
+5. Run your app and check the console output (Messages pane)
+
+6. You should see:
+   ✅ API is reachable
+   ✅ Login successful!
+   ✅ Found 196 indications
+   ✅ Found 14 contexts
+   etc.
+
+NOTES:
+- Public endpoints (indications, contexts, search, changes) work without login
+- Protected endpoints (users, audit, dashboard) require authentication
+- If login fails, check your credentials and API_BASE_URL in AppConfig
+- Enable AppConfig.DEBUG_MODE for more detailed logging
+*/

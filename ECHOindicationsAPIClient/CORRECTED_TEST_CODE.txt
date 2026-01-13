@@ -1,0 +1,120 @@
+// ============================================================
+// CORRECTED TEST CODE FOR App.Opening EVENT
+// ============================================================
+// This fixes all the Xojo syntax errors
+// Copy this into your App.Opening event handler
+// ============================================================
+
+System.DebugLog "=========================================="
+System.DebugLog "ECHO Indications API Test"
+System.DebugLog "=========================================="
+System.DebugLog ""
+
+// Test 1: Connectivity
+System.DebugLog "Test 1: Checking API connectivity..."
+If APIClient.IsConnected Then
+  System.DebugLog "✅ API is reachable"
+Else
+  System.DebugLog "❌ API is not reachable"
+  Return
+End If
+System.DebugLog ""
+
+// Test 2: List indications
+System.DebugLog "Test 2: Fetching all indications..."
+Var result As Dictionary = APIClient.Get("indications.lc", "list")
+
+If result.Value("status") = "success" Then
+  Var data As Dictionary = result.Value("data")
+
+  If data.HasKey("indications") Then
+    Var indicationsArray As Variant = data.Value("indications")
+
+    // Check if it's an array
+    If indicationsArray IsA Variant() Then
+      Var items() As Variant = indicationsArray
+      System.DebugLog "✅ Found " + items.Count.ToString + " indications"
+      System.DebugLog ""
+
+      System.DebugLog "First 5 indications:"
+      For i As Integer = 0 To Min(4, items.Count - 1)
+        If items(i) IsA Dictionary Then
+          Var indication As Dictionary = items(i)
+          Var id As Integer = indication.Value("id").IntegerValue
+          Var title As String = indication.Value("title").StringValue
+          System.DebugLog "  [" + id.ToString + "] " + title
+        End If
+      Next
+    End If
+  End If
+Else
+  System.DebugLog "❌ Error: " + result.Value("message").StringValue
+End If
+System.DebugLog ""
+
+// Test 3: List contexts
+System.DebugLog "Test 3: Fetching contexts..."
+Var contextResult As Dictionary = APIClient.Get("contexts.lc", "with_counts")
+
+If contextResult.Value("status") = "success" Then
+  Var data As Dictionary = contextResult.Value("data")
+
+  If data.HasKey("contexts") Then
+    Var contextsArray As Variant = data.Value("contexts")
+
+    // Check if it's an array
+    If contextsArray IsA Variant() Then
+      Var items() As Variant = contextsArray
+      System.DebugLog "✅ Found " + items.Count.ToString + " contexts"
+      System.DebugLog ""
+
+      System.DebugLog "All contexts:"
+      For i As Integer = 0 To items.Count - 1
+        If items(i) IsA Dictionary Then
+          Var context As Dictionary = items(i)
+          Var name As String = context.Value("name").StringValue
+          Var count As Integer = context.Value("indication_count").IntegerValue
+          System.DebugLog "  • " + name + " (" + count.ToString + " indications)"
+        End If
+      Next
+    End If
+  End If
+Else
+  System.DebugLog "❌ Error: " + contextResult.Value("message").StringValue
+End If
+System.DebugLog ""
+
+// Test 4: Search
+System.DebugLog "Test 4: Searching for 'coronary'..."
+Var params As New Dictionary
+params.Value("q") = "coronary"
+Var searchResult As Dictionary = APIClient.Get("search.lc", "keyword", params)
+
+If searchResult.Value("status") = "success" Then
+  Var data As Dictionary = searchResult.Value("data")
+
+  If data.HasKey("results") Then
+    Var resultsArray As Variant = data.Value("results")
+
+    // Check if it's an array
+    If resultsArray IsA Variant() Then
+      Var items() As Variant = resultsArray
+      System.DebugLog "✅ Found " + items.Count.ToString + " matching indications"
+
+      For i As Integer = 0 To Min(2, items.Count - 1)
+        If items(i) IsA Dictionary Then
+          Var indication As Dictionary = items(i)
+          Var title As String = indication.Value("title").StringValue
+          System.DebugLog "  • " + title
+        End If
+      Next
+    End If
+  End If
+Else
+  System.DebugLog "❌ Error: " + searchResult.Value("message").StringValue
+End If
+System.DebugLog ""
+
+System.DebugLog "=========================================="
+System.DebugLog "All tests complete!"
+System.DebugLog "=========================================="

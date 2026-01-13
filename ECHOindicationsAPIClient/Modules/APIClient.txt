@@ -1,0 +1,304 @@
+#tag Module
+Protected Module APIClient
+	#tag Note, Name = Description
+		Core API client for ECHO Indications API
+
+		Handles all HTTP communication with the LiveCode Server RPC-style API.
+		Supports GET and POST methods, JSON parsing, error handling, and authentication.
+
+		Usage:
+		  Var result As Dictionary = APIClient.Get("indications.lc", "list")
+		  If result.HasKey("status") And result.Value("status") = "success" Then
+		    Var data As Dictionary = result.Value("data")
+		    // Process data
+		  Else
+		    Var errorMsg As String = result.Value("message")
+		    // Handle error
+		  End If
+
+		Created: 2026-01-13
+		API Version: 1.0
+	#tag EndNote
+
+
+	#tag Method, Flags = &h0
+		Function Get(endpoint As String, action As String, params As Dictionary = Nil) As Dictionary
+		  '/// Performs a GET request to the API
+		  '///
+		  '/// @param endpoint The API endpoint file (e.g., "indications.lc")
+		  '/// @param action The action to perform (e.g., "list", "read")
+		  '/// @param params Optional dictionary of query parameters
+		  '/// @returns Dictionary with "status" and "data" or "message" keys
+
+		  Var url As String = BuildURL(endpoint, action, params)
+
+		  If AppConfig.DEBUG_MODE Then
+		    System.DebugLog("APIClient.Get: " + url)
+		  End If
+
+		  Try
+		    Var socket As New URLConnection
+		    socket.RequestHeader("User-Agent") = AppConfig.APP_NAME + "/" + AppConfig.APP_VERSION
+		    socket.RequestHeader("Accept") = "application/json"
+
+		    // Add auth header if we have a token
+		    If AuthManager.IsAuthenticated Then
+		      socket.RequestHeader("Authorization") = AuthManager.GetAuthHeader
+		    End If
+
+		    // Set timeout
+		    socket.Timeout = AppConfig.API_TIMEOUT_SECONDS
+
+		    // Make request
+		    Var response As String = socket.SendSync("GET", url)
+
+		    // Check HTTP status
+		    Var httpStatus As Integer = socket.HTTPStatusCode
+		    If httpStatus <> 200 Then
+		      Return CreateErrorResponse("HTTP " + httpStatus.ToString + ": " + response)
+		    End If
+
+		    // Parse JSON response
+		    Return ParseResponse(response)
+
+		  Catch err As IOException
+		    Return CreateErrorResponse("Network error: " + err.Message)
+		  Catch err As RuntimeException
+		    Return CreateErrorResponse("Request failed: " + err.Message)
+		  End Try
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Post(endpoint As String, action As String, data As Dictionary) As Dictionary
+		  '/// Performs a POST request to the API
+		  '///
+		  '/// @param endpoint The API endpoint file (e.g., "indications.lc")
+		  '/// @param action The action to perform (e.g., "create", "update", "delete")
+		  '/// @param data Dictionary of data to send in request body as JSON
+		  '/// @returns Dictionary with "status" and "data" or "message" keys
+
+		  Var url As String = BuildURL(endpoint, action, Nil)
+
+		  If AppConfig.DEBUG_MODE Then
+		    System.DebugLog("APIClient.Post: " + url)
+		  End If
+
+		  Try
+		    Var socket As New URLConnection
+		    socket.RequestHeader("User-Agent") = AppConfig.APP_NAME + "/" + AppConfig.APP_VERSION
+		    socket.RequestHeader("Content-Type") = "application/json"
+		    socket.RequestHeader("Accept") = "application/json"
+
+		    // Add auth header if we have a token
+		    If AuthManager.IsAuthenticated Then
+		      socket.RequestHeader("Authorization") = AuthManager.GetAuthHeader
+		    End If
+
+		    // Set timeout
+		    socket.Timeout = AppConfig.API_TIMEOUT_SECONDS
+
+		    // Convert data to JSON
+		    Var jsonData As String = GenerateJSON(data)
+
+		    If AppConfig.DEBUG_MODE Then
+		      System.DebugLog("APIClient.Post body: " + jsonData)
+		    End If
+
+		    // Set request body
+		    socket.SetRequestContent(jsonData, "application/json")
+
+		    // Make request
+		    Var response As String = socket.SendSync("POST", url)
+
+		    // Check HTTP status
+		    Var httpStatus As Integer = socket.HTTPStatusCode
+
+		    // Handle different status codes
+		    Select Case httpStatus
+		    Case 200, 201 // OK or Created
+		      // Success - parse response
+		    Case 401 // Unauthorized
+		      AuthManager.Logout // Clear invalid token
+		      Return CreateErrorResponse("Authentication required. Please log in again.")
+		    Case 429 // Too Many Requests
+		      Return CreateErrorResponse("Rate limit exceeded. Please wait and try again.")
+		    Case 500, 502, 503 // Server errors
+		      Return CreateErrorResponse("Server error. Please try again later.")
+		    Else
+		      Return CreateErrorResponse("HTTP " + httpStatus.ToString + ": " + response)
+		    End Select
+
+		    // Parse JSON response
+		    Return ParseResponse(response)
+
+		  Catch err As IOException
+		    Return CreateErrorResponse("Network error: " + err.Message)
+		  Catch err As RuntimeException
+		    Return CreateErrorResponse("Request failed: " + err.Message)
+		  End Try
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function IsConnected() As Boolean
+		  '/// Checks if the API is reachable
+		  '///
+		  '/// @returns True if API responds, False otherwise
+
+		  Try
+		    Var socket As New URLConnection
+		    socket.Timeout = 5 // Short timeout for connectivity check
+
+		    Var url As String = AppConfig.API_BASE_URL + "/auth.lc?action=refresh"
+		    Var response As String = socket.SendSync("GET", url)
+
+		    // Any response means we're connected
+		    Return True
+
+		  Catch err As RuntimeException
+		    Return False
+		  End Try
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function BuildURL(endpoint As String, action As String, params As Dictionary) As String
+		  '/// Builds a complete URL with query parameters
+		  '///
+		  '/// @param endpoint The API endpoint file (e.g., "indications.lc")
+		  '/// @param action The action parameter (e.g., "list")
+		  '/// @param params Optional dictionary of additional query parameters
+		  '/// @returns Complete URL string
+
+		  Var url As String = AppConfig.API_BASE_URL + "/" + endpoint + "?action=" + action
+
+		  // Add additional parameters if provided
+		  If params <> Nil Then
+		    For Each key As Variant In params.Keys
+		      Var value As Variant = params.Value(key)
+		      url = url + "&" + key.StringValue + "=" + EncodeURLComponent(value.StringValue)
+		    Next
+		  End If
+
+		  Return url
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function ParseResponse(json As String) As Dictionary
+		  '/// Parses a JSON response from the API
+		  '///
+		  '/// @param json The JSON string to parse
+		  '/// @returns Dictionary with parsed data
+
+		  Try
+		    Var result As New Dictionary
+
+		    // Simple JSON parsing (Xojo has ParseJSON built-in)
+		    Var parsed As Variant = ParseJSON(json)
+
+		    If parsed IsA Dictionary Then
+		      result = Dictionary(parsed)
+
+		      If AppConfig.DEBUG_MODE Then
+		        If result.HasKey("status") Then
+		          System.DebugLog("APIClient response status: " + result.Value("status").StringValue)
+		        End If
+		      End If
+
+		      Return result
+		    Else
+		      Return CreateErrorResponse("Invalid JSON response format")
+		    End If
+
+		  Catch err As RuntimeException
+		    Return CreateErrorResponse("JSON parsing error: " + err.Message)
+		  End Try
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function GenerateJSON(data As Dictionary) As String
+		  '/// Generates JSON string from a Dictionary
+		  '///
+		  '/// @param data The dictionary to convert to JSON
+		  '/// @returns JSON string
+
+		  Try
+		    // Xojo has GenerateJSON built-in
+		    Return GenerateJSON(data, False) // False = compact (not pretty-printed)
+
+		  Catch err As RuntimeException
+		    If AppConfig.DEBUG_MODE Then
+		      System.DebugLog("APIClient.GenerateJSON error: " + err.Message)
+		    End If
+		    Return "{}"
+		  End Try
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function CreateErrorResponse(message As String) As Dictionary
+		  '/// Creates a standardized error response dictionary
+		  '///
+		  '/// @param message The error message
+		  '/// @returns Dictionary with status="error" and message
+
+		  Var result As New Dictionary
+		  result.Value("status") = "error"
+		  result.Value("message") = message
+
+		  If AppConfig.DEBUG_MODE Then
+		    System.DebugLog("APIClient error: " + message)
+		  End If
+
+		  Return result
+		End Function
+	#tag EndMethod
+
+
+	#tag ViewBehavior
+		#tag ViewProperty
+			Name="Name"
+			Visible=true
+			Group="ID"
+			InitialValue=""
+			Type="String"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Index"
+			Visible=true
+			Group="ID"
+			InitialValue="-2147483648"
+			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Super"
+			Visible=true
+			Group="ID"
+			InitialValue=""
+			Type="String"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Left"
+			Visible=true
+			Group="Position"
+			InitialValue="0"
+			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Top"
+			Visible=true
+			Group="Position"
+			InitialValue="0"
+			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+	#tag EndViewBehavior
+End Module
+#tag EndModule
