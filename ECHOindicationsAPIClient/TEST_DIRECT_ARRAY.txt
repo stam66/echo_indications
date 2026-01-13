@@ -91,7 +91,7 @@ System.DebugLog ""
 // Test 4: Search
 System.DebugLog "Test 4: Searching for 'coronary'..."
 Var params As New Dictionary
-params.Value("q") = "coronary"
+params.Value("keyword") = "coronary"
 Var searchResult As Dictionary = APIClient.Get("search.lc", "keyword", params)
 
 If searchResult.Value("status") = "success" Then
