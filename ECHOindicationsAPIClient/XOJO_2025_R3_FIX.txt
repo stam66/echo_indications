@@ -1,0 +1,113 @@
+========================================================================
+QUICK FIX FOR XOJO 2025 R3 API DIFFERENCES
+========================================================================
+
+Your Xojo version has different APIs than expected. Here's the fix:
+
+========================================================================
+STEP 1: DELETE CacheManager Module
+========================================================================
+
+CacheManager references Indication and Context classes you deleted.
+
+In Xojo:
+1. Find "CacheManager" module
+2. Right-click → Delete
+3. Done!
+
+You don't need it for testing anyway.
+
+========================================================================
+STEP 2: REPLACE APIClient Module
+========================================================================
+
+The current APIClient uses URLConnection.Timeout which doesn't exist
+in your Xojo version.
+
+1. DELETE your current APIClient module
+2. Insert → Module, name it "APIClient"
+3. Copy ALL code from: Modules/APIClient_XOJO2025R3.txt
+4. Paste into the new module
+
+Changes:
+- Removed socket.Timeout (doesn't exist in your Xojo)
+- Still uses socket.SetRequestContent() for POST
+- Works with your Xojo version
+
+========================================================================
+STEP 3: REPLACE AuthManager Module
+========================================================================
+
+The Keychain API is different in your Xojo version.
+
+1. DELETE your current AuthManager module
+2. Insert → Module, name it "AuthManager"
+3. Copy ALL code from: Modules/AuthManager_XOJO2025R3.txt
+4. Paste into the new module
+
+Changes:
+- Removed Keychain code (API incompatible)
+- Token still works but not saved between sessions
+- Good enough for testing!
+
+========================================================================
+STEP 4: KEEP AppConfig Module
+========================================================================
+
+AppConfig is fine - don't change it!
+
+========================================================================
+STEP 5: USE FINAL TEST CODE
+========================================================================
+
+Copy test code from: FINAL_WORKING_TEST.txt
+Paste into: App.Opening event
+
+========================================================================
+SUMMARY - YOUR 3 MODULES
+========================================================================
+
+After these changes, you should have ONLY these 3 modules:
+
+✅ AppConfig (keep as-is)
+✅ APIClient (use APIClient_XOJO2025R3.txt)
+✅ AuthManager (use AuthManager_XOJO2025R3.txt)
+
+❌ DELETE: CacheManager (causes errors)
+
+========================================================================
+WHY THE ERRORS?
+========================================================================
+
+Your Xojo version (2025 R3) has:
+- No URLConnection.Timeout property
+- Different Keychain API
+- We removed these to make it work
+
+The simplified version:
+✅ Still connects to API
+✅ Still does GET/POST requests
+✅ Still handles authentication
+❌ No timeout control (will use default)
+❌ No token saving between app launches
+
+Perfect for testing! We can add those features later.
+
+========================================================================
+CHECKLIST
+========================================================================
+
+□ Delete CacheManager module
+□ Replace APIClient (use APIClient_XOJO2025R3.txt)
+□ Replace AuthManager (use AuthManager_XOJO2025R3.txt)
+□ Keep AppConfig unchanged
+□ Use test code from FINAL_WORKING_TEST.txt
+□ Click Run!
+
+Should see:
+✅ API is reachable
+✅ Found 196 indications
+✅ Found 14 contexts
+✅ Found matching indications
+
+========================================================================
