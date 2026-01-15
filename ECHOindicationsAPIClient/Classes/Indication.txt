@@ -285,19 +285,11 @@ Protected Class Indication
 		    End If
 
 		    // Parse contexts if present
-		    // API returns contexts in three formats:
-		    // 1. Array of dictionaries (from "list" action): [{id: 1, name: "Adult TTE"}, ...]
-		    // 2. String (from "list_by_context" and "search" actions): "Adult TTE, Pediatric"
-		    // 3. Nil/empty (no contexts assigned)
+		    // Note: This only handles string format from search/list_by_context actions
+		    // The "list" action returns array format which must be handled separately
 		    If data.HasKey("contexts") And data.Value("contexts") <> Nil Then
-		      Var contextsValue As Variant = data.Value("contexts")
-		      Var parsed As Boolean = False
-
-		      // Try as string first (most common: search and list_by_context return strings)
 		      Try
-		        Var contextsStr As String = contextsValue.StringValue
-		        parsed = True  // Successfully got string value, mark as parsed
-
+		        Var contextsStr As String = data.Value("contexts").StringValue
 		        If contextsStr.Length > 0 Then
 		          indication.ContextNames = contextsStr.Split(",")
 		          // Trim whitespace from each context name
@@ -306,32 +298,9 @@ Protected Class Indication
 		          Next
 		        End If
 		      Catch
-		        // Not a string or failed to parse - will try array below
+		        // Not a string - this might be array format from "list" action
+		        // For now, just skip it - contexts will be empty
 		      End Try
-
-		      // If string parsing didn't work, try as array of dictionaries
-		      If Not parsed Then
-		        Try
-		          Var names() As String
-
-		          // Iterate directly without type-casting the whole array
-		          For Each ctx As Variant In contextsValue
-		            If ctx IsA Dictionary Then
-		              Var ctxDict As Dictionary = Dictionary(ctx)
-		              If ctxDict.HasKey("name") And ctxDict.Value("name") <> Nil Then
-		                names.Add(ctxDict.Value("name").StringValue)
-		              End If
-		            End If
-		          Next
-
-		          If names.Count > 0 Then
-		            indication.ContextNames = names
-		          End If
-
-		        Catch
-		          // Not iterable either - ignore
-		        End Try
-		      End If
 		    End If
 
 		    Return indication
