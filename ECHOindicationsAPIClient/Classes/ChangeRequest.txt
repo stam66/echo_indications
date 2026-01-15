@@ -9,35 +9,27 @@ Protected Class ChangeRequest
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		ChangesRequest As String
+		IndicationTitle As String
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		ChangesRequestor As String
+		Description As String
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		ChangesStatus As String
+		ReportedBy As String
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		ReasonForClose As String
+		ReporterName As String
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		IndicationExisting As String
+		Status As String
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		IndicationNew As String
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		ContextsExisting As String
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		ContextsNew As String
+		ResolutionNotes As String
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -46,7 +38,7 @@ Protected Class ChangeRequest
 
 	#tag Method, Flags = &h0
 		Shared Function GetAll() As ChangeRequest()
-		  '/// Fetches all change requests from the API
+		  '/// Fetches all change requests from the API (PUBLIC - no auth required)
 		  '///
 		  '/// @returns Array of ChangeRequest objects
 
@@ -81,9 +73,9 @@ Protected Class ChangeRequest
 
 	#tag Method, Flags = &h0
 		Shared Function GetByStatus(status As String) As ChangeRequest()
-		  '/// Fetches change requests by status
+		  '/// Fetches change requests by status (PUBLIC - no auth required)
 		  '///
-		  '/// @param status Status to filter by (New, In progress, Closed, Rejected)
+		  '/// @param status Status to filter by (New, In progress, Closed)
 		  '/// @returns Array of ChangeRequest objects
 
 		  Var results() As ChangeRequest
@@ -120,7 +112,7 @@ Protected Class ChangeRequest
 
 	#tag Method, Flags = &h0
 		Shared Function GetByID(id As Integer) As ChangeRequest
-		  '/// Fetches a single change request by ID
+		  '/// Fetches a single change request by ID (PUBLIC - no auth required)
 		  '///
 		  '/// @param id The change request ID
 		  '/// @returns ChangeRequest object or Nil if not found
@@ -151,9 +143,9 @@ Protected Class ChangeRequest
 
 	#tag Method, Flags = &h0
 		Shared Function CountNew() As Integer
-		  '/// Gets count of new change requests
+		  '/// Gets count of new change requests (PUBLIC - no auth required)
 		  '///
-		  '/// @returns Count of new requests
+		  '/// @returns Count of new requests (useful for badge display)
 
 		  Try
 		    Var response As Dictionary = APIClient.Get("changes.lc", "count_new")
@@ -189,36 +181,28 @@ Protected Class ChangeRequest
 		      change.IndicationID = data.Value("indication_id").IntegerValue
 		    End If
 
-		    If data.HasKey("changes_request") And data.Value("changes_request") <> Nil Then
-		      change.ChangesRequest = data.Value("changes_request").StringValue
+		    If data.HasKey("indication_title") And data.Value("indication_title") <> Nil Then
+		      change.IndicationTitle = data.Value("indication_title").StringValue
 		    End If
 
-		    If data.HasKey("changes_requestor") And data.Value("changes_requestor") <> Nil Then
-		      change.ChangesRequestor = data.Value("changes_requestor").StringValue
+		    If data.HasKey("description") And data.Value("description") <> Nil Then
+		      change.Description = data.Value("description").StringValue
 		    End If
 
-		    If data.HasKey("changes_status") And data.Value("changes_status") <> Nil Then
-		      change.ChangesStatus = data.Value("changes_status").StringValue
+		    If data.HasKey("reported_by") And data.Value("reported_by") <> Nil Then
+		      change.ReportedBy = data.Value("reported_by").StringValue
 		    End If
 
-		    If data.HasKey("reason_for_close") And data.Value("reason_for_close") <> Nil Then
-		      change.ReasonForClose = data.Value("reason_for_close").StringValue
+		    If data.HasKey("reporter_name") And data.Value("reporter_name") <> Nil Then
+		      change.ReporterName = data.Value("reporter_name").StringValue
 		    End If
 
-		    If data.HasKey("indication_existing") And data.Value("indication_existing") <> Nil Then
-		      change.IndicationExisting = data.Value("indication_existing").StringValue
+		    If data.HasKey("status") And data.Value("status") <> Nil Then
+		      change.Status = data.Value("status").StringValue
 		    End If
 
-		    If data.HasKey("indication_new") And data.Value("indication_new") <> Nil Then
-		      change.IndicationNew = data.Value("indication_new").StringValue
-		    End If
-
-		    If data.HasKey("contexts_existing") And data.Value("contexts_existing") <> Nil Then
-		      change.ContextsExisting = data.Value("contexts_existing").StringValue
-		    End If
-
-		    If data.HasKey("contexts_new") And data.Value("contexts_new") <> Nil Then
-		      change.ContextsNew = data.Value("contexts_new").StringValue
+		    If data.HasKey("resolution_notes") And data.Value("resolution_notes") <> Nil Then
+		      change.ResolutionNotes = data.Value("resolution_notes").StringValue
 		    End If
 
 		    If data.HasKey("created_at") And data.Value("created_at") <> Nil Then
@@ -245,19 +229,33 @@ Protected Class ChangeRequest
 		  '///
 		  '/// @returns String description
 
-		  Var result As String = "[" + ID.ToString + "] " + ChangesStatus
+		  Var result As String = "[" + ID.ToString + "] " + Status
 
-		  If ChangesRequestor.Length > 0 Then
-		    result = result + " from " + ChangesRequestor
+		  If ReporterName.Length > 0 Then
+		    result = result + " from " + ReporterName
+		  ElseIf ReportedBy.Length > 0 Then
+		    result = result + " from " + ReportedBy
 		  End If
 
-		  If ChangesRequest.Length > 50 Then
-		    result = result + " - " + ChangesRequest.Left(50) + "..."
-		  ElseIf ChangesRequest.Length > 0 Then
-		    result = result + " - " + ChangesRequest
+		  If IndicationTitle.Length > 0 Then
+		    result = result + " - " + IndicationTitle
 		  End If
 
 		  Return result
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetShortDescription() As String
+		  '/// Returns a shortened description for list display
+		  '///
+		  '/// @returns Truncated description
+
+		  If Description.Length > 100 Then
+		    Return Description.Left(100) + "..."
+		  Else
+		    Return Description
+		  End If
 		End Function
 	#tag EndMethod
 End Class
