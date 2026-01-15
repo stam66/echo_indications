@@ -1,0 +1,47 @@
+#tag Window
+Begin Window MainWindow
+   BackColor       =   &cFFFFFF
+   Backdrop        =   0
+   CloseButton     =   True
+   Composite       =   False
+   Frame           =   0
+   FullScreen      =   False
+   HasBackgroundColor=   True
+   Height          =   700
+   IMEMode         =   0
+   MacProcID       =   0
+   MaxHeight       =   32000
+   MaxWidth        =   32000
+   MenuBar         =   0
+   MinHeight       =   500
+   MinWidth        =   800
+   Resizeable      =   True
+   Title           =   "ECHO Indications"
+   Visible         =   True
+   Width           =   1000
+End
+#tag EndWindow
+
+#tag WindowCode
+	#tag Event
+		Sub Opening()
+		  // Main window initialization
+		  // Will be implemented with navigation bar and containers
+		End Sub
+	#tag EndEvent
+
+
+	#tag Method, Flags = &h0
+		Sub ShowContainer(containerName As String, context As Dictionary)
+		  '/// Shows the specified container and hides all others
+		  '///
+		  '/// @param containerName Name of container to show
+		  '/// @param context Optional context data
+
+		  // Will be implemented when containers are created
+		  System.DebugLog "MainWindow.ShowContainer: " + containerName
+		End Sub
+	#tag EndMethod
+
+
+#tag EndWindowCode
