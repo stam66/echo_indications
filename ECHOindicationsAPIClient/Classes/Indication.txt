@@ -291,6 +291,7 @@ Protected Class Indication
 		    // 3. Nil/empty (no contexts assigned)
 		    If data.HasKey("contexts") And data.Value("contexts") <> Nil Then
 		      Var contextsValue As Variant = data.Value("contexts")
+		      Var parsed As Boolean = False
 
 		      // Try as string first (most common: search and list_by_context return strings)
 		      Try
@@ -301,10 +302,14 @@ Protected Class Indication
 		          For i As Integer = 0 To indication.ContextNames.LastIndex
 		            indication.ContextNames(i) = indication.ContextNames(i).Trim
 		          Next
+		          parsed = True
 		        End If
+		      Catch
+		        // Not a string or failed to parse
+		      End Try
 
-		      Catch ex As TypeMismatchException
-		        // Not a string - try as array of dictionaries
+		      // If string parsing didn't work, try as array of dictionaries
+		      If Not parsed Then
 		        Try
 		          Var names() As String
 
@@ -325,10 +330,7 @@ Protected Class Indication
 		        Catch
 		          // Not iterable either - ignore
 		        End Try
-
-		      Catch
-		        // Other error - ignore
-		      End Try
+		      End If
 		    End If
 
 		    Return indication
