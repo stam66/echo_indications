@@ -296,16 +296,17 @@ Protected Class Indication
 		      // Try as string first (most common: search and list_by_context return strings)
 		      Try
 		        Var contextsStr As String = contextsValue.StringValue
+		        parsed = True  // Successfully got string value, mark as parsed
+
 		        If contextsStr.Length > 0 Then
 		          indication.ContextNames = contextsStr.Split(",")
 		          // Trim whitespace from each context name
 		          For i As Integer = 0 To indication.ContextNames.LastIndex
 		            indication.ContextNames(i) = indication.ContextNames(i).Trim
 		          Next
-		          parsed = True
 		        End If
 		      Catch
-		        // Not a string or failed to parse
+		        // Not a string or failed to parse - will try array below
 		      End Try
 
 		      // If string parsing didn't work, try as array of dictionaries
