@@ -1,0 +1,743 @@
+#tag Window
+Begin Window MainWindow
+   BackColor       =   &cF5F5F500
+   Backdrop        =   0
+   CloseButton     =   True
+   Composite       =   False
+   Frame           =   0
+   FullScreen      =   False
+   HasBackgroundColor=   True
+   Height          =   700
+   IMEMode         =   0
+   MacProcID       =   0
+   MaxHeight       =   32000
+   MaxWidth        =   32000
+   MenuBar         =   0
+   MinHeight       =   500
+   MinWidth        =   900
+   Resizeable      =   True
+   Title           =   "ECHO Indications"
+   Visible         =   True
+   Width           =   1200
+
+   Begin DesktopCanvas LogoCanvas
+      AllowAutoDeactivate=   True
+      AllowFocus      =   False
+      AllowFocusRing  =   True
+      AllowTabs       =   False
+      Backdrop        =   0
+      Enabled         =   True
+      Height          =   60
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Left            =   0
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Scope           =   0
+      TabIndex        =   0
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   "Return to Home"
+      Top             =   0
+      Transparent     =   True
+      Visible         =   True
+      Width           =   200
+   End
+
+   Begin SKButton BackButton
+      AllowAutoDeactivate=   True
+      AllowFocus      =   False
+      AllowFocusRing  =   True
+      AllowTabs       =   False
+      Backdrop        =   0
+      BaseBackColor   =   &cF5F5F500
+      BaseHoverColor  =   &cE0E0E000
+      BasePressedColor=   &cD0D0D000
+      BaseTextColor   =   &c33333300
+      BorderColor     =   &cCCCCCC00
+      BorderThickness =   0
+      ContentAlignment=   1
+      CornerRadius    =   4
+      Enabled         =   False
+      Height          =   40
+      IconAlignment   =   1
+      IconPadding     =   0
+      IconPicture     =   0
+      IconSVG         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Left            =   210
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Scope           =   0
+      TabIndex        =   1
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "◀"
+      TextBold        =   False
+      TextFontName    =   "System"
+      TextItalic      =   False
+      TextSize        =   16.0
+      TextUnderline   =   False
+      Tooltip         =   "Go Back"
+      Top             =   10
+      Transparent     =   True
+      Visible         =   True
+      Width           =   40
+   End
+
+   Begin SKButton ForwardButton
+      AllowAutoDeactivate=   True
+      AllowFocus      =   False
+      AllowFocusRing  =   True
+      AllowTabs       =   False
+      Backdrop        =   0
+      BaseBackColor   =   &cF5F5F500
+      BaseHoverColor  =   &cE0E0E000
+      BasePressedColor=   &cD0D0D000
+      BaseTextColor   =   &c33333300
+      BorderColor     =   &cCCCCCC00
+      BorderThickness =   0
+      ContentAlignment=   1
+      CornerRadius    =   4
+      Enabled         =   False
+      Height          =   40
+      IconAlignment   =   1
+      IconPadding     =   0
+      IconPicture     =   0
+      IconSVG         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Left            =   260
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Scope           =   0
+      TabIndex        =   2
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "▶"
+      TextBold        =   False
+      TextFontName    =   "System"
+      TextItalic      =   False
+      TextSize        =   16.0
+      TextUnderline   =   False
+      Tooltip         =   "Go Forward"
+      Top             =   10
+      Transparent     =   True
+      Visible         =   True
+      Width           =   40
+   End
+
+   Begin SKButton HomeButton
+      AllowAutoDeactivate=   True
+      AllowFocus      =   False
+      AllowFocusRing  =   True
+      AllowTabs       =   False
+      Backdrop        =   0
+      BaseBackColor   =   &cF5F5F500
+      BaseHoverColor  =   &cE0E0E000
+      BasePressedColor=   &cD0D0D000
+      BaseTextColor   =   &c33333300
+      BorderColor     =   &cCCCCCC00
+      BorderThickness =   0
+      ContentAlignment=   1
+      CornerRadius    =   8
+      Enabled         =   True
+      Height          =   50
+      IconAlignment   =   2
+      IconPadding     =   4
+      IconPicture     =   0
+      IconSVG         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Left            =   320
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Scope           =   0
+      TabIndex        =   3
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Home"
+      TextBold        =   False
+      TextFontName    =   "System"
+      TextItalic      =   False
+      TextSize        =   12.0
+      TextUnderline   =   False
+      Tooltip         =   ""
+      Top             =   5
+      Transparent     =   True
+      Visible         =   True
+      Width           =   80
+   End
+
+   Begin SKButton IndicationsButton
+      AllowAutoDeactivate=   True
+      AllowFocus      =   False
+      AllowFocusRing  =   True
+      AllowTabs       =   False
+      Backdrop        =   0
+      BaseBackColor   =   &cF5F5F500
+      BaseHoverColor  =   &cE0E0E000
+      BasePressedColor=   &cD0D0D000
+      BaseTextColor   =   &c33333300
+      BorderColor     =   &cCCCCCC00
+      BorderThickness =   0
+      ContentAlignment=   1
+      CornerRadius    =   8
+      Enabled         =   True
+      Height          =   50
+      IconAlignment   =   2
+      IconPadding     =   4
+      IconPicture     =   0
+      IconSVG         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Left            =   410
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Scope           =   0
+      TabIndex        =   4
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Indications"
+      TextBold        =   False
+      TextFontName    =   "System"
+      TextItalic      =   False
+      TextSize        =   12.0
+      TextUnderline   =   False
+      Tooltip         =   ""
+      Top             =   5
+      Transparent     =   True
+      Visible         =   True
+      Width           =   100
+   End
+
+   Begin SKButton ChangeRequestsButton
+      AllowAutoDeactivate=   True
+      AllowFocus      =   False
+      AllowFocusRing  =   True
+      AllowTabs       =   False
+      Backdrop        =   0
+      BaseBackColor   =   &cF5F5F500
+      BaseHoverColor  =   &cE0E0E000
+      BasePressedColor=   &cD0D0D000
+      BaseTextColor   =   &c33333300
+      BorderColor     =   &cCCCCCC00
+      BorderThickness =   0
+      ContentAlignment=   1
+      CornerRadius    =   8
+      Enabled         =   True
+      Height          =   50
+      IconAlignment   =   2
+      IconPadding     =   4
+      IconPicture     =   0
+      IconSVG         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Left            =   520
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Scope           =   0
+      TabIndex        =   5
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Changes"
+      TextBold        =   False
+      TextFontName    =   "System"
+      TextItalic      =   False
+      TextSize        =   12.0
+      TextUnderline   =   False
+      Tooltip         =   ""
+      Top             =   5
+      Transparent     =   True
+      Visible         =   True
+      Width           =   100
+   End
+
+   Begin DesktopSeparator Separator1
+      AllowAutoDeactivate=   True
+      Enabled         =   True
+      Height          =   40
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Left            =   630
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      PanelIndex      =   0
+      Scope           =   0
+      TabIndex        =   6
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   10
+      Transparent     =   True
+      Visible         =   True
+      Width           =   2
+      _mIndex         =   0
+      _mInitialParent =   ""
+      _mName          =   ""
+      _mPanelIndex    =   0
+   End
+
+   Begin SKButton UsersButton
+      AllowAutoDeactivate=   True
+      AllowFocus      =   False
+      AllowFocusRing  =   True
+      AllowTabs       =   False
+      Backdrop        =   0
+      BaseBackColor   =   &cF5F5F500
+      BaseHoverColor  =   &cE0E0E000
+      BasePressedColor=   &cD0D0D000
+      BaseTextColor   =   &c33333300
+      BorderColor     =   &cCCCCCC00
+      BorderThickness =   0
+      ContentAlignment=   1
+      CornerRadius    =   8
+      Enabled         =   False
+      Height          =   50
+      IconAlignment   =   2
+      IconPadding     =   4
+      IconPicture     =   0
+      IconSVG         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Left            =   642
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Scope           =   0
+      TabIndex        =   7
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Users"
+      TextBold        =   False
+      TextFontName    =   "System"
+      TextItalic      =   False
+      TextSize        =   12.0
+      TextUnderline   =   False
+      Tooltip         =   "Admin Only"
+      Top             =   5
+      Transparent     =   True
+      Visible         =   True
+      Width           =   80
+   End
+
+   Begin SKButton AuditButton
+      AllowAutoDeactivate=   True
+      AllowFocus      =   False
+      AllowFocusRing  =   True
+      AllowTabs       =   False
+      Backdrop        =   0
+      BaseBackColor   =   &cF5F5F500
+      BaseHoverColor  =   &cE0E0E000
+      BasePressedColor=   &cD0D0D000
+      BaseTextColor   =   &c33333300
+      BorderColor     =   &cCCCCCC00
+      BorderThickness =   0
+      ContentAlignment=   1
+      CornerRadius    =   8
+      Enabled         =   False
+      Height          =   50
+      IconAlignment   =   2
+      IconPadding     =   4
+      IconPicture     =   0
+      IconSVG         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Left            =   732
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Scope           =   0
+      TabIndex        =   8
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Audit"
+      TextBold        =   False
+      TextFontName    =   "System"
+      TextItalic      =   False
+      TextSize        =   12.0
+      TextUnderline   =   False
+      Tooltip         =   "Admin Only"
+      Top             =   5
+      Transparent     =   True
+      Visible         =   True
+      Width           =   80
+   End
+
+   Begin SKButton SettingsButton
+      AllowAutoDeactivate=   True
+      AllowFocus      =   False
+      AllowFocusRing  =   True
+      AllowTabs       =   False
+      Backdrop        =   0
+      BaseBackColor   =   &cF5F5F500
+      BaseHoverColor  =   &cE0E0E000
+      BasePressedColor=   &cD0D0D000
+      BaseTextColor   =   &c33333300
+      BorderColor     =   &cCCCCCC00
+      BorderThickness =   0
+      ContentAlignment=   1
+      CornerRadius    =   8
+      Enabled         =   False
+      Height          =   50
+      IconAlignment   =   2
+      IconPadding     =   4
+      IconPicture     =   0
+      IconSVG         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Left            =   822
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Scope           =   0
+      TabIndex        =   9
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Settings"
+      TextBold        =   False
+      TextFontName    =   "System"
+      TextItalic      =   False
+      TextSize        =   12.0
+      TextUnderline   =   False
+      Tooltip         =   "Admin Only"
+      Top             =   5
+      Transparent     =   True
+      Visible         =   True
+      Width           =   80
+   End
+
+   Begin SKButton LoginButton
+      AllowAutoDeactivate=   True
+      AllowFocus      =   False
+      AllowFocusRing  =   True
+      AllowTabs       =   False
+      Backdrop        =   0
+      BaseBackColor   =   &c0077FF00
+      BaseHoverColor  =   &c0066DD00
+      BasePressedColor=   &c0055BB00
+      BaseTextColor   =   &cFFFFFF00
+      BorderColor     =   &cCCCCCC00
+      BorderThickness =   0
+      ContentAlignment=   1
+      CornerRadius    =   8
+      Enabled         =   True
+      Height          =   40
+      IconAlignment   =   1
+      IconPadding     =   8
+      IconPicture     =   0
+      IconSVG         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Left            =   1060
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      Scope           =   0
+      TabIndex        =   10
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Login"
+      TextBold        =   False
+      TextFontName    =   "System"
+      TextItalic      =   False
+      TextSize        =   13.0
+      TextUnderline   =   False
+      Tooltip         =   ""
+      Top             =   10
+      Transparent     =   True
+      Visible         =   True
+      Width           =   120
+   End
+
+   Begin DesktopLabel ContentArea
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   630
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   0
+      LockBottom      =   True
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   True
+      LockTop         =   True
+      Multiline       =   False
+      Scope           =   0
+      Selectable      =   False
+      TabIndex        =   11
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   ""
+      TextAlignment   =   0
+      TextColor       =   &c00000000
+      Tooltip         =   ""
+      Top             =   70
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   1200
+   End
+End
+#tag EndWindow
+
+#tag WindowCode
+	#tag Event
+		Sub Opening()
+		  // Initialize window
+		  UpdateNavigationButtons
+		  UpdateAuthUI
+		End Sub
+	#tag EndEvent
+
+
+	#tag Method, Flags = &h21
+		Private Sub HideAllContainers()
+		  '/// Hides all container controls
+
+		  // Will be implemented when containers are created
+		  // HomeContainer.Visible = False
+		  // IndicationsContainer.Visible = False
+		  // etc.
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ShowContainer(containerName As String, context As Dictionary)
+		  '/// Shows the specified container and hides all others
+		  '///
+		  '/// @param containerName Name of container to show
+		  '/// @param context Optional context data
+
+		  HideAllContainers
+
+		  Select Case containerName
+		  Case "Home"
+		    // HomeContainer.Visible = True
+		    // HomeContainer.Refresh(context)
+		    System.DebugLog "Showing Home container"
+
+		  Case "Indications"
+		    // IndicationsContainer.Visible = True
+		    // IndicationsContainer.Refresh(context)
+		    System.DebugLog "Showing Indications container"
+
+		  Case "ChangeRequests"
+		    // ChangeRequestsContainer.Visible = True
+		    // ChangeRequestsContainer.Refresh(context)
+		    System.DebugLog "Showing Change Requests container"
+
+		  Case "Users"
+		    // UsersContainer.Visible = True
+		    // UsersContainer.Refresh(context)
+		    System.DebugLog "Showing Users container"
+
+		  Case "Audit"
+		    // AuditContainer.Visible = True
+		    // AuditContainer.Refresh(context)
+		    System.DebugLog "Showing Audit container"
+
+		  Case "Settings"
+		    // SettingsContainer.Visible = True
+		    // SettingsContainer.Refresh(context)
+		    System.DebugLog "Showing Settings container"
+
+		  Else
+		    System.DebugLog "Unknown container: " + containerName
+		  End Select
+
+		  UpdateNavigationButtons
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub UpdateAuthUI()
+		  '/// Updates UI based on authentication state
+
+		  If AuthManager.IsAuthenticated Then
+		    // Logged in - show logout button and enable admin buttons
+		    LoginButton.Text = "Logout"
+		    LoginButton.BaseBackColor = &cFF770000  // Red
+		    LoginButton.BaseHoverColor = &cDD660000
+		    LoginButton.Tooltip = AuthManager.CurrentUserFullName
+
+		    UsersButton.Enabled = True
+		    AuditButton.Enabled = True
+		    SettingsButton.Enabled = True
+		  Else
+		    // Logged out - show login button and disable admin buttons
+		    LoginButton.Text = "Login"
+		    LoginButton.BaseBackColor = &c0077FF00  // Blue
+		    LoginButton.BaseHoverColor = &c0066DD00
+		    LoginButton.Tooltip = ""
+
+		    UsersButton.Enabled = False
+		    AuditButton.Enabled = False
+		    SettingsButton.Enabled = False
+		  End If
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub UpdateNavigationButtons()
+		  '/// Updates back/forward button states
+
+		  BackButton.Enabled = NavigationManager.CanGoBack
+		  ForwardButton.Enabled = NavigationManager.CanGoForward
+		End Sub
+	#tag EndMethod
+
+
+#tag EndWindowCode
+
+#tag Events LogoCanvas
+	#tag Event
+		Sub Paint(g As Graphics, areas() As Rect)
+		  #Pragma Unused areas
+
+		  // Draw logo / app name
+		  g.DrawingColor = &c0077FF00  // Blue
+		  g.FillRectangle(0, 0, g.Width, g.Height)
+
+		  g.DrawingColor = &cFFFFFF00  // White text
+		  g.FontSize = 18
+		  g.Bold = True
+
+		  Var title As String = "ECHO Indications"
+		  Var textWidth As Integer = g.TextWidth(title)
+		  Var textHeight As Integer = g.TextHeight
+
+		  Var x As Integer = (g.Width - textWidth) / 2
+		  Var y As Integer = (g.Height - textHeight) / 2 + textHeight
+
+		  g.DrawText(title, x, y)
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Function MouseDown(x As Integer, y As Integer) As Boolean
+		  #Pragma Unused x
+		  #Pragma Unused y
+
+		  // Logo click - go home
+		  NavigationManager.NavigateToHome
+		  Return True
+		End Function
+	#tag EndEvent
+#tag EndEvents
+#tag Events BackButton
+	#tag Event
+		Sub Action()
+		  NavigationManager.NavigateToPrevious
+		  UpdateNavigationButtons
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events ForwardButton
+	#tag Event
+		Sub Action()
+		  NavigationManager.NavigateToNext
+		  UpdateNavigationButtons
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events HomeButton
+	#tag Event
+		Sub Action()
+		  NavigationManager.NavigateToHome
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events IndicationsButton
+	#tag Event
+		Sub Action()
+		  NavigationManager.NavigateToIndications
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events ChangeRequestsButton
+	#tag Event
+		Sub Action()
+		  NavigationManager.NavigateToChangeRequests
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events UsersButton
+	#tag Event
+		Sub Action()
+		  NavigationManager.NavigateToUsers
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events AuditButton
+	#tag Event
+		Sub Action()
+		  NavigationManager.NavigateToAudit
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events SettingsButton
+	#tag Event
+		Sub Action()
+		  NavigationManager.NavigateToSettings
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events LoginButton
+	#tag Event
+		Sub Action()
+		  If AuthManager.IsAuthenticated Then
+		    // Logout
+		    AuthManager.Logout
+		    UpdateAuthUI
+
+		    // Show message
+		    Var dlg As New MessageDialog
+		    dlg.Message = "You have been logged out"
+		    dlg.ActionButton.Caption = "OK"
+		    dlg.ShowModal
+		  Else
+		    // Show login dialog
+		    Var loginDialog As New LoginDialog
+		    loginDialog.ShowModal
+
+		    // Update UI after login attempt
+		    UpdateAuthUI
+		  End If
+		End Sub
+	#tag EndEvent
+#tag EndEvents
