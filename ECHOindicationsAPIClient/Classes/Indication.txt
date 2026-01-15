@@ -291,17 +291,25 @@ Protected Class Indication
 		    // 3. Nil/empty (no contexts assigned)
 		    If data.HasKey("contexts") And data.Value("contexts") <> Nil Then
 		      Var contextsValue As Variant = data.Value("contexts")
-		      Var isArray As Boolean = False
 
-		      // Try as array of dictionaries first
+		      // Try as string first (most common: search and list_by_context return strings)
 		      Try
-		        Var contextsArray() As Variant
-		        contextsArray = contextsValue
+		        Var contextsStr As String = contextsValue.StringValue
+		        If contextsStr.Length > 0 Then
+		          indication.ContextNames = contextsStr.Split(",")
+		          // Trim whitespace from each context name
+		          For i As Integer = 0 To indication.ContextNames.LastIndex
+		            indication.ContextNames(i) = indication.ContextNames(i).Trim
+		          Next
+		        End If
 
-		        If contextsArray <> Nil And contextsArray.Count > 0 Then
+		      Catch ex As TypeMismatchException
+		        // Not a string - try as array of dictionaries
+		        Try
 		          Var names() As String
 
-		          For Each ctx As Variant In contextsArray
+		          // Iterate directly without type-casting the whole array
+		          For Each ctx As Variant In contextsValue
 		            If ctx IsA Dictionary Then
 		              Var ctxDict As Dictionary = Dictionary(ctx)
 		              If ctxDict.HasKey("name") And ctxDict.Value("name") <> Nil Then
@@ -310,29 +318,17 @@ Protected Class Indication
 		            End If
 		          Next
 
-		          indication.ContextNames = names
-		          isArray = True
-		        End If
+		          If names.Count > 0 Then
+		            indication.ContextNames = names
+		          End If
+
+		        Catch
+		          // Not iterable either - ignore
+		        End Try
 
 		      Catch
-		        // Not an array, will try as string below
+		        // Other error - ignore
 		      End Try
-
-		      // If not an array, try as string
-		      If Not isArray Then
-		        Try
-		          Var contextsStr As String = contextsValue.StringValue
-		          If contextsStr.Length > 0 Then
-		            indication.ContextNames = contextsStr.Split(",")
-		            // Trim whitespace from each context name
-		            For i As Integer = 0 To indication.ContextNames.LastIndex
-		              indication.ContextNames(i) = indication.ContextNames(i).Trim
-		            Next
-		          End If
-		        Catch
-		          // Not a string either - ignore
-		        End Try
-		      End If
 		    End If
 
 		    Return indication
