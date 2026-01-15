@@ -285,12 +285,41 @@ Protected Class Indication
 		    End If
 
 		    // Parse contexts if present
+		    // API returns contexts in two formats:
+		    // 1. Array of dictionaries (from "list" action): [{id: 1, name: "Adult TTE"}, ...]
+		    // 2. String (from "list_by_context" action): "Adult TTE, Pediatric"
 		    If data.HasKey("contexts") And data.Value("contexts") <> Nil Then
 		      Try
-		        Var contextsStr As String = data.Value("contexts").StringValue
-		        If contextsStr.Length > 0 Then
-		          indication.ContextNames = contextsStr.Split(",")
-		        End If
+		        Var contextsValue As Variant = data.Value("contexts")
+
+		        // Try as array of dictionaries first
+		        Try
+		          Var contextsArray() As Variant = contextsValue
+		          Var names() As String
+
+		          For Each ctx As Variant In contextsArray
+		            If ctx IsA Dictionary Then
+		              Var ctxDict As Dictionary = Dictionary(ctx)
+		              If ctxDict.HasKey("name") And ctxDict.Value("name") <> Nil Then
+		                names.Add(ctxDict.Value("name").StringValue)
+		              End If
+		            End If
+		          Next
+
+		          indication.ContextNames = names
+
+		        Catch
+		          // Not an array - try as string
+		          Try
+		            Var contextsStr As String = contextsValue.StringValue
+		            If contextsStr.Length > 0 Then
+		              indication.ContextNames = contextsStr.Split(",")
+		            End If
+		          Catch
+		            // Neither array nor string - ignore
+		          End Try
+		        End Try
+
 		      Catch
 		        // Ignore context parsing errors
 		      End Try
