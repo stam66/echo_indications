@@ -1,0 +1,34 @@
+#tag Window
+Begin Window LandingWindow
+   BackColor       =   &cFFFFFF
+   Backdrop        =   0
+   CloseButton     =   True
+   Composite       =   False
+   Frame           =   0
+   FullScreen      =   False
+   HasBackgroundColor=   True
+   Height          =   600
+   IMEMode         =   0
+   MacProcID       =   0
+   MaxHeight       =   32000
+   MaxWidth        =   32000
+   MenuBar         =   0
+   MinHeight       =   400
+   MinWidth        =   600
+   Resizeable      =   True
+   Title           =   "ECHO Indications - Home"
+   Visible         =   True
+   Width           =   800
+End
+#tag EndWindow
+
+#tag WindowCode
+	#tag Event
+		Sub Opening()
+		  // Landing window initialization
+		  // Will be implemented with actual UI later
+		End Sub
+	#tag EndEvent
+
+
+#tag EndWindowCode
