@@ -74,34 +74,7 @@ Protected Class Indication
 		      For Each item As Variant In items
 		        If item IsA Dictionary Then
 		          Var itemDict As Dictionary = Dictionary(item)
-
-		          // Convert contexts array to comma-separated string for FromDictionary
-		          If itemDict.HasKey("contexts") And itemDict.Value("contexts") <> Nil Then
-		            Try
-		              Var contextsArray() As Variant = itemDict.Value("contexts")
-		              Var contextNames() As String
-
-		              For Each ctx As Variant In contextsArray
-		                If ctx IsA Dictionary Then
-		                  Var ctxDict As Dictionary = Dictionary(ctx)
-		                  If ctxDict.HasKey("name") And ctxDict.Value("name") <> Nil Then
-		                    contextNames.Add(ctxDict.Value("name").StringValue)
-		                  End If
-		                End If
-		              Next
-
-		              // Replace array with comma-separated string
-		              If contextNames.Count > 0 Then
-		                itemDict.Value("contexts") = String.FromArray(contextNames, ", ")
-		              Else
-		                itemDict.Value("contexts") = ""
-		              End If
-
-		            Catch
-		              // Not an array, leave as-is (might already be string)
-		            End Try
-		          End If
-
+		          NormalizeContexts(itemDict)
 		          Var indication As Indication = FromDictionary(itemDict)
 		          If indication <> Nil Then
 		            results.Add(indication)
@@ -137,7 +110,9 @@ Protected Class Indication
 		      Var dataVariant As Variant = response.Value("data")
 
 		      If dataVariant IsA Dictionary Then
-		        Return FromDictionary(Dictionary(dataVariant))
+		        Var dataDict As Dictionary = Dictionary(dataVariant)
+		        NormalizeContexts(dataDict)
+		        Return FromDictionary(dataDict)
 		      End If
 		    Else
 		      System.DebugLog("Indication.GetByID error: " + response.Value("message").StringValue)
@@ -172,7 +147,9 @@ Protected Class Indication
 
 		      For Each item As Variant In items
 		        If item IsA Dictionary Then
-		          Var indication As Indication = FromDictionary(Dictionary(item))
+		          Var itemDict As Dictionary = Dictionary(item)
+		          NormalizeContexts(itemDict)
+		          Var indication As Indication = FromDictionary(itemDict)
 		          If indication <> Nil Then
 		            results.Add(indication)
 		          End If
@@ -211,7 +188,9 @@ Protected Class Indication
 
 		      For Each item As Variant In items
 		        If item IsA Dictionary Then
-		          Var indication As Indication = FromDictionary(Dictionary(item))
+		          Var itemDict As Dictionary = Dictionary(item)
+		          NormalizeContexts(itemDict)
+		          Var indication As Indication = FromDictionary(itemDict)
 		          If indication <> Nil Then
 		            results.Add(indication)
 		          End If
@@ -258,6 +237,40 @@ Protected Class Indication
 		    Return False
 		  End Try
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Shared Sub NormalizeContexts(data As Dictionary)
+		  '/// Converts contexts array to comma-separated string if needed
+		  '///
+		  '/// @param data Dictionary that might contain contexts array
+
+		  If data.HasKey("contexts") And data.Value("contexts") <> Nil Then
+		    Try
+		      Var contextsArray() As Variant = data.Value("contexts")
+		      Var contextNames() As String
+
+		      For Each ctx As Variant In contextsArray
+		        If ctx IsA Dictionary Then
+		          Var ctxDict As Dictionary = Dictionary(ctx)
+		          If ctxDict.HasKey("name") And ctxDict.Value("name") <> Nil Then
+		            contextNames.Add(ctxDict.Value("name").StringValue)
+		          End If
+		        End If
+		      Next
+
+		      // Replace array with comma-separated string
+		      If contextNames.Count > 0 Then
+		        data.Value("contexts") = String.FromArray(contextNames, ", ")
+		      Else
+		        data.Value("contexts") = ""
+		      End If
+
+		    Catch
+		      // Not an array, leave as-is (probably already a string)
+		    End Try
+		  End If
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
