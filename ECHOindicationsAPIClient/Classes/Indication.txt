@@ -293,17 +293,23 @@ Protected Class Indication
 		      Try
 		        Var contextsArray() As Variant = contextsValue
 
-		        For Each ctx As Variant In contextsArray
-		          If ctx IsA Dictionary Then
-		            Var ctxDict As Dictionary = Dictionary(ctx)
-		            If ctxDict.HasKey("name") And ctxDict.Value("name") <> Nil Then
-		              contextNames.Add(ctxDict.Value("name").StringValue)
+		        // Only iterate if assignment succeeded
+		        If contextsArray <> Nil And contextsArray.Count > 0 Then
+		          For Each ctx As Variant In contextsArray
+		            If ctx IsA Dictionary Then
+		              Var ctxDict As Dictionary = Dictionary(ctx)
+		              If ctxDict.HasKey("name") And ctxDict.Value("name") <> Nil Then
+		                contextNames.Add(ctxDict.Value("name").StringValue)
+		              End If
 		            End If
-		          End If
-		        Next
+		          Next
+		        End If
+		      Catch
+		        // Array processing failed - ignore, will try string below
+		      End Try
 
-		      Catch ex As TypeMismatchException
-		        // Not an array - try as string
+		      // If array processing didn't yield any names, try as string
+		      If contextNames.Count = 0 Then
 		        Try
 		          Var contextsStr As String = contextsValue.StringValue
 		          If contextsStr.Length > 0 Then
@@ -314,9 +320,9 @@ Protected Class Indication
 		            Next
 		          End If
 		        Catch
-		          // Neither array nor string - ignore
+		          // Not a string either - ignore
 		        End Try
-		      End Try
+		      End If
 
 		      indication.ContextNames = contextNames
 		    End If
