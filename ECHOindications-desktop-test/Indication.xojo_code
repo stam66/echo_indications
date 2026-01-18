@@ -1,325 +1,19 @@
 #tag Class
 Protected Class Indication
-	#tag Method, Flags = &h0
-		Function Delete(db As MySQLCommunityServer) As Boolean
-		  Try
-		    // Hard delete
-		    Var sql As String = "DELETE FROM indications WHERE id = ?"
-		    Var ps As PreparedSQLStatement = db.Prepare(sql)
-		    ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_LONG)
-		    ps.Bind(0, Me.ID)
-		    ps.SQLExecute
-		    Return True
-		    
-		  Catch err As DatabaseException
-		    System.DebugLog("Error deleting indication: " + err.Message)
-		    Return False
-		  End Try
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function DeleteWithAudit(db As MySQLCommunityServer, username As String) As Boolean
-		  If Self.ID = 0 Then Return False
-		  
-		  // Get current data before deletion
-		  Var oldData As Dictionary = Self.GetFieldValues
-		  
-		  // Perform the actual delete
-		  If Not Self.Delete(db) Then Return False
-		  
-		  // Log to audit
-		  Call AuditTracker.LogDelete("indications", Self.ID, username, oldData)
-		  
-		  Return True
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Shared Function GetAll(db As MySQLCommunityServer) As Indication()
-		  Var results() As Indication
-		  
-		  Try
-		    Var sql As String = "SELECT * FROM indications ORDER BY title"
-		    Var rs As RowSet = db.SelectSQL(sql)
-		    
-		    While Not rs.AfterLastRow
-		      Var ind As New Indication
-		      ind.ID = rs.Column("id").IntegerValue
-		      ind.Title = rs.Column("title").StringValue
-		      ind.Keywords = rs.Column("keywords").StringValue
-		      ind.Comments = rs.Column("comments").StringValue
-		      ind.PrimaryCare = rs.Column("primary_care").StringValue
-		      ind.SecondaryInpatient = rs.Column("secondary_inpatient").StringValue
-		      ind.SecondaryOutpatient = rs.Column("secondary_outpatient").StringValue
-		      ind.SourceASE = rs.Column("source_ase").BooleanValue
-		      ind.SourceEACVI = rs.Column("source_eacvi").BooleanValue
-		      ind.SourceBSE = rs.Column("source_bse").BooleanValue
-		      ind.SourceConsensus = rs.Column("source_consensus").BooleanValue
-		      
-		      // Load contexts
-		      ind.LoadContexts db
-		      
-		      results.Add ind
-		      rs.MoveToNextRow
-		    Wend
-		    
-		  Catch err As DatabaseException
-		    System.DebugLog("Error loading indications: " + err.Message)
-		  End Try
-		  
-		  Return results
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Shared Function GetByID(db As MySQLCommunityServer, id As Integer) As Indication
-		  Try
-		    Var sql As String = "SELECT * FROM indications WHERE id = ?"
-		    Var ps As PreparedSQLStatement = db.Prepare(sql)
-		    ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_LONG)
-		    ps.Bind(0, id)
-		    
-		    Var rs As RowSet = ps.SelectSQL
-		    
-		    If Not rs.AfterLastRow Then
-		      Var ind As New Indication
-		      ind.ID = rs.Column("id").IntegerValue
-		      ind.Title = rs.Column("title").StringValue
-		      ind.Keywords = rs.Column("keywords").StringValue
-		      ind.Comments = rs.Column("comments").StringValue
-		      ind.PrimaryCare = rs.Column("primary_care").StringValue
-		      ind.SecondaryInpatient = rs.Column("secondary_inpatient").StringValue
-		      ind.SecondaryOutpatient = rs.Column("secondary_outpatient").StringValue
-		      ind.SourceASE = rs.Column("source_ase").BooleanValue
-		      ind.SourceEACVI = rs.Column("source_eacvi").BooleanValue
-		      ind.SourceBSE = rs.Column("source_bse").BooleanValue
-		      ind.SourceConsensus = rs.Column("source_consensus").BooleanValue
-		      ind.LoadContexts db
-		      Return ind
-		    End If
-		    
-		  Catch err As DatabaseException
-		    System.DebugLog("Error loading indication: " + err.Message)
-		  End Try
-		  
-		  Return Nil
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function GetFieldValues() As Dictionary
-		  Var data As New Dictionary
-		  
-		  data.Value("title") = Self.Title
-		  data.Value("keywords") = If(Self.Keywords = "", "", Self.Keywords)
-		  data.Value("comments") = If(Self.Comments = "", "", Self.Comments)
-		  data.Value("primary_care") = Self.PrimaryCare
-		  data.Value("secondary_inpatient") = Self.SecondaryInpatient
-		  data.Value("secondary_outpatient") = Self.SecondaryOutpatient
-		  data.Value("source_ase") = If(Self.SourceASE, "1", "0")
-		  data.Value("source_eacvi") = If(Self.SourceEACVI, "1", "0")
-		  data.Value("source_bse") = If(Self.SourceBSE, "1", "0")
-		  data.Value("source_consensus") = If(Self.SourceConsensus, "1", "0")
-		  data.Value("contexts") = String.FromArray(Self.ContextNames, ", ")
-		  
-		  Return data
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub LoadContexts(db As MySQLCommunityServer)
-		  Try
-		    Var sql As String = "SELECT c.id, c.name FROM contexts c " + _
-		    "INNER JOIN indication_contexts ic ON c.id = ic.context_id " + _
-		    "WHERE ic.indication_id = ? ORDER BY c.sort_order"
-		    
-		    Var ps As PreparedSQLStatement = db.Prepare(sql)
-		    ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_LONG)
-		    ps.Bind(0, Me.ID)
-		    
-		    Var rs As RowSet = ps.SelectSQL
-		    
-		    ContextIDs.ResizeTo(-1)
-		    ContextNames.ResizeTo(-1)
-		    
-		    While Not rs.AfterLastRow
-		      ContextIDs.Add rs.Column("id").IntegerValue
-		      ContextNames.Add rs.Column("name").StringValue
-		      rs.MoveToNextRow
-		    Wend
-		    
-		  Catch err As DatabaseException
-		    System.DebugLog("Error loading contexts: " + err.Message)
-		  End Try
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function Save(db As MySQLCommunityServer) As Boolean
-		  Try
-		    If Me.ID = 0 Then
-		      // Insert
-		      Var sql As String = "INSERT INTO indications (title, keywords, comments, " + _
-		      "primary_care, secondary_inpatient, secondary_outpatient, " + _
-		      "source_ase, source_eacvi, source_bse, source_consensus, urgency) " + _
-		      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-		      
-		      Var ps As PreparedSQLStatement = db.Prepare(sql)
-		      ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		      ps.BindType(1, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		      ps.BindType(2, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		      ps.BindType(3, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		      ps.BindType(4, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		      ps.BindType(5, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		      ps.BindType(6, MySQLPreparedStatement.MYSQL_TYPE_TINY)
-		      ps.BindType(7, MySQLPreparedStatement.MYSQL_TYPE_TINY)
-		      ps.BindType(8, MySQLPreparedStatement.MYSQL_TYPE_TINY)
-		      ps.BindType(9, MySQLPreparedStatement.MYSQL_TYPE_TINY)
-		      ps.BindType(10, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		      
-		      ps.Bind(0, Me.Title)
-		      ps.Bind(1, Me.Keywords)
-		      ps.Bind(2, Me.Comments)
-		      ps.Bind(3, Me.PrimaryCare)
-		      ps.Bind(4, Me.SecondaryInpatient)
-		      ps.Bind(5, Me.SecondaryOutpatient)
-		      ps.Bind(6, Me.SourceASE)
-		      ps.Bind(7, Me.SourceEACVI)
-		      ps.Bind(8, Me.SourceBSE)
-		      ps.Bind(9, Me.SourceConsensus)
-		      ps.Bind(10, Me.Urgency)
-		      
-		      ps.SQLExecute
-		      Me.ID = db.LastInsertedRowID
-		      
-		    Else
-		      // Update
-		      Var sql As String = "UPDATE indications SET title=?, keywords=?, comments=?, " + _
-		      "primary_care=?, secondary_inpatient=?, secondary_outpatient=?, " + _
-		      "source_ase=?, source_eacvi=?, source_bse=?, source_consensus=?, urgency=? " + _
-		      "WHERE id=?"
-		      
-		      Var ps As PreparedSQLStatement = db.Prepare(sql)
-		      ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		      ps.BindType(1, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		      ps.BindType(2, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		      ps.BindType(3, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		      ps.BindType(4, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		      ps.BindType(5, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		      ps.BindType(6, MySQLPreparedStatement.MYSQL_TYPE_TINY)
-		      ps.BindType(7, MySQLPreparedStatement.MYSQL_TYPE_TINY)
-		      ps.BindType(8, MySQLPreparedStatement.MYSQL_TYPE_TINY)
-		      ps.BindType(9, MySQLPreparedStatement.MYSQL_TYPE_TINY)
-		      ps.BindType(10, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		      ps.BindType(11, MySQLPreparedStatement.MYSQL_TYPE_LONG)
-		      
-		      ps.Bind(0, Me.Title)
-		      ps.Bind(1, Me.Keywords)
-		      ps.Bind(2, Me.Comments)
-		      ps.Bind(3, Me.PrimaryCare)
-		      ps.Bind(4, Me.SecondaryInpatient)
-		      ps.Bind(5, Me.SecondaryOutpatient)
-		      ps.Bind(6, Me.SourceASE)
-		      ps.Bind(7, Me.SourceEACVI)
-		      ps.Bind(8, Me.SourceBSE)
-		      ps.Bind(9, Me.SourceConsensus)
-		      ps.Bind(10, Me.Urgency)
-		      ps.Bind(11, Me.ID)
-		      
-		      ps.SQLExecute
-		    End If
-		    
-		    // Save contexts
-		    SaveContexts db
-		    
-		    Return True
-		    
-		  Catch err As DatabaseException
-		    System.DebugLog("Error saving indication: " + err.Message)
-		    Return False
-		  End Try
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub SaveContexts(db As MySQLCommunityServer)
-		  Try
-		    // Delete existing contexts
-		    Var delSql As String = "DELETE FROM indication_contexts WHERE indication_id = ?"
-		    Var delPs As PreparedSQLStatement = db.Prepare(delSql)
-		    delPs.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_LONG)
-		    delPs.Bind(0, Me.ID)
-		    delPs.SQLExecute
-		    
-		    // Insert new contexts
-		    For Each contextID As Integer In Me.ContextIDs
-		      Var insSql As String = "INSERT INTO indication_contexts (indication_id, context_id) VALUES (?, ?)"
-		      Var insPs As PreparedSQLStatement = db.Prepare(insSql)
-		      insPs.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_LONG)
-		      insPs.BindType(1, MySQLPreparedStatement.MYSQL_TYPE_LONG)
-		      insPs.Bind(0, Me.ID)
-		      insPs.Bind(1, contextID)
-		      insPs.SQLExecute
-		    Next
-		    
-		  Catch err As DatabaseException
-		    System.DebugLog("Error saving contexts: " + err.Message)
-		  End Try
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function SaveWithAudit(db As MySQLCommunityServer, username As String) As Boolean
-		  // Store old data if updating
-		  Var oldData As Dictionary
-		  Var isNew As Boolean = (Self.ID = 0)
-		  
-		  If Not isNew Then
-		    // Load current state for comparison
-		    Var existing As Indication = Indication.GetByID(db, Self.ID)
-		    If existing <> Nil Then
-		      oldData = existing.GetFieldValues
-		    End If
-		  End If
-		  
-		  // Perform the actual save
-		  If Not Self.Save(db) Then Return False
-		  
-		  // Build new data dictionary
-		  Var newData As Dictionary = Self.GetFieldValues
-		  
-		  // Log to audit
-		  If isNew Then
-		    Call AuditTracker.LogCreate("indications", Self.ID, username, newData)
-		  Else
-		    Call AuditTracker.LogUpdate("indications", Self.ID, username, oldData, newData)
-		  End If
-		  
-		  Return True
-		End Function
-	#tag EndMethod
-
-
-	#tag Property, Flags = &h0
-		Comments As String
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		ContextIDs() As Integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		ContextNames() As String
-	#tag EndProperty
-
 	#tag Property, Flags = &h0
 		ID As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
+		Title As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
 		Keywords As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Comments As String
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -339,6 +33,10 @@ Protected Class Indication
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
+		SourceEACVI As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
 		SourceBSE As Boolean
 	#tag EndProperty
 
@@ -347,155 +45,307 @@ Protected Class Indication
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		SourceEACVI As Boolean
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		Title As String
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		Urgency As String
 	#tag EndProperty
 
+	#tag Property, Flags = &h0
+		ContextIDs() As Integer
+	#tag EndProperty
 
-	#tag ViewBehavior
-		#tag ViewProperty
-			Name="Name"
-			Visible=true
-			Group="ID"
-			InitialValue=""
-			Type="String"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="Index"
-			Visible=true
-			Group="ID"
-			InitialValue="-2147483648"
-			Type="Integer"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="Super"
-			Visible=true
-			Group="ID"
-			InitialValue=""
-			Type="String"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="Left"
-			Visible=true
-			Group="Position"
-			InitialValue="0"
-			Type="Integer"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="Top"
-			Visible=true
-			Group="Position"
-			InitialValue="0"
-			Type="Integer"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="ID"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="Integer"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="Comments"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="String"
-			EditorType="MultiLineEditor"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="Keywords"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="String"
-			EditorType="MultiLineEditor"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="PrimaryCare"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="String"
-			EditorType="MultiLineEditor"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="SecondaryInpatient"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="String"
-			EditorType="MultiLineEditor"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="SecondaryOutpatient"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="String"
-			EditorType="MultiLineEditor"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="SourceASE"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="Boolean"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="SourceBSE"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="Boolean"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="SourceConsensus"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="Boolean"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="SourceEACVI"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="Boolean"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="Title"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="String"
-			EditorType="MultiLineEditor"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="Urgency"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="String"
-			EditorType="MultiLineEditor"
-		#tag EndViewProperty
-	#tag EndViewBehavior
+	#tag Property, Flags = &h0
+		ContextNames() As String
+	#tag EndProperty
+
+	#tag Method, Flags = &h0
+		Shared Function GetAll() As Indication()
+		  '/// Fetches all indications from the API
+		  '///
+		  '/// @returns Array of Indication objects
+
+		  Var results() As Indication
+
+		  Try
+		    Var response As Dictionary = APIClient.Get("indications.lc", "list")
+
+		    If response.Value("status") = "success" Then
+		      Var dataVariant As Variant = response.Value("data")
+		      Var items() As Variant = dataVariant
+
+		      For Each item As Variant In items
+		        If item IsA Dictionary Then
+		          Var indication As Indication = FromDictionary(Dictionary(item))
+		          If indication <> Nil Then
+		            results.Add(indication)
+		          End If
+		        End If
+		      Next
+		    Else
+		      System.DebugLog("Indication.GetAll error: " + response.Value("message").StringValue)
+		    End If
+
+		  Catch err As RuntimeException
+		    System.DebugLog("Indication.GetAll exception: " + err.Message)
+		  End Try
+
+		  Return results
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Shared Function GetByID(id As Integer) As Indication
+		  '/// Fetches a single indication by ID
+		  '///
+		  '/// @param id The indication ID
+		  '/// @returns Indication object or Nil if not found
+
+		  Try
+		    Var params As New Dictionary
+		    params.Value("id") = id.ToString
+
+		    Var response As Dictionary = APIClient.Get("indications.lc", "read", params)
+
+		    If response.Value("status") = "success" Then
+		      Var dataVariant As Variant = response.Value("data")
+
+		      If dataVariant IsA Dictionary Then
+		        Return FromDictionary(Dictionary(dataVariant))
+		      End If
+		    Else
+		      System.DebugLog("Indication.GetByID error: " + response.Value("message").StringValue)
+		    End If
+
+		  Catch err As RuntimeException
+		    System.DebugLog("Indication.GetByID exception: " + err.Message)
+		  End Try
+
+		  Return Nil
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Shared Function GetByContext(contextID As Integer) As Indication()
+		  '/// Fetches all indications for a specific context
+		  '///
+		  '/// @param contextID The context ID to filter by
+		  '/// @returns Array of Indication objects
+
+		  Var results() As Indication
+
+		  Try
+		    Var params As New Dictionary
+		    params.Value("context_id") = contextID.ToString
+
+		    Var response As Dictionary = APIClient.Get("indications.lc", "list_by_context", params)
+
+		    If response.Value("status") = "success" Then
+		      Var dataVariant As Variant = response.Value("data")
+		      Var items() As Variant = dataVariant
+
+		      For Each item As Variant In items
+		        If item IsA Dictionary Then
+		          Var indication As Indication = FromDictionary(Dictionary(item))
+		          If indication <> Nil Then
+		            results.Add(indication)
+		          End If
+		        End If
+		      Next
+		    Else
+		      System.DebugLog("Indication.GetByContext error: " + response.Value("message").StringValue)
+		    End If
+
+		  Catch err As RuntimeException
+		    System.DebugLog("Indication.GetByContext exception: " + err.Message)
+		  End Try
+
+		  Return results
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Shared Function Search(keyword As String) As Indication()
+		  '/// Searches for indications by keyword
+		  '///
+		  '/// @param keyword The search term
+		  '/// @returns Array of matching Indication objects
+
+		  Var results() As Indication
+
+		  Try
+		    Var params As New Dictionary
+		    params.Value("keyword") = keyword
+
+		    Var response As Dictionary = APIClient.Get("search.lc", "keyword", params)
+
+		    If response.Value("status") = "success" Then
+		      Var dataVariant As Variant = response.Value("data")
+		      Var items() As Variant = dataVariant
+
+		      For Each item As Variant In items
+		        If item IsA Dictionary Then
+		          Var indication As Indication = FromDictionary(Dictionary(item))
+		          If indication <> Nil Then
+		            results.Add(indication)
+		          End If
+		        End If
+		      Next
+		    Else
+		      System.DebugLog("Indication.Search error: " + response.Value("message").StringValue)
+		    End If
+
+		  Catch err As RuntimeException
+		    System.DebugLog("Indication.Search exception: " + err.Message)
+		  End Try
+
+		  Return results
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Delete() As Boolean
+		  '/// Deletes this indication (requires authentication)
+		  '///
+		  '/// @returns True if successful, False otherwise
+
+		  If Not AuthManager.IsAuthenticated Then
+		    System.DebugLog("Indication.Delete: Not authenticated")
+		    Return False
+		  End If
+
+		  Try
+		    Var data As New Dictionary
+		    data.Value("id") = ID
+
+		    Var response As Dictionary = APIClient.Post("indications.lc", "delete", data)
+
+		    If response.Value("status") = "success" Then
+		      Return True
+		    Else
+		      System.DebugLog("Indication.Delete error: " + response.Value("message").StringValue)
+		      Return False
+		    End If
+
+		  Catch err As RuntimeException
+		    System.DebugLog("Indication.Delete exception: " + err.Message)
+		    Return False
+		  End Try
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Shared Function FromDictionary(data As Dictionary) As Indication
+		  '/// Creates an Indication object from API response dictionary
+		  '///
+		  '/// @param data Dictionary from API
+		  '/// @returns Indication object or Nil
+
+		  Try
+		    Var indication As New Indication
+
+		    indication.ID = data.Value("id").IntegerValue
+		    indication.Title = data.Value("title").StringValue
+
+		    If data.HasKey("keywords") And data.Value("keywords") <> Nil Then
+		      indication.Keywords = data.Value("keywords").StringValue
+		    End If
+
+		    If data.HasKey("comments") And data.Value("comments") <> Nil Then
+		      indication.Comments = data.Value("comments").StringValue
+		    End If
+
+		    If data.HasKey("primary_care") And data.Value("primary_care") <> Nil Then
+		      indication.PrimaryCare = data.Value("primary_care").StringValue
+		    End If
+
+		    If data.HasKey("secondary_inpatient") And data.Value("secondary_inpatient") <> Nil Then
+		      indication.SecondaryInpatient = data.Value("secondary_inpatient").StringValue
+		    End If
+
+		    If data.HasKey("secondary_outpatient") And data.Value("secondary_outpatient") <> Nil Then
+		      indication.SecondaryOutpatient = data.Value("secondary_outpatient").StringValue
+		    End If
+
+		    If data.HasKey("source_ase") Then
+		      indication.SourceASE = (data.Value("source_ase").IntegerValue = 1)
+		    End If
+
+		    If data.HasKey("source_eacvi") Then
+		      indication.SourceEACVI = (data.Value("source_eacvi").IntegerValue = 1)
+		    End If
+
+		    If data.HasKey("source_bse") Then
+		      indication.SourceBSE = (data.Value("source_bse").IntegerValue = 1)
+		    End If
+
+		    If data.HasKey("source_consensus") Then
+		      indication.SourceConsensus = (data.Value("source_consensus").IntegerValue = 1)
+		    End If
+
+		    If data.HasKey("urgency") And data.Value("urgency") <> Nil Then
+		      indication.Urgency = data.Value("urgency").StringValue
+		    End If
+
+		    // Parse contexts - handle both array and string formats
+		    If data.HasKey("contexts") And data.Value("contexts") <> Nil Then
+		      Var contextsValue As Variant = data.Value("contexts")
+		      Var contextNames() As String
+		      Var valueType As Integer = VarType(contextsValue)
+
+		      If valueType = 8 Then
+		        // String type - parse as comma-separated string
+		        Var contextsStr As String = contextsValue.StringValue
+		        If contextsStr.Length > 0 Then
+		          contextNames = contextsStr.Split(",")
+		          // Trim whitespace from each context name
+		          For i As Integer = 0 To contextNames.LastIndex
+		            contextNames(i) = contextNames(i).Trim
+		          Next
+		        End If
+
+		      ElseIf valueType = 4096 Then
+		        // Array type - process as array of dictionaries
+		        Var contextsArray() As Variant = contextsValue
+
+		        For Each ctx As Variant In contextsArray
+		          If ctx IsA Dictionary Then
+		            Var ctxDict As Dictionary = Dictionary(ctx)
+		            If ctxDict.HasKey("name") And ctxDict.Value("name") <> Nil Then
+		              contextNames.Add(ctxDict.Value("name").StringValue)
+		            End If
+		          End If
+		        Next
+
+		      End If
+
+		      indication.ContextNames = contextNames
+		    End If
+
+		    Return indication
+
+		  Catch err As RuntimeException
+		    System.DebugLog("Indication.FromDictionary error: " + err.Message)
+		    Return Nil
+		  End Try
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ToString() As String
+		  '/// Returns a string representation of this indication
+		  '///
+		  '/// @returns String description
+
+		  Var result As String = "[" + ID.ToString + "] " + Title
+
+		  If Keywords.Length > 0 Then
+		    result = result + " (Keywords: " + Keywords + ")"
+		  End If
+
+		  If ContextNames.Count > 0 Then
+		    result = result + " {Contexts: " + String.FromArray(ContextNames, ", ") + "}"
+		  End If
+
+		  Return result
+		End Function
+	#tag EndMethod
 End Class
 #tag EndClass
