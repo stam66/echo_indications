@@ -1,0 +1,348 @@
+#tag Module
+Protected Module NavigationManager
+	#tag Method, Flags = &h21
+		Private Sub AddToHistory(entry As NavigationEntry)
+		  '/// Adds a navigation entry to history and manages the stack
+		  '///
+		  '/// @param entry The navigation entry to add
+
+		  // If we're in the middle of history (user went back, then navigated somewhere new),
+		  // truncate everything after current position
+		  If mCurrentIndex < mHistory.Count - 1 Then
+		    mHistory.ResizeTo(mCurrentIndex)
+		  End If
+
+		  // Add new entry
+		  mHistory.Add(entry)
+		  mCurrentIndex = mHistory.Count - 1
+
+		  // Limit history to prevent memory issues (keep last 50 entries)
+		  If mHistory.Count > 50 Then
+		    mHistory.RemoveAt(0)
+		    mCurrentIndex = mCurrentIndex - 1
+		  End If
+
+		  If AppConfig.DEBUG_MODE Then
+		    System.DebugLog "Navigation: Added to history - " + entry.ToString + " (index: " + mCurrentIndex.ToString + ")"
+		  End If
+
+		  // Notify that navigation state changed (for updating UI buttons)
+		  RaiseNavigationChanged
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function CanGoBack() As Boolean
+		  '/// Checks if backward navigation is possible
+		  '///
+		  '/// @returns True if there's history to go back to
+
+		  Return mCurrentIndex > 0
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function CanGoForward() As Boolean
+		  '/// Checks if forward navigation is possible
+		  '///
+		  '/// @returns True if there's history to go forward to
+
+		  Return mCurrentIndex < mHistory.Count - 1
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ClearHistory()
+		  '/// Clears all navigation history
+		  '/// Useful on logout or app reset
+
+		  mHistory.ResizeTo(-1)
+		  mCurrentIndex = -1
+
+		  If AppConfig.DEBUG_MODE Then
+		    System.DebugLog "Navigation: History cleared"
+		  End If
+
+		  RaiseNavigationChanged
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function CurrentLocation() As NavigationEntry
+		  '/// Returns the current navigation entry
+		  '///
+		  '/// @returns Current NavigationEntry or Nil
+
+		  If mCurrentIndex >= 0 And mCurrentIndex < mHistory.Count Then
+		    Return mHistory(mCurrentIndex)
+		  Else
+		    Return Nil
+		  End If
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetHistoryDebug() As String
+		  '/// Returns debug string showing navigation history
+		  '///
+		  '/// @returns String representation of history
+
+		  Var result As String = "Navigation History (" + mHistory.Count.ToString + " entries):" + EndOfLine
+
+		  For i As Integer = 0 To mHistory.Count - 1
+		    Var marker As String = If(i = mCurrentIndex, ">>> ", "    ")
+		    result = result + marker + i.ToString + ": " + mHistory(i).ToString + EndOfLine
+		  Next
+
+		  Return result
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub Navigate(entry As NavigationEntry)
+		  '/// Performs the actual navigation based on entry type
+		  '///
+		  '/// @param entry The navigation entry to execute
+
+		  Try
+		    Select Case entry.NavigationType
+		    Case NavigationEntry.NavType.LandingWindow
+		      ShowLandingWindow()
+
+		    Case NavigationEntry.NavType.MainWindow
+		      ShowMainWindow(entry.ContainerName, entry.Context)
+
+		    Else
+		      System.DebugLog "Navigation: Unknown navigation type"
+		    End Select
+
+		  Catch err As RuntimeException
+		    System.DebugLog "Navigation error: " + err.Message
+		  End Try
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub NavigateToAudit()
+		  '/// Navigate to Audit container (requires authentication)
+
+		  If Not AuthManager.IsAuthenticated Then
+		    // Show login dialog first
+		    Var loginDialog As New LoginDialog
+		    loginDialog.ShowModal
+
+		    If Not AuthManager.IsAuthenticated Then
+		      // User cancelled or login failed
+		      Return
+		    End If
+		  End If
+
+		  Var entry As New NavigationEntry
+		  entry.NavigationType = NavigationEntry.NavType.MainWindow
+		  entry.ContainerName = "Audit"
+		  entry.Timestamp = DateTime.Now
+
+		  AddToHistory(entry)
+		  Navigate(entry)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub NavigateToChangeRequests()
+		  '/// Navigate to Change Requests container (public access)
+
+		  Var entry As New NavigationEntry
+		  entry.NavigationType = NavigationEntry.NavType.MainWindow
+		  entry.ContainerName = "ChangeRequests"
+		  entry.Timestamp = DateTime.Now
+
+		  AddToHistory(entry)
+		  Navigate(entry)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub NavigateToHome()
+		  '/// Navigate to Landing Window (home page)
+		  '/// This is called when user clicks the logo
+
+		  Var entry As New NavigationEntry
+		  entry.NavigationType = NavigationEntry.NavType.LandingWindow
+		  entry.Timestamp = DateTime.Now
+
+		  AddToHistory(entry)
+		  Navigate(entry)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub NavigateToIndications(Optional context As Dictionary = Nil)
+		  '/// Navigate to Indications container (public access)
+		  '///
+		  '/// @param context Optional context (e.g., filter by context ID)
+
+		  Var entry As New NavigationEntry
+		  entry.NavigationType = NavigationEntry.NavType.MainWindow
+		  entry.ContainerName = "Indications"
+		  entry.Context = context
+		  entry.Timestamp = DateTime.Now
+
+		  AddToHistory(entry)
+		  Navigate(entry)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub NavigateToNext()
+		  '/// Navigate forward in history
+
+		  If CanGoForward Then
+		    mCurrentIndex = mCurrentIndex + 1
+		    Var entry As NavigationEntry = mHistory(mCurrentIndex)
+
+		    If AppConfig.DEBUG_MODE Then
+		      System.DebugLog "Navigation: Forward to " + entry.ToString
+		    End If
+
+		    Navigate(entry)
+		    RaiseNavigationChanged
+		  End If
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub NavigateToPrevious()
+		  '/// Navigate backward in history
+
+		  If CanGoBack Then
+		    mCurrentIndex = mCurrentIndex - 1
+		    Var entry As NavigationEntry = mHistory(mCurrentIndex)
+
+		    If AppConfig.DEBUG_MODE Then
+		      System.DebugLog "Navigation: Back to " + entry.ToString
+		    End If
+
+		    Navigate(entry)
+		    RaiseNavigationChanged
+		  End If
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub NavigateToSettings()
+		  '/// Navigate to Settings container (requires authentication)
+
+		  If Not AuthManager.IsAuthenticated Then
+		    // Show login dialog first
+		    Var loginDialog As New LoginDialog
+		    loginDialog.ShowModal
+
+		    If Not AuthManager.IsAuthenticated Then
+		      // User cancelled or login failed
+		      Return
+		    End If
+		  End If
+
+		  Var entry As New NavigationEntry
+		  entry.NavigationType = NavigationEntry.NavType.MainWindow
+		  entry.ContainerName = "Settings"
+		  entry.Timestamp = DateTime.Now
+
+		  AddToHistory(entry)
+		  Navigate(entry)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub NavigateToUsers()
+		  '/// Navigate to Users container (requires authentication)
+
+		  If Not AuthManager.IsAuthenticated Then
+		    // Show login dialog first
+		    Var loginDialog As New LoginDialog
+		    loginDialog.ShowModal
+
+		    If Not AuthManager.IsAuthenticated Then
+		      // User cancelled or login failed
+		      Return
+		    End If
+		  End If
+
+		  Var entry As New NavigationEntry
+		  entry.NavigationType = NavigationEntry.NavType.MainWindow
+		  entry.ContainerName = "Users"
+		  entry.Timestamp = DateTime.Now
+
+		  AddToHistory(entry)
+		  Navigate(entry)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub RaiseNavigationChanged()
+		  '/// Notifies that navigation state has changed
+		  '/// Used to update Back/Forward button states
+
+		  // This would be a delegate/event in real implementation
+		  // For now, windows can poll CanGoBack/CanGoForward
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub ShowLandingWindow()
+		  '/// Shows the Landing Window and hides Main Window
+
+		  If mMainWindow <> Nil Then
+		    mMainWindow.Close
+		    mMainWindow = Nil
+		  End If
+
+		  If mLandingWindow = Nil Then
+		    mLandingWindow = New LandingWindow
+		  End If
+
+		  mLandingWindow.Show
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub ShowMainWindow(containerName As String, context As Dictionary)
+		  '/// Shows the Main Window and hides Landing Window
+		  '///
+		  '/// @param containerName Which container to show
+		  '/// @param context Optional context data
+
+		  If mLandingWindow <> Nil Then
+		    mLandingWindow.Close
+		    mLandingWindow = Nil
+		  End If
+
+		  If mMainWindow = Nil Then
+		    mMainWindow = New MainWindow
+		  End If
+
+		  mMainWindow.Show
+		  mMainWindow.ShowContainer(containerName, context)
+		End Sub
+	#tag EndMethod
+
+
+	#tag Property, Flags = &h21
+		Private mHistory() As NavigationEntry
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mCurrentIndex As Integer = -1
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mLandingWindow As LandingWindow
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mMainWindow As MainWindow
+	#tag EndProperty
+
+
+End Module
+#tag EndModule

@@ -1,0 +1,213 @@
+#tag Window
+Begin Dialog LoginDialog
+   BackColor       =   &cFFFFFF
+   Backdrop        =   0
+   CloseButton     =   True
+   Composite       =   False
+   Frame           =   1
+   FullScreen      =   False
+   HasBackgroundColor=   True
+   Height          =   300
+   IMEMode         =   0
+   MacProcID       =   0
+   MaxHeight       =   300
+   MaxWidth        =   400
+   MenuBar         =   0
+   MinHeight       =   300
+   MinWidth        =   400
+   Resizeable      =   False
+   Title           =   "Login"
+   Visible         =   True
+   Width           =   400
+
+   Begin DesktopTextField UsernameField
+      AllowAutoDeactivate=   True
+      AllowFocusRing  =   True
+      AllowSpellChecking=   False
+      AllowTabs       =   False
+      BackColor       =   &cFFFFFF
+      Enabled         =   True
+      Format          =   ""
+      Height          =   30
+      Hint            =   "Username"
+      Index           =   -2147483648
+      Left            =   50
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      MaximumCharactersAllowed=   0
+      Password        =   False
+      ReadOnly        =   False
+      Scope           =   0
+      TabIndex        =   0
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   ""
+      TextAlignment   =   0
+      TextColor       =   &c000000
+      Top             =   80
+      Transparent     =   False
+      Underline       =   False
+      ValidationMask  =   ""
+      Visible         =   True
+      Width           =   300
+   End
+
+   Begin DesktopTextField PasswordField
+      AllowAutoDeactivate=   True
+      AllowFocusRing  =   True
+      AllowSpellChecking=   False
+      AllowTabs       =   False
+      BackColor       =   &cFFFFFF
+      Enabled         =   True
+      Format          =   ""
+      Height          =   30
+      Hint            =   "Password"
+      Index           =   -2147483648
+      Left            =   50
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      MaximumCharactersAllowed=   0
+      Password        =   True
+      ReadOnly        =   False
+      Scope           =   0
+      TabIndex        =   1
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   ""
+      TextAlignment   =   0
+      TextColor       =   &c000000
+      Top             =   120
+      Transparent     =   False
+      Underline       =   False
+      ValidationMask  =   ""
+      Visible         =   True
+      Width           =   300
+   End
+
+   Begin DesktopButton LoginButton
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      ButtonStyle     =   0
+      Cancel          =   False
+      Caption         =   "Login"
+      Default         =   True
+      Enabled         =   True
+      Height          =   30
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   250
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Scope           =   0
+      TabIndex        =   2
+      TabPanelIndex   =   0
+      TabStop         =   True
+      TextFont        =   "System"
+      TextSize        =   0.0
+      TextUnit        =   0
+      Top             =   250
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   100
+   End
+
+   Begin DesktopButton CancelButton
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      ButtonStyle     =   0
+      Cancel          =   True
+      Caption         =   "Cancel"
+      Default         =   False
+      Enabled         =   True
+      Height          =   30
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   140
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Scope           =   0
+      TabIndex        =   3
+      TabPanelIndex   =   0
+      TabStop         =   True
+      TextFont        =   "System"
+      TextSize        =   0.0
+      TextUnit        =   0
+      Top             =   250
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   100
+   End
+End
+#tag EndWindow
+
+#tag WindowCode
+	#tag Event
+		Sub Opening()
+		  // Center the dialog
+		  If Self.Parent <> Nil Then
+		    Self.Left = (Self.Parent.Width - Self.Width) / 2
+		    Self.Top = (Self.Parent.Height - Self.Height) / 2
+		  End If
+		End Sub
+	#tag EndEvent
+
+
+#tag EndWindowCode
+
+#tag Events LoginButton
+	#tag Event
+		Sub Pressed()
+		  // Attempt login
+		  Var username As String = UsernameField.Text.Trim
+		  Var password As String = PasswordField.Text
+
+		  If username.Length = 0 Or password.Length = 0 Then
+		    Var dlg As New MessageDialog
+		    dlg.Message = "Please enter both username and password"
+		    dlg.ActionButton.Caption = "OK"
+		    dlg.ShowModal
+		    Return
+		  End If
+
+		  // Call AuthManager
+		  If AuthManager.Login(username, password) Then
+		    // Success - close dialog
+		    Self.Close
+		  Else
+		    // Failed - show error
+		    Var dlg As New MessageDialog
+		    dlg.Message = "Login failed. Please check your credentials."
+		    dlg.ActionButton.Caption = "OK"
+		    dlg.ShowModal
+
+		    // Clear password field
+		    PasswordField.Text = ""
+		    PasswordField.SetFocus
+		  End If
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events CancelButton
+	#tag Event
+		Sub Pressed()
+		  // Close without logging in
+		  Self.Close
+		End Sub
+	#tag EndEvent
+#tag EndEvents

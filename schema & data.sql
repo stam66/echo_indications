@@ -129,16 +129,6 @@ AUTO_INCREMENT = 35;
 -- -------------------------------------------------------------
 
 
--- Dump data of "users" ------------------------------------
-BEGIN;
-
-INSERT INTO `users`(`id`,`username`,`password_hash`,`email`,`is_active`,`created_at`,`updated_at`,`title`,`OTP`,`name`) VALUES 
-( '1', 'admin', '5e9293d879732c749b3542f5d0fa6b47c6b96c852ef8162723bfe36ad88557c6', 'stam66@mac.com', '1', '2025-11-29 01:22:57', '2025-12-10 04:37:08', 'System Admin', '0', 'Admin' ),
-( '2', 'SKapetanakis', '5e9293d879732c749b3542f5d0fa6b47c6b96c852ef8162723bfe36ad88557c6', 'skapetanakis@nhs.net', '1', '2025-12-10 03:33:16', '2025-12-11 19:15:49', 'ECHO Lead GSTT', '0', 'Stam Kapetanakis' );
-COMMIT;
--- ---------------------------------------------------------
-
-
 -- Dump data of "contexts" ---------------------------------
 BEGIN;
 
