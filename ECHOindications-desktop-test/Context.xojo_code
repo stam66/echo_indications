@@ -1,0 +1,191 @@
+#tag Class
+Protected Class Context
+	#tag Method, Flags = &h21
+		Private Shared Function FromDictionary(data As Dictionary) As Context
+		  '/// Creates a Context object from API response dictionary
+		  '///
+		  '/// @param data Dictionary from API
+		  '/// @returns Context object or Nil
+		  
+		  Try
+		    Var context As New Context
+		    
+		    context.ID = data.Value("id").IntegerValue
+		    context.Name = data.Value("name").StringValue
+		    
+		    If data.HasKey("description") And data.Value("description") <> Nil Then
+		      context.Description = data.Value("description").StringValue
+		    End If
+		    
+		    If data.HasKey("sort_order") Then
+		      context.SortOrder = data.Value("sort_order").IntegerValue
+		    End If
+		    
+		    If data.HasKey("is_active") Then
+		      context.IsActive = (data.Value("is_active").IntegerValue = 1)
+		    Else
+		      context.IsActive = True // Default to active
+		    End If
+		    
+		    If data.HasKey("indication_count") Then
+		      context.IndicationCount = data.Value("indication_count").IntegerValue
+		    End If
+		    
+		    Return context
+		    
+		  Catch err As RuntimeException
+		    System.DebugLog("Context.FromDictionary error: " + err.Message)
+		    Return Nil
+		  End Try
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Shared Function GetAll() As Context()
+		  '/// Fetches all contexts from the API
+		  '///
+		  '/// @returns Array of Context objects
+		  
+		  Var results() As Context
+		  
+		  Try
+		    Var response As Dictionary = APIClient.Get("contexts.lc", "list")
+		    
+		    If response.Value("status") = "success" Then
+		      Var dataVariant As Variant = response.Value("data")
+		      Var items() As Variant = dataVariant
+		      
+		      For Each item As Variant In items
+		        If item IsA Dictionary Then
+		          Var context As Context = FromDictionary(Dictionary(item))
+		          If context <> Nil Then
+		            results.Add(context)
+		          End If
+		        End If
+		      Next
+		    Else
+		      System.DebugLog("Context.GetAll error: " + response.Value("message").StringValue)
+		    End If
+		    
+		  Catch err As RuntimeException
+		    System.DebugLog("Context.GetAll exception: " + err.Message)
+		  End Try
+		  
+		  Return results
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Shared Function GetAllWithCounts() As Context()
+		  '/// Fetches all contexts with indication counts
+		  '///
+		  '/// @returns Array of Context objects with IndicationCount populated
+		  
+		  Var results() As Context
+		  
+		  Try
+		    Var response As Dictionary = APIClient.Get("contexts.lc", "with_counts")
+		    
+		    If response.Value("status") = "success" Then
+		      Var dataVariant As Variant = response.Value("data")
+		      Var items() As Variant = dataVariant
+		      
+		      For Each item As Variant In items
+		        If item IsA Dictionary Then
+		          Var context As Context = FromDictionary(Dictionary(item))
+		          If context <> Nil Then
+		            results.Add(context)
+		          End If
+		        End If
+		      Next
+		    Else
+		      System.DebugLog("Context.GetAllWithCounts error: " + response.Value("message").StringValue)
+		    End If
+		    
+		  Catch err As RuntimeException
+		    System.DebugLog("Context.GetAllWithCounts exception: " + err.Message)
+		  End Try
+		  
+		  Return results
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Shared Function GetByID(id As Integer) As Context
+		  '/// Fetches a single context by ID
+		  '///
+		  '/// @param id The context ID
+		  '/// @returns Context object or Nil if not found
+		  
+		  Try
+		    Var params As New Dictionary
+		    params.Value("id") = id.ToString
+		    
+		    Var response As Dictionary = APIClient.Get("contexts.lc", "read", params)
+		    
+		    If response.Value("status") = "success" Then
+		      Var dataVariant As Variant = response.Value("data")
+		      
+		      If dataVariant IsA Dictionary Then
+		        Return FromDictionary(Dictionary(dataVariant))
+		      End If
+		    Else
+		      System.DebugLog("Context.GetByID error: " + response.Value("message").StringValue)
+		    End If
+		    
+		  Catch err As RuntimeException
+		    System.DebugLog("Context.GetByID exception: " + err.Message)
+		  End Try
+		  
+		  Return Nil
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ToString() As String
+		  '/// Returns a string representation of this context
+		  '///
+		  '/// @returns String description
+		  
+		  Var result As String = "[" + ID.ToString + "] " + Name
+		  
+		  If IndicationCount > 0 Then
+		    result = result + " (" + IndicationCount.ToString + " indications)"
+		  End If
+		  
+		  If Not IsActive Then
+		    result = result + " [INACTIVE]"
+		  End If
+		  
+		  Return result
+		End Function
+	#tag EndMethod
+
+
+	#tag Property, Flags = &h0
+		Description As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		ID As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		IndicationCount As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		IsActive As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Name As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		SortOrder As Integer
+	#tag EndProperty
+
+
+End Class
+#tag EndClass
