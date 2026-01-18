@@ -288,9 +288,21 @@ Protected Class Indication
 		    If data.HasKey("contexts") And data.Value("contexts") <> Nil Then
 		      Var contextsValue As Variant = data.Value("contexts")
 		      Var contextNames() As String
+		      Var valueType As Integer = VarType(contextsValue)
 
-		      // Try to process as array of dictionaries first
-		      Try
+		      If valueType = 8 Then
+		        // String type - parse as comma-separated string
+		        Var contextsStr As String = contextsValue.StringValue
+		        If contextsStr.Length > 0 Then
+		          contextNames = contextsStr.Split(",")
+		          // Trim whitespace from each context name
+		          For i As Integer = 0 To contextNames.LastIndex
+		            contextNames(i) = contextNames(i).Trim
+		          Next
+		        End If
+
+		      ElseIf valueType = 4096 Then
+		        // Array type - process as array of dictionaries
 		        Var contextsArray() As Variant = contextsValue
 
 		        For Each ctx As Variant In contextsArray
@@ -302,21 +314,7 @@ Protected Class Indication
 		          End If
 		        Next
 
-		      Catch ex As TypeMismatchException
-		        // Not an array - try as string
-		        Try
-		          Var contextsStr As String = contextsValue.StringValue
-		          If contextsStr.Length > 0 Then
-		            contextNames = contextsStr.Split(",")
-		            // Trim whitespace from each context name
-		            For i As Integer = 0 To contextNames.LastIndex
-		              contextNames(i) = contextNames(i).Trim
-		            Next
-		          End If
-		        Catch
-		          // Neither array nor string - ignore
-		        End Try
-		      End Try
+		      End If
 
 		      indication.ContextNames = contextNames
 		    End If
