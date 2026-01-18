@@ -49,16 +49,20 @@ Protected Class Audit
 
 		    If response.Value("status") = "success" Then
 		      Var dataVariant As Variant = response.Value("data")
-		      Var items() As Variant = dataVariant
+		      Var valueType As Integer = VarType(dataVariant)
 
-		      For Each item As Variant In items
-		        If item IsA Dictionary Then
-		          Var audit As Audit = FromDictionary(Dictionary(item))
-		          If audit <> Nil Then
-		            results.Add(audit)
+		      If valueType = 4096 Then  // 4096 = Array type
+		        Var items() As Variant = dataVariant
+
+		        For Each item As Variant In items
+		          If item IsA Dictionary Then
+		            Var audit As Audit = FromDictionary(Dictionary(item))
+		            If audit <> Nil Then
+		              results.Add(audit)
+		            End If
 		          End If
-		        End If
-		      Next
+		        Next
+		      End If
 		    Else
 		      System.DebugLog("Audit.GetRecent error: " + response.Value("message").StringValue)
 		    End If
@@ -90,16 +94,20 @@ Protected Class Audit
 
 		    If response.Value("status") = "success" Then
 		      Var dataVariant As Variant = response.Value("data")
-		      Var items() As Variant = dataVariant
+		      Var valueType As Integer = VarType(dataVariant)
 
-		      For Each item As Variant In items
-		        If item IsA Dictionary Then
-		          Var audit As Audit = FromDictionary(Dictionary(item))
-		          If audit <> Nil Then
-		            results.Add(audit)
+		      If valueType = 4096 Then  // 4096 = Array type
+		        Var items() As Variant = dataVariant
+
+		        For Each item As Variant In items
+		          If item IsA Dictionary Then
+		            Var audit As Audit = FromDictionary(Dictionary(item))
+		            If audit <> Nil Then
+		              results.Add(audit)
+		            End If
 		          End If
-		        End If
-		      Next
+		        Next
+		      End If
 		    Else
 		      System.DebugLog("Audit.GetByTable error: " + response.Value("message").StringValue)
 		    End If
@@ -131,16 +139,20 @@ Protected Class Audit
 
 		    If response.Value("status") = "success" Then
 		      Var dataVariant As Variant = response.Value("data")
-		      Var items() As Variant = dataVariant
+		      Var valueType As Integer = VarType(dataVariant)
 
-		      For Each item As Variant In items
-		        If item IsA Dictionary Then
-		          Var audit As Audit = FromDictionary(Dictionary(item))
-		          If audit <> Nil Then
-		            results.Add(audit)
+		      If valueType = 4096 Then  // 4096 = Array type
+		        Var items() As Variant = dataVariant
+
+		        For Each item As Variant In items
+		          If item IsA Dictionary Then
+		            Var audit As Audit = FromDictionary(Dictionary(item))
+		            If audit <> Nil Then
+		              results.Add(audit)
+		            End If
 		          End If
-		        End If
-		      Next
+		        Next
+		      End If
 		    Else
 		      System.DebugLog("Audit.GetByRecord error: " + response.Value("message").StringValue)
 		    End If
@@ -172,16 +184,20 @@ Protected Class Audit
 
 		    If response.Value("status") = "success" Then
 		      Var dataVariant As Variant = response.Value("data")
-		      Var items() As Variant = dataVariant
+		      Var valueType As Integer = VarType(dataVariant)
 
-		      For Each item As Variant In items
-		        If item IsA Dictionary Then
-		          Var audit As Audit = FromDictionary(Dictionary(item))
-		          If audit <> Nil Then
-		            results.Add(audit)
+		      If valueType = 4096 Then  // 4096 = Array type
+		        Var items() As Variant = dataVariant
+
+		        For Each item As Variant In items
+		          If item IsA Dictionary Then
+		            Var audit As Audit = FromDictionary(Dictionary(item))
+		            If audit <> Nil Then
+		              results.Add(audit)
+		            End If
 		          End If
-		        End If
-		      Next
+		        Next
+		      End If
 		    Else
 		      System.DebugLog("Audit.GetByUser error: " + response.Value("message").StringValue)
 		    End If
