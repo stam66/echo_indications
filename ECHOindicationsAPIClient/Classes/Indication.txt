@@ -73,9 +73,7 @@ Protected Class Indication
 
 		      For Each item As Variant In items
 		        If item IsA Dictionary Then
-		          Var itemDict As Dictionary = Dictionary(item)
-		          NormalizeContexts(itemDict)
-		          Var indication As Indication = FromDictionary(itemDict)
+		          Var indication As Indication = FromDictionary(Dictionary(item))
 		          If indication <> Nil Then
 		            results.Add(indication)
 		          End If
@@ -110,9 +108,7 @@ Protected Class Indication
 		      Var dataVariant As Variant = response.Value("data")
 
 		      If dataVariant IsA Dictionary Then
-		        Var dataDict As Dictionary = Dictionary(dataVariant)
-		        NormalizeContexts(dataDict)
-		        Return FromDictionary(dataDict)
+		        Return FromDictionary(Dictionary(dataVariant))
 		      End If
 		    Else
 		      System.DebugLog("Indication.GetByID error: " + response.Value("message").StringValue)
@@ -147,9 +143,7 @@ Protected Class Indication
 
 		      For Each item As Variant In items
 		        If item IsA Dictionary Then
-		          Var itemDict As Dictionary = Dictionary(item)
-		          NormalizeContexts(itemDict)
-		          Var indication As Indication = FromDictionary(itemDict)
+		          Var indication As Indication = FromDictionary(Dictionary(item))
 		          If indication <> Nil Then
 		            results.Add(indication)
 		          End If
@@ -188,9 +182,7 @@ Protected Class Indication
 
 		      For Each item As Variant In items
 		        If item IsA Dictionary Then
-		          Var itemDict As Dictionary = Dictionary(item)
-		          NormalizeContexts(itemDict)
-		          Var indication As Indication = FromDictionary(itemDict)
+		          Var indication As Indication = FromDictionary(Dictionary(item))
 		          If indication <> Nil Then
 		            results.Add(indication)
 		          End If
@@ -237,40 +229,6 @@ Protected Class Indication
 		    Return False
 		  End Try
 		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
-		Private Shared Sub NormalizeContexts(data As Dictionary)
-		  '/// Converts contexts array to comma-separated string if needed
-		  '///
-		  '/// @param data Dictionary that might contain contexts array
-
-		  If data.HasKey("contexts") And data.Value("contexts") <> Nil Then
-		    Try
-		      Var contextsArray() As Variant = data.Value("contexts")
-		      Var contextNames() As String
-
-		      For Each ctx As Variant In contextsArray
-		        If ctx IsA Dictionary Then
-		          Var ctxDict As Dictionary = Dictionary(ctx)
-		          If ctxDict.HasKey("name") And ctxDict.Value("name") <> Nil Then
-		            contextNames.Add(ctxDict.Value("name").StringValue)
-		          End If
-		        End If
-		      Next
-
-		      // Replace array with comma-separated string
-		      If contextNames.Count > 0 Then
-		        data.Value("contexts") = String.FromArray(contextNames, ", ")
-		      Else
-		        data.Value("contexts") = ""
-		      End If
-
-		    Catch
-		      // Not an array, leave as-is (probably already a string)
-		    End Try
-		  End If
-		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
@@ -326,23 +284,41 @@ Protected Class Indication
 		      indication.Urgency = data.Value("urgency").StringValue
 		    End If
 
-		    // Parse contexts if present
-		    // Note: This only handles string format from search/list_by_context actions
-		    // The "list" action returns array format which must be handled separately
+		    // Parse contexts - handle both array and string formats
 		    If data.HasKey("contexts") And data.Value("contexts") <> Nil Then
+		      Var contextsValue As Variant = data.Value("contexts")
+		      Var contextNames() As String
+
+		      // Try to process as array of dictionaries first
 		      Try
-		        Var contextsStr As String = data.Value("contexts").StringValue
-		        If contextsStr.Length > 0 Then
-		          indication.ContextNames = contextsStr.Split(",")
-		          // Trim whitespace from each context name
-		          For i As Integer = 0 To indication.ContextNames.LastIndex
-		            indication.ContextNames(i) = indication.ContextNames(i).Trim
-		          Next
-		        End If
-		      Catch
-		        // Not a string - this might be array format from "list" action
-		        // For now, just skip it - contexts will be empty
+		        Var contextsArray() As Variant = contextsValue
+
+		        For Each ctx As Variant In contextsArray
+		          If ctx IsA Dictionary Then
+		            Var ctxDict As Dictionary = Dictionary(ctx)
+		            If ctxDict.HasKey("name") And ctxDict.Value("name") <> Nil Then
+		              contextNames.Add(ctxDict.Value("name").StringValue)
+		            End If
+		          End If
+		        Next
+
+		      Catch ex As TypeMismatchException
+		        // Not an array - try as string
+		        Try
+		          Var contextsStr As String = contextsValue.StringValue
+		          If contextsStr.Length > 0 Then
+		            contextNames = contextsStr.Split(",")
+		            // Trim whitespace from each context name
+		            For i As Integer = 0 To contextNames.LastIndex
+		              contextNames(i) = contextNames(i).Trim
+		            Next
+		          End If
+		        Catch
+		          // Neither array nor string - ignore
+		        End Try
 		      End Try
+
+		      indication.ContextNames = contextNames
 		    End If
 
 		    Return indication
