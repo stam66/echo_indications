@@ -1,0 +1,55 @@
+#tag Class
+Protected Class NavigationEntry
+	#tag Enum, Name = NavType, Type = Integer, Flags = &h0
+		LandingWindow
+		  MainWindow
+	#tag EndEnum
+
+
+	#tag Property, Flags = &h0
+		NavigationType As NavType
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		ContainerName As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Context As Dictionary
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Timestamp As DateTime
+	#tag EndProperty
+
+
+	#tag Method, Flags = &h0
+		Function ToString() As String
+		  '/// Returns a string representation of this navigation entry
+		  '///
+		  '/// @returns String description
+
+		  Var result As String
+
+		  Select Case NavigationType
+		  Case NavType.LandingWindow
+		    result = "LandingWindow"
+
+		  Case NavType.MainWindow
+		    result = "MainWindow"
+		    If ContainerName.Length > 0 Then
+		      result = result + "/" + ContainerName
+		    End If
+
+		    If Context <> Nil And Context.KeyCount > 0 Then
+		      result = result + " (with context)"
+		    End If
+		  End Select
+
+		  Return result
+		End Function
+	#tag EndMethod
+
+
+End Class
+#tag EndClass

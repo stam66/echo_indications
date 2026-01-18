@@ -1,0 +1,39 @@
+#tag Class
+Protected Class Context
+	#tag Property, Flags = &h0
+		ID As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Name As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Description As String
+	#tag EndProperty
+
+	#tag Method, Flags = &h0, Description = 53747562202D20746F20626520696D706C656D656E746564
+		Shared Function GetAll() As Context()
+		  // Stub - to be implemented
+		  Var result() As Context
+		  Return result
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0, Description = 53747562202D20746F20626520696D706C656D656E746564
+		Shared Function GetAllActive() As Context()
+		  // Stub - to be implemented
+		  Var result() As Context
+		  Return result
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0, Description = 53747562202D20746F20626520696D706C656D656E746564
+		Shared Function GetByID(id As Integer) As Context
+		  // Stub - to be implemented
+		  #Pragma Unused id
+		  Return Nil
+		End Function
+	#tag EndMethod
+End Class
+#tag EndClass

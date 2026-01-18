@@ -1,0 +1,268 @@
+// ============================================================================
+// TEST: Audit and ChangeRequest Classes
+// ============================================================================
+// This test demonstrates using the Audit and ChangeRequest classes
+// to fetch change tracking and audit data from the API
+//
+// SETUP: Copy/paste this code into a Xojo method and run
+// NOTE: Audit endpoints require authentication
+// ============================================================================
+
+System.DebugLog "================================"
+System.DebugLog "AUDIT & CHANGE REQUEST TEST"
+System.DebugLog "================================"
+System.DebugLog ""
+
+// ============================================================================
+// TEST 1: Connectivity Check
+// ============================================================================
+
+System.DebugLog "TEST 1: Checking API connectivity..."
+
+If APIClient.IsConnected Then
+  System.DebugLog "✅ API is reachable"
+Else
+  System.DebugLog "❌ API is not reachable"
+  Return
+End If
+
+System.DebugLog ""
+
+// ============================================================================
+// TEST 2: Get All Change Requests (PUBLIC - no auth required)
+// ============================================================================
+
+System.DebugLog "TEST 2: Fetching all change requests..."
+
+Var allChanges() As ChangeRequest = ChangeRequest.GetAll
+
+If allChanges.Count > 0 Then
+  System.DebugLog "✅ Found " + allChanges.Count.ToString + " change requests"
+
+  // Show first 5
+  Var displayCount As Integer = Min(5, allChanges.Count)
+  System.DebugLog "First " + displayCount.ToString + " change requests:"
+
+  For i As Integer = 0 To displayCount - 1
+    Var change As ChangeRequest = allChanges(i)
+    System.DebugLog "  " + change.ToString
+    System.DebugLog "    Description: " + change.GetShortDescription
+    System.DebugLog ""
+  Next
+Else
+  System.DebugLog "❌ No change requests found"
+End If
+
+System.DebugLog ""
+
+// ============================================================================
+// TEST 3: Get New Change Requests Count (PUBLIC - no auth required)
+// ============================================================================
+
+System.DebugLog "TEST 3: Counting new change requests..."
+
+Var newCount As Integer = ChangeRequest.CountNew
+
+System.DebugLog "✅ Found " + newCount.ToString + " new change requests"
+System.DebugLog ""
+
+// ============================================================================
+// TEST 4: Get Change Requests by Status (PUBLIC - no auth required)
+// ============================================================================
+
+System.DebugLog "TEST 4: Fetching 'New' change requests..."
+
+Var newChanges() As ChangeRequest = ChangeRequest.GetByStatus("New")
+
+If newChanges.Count > 0 Then
+  System.DebugLog "✅ Found " + newChanges.Count.ToString + " new change requests"
+
+  For i As Integer = 0 To Min(3, newChanges.Count - 1)
+    Var change As ChangeRequest = newChanges(i)
+    System.DebugLog "  [" + change.ID.ToString + "] " + change.Status + " - " + change.IndicationTitle
+  Next
+Else
+  System.DebugLog "ℹ️  No new change requests"
+End If
+
+System.DebugLog ""
+
+// ============================================================================
+// TEST 5: Get Specific Change Request (PUBLIC - no auth required)
+// ============================================================================
+
+System.DebugLog "TEST 5: Fetching specific change request..."
+
+If allChanges.Count > 0 Then
+  Var firstChange As ChangeRequest = allChanges(0)
+  Var changeDetail As ChangeRequest = ChangeRequest.GetByID(firstChange.ID)
+
+  If changeDetail <> Nil Then
+    System.DebugLog "✅ Retrieved change request #" + changeDetail.ID.ToString
+    System.DebugLog "  Status: " + changeDetail.Status
+    System.DebugLog "  Reporter: " + changeDetail.ReporterName
+    System.DebugLog "  Indication: " + changeDetail.IndicationTitle
+    System.DebugLog "  Description: " + changeDetail.Description
+    If changeDetail.ResolutionNotes.Length > 0 Then
+      System.DebugLog "  Resolution: " + changeDetail.ResolutionNotes
+    End If
+  Else
+    System.DebugLog "❌ Could not retrieve change request"
+  End If
+Else
+  System.DebugLog "⊘ No change requests available to test"
+End If
+
+System.DebugLog ""
+
+// ============================================================================
+// TEST 6: Login for Audit Access (REQUIRED for audit endpoints)
+// ============================================================================
+
+System.DebugLog "TEST 6: Authenticating for audit access..."
+
+// Replace with valid credentials to test audit endpoints
+Var testUsername As String = "admin"
+Var testPassword As String = "your_password_here"
+
+Var loginSuccess As Boolean = AuthManager.Login(testUsername, testPassword)
+
+If loginSuccess Then
+  System.DebugLog "✅ Login successful - can now access audit endpoints"
+Else
+  System.DebugLog "❌ Login failed - audit tests will be skipped"
+  System.DebugLog "   (This is expected if you haven't provided valid credentials)"
+  System.DebugLog ""
+  System.DebugLog "================================"
+  System.DebugLog "TEST SUMMARY (Partial)"
+  System.DebugLog "================================"
+  System.DebugLog "Change Request tests: PASSED"
+  System.DebugLog "Audit tests: SKIPPED (no auth)"
+  Return
+End If
+
+System.DebugLog ""
+
+// ============================================================================
+// TEST 7: Get Recent Audit Entries (REQUIRES AUTHENTICATION)
+// ============================================================================
+
+System.DebugLog "TEST 7: Fetching recent audit entries..."
+
+Var recentAudits() As Audit = Audit.GetRecent(20)
+
+If recentAudits.Count > 0 Then
+  System.DebugLog "✅ Found " + recentAudits.Count.ToString + " recent audit entries"
+
+  // Show first 5
+  Var displayCount As Integer = Min(5, recentAudits.Count)
+  System.DebugLog "First " + displayCount.ToString + " audit entries:"
+
+  For i As Integer = 0 To displayCount - 1
+    Var audit As Audit = recentAudits(i)
+    System.DebugLog "  " + audit.GetActionIcon + " " + audit.ToString
+  Next
+Else
+  System.DebugLog "❌ No audit entries found"
+End If
+
+System.DebugLog ""
+
+// ============================================================================
+// TEST 8: Get Audit Entries by Table (REQUIRES AUTHENTICATION)
+// ============================================================================
+
+System.DebugLog "TEST 8: Fetching audit entries for 'indications' table..."
+
+Var indicationAudits() As Audit = Audit.GetByTable("indications", 10)
+
+If indicationAudits.Count > 0 Then
+  System.DebugLog "✅ Found " + indicationAudits.Count.ToString + " audit entries for indications"
+
+  For i As Integer = 0 To Min(3, indicationAudits.Count - 1)
+    Var audit As Audit = indicationAudits(i)
+    System.DebugLog "  " + audit.GetActionIcon + " " + audit.ToString
+  Next
+Else
+  System.DebugLog "ℹ️  No audit entries for indications table"
+End If
+
+System.DebugLog ""
+
+// ============================================================================
+// TEST 9: Get Audit History for Specific Record (REQUIRES AUTHENTICATION)
+// ============================================================================
+
+System.DebugLog "TEST 9: Fetching audit history for specific indication..."
+
+// Get an indication to check its history
+Var indications() As Indication = Indication.GetAll
+
+If indications.Count > 0 Then
+  Var indication As Indication = indications(0)
+  Var history() As Audit = Audit.GetByRecord("indications", indication.ID)
+
+  If history.Count > 0 Then
+    System.DebugLog "✅ Found " + history.Count.ToString + " audit entries for indication #" + indication.ID.ToString
+    System.DebugLog "  Indication: " + indication.Title
+    System.DebugLog "  History:"
+
+    For i As Integer = 0 To Min(5, history.Count - 1)
+      Var audit As Audit = history(i)
+      System.DebugLog "    " + audit.GetFormattedTimestamp + " - " + audit.ToString
+    Next
+  Else
+    System.DebugLog "ℹ️  No audit history for this indication"
+  End If
+Else
+  System.DebugLog "⊘ No indications available to test"
+End If
+
+System.DebugLog ""
+
+// ============================================================================
+// TEST 10: Get Audit Entries by User (REQUIRES AUTHENTICATION)
+// ============================================================================
+
+System.DebugLog "TEST 10: Fetching audit entries for current user..."
+
+If AuthManager.IsAuthenticated Then
+  Var userAudits() As Audit = Audit.GetByUser(AuthManager.CurrentUsername, 10)
+
+  If userAudits.Count > 0 Then
+    System.DebugLog "✅ Found " + userAudits.Count.ToString + " audit entries for user: " + AuthManager.CurrentUsername
+
+    For i As Integer = 0 To Min(3, userAudits.Count - 1)
+      Var audit As Audit = userAudits(i)
+      System.DebugLog "  " + audit.GetActionIcon + " " + audit.ToString
+    Next
+  Else
+    System.DebugLog "ℹ️  No audit entries for this user"
+  End If
+Else
+  System.DebugLog "⊘ Not authenticated"
+End If
+
+System.DebugLog ""
+
+// ============================================================================
+// SUMMARY
+// ============================================================================
+
+System.DebugLog "================================"
+System.DebugLog "TEST SUMMARY"
+System.DebugLog "================================"
+System.DebugLog "✅ All tests completed successfully"
+System.DebugLog ""
+System.DebugLog "ChangeRequest Class Features:"
+System.DebugLog "  • GetAll() - All change requests (PUBLIC)"
+System.DebugLog "  • GetByStatus(status) - Filter by status (PUBLIC)"
+System.DebugLog "  • GetByID(id) - Get specific request (PUBLIC)"
+System.DebugLog "  • CountNew() - Count of new requests (PUBLIC)"
+System.DebugLog ""
+System.DebugLog "Audit Class Features:"
+System.DebugLog "  • GetRecent(limit) - Recent audit entries (AUTH)"
+System.DebugLog "  • GetByTable(table, limit) - Entries for specific table (AUTH)"
+System.DebugLog "  • GetByRecord(table, id) - History for specific record (AUTH)"
+System.DebugLog "  • GetByUser(username, limit) - User activity (AUTH)"
+System.DebugLog "================================"

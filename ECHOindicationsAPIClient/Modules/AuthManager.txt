@@ -1,0 +1,560 @@
+#tag Module
+Protected Module AuthManager
+	#tag Note, Name = Description
+		Authentication manager for ECHO Indications API
+
+		Handles JWT token management, login, logout, and token refresh.
+		Stores tokens securely using platform-specific secure storage.
+
+		Usage:
+		  If AuthManager.Login("username", "password") Then
+		    System.DebugLog("Logged in as: " + AuthManager.CurrentUsername)
+		  Else
+		    System.DebugLog("Login failed: " + AuthManager.LastError)
+		  End If
+
+		Created: 2026-01-13
+		API Version: 1.0
+	#tag EndNote
+
+
+	#tag Method, Flags = &h0
+		Function Login(username As String, password As String) As Boolean
+		  '/// Authenticates user with the API
+		  '///
+		  '/// @param username The username (email)
+		  '/// @param password The password
+		  '/// @returns True if login successful, False otherwise
+
+		  mLastError = ""
+
+		  // Validate input
+		  If username.Trim.Length = 0 Or password.Trim.Length = 0 Then
+		    mLastError = "Username and password are required"
+		    Return False
+		  End If
+
+		  Try
+		    // Build request data
+		    Var data As New Dictionary
+		    data.Value("username") = username.Trim
+		    data.Value("password") = password
+
+		    // Call API
+		    Var result As Dictionary = APIClient.Post("auth.lc", "login", data)
+
+		    // Check response
+		    If result.Value("status") = "success" Then
+		      Var responseData As Dictionary = result.Value("data")
+
+		      // Extract token
+		      mCurrentToken = responseData.Value("token").StringValue
+
+		      // Calculate expiry time
+		      Var now As DateTime = DateTime.Now
+		      mTokenExpiry = new DateTime(now.SecondsFrom1970 + (AppConfig.TOKEN_EXPIRY_MINUTES * 60))
+
+		      // Extract user info
+		      If responseData.HasKey("user") Then
+		        Var user As Dictionary = responseData.Value("user")
+		        mCurrentUserID = user.Value("id").IntegerValue
+		        mCurrentUsername = user.Value("username").StringValue
+		        mCurrentUserEmail = user.Value("email").StringValue
+		        If user.HasKey("name") Then
+		          mCurrentUserFullName = user.Value("name").StringValue
+		        End If
+		      End If
+
+		      mIsAuthenticated = True
+
+		      // Save token securely
+		      SaveToken
+
+		      If AppConfig.DEBUG_MODE Then
+		        System.DebugLog("AuthManager: Login successful for " + mCurrentUsername)
+		      End If
+
+		      Return True
+
+		    Else
+		      mLastError = result.Value("message").StringValue
+		      Return False
+		    End If
+
+		  Catch err As RuntimeException
+		    mLastError = "Login error: " + err.Message
+		    Return False
+		  End Try
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Refresh() As Boolean
+		  '/// Refreshes the current JWT token
+		  '///
+		  '/// @returns True if refresh successful, False otherwise
+
+		  If Not mIsAuthenticated Then
+		    mLastError = "Not authenticated"
+		    Return False
+		  End If
+
+		  Try
+		    // Note: The API refresh endpoint requires existing valid token
+		    Var result As Dictionary = APIClient.Get("auth.lc", "refresh")
+
+		    If result.Value("status") = "success" Then
+		      Var responseData As Dictionary = result.Value("data")
+
+		      // Update token
+		      mCurrentToken = responseData.Value("token").StringValue
+
+		      // Update expiry
+		      Var now As DateTime = DateTime.Now
+		      mTokenExpiry = new DateTime(now.SecondsFrom1970 + (AppConfig.TOKEN_EXPIRY_MINUTES * 60))
+
+		      // Save updated token
+		      SaveToken
+
+		      If AppConfig.DEBUG_MODE Then
+		        System.DebugLog("AuthManager: Token refreshed successfully")
+		      End If
+
+		      Return True
+
+		    Else
+		      mLastError = result.Value("message").StringValue
+		      // If refresh fails, log out
+		      Logout
+		      Return False
+		    End If
+
+		  Catch err As RuntimeException
+		    mLastError = "Token refresh error: " + err.Message
+		    Logout
+		    Return False
+		  End Try
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Logout()
+		  '/// Logs out the current user and clears all authentication data
+
+		  mIsAuthenticated = False
+		  mCurrentToken = ""
+		  mTokenExpiry = Nil
+		  mCurrentUserID = 0
+		  mCurrentUsername = ""
+		  mCurrentUserEmail = ""
+		  mCurrentUserFullName = ""
+		  mLastError = ""
+
+		  // Clear stored token
+		  ClearToken
+
+		  If AppConfig.DEBUG_MODE Then
+		    System.DebugLog("AuthManager: Logged out")
+		  End If
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetAuthHeader() As String
+		  '/// Gets the Authorization header value for API requests
+		  '///
+		  '/// @returns String in format "Bearer {token}"
+
+		  If Not mIsAuthenticated Or mCurrentToken.Length = 0 Then
+		    Return ""
+		  End If
+
+		  Return "Bearer " + mCurrentToken
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function NeedsRefresh() As Boolean
+		  '/// Checks if token needs to be refreshed soon
+		  '///
+		  '/// @returns True if token expires within TOKEN_REFRESH_BUFFER_MINUTES
+
+		  If Not mIsAuthenticated Or mTokenExpiry = Nil Then
+		    Return False
+		  End If
+
+		  Var now As DateTime = DateTime.Now
+		  Var bufferSeconds As Integer = AppConfig.TOKEN_REFRESH_BUFFER_MINUTES * 60
+		  Var refreshTime As DateTime = new DateTime(mTokenExpiry.SecondsFrom1970 - bufferSeconds)
+
+		  Return now.SecondsFrom1970 >= refreshTime.SecondsFrom1970
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function LoadSavedToken() As Boolean
+		  '/// Attempts to load a saved token from secure storage
+		  '///
+		  '/// @returns True if token loaded and still valid, False otherwise
+
+		  Var tokenData As String = LoadToken
+
+		  If tokenData.Length = 0 Then
+		    Return False
+		  End If
+
+		  Try
+		    // Token data is stored as JSON
+		    Var data As Dictionary = Dictionary(ParseJSON(tokenData))
+
+		    mCurrentToken = data.Value("token").StringValue
+		    Var expirySeconds As Integer = data.Value("expiry").IntegerValue
+		    mTokenExpiry = new DateTime(expirySeconds)
+		    mCurrentUserID = data.Value("user_id").IntegerValue
+		    mCurrentUsername = data.Value("username").StringValue
+		    mCurrentUserEmail = data.Value("email").StringValue
+		    If data.HasKey("name") Then
+		      mCurrentUserFullName = data.Value("name").StringValue
+		    End If
+
+		    // Check if token is expired
+		    Var now As DateTime = DateTime.Now
+		    If now.SecondsFrom1970 >= mTokenExpiry.SecondsFrom1970 Then
+		      // Token expired
+		      Logout
+		      Return False
+		    End If
+
+		    mIsAuthenticated = True
+
+		    If AppConfig.DEBUG_MODE Then
+		      System.DebugLog("AuthManager: Loaded saved token for " + mCurrentUsername)
+		    End If
+
+		    // Check if needs refresh
+		    If NeedsRefresh Then
+		      Return Refresh
+		    End If
+
+		    Return True
+
+		  Catch err As RuntimeException
+		    mLastError = "Failed to load saved token: " + err.Message
+		    Logout
+		    Return False
+		  End Try
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub SaveToken()
+		  '/// Saves the current token to secure storage
+		  '/// Platform-specific: Keychain (macOS/iOS), Credential Manager (Windows), Keyring (Linux)
+
+		  If Not mIsAuthenticated Then
+		    Return
+		  End If
+
+		  Try
+		    // Build token data as JSON
+		    Var data As New Dictionary
+		    data.Value("token") = mCurrentToken
+		    data.Value("expiry") = mTokenExpiry.SecondsFrom1970
+		    data.Value("user_id") = mCurrentUserID
+		    data.Value("username") = mCurrentUsername
+		    data.Value("email") = mCurrentUserEmail
+		    data.Value("name") = mCurrentUserFullName
+
+		    Var tokenData As String = GenerateJSON(data, False)
+
+		    // Save to platform-specific secure storage
+		    #If TargetMacOS Or TargetIOS Then
+		      // Use Keychain
+		      Var keychain As New Keychain
+		      keychain.AddPassword(tokenData, AppConfig.APP_NAME, "AuthToken")
+
+		    #ElseIf TargetWindows Then
+		      // Use Windows Credential Manager via Preferences
+		      Var prefs As New Preferences(AppConfig.APP_NAME)
+		      prefs.Value("AuthToken") = tokenData
+
+		    #ElseIf TargetLinux Then
+		      // Use Preferences (stored in ~/.config)
+		      Var prefs As New Preferences(AppConfig.APP_NAME)
+		      prefs.Value("AuthToken") = tokenData
+
+		    #ElseIf TargetAndroid Then
+		      // Use Preferences (stored securely on Android)
+		      Var prefs As New Preferences(AppConfig.APP_NAME)
+		      prefs.Value("AuthToken") = tokenData
+
+		    #Else
+		      // Fallback: Use Preferences
+		      Var prefs As New Preferences(AppConfig.APP_NAME)
+		      prefs.Value("AuthToken") = tokenData
+		    #EndIf
+
+		    If AppConfig.DEBUG_MODE Then
+		      System.DebugLog("AuthManager: Token saved securely")
+		    End If
+
+		  Catch err As RuntimeException
+		    If AppConfig.DEBUG_MODE Then
+		      System.DebugLog("AuthManager: Failed to save token - " + err.Message)
+		    End If
+		  End Try
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function LoadToken() As String
+		  '/// Loads the saved token from secure storage
+		  '///
+		  '/// @returns Token data as JSON string, or empty string if not found
+
+		  Try
+		    #If TargetMacOS Or TargetIOS Then
+		      // Load from Keychain
+		      Var keychain As New Keychain
+		      Return keychain.FindPassword(AppConfig.APP_NAME, "AuthToken")
+
+		    #ElseIf TargetWindows Then
+		      // Load from Windows Credential Manager via Preferences
+		      Var prefs As New Preferences(AppConfig.APP_NAME)
+		      Return prefs.Value("AuthToken")
+
+		    #ElseIf TargetLinux Then
+		      // Load from Preferences
+		      Var prefs As New Preferences(AppConfig.APP_NAME)
+		      Return prefs.Value("AuthToken")
+
+		    #ElseIf TargetAndroid Then
+		      // Load from Preferences
+		      Var prefs As New Preferences(AppConfig.APP_NAME)
+		      Return prefs.Value("AuthToken")
+
+		    #Else
+		      // Fallback
+		      Var prefs As New Preferences(AppConfig.APP_NAME)
+		      Return prefs.Value("AuthToken")
+		    #EndIf
+
+		  Catch err As RuntimeException
+		    Return ""
+		  End Try
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub ClearToken()
+		  '/// Clears the saved token from secure storage
+
+		  Try
+		    #If TargetMacOS Or TargetIOS Then
+		      Var keychain As New Keychain
+		      keychain.DeletePassword(AppConfig.APP_NAME, "AuthToken")
+
+		    #ElseIf TargetWindows Then
+		      Var prefs As New Preferences(AppConfig.APP_NAME)
+		      prefs.Remove("AuthToken")
+
+		    #ElseIf TargetLinux Then
+		      Var prefs As New Preferences(AppConfig.APP_NAME)
+		      prefs.Remove("AuthToken")
+
+		    #ElseIf TargetAndroid Then
+		      Var prefs As New Preferences(AppConfig.APP_NAME)
+		      prefs.Remove("AuthToken")
+
+		    #Else
+		      Var prefs As New Preferences(AppConfig.APP_NAME)
+		      prefs.Remove("AuthToken")
+		    #EndIf
+
+		  Catch err As RuntimeException
+		    // Ignore errors
+		  End Try
+		End Sub
+	#tag EndMethod
+
+
+	#tag Property, Flags = &h21
+		Private mIsAuthenticated As Boolean = False
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mCurrentToken As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mTokenExpiry As DateTime
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mCurrentUserID As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mCurrentUsername As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mCurrentUserEmail As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mCurrentUserFullName As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mLastError As String
+	#tag EndProperty
+
+
+	#tag ComputedProperty, Flags = &h0
+		#tag Getter
+			Get
+			  Return mIsAuthenticated
+			End Get
+		#tag EndGetter
+		IsAuthenticated As Boolean
+	#tag EndComputedProperty
+
+	#tag ComputedProperty, Flags = &h0
+		#tag Getter
+			Get
+			  Return mCurrentUserID
+			End Get
+		#tag EndGetter
+		CurrentUserID As Integer
+	#tag EndComputedProperty
+
+	#tag ComputedProperty, Flags = &h0
+		#tag Getter
+			Get
+			  Return mCurrentUsername
+			End Get
+		#tag EndGetter
+		CurrentUsername As String
+	#tag EndComputedProperty
+
+	#tag ComputedProperty, Flags = &h0
+		#tag Getter
+			Get
+			  Return mCurrentUserEmail
+			End Get
+		#tag EndGetter
+		CurrentUserEmail As String
+	#tag EndComputedProperty
+
+	#tag ComputedProperty, Flags = &h0
+		#tag Getter
+			Get
+			  Return mCurrentUserFullName
+			End Get
+		#tag EndGetter
+		CurrentUserFullName As String
+	#tag EndComputedProperty
+
+	#tag ComputedProperty, Flags = &h0
+		#tag Getter
+			Get
+			  Return mLastError
+			End Get
+		#tag EndGetter
+		LastError As String
+	#tag EndComputedProperty
+
+
+	#tag ViewBehavior
+		#tag ViewProperty
+			Name="Name"
+			Visible=true
+			Group="ID"
+			InitialValue=""
+			Type="String"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Index"
+			Visible=true
+			Group="ID"
+			InitialValue="-2147483648"
+			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Super"
+			Visible=true
+			Group="ID"
+			InitialValue=""
+			Type="String"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Left"
+			Visible=true
+			Group="Position"
+			InitialValue="0"
+			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Top"
+			Visible=true
+			Group="Position"
+			InitialValue="0"
+			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="IsAuthenticated"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Boolean"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="CurrentUserID"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="CurrentUsername"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="String"
+			EditorType="MultiLineEditor"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="CurrentUserEmail"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="String"
+			EditorType="MultiLineEditor"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="CurrentUserFullName"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="String"
+			EditorType="MultiLineEditor"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="LastError"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="String"
+			EditorType="MultiLineEditor"
+		#tag EndViewProperty
+	#tag EndViewBehavior
+End Module
+#tag EndModule
