@@ -1,6 +1,156 @@
 #tag Module
 Protected Module General
 	#tag Method, Flags = &h0
+		Function AdjustColorBrightness(originalColor As Color, factor As Double) As Color
+		  // Adjust brightness while preserving color identity
+		  // factor > 1.0 makes brighter, < 1.0 makes darker, 1.0 = no change
+		  
+		  Var r As Integer = Min(255, originalColor.Red * factor)
+		  Var g As Integer = Min(255, originalColor.Green * factor)
+		  Var b As Integer = Min(255, originalColor.Blue * factor)
+		  
+		  Return Color.RGB(r, g, b)
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetContrastingTextColor(backgroundColor As Color) As Color
+		  // Get black or white text color based on background brightness
+		  // Threshold of 128 is midpoint - below is dark, above is light
+		  
+		  Var luminance As Double = GetLuminance(backgroundColor)
+		  
+		  If luminance < 128 Then
+		    // Dark background - use white text
+		    Return Color.White
+		  Else
+		    // Light background - use black text
+		    Return Color.Black
+		  End If
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetLuminance(backgroundColor As Color) As Double
+		  // Calculate perceived brightness (luminance) of a color
+		  // Returns value between 0 (black) and 255 (white)
+		  // Uses YIQ formula: (R*299 + G*587 + B*114) / 1000
+		  
+		  Var r As Double = backgroundColor.Red
+		  Var g As Double = backgroundColor.Green
+		  Var b As Double = backgroundColor.Blue
+		  
+		  // YIQ formula weights green most heavily (human eye most sensitive to green)
+		  Var luminance As Double = (r * 0.299) + (g * 0.587) + (b * 0.114)
+		  
+		  Return luminance
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetReadableColorForBackground(textColor As Color, backgroundColor As Color, preserveHue As Boolean = True) As Color
+		  Var bgLuminance As Double = GetLuminance(backgroundColor)
+		  
+		  // If not preserving hue, just return simple black or white
+		  If Not preserveHue Then
+		    Return GetContrastingTextColor(backgroundColor)
+		  End If
+		  
+		  // Otherwise, preserve semantic meaning while ensuring readability
+		  Var textLuminance As Double = GetLuminance(textColor)
+		  
+		  // Special case: if text is near-black on dark background, use white
+		  If bgLuminance < 128 And textLuminance < 50 Then
+		    Return Color.White
+		  End If
+		  
+		  // Special case: if text is near-white on light background, use black
+		  If bgLuminance >= 128 And textLuminance > 200 Then
+		    Return Color.Black
+		  End If
+		  
+		  // Minimum contrast needed for readability
+		  Var contrastNeeded As Double = 128
+		  
+		  If bgLuminance < 128 Then
+		    // Dark background - brighten text if needed
+		    If textLuminance < bgLuminance + contrastNeeded Then
+		      // Calculate brightness factor
+		      Var factor As Double = (bgLuminance + contrastNeeded) / Max(textLuminance, 1)
+		      factor = Min(factor, 3.0) // Cap at 3x
+		      
+		      // Apply brightness adjustment
+		      Var r As Integer = Min(255, textColor.Red * factor)
+		      Var g As Integer = Min(255, textColor.Green * factor)
+		      Var b As Integer = Min(255, textColor.Blue * factor)
+		      
+		      Return Color.RGB(r, g, b)
+		    Else
+		      Return textColor
+		    End If
+		  Else
+		    // Light background - darken text if needed
+		    If textLuminance > bgLuminance - contrastNeeded Then
+		      // Calculate darkness factor
+		      Var factor As Double = (bgLuminance - contrastNeeded) / Max(textLuminance, 1)
+		      factor = Max(factor, 0.3) // Don't go below 30%
+		      
+		      // Apply darkness adjustment
+		      Var r As Integer = Max(0, textColor.Red * factor)
+		      Var g As Integer = Max(0, textColor.Green * factor)
+		      Var b As Integer = Max(0, textColor.Blue * factor)
+		      
+		      Return Color.RGB(r, g, b)
+		    Else
+		      Return textColor
+		    End If
+		  End If
+		  
+		  
+		  ' // Returns a readable version of textColor on backgroundColor
+		  ' // If preserveHue is True, adjusts brightness while keeping hue
+		  ' // If preserveHue is False, returns simple black/white contrast
+		  ' 
+		  ' If Not preserveHue Then
+		  ' Return GetContrastingTextColor(backgroundColor)
+		  ' End If
+		  ' 
+		  ' // Calculate background luminance
+		  ' Var bgLuminance As Double = GetLuminance(backgroundColor)
+		  ' 
+		  ' // Calculate text luminance
+		  ' Var textLuminance As Double = GetLuminance(textColor)
+		  ' 
+		  ' // Determine if we need to lighten or darken
+		  ' Var contrastNeeded As Double = 128 // Minimum luminance difference needed
+		  ' 
+		  ' If bgLuminance < 128 Then
+		  ' // Dark background - need lighter text
+		  ' If textLuminance < bgLuminance + contrastNeeded Then
+		  ' // Text is too dark for dark background - brighten it
+		  ' Var factor As Double = (bgLuminance + contrastNeeded) / textLuminance
+		  ' factor = Min(factor, 3.0) // Cap at 3x to avoid over-brightening
+		  ' Return AdjustColorBrightness(textColor, factor)
+		  ' Else
+		  ' // Text is already light enough
+		  ' Return textColor
+		  ' End If
+		  ' Else
+		  ' // Light background - need darker text
+		  ' If textLuminance > bgLuminance - contrastNeeded Then
+		  ' // Text is too light for light background - darken it
+		  ' Var factor As Double = (bgLuminance - contrastNeeded) / textLuminance
+		  ' factor = Max(factor, 0.3) // Don't go below 30% brightness
+		  ' Return AdjustColorBrightness(textColor, factor)
+		  ' Else
+		  ' // Text is already dark enough
+		  ' Return textColor
+		  ' End If
+		  ' End If
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function isValidEmail(email as string) As Boolean
 		  var regex as new RegEx
 		  regex.SearchPattern = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
@@ -121,5 +271,56 @@ Protected Module General
 	#tag EndMethod
 
 
+	#tag Property, Flags = &h0
+		MailSemaphore As Semaphore
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		MailSocket As SMTPSecureSocket
+	#tag EndProperty
+
+
+	#tag ViewBehavior
+		#tag ViewProperty
+			Name="Name"
+			Visible=true
+			Group="ID"
+			InitialValue=""
+			Type="String"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Index"
+			Visible=true
+			Group="ID"
+			InitialValue="-2147483648"
+			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Super"
+			Visible=true
+			Group="ID"
+			InitialValue=""
+			Type="String"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Left"
+			Visible=true
+			Group="Position"
+			InitialValue="0"
+			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Top"
+			Visible=true
+			Group="Position"
+			InitialValue="0"
+			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+	#tag EndViewBehavior
 End Module
 #tag EndModule

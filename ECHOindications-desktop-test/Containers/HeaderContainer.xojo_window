@@ -542,6 +542,16 @@ End
 #tag EndDesktopWindow
 
 #tag WindowCode
+	#tag Hook, Flags = &h0
+		Event loadContainer(targetContainer as DesktopContainer)
+	#tag EndHook
+
+
+	#tag Property, Flags = &h0
+		CurrentContainer As DesktopContainer
+	#tag EndProperty
+
+
 #tag EndWindowCode
 
 #tag Events Canvas1
@@ -560,6 +570,23 @@ End
 		  Dim y As Integer = (g.Height - newHeight) / 2
 		  g.DrawPicture(ECHO_White, x, y, newWidth, newHeight, 0, 0, ECHO_White.Width, ECHO_White.Height)
 		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnIssues
+	#tag Event
+		Sub Pressed()
+		  var c as new IssuesContainer
+		  RaiseEvent loadContainer(c)
+		  
+		  
+		  ' 
+		  ' var w as new wHome = self.Parent
+		  ' 
+		  ' if w.CurrentContainer <> nil then w.Placeholder.RemoveControl(w.CurrentContainer)
+		  ' var c as new IssuesContainer 
+		  ' w.CurrentContainer = c
+		  ' c.EmbedWithin(w.Placeholder, 0, 0, w.Placeholder.width, w.placeholder.Height)
 		End Sub
 	#tag EndEvent
 #tag EndEvents
