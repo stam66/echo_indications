@@ -2,10 +2,10 @@
 Protected Module AppConfig
 	#tag Note, Name = Description
 		Application configuration constants for ECHO Indications API client
-
+		
 		This module contains all configuration values used by the API client.
 		Modify these constants to match your deployment environment.
-
+		
 		Created: 2026-01-13
 		API Version: 1.0
 	#tag EndNote
@@ -29,51 +29,30 @@ Protected Module AppConfig
 
 	#tag Constant, Name = CACHE_EXPIRY_HOURS, Type = Integer, Dynamic = False, Default = \"24", Scope = Protected
 		#Tag Instance, Platform = Any, Language = Default, Definition  = \"24"
-		#Tag Note
-			How long cached data is considered fresh (in hours)
-		#Tag EndNote
-	#tag EndConstant
-
-	#tag Constant, Name = COLOR_NHS_BLUE, Type = Color, Dynamic = False, Default = \"&c005EB8", Scope = Protected
-		#Tag Instance, Platform = Any, Language = Default, Definition  = \"&c005EB8"
-		#Tag Note
-			Primary brand color - NHS Blue
-		#Tag EndNote
 	#tag EndConstant
 
 	#tag Constant, Name = COLOR_DARK_BG, Type = Color, Dynamic = False, Default = \"&c1a1a1a", Scope = Protected
 		#Tag Instance, Platform = Any, Language = Default, Definition  = \"&c1a1a1a"
-		#Tag Note
-			Dark theme background color
-		#Tag EndNote
 	#tag EndConstant
 
 	#tag Constant, Name = COLOR_DARK_PANEL, Type = Color, Dynamic = False, Default = \"&c2d2d2d", Scope = Protected
 		#Tag Instance, Platform = Any, Language = Default, Definition  = \"&c2d2d2d"
-		#Tag Note
-			Dark theme panel/card color
-		#Tag EndNote
 	#tag EndConstant
 
-	#tag Constant, Name = TOKEN_EXPIRY_MINUTES, Type = Integer, Dynamic = False, Default = \"30", Scope = Protected
-		#Tag Instance, Platform = Any, Language = Default, Definition  = \"30"
-		#Tag Note
-			JWT token expiry time (from API)
-		#Tag EndNote
-	#tag EndConstant
-
-	#tag Constant, Name = TOKEN_REFRESH_BUFFER_MINUTES, Type = Integer, Dynamic = False, Default = \"5", Scope = Protected
-		#Tag Instance, Platform = Any, Language = Default, Definition  = \"5"
-		#Tag Note
-			Refresh token this many minutes before expiry
-		#Tag EndNote
+	#tag Constant, Name = COLOR_NHS_BLUE, Type = Color, Dynamic = False, Default = \"&c005EB8", Scope = Protected
+		#Tag Instance, Platform = Any, Language = Default, Definition  = \"&c005EB8"
 	#tag EndConstant
 
 	#tag Constant, Name = DEBUG_MODE, Type = Boolean, Dynamic = False, Default = \"True", Scope = Protected
 		#Tag Instance, Platform = Any, Language = Default, Definition  = \"True"
-		#Tag Note
-			Enable debug logging to console
-		#Tag EndNote
+	#tag EndConstant
+
+	#tag Constant, Name = TOKEN_EXPIRY_MINUTES, Type = Integer, Dynamic = False, Default = \"30", Scope = Protected
+		#Tag Instance, Platform = Any, Language = Default, Definition  = \"30"
+	#tag EndConstant
+
+	#tag Constant, Name = TOKEN_REFRESH_BUFFER_MINUTES, Type = Integer, Dynamic = False, Default = \"5", Scope = Protected
+		#Tag Instance, Platform = Any, Language = Default, Definition  = \"5"
 	#tag EndConstant
 
 
