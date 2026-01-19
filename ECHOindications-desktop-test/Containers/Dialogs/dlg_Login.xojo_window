@@ -5,7 +5,7 @@ Begin DesktopContainer dlg_Login
    AllowFocusRing  =   False
    AllowTabs       =   True
    Backdrop        =   0
-   BackgroundColor =   &cFFFFFF
+   BackgroundColor =   &c00000000
    Composited      =   False
    Enabled         =   True
    HasBackgroundColor=   False
