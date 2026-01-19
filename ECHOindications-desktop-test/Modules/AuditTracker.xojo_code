@@ -8,25 +8,27 @@ Protected Module AuditTracker
 		  sql = "INSERT INTO audit (audit_user, audit_table, audit_primarykey, action, new_values) " + _
 		  "VALUES (?, ?, ?, 'create', ?)"
 		  
-		  Try
-		    Var ps As MySQLPreparedStatement = Session.DB.Prepare(sql)
-		    ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		    ps.BindType(1, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		    ps.BindType(2, MySQLPreparedStatement.MYSQL_TYPE_LONG)
-		    ps.BindType(3, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		    
-		    ps.Bind(0, username)
-		    ps.Bind(1, tableName)
-		    ps.Bind(2, primaryKey)
-		    ps.Bind(3, newValuesJSON)
-		    
-		    ps.ExecuteSQL
-		    Return True
-		    
-		  Catch err As DatabaseException
-		    System.DebugLog("Audit log error: " + err.Message)
-		    Return False
-		  End Try
+		  // TODO -- convert the below to be compatible with API 
+		  
+		  ' Try
+		  ' Var ps As MySQLPreparedStatement = Session.DB.Prepare(sql)
+		  ' ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		  ' ps.BindType(1, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		  ' ps.BindType(2, MySQLPreparedStatement.MYSQL_TYPE_LONG)
+		  ' ps.BindType(3, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		  ' 
+		  ' ps.Bind(0, username)
+		  ' ps.Bind(1, tableName)
+		  ' ps.Bind(2, primaryKey)
+		  ' ps.Bind(3, newValuesJSON)
+		  ' 
+		  ' ps.ExecuteSQL
+		  ' Return True
+		  ' 
+		  ' Catch err As DatabaseException
+		  ' System.DebugLog("Audit log error: " + err.Message)
+		  ' Return False
+		  ' End Try
 		End Function
 	#tag EndMethod
 
@@ -38,25 +40,27 @@ Protected Module AuditTracker
 		  sql = "INSERT INTO audit (audit_user, audit_table, audit_primarykey, action, old_values) " + _
 		  "VALUES (?, ?, ?, 'delete', ?)"
 		  
-		  Try
-		    Var ps As MySQLPreparedStatement = Session.DB.Prepare(sql)
-		    ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		    ps.BindType(1, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		    ps.BindType(2, MySQLPreparedStatement.MYSQL_TYPE_LONG)
-		    ps.BindType(3, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		    
-		    ps.Bind(0, username)
-		    ps.Bind(1, tableName)
-		    ps.Bind(2, primaryKey)
-		    ps.Bind(3, oldValuesJSON)
-		    
-		    ps.ExecuteSQL
-		    Return True
-		    
-		  Catch err As DatabaseException
-		    System.DebugLog("Audit log error: " + err.Message)
-		    Return False
-		  End Try
+		  // TODO -- convert the below to be compatible with API 
+		  
+		  ' Try
+		  ' Var ps As MySQLPreparedStatement = Session.DB.Prepare(sql)
+		  ' ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		  ' ps.BindType(1, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		  ' ps.BindType(2, MySQLPreparedStatement.MYSQL_TYPE_LONG)
+		  ' ps.BindType(3, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		  ' 
+		  ' ps.Bind(0, username)
+		  ' ps.Bind(1, tableName)
+		  ' ps.Bind(2, primaryKey)
+		  ' ps.Bind(3, oldValuesJSON)
+		  ' 
+		  ' ps.ExecuteSQL
+		  ' Return True
+		  ' 
+		  ' Catch err As DatabaseException
+		  ' System.DebugLog("Audit log error: " + err.Message)
+		  ' Return False
+		  ' End Try
 		End Function
 	#tag EndMethod
 
@@ -84,29 +88,32 @@ Protected Module AuditTracker
 		  Var sql As String = "INSERT INTO audit (audit_user, audit_table, audit_primarykey, action, " + _
 		  "changed_fields, old_values, new_values) VALUES (?, ?, ?, 'update', ?, ?, ?)"
 		  
-		  Try
-		    Var ps As MySQLPreparedStatement = Session.DB.Prepare(sql)
-		    ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		    ps.BindType(1, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		    ps.BindType(2, MySQLPreparedStatement.MYSQL_TYPE_LONG)
-		    ps.BindType(3, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		    ps.BindType(4, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		    ps.BindType(5, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		    
-		    ps.Bind(0, username)
-		    ps.Bind(1, tableName)
-		    ps.Bind(2, primaryKey)
-		    ps.Bind(3, String.FromArray(changedFields, ","))
-		    ps.Bind(4, GenerateJSON(oldValues))
-		    ps.Bind(5, GenerateJSON(newValues))
-		    
-		    ps.ExecuteSQL
-		    Return True
-		    
-		  Catch err As DatabaseException
-		    System.DebugLog("Audit log error: " + err.Message)
-		    Return False
-		  End Try
+		  
+		  // TODO -- convert the below to be compatible with API 
+		  
+		  ' Try
+		  ' Var ps As MySQLPreparedStatement = Session.DB.Prepare(sql)
+		  ' ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		  ' ps.BindType(1, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		  ' ps.BindType(2, MySQLPreparedStatement.MYSQL_TYPE_LONG)
+		  ' ps.BindType(3, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		  ' ps.BindType(4, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		  ' ps.BindType(5, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		  ' 
+		  ' ps.Bind(0, username)
+		  ' ps.Bind(1, tableName)
+		  ' ps.Bind(2, primaryKey)
+		  ' ps.Bind(3, String.FromArray(changedFields, ","))
+		  ' ps.Bind(4, GenerateJSON(oldValues))
+		  ' ps.Bind(5, GenerateJSON(newValues))
+		  ' 
+		  ' ps.ExecuteSQL
+		  ' Return True
+		  ' 
+		  ' Catch err As DatabaseException
+		  ' System.DebugLog("Audit log error: " + err.Message)
+		  ' Return False
+		  ' End Try
 		End Function
 	#tag EndMethod
 

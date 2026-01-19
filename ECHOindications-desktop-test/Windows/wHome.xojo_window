@@ -322,8 +322,8 @@ Begin DesktopWindow wHome
       AutoWidth       =   False
       Bold            =   False
       BorderColor     =   &c00000000
-      ButtonColor     =   &c399B0000
-      ButtonDownColor =   &c07630600
+      ButtonColor     =   &c42424200
+      ButtonDownColor =   &c79797900
       ButtonHoverColor=   &cF85C2400
       ButtonShape     =   0
       ButtonType      =   0
@@ -398,8 +398,8 @@ Begin DesktopWindow wHome
       AutoWidth       =   False
       Bold            =   False
       BorderColor     =   &c00000000
-      ButtonColor     =   &c399B0000
-      ButtonDownColor =   &c07630600
+      ButtonColor     =   &c42424200
+      ButtonDownColor =   &c79797900
       ButtonHoverColor=   &cF85C2400
       ButtonShape     =   0
       ButtonType      =   0
@@ -474,8 +474,8 @@ Begin DesktopWindow wHome
       AutoWidth       =   False
       Bold            =   False
       BorderColor     =   &c00000000
-      ButtonColor     =   &c399B0000
-      ButtonDownColor =   &c07630600
+      ButtonColor     =   &c42424200
+      ButtonDownColor =   &c79797900
       ButtonHoverColor=   &cF85C2400
       ButtonShape     =   0
       ButtonType      =   0
@@ -559,6 +559,22 @@ End
 		  HeroContent.Top = (HeroRectangle.Height - HeroContent.Height)/2
 		End Sub
 	#tag EndEvent
+
+
+	#tag Method, Flags = &h0
+		Sub GoToIndications()
+		  var w as new wMaster
+		  
+		  
+		  if w.CurrentContainer <> nil then w.Placeholder.RemoveControl(w.CurrentContainer)
+		  var c as new IndicationsContainer 
+		  w.CurrentContainer = c
+		  c.EmbedWithin(w.Placeholder, 0, 0, w.Placeholder.width, w.Placeholder.Height)
+		  
+		  w.Show
+		  self.Close
+		End Sub
+	#tag EndMethod
 
 
 #tag EndWindowCode

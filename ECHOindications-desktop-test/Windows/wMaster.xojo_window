@@ -64,7 +64,7 @@ Begin DesktopWindow wMaster
       Composited      =   False
       Enabled         =   True
       HasBackgroundColor=   False
-      Height          =   650
+      Height          =   630
       Index           =   -2147483648
       InitialParent   =   ""
       Left            =   0
@@ -78,12 +78,12 @@ Begin DesktopWindow wMaster
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   80
+      Top             =   100
       Transparent     =   False
       Visible         =   True
       Width           =   1138
    End
-   Begin DesktopButton Button1
+   Begin DesktopButton debugIndications
       AllowAutoDeactivate=   True
       Bold            =   False
       Cancel          =   False
@@ -114,7 +114,7 @@ Begin DesktopWindow wMaster
       Visible         =   True
       Width           =   97
    End
-   Begin DesktopButton Button2
+   Begin DesktopButton debugIssues
       AllowAutoDeactivate=   True
       Bold            =   False
       Cancel          =   False
@@ -124,10 +124,10 @@ Begin DesktopWindow wMaster
       FontName        =   "System"
       FontSize        =   0.0
       FontUnit        =   0
-      Height          =   20
+      Height          =   21
       Index           =   -2147483648
       Italic          =   False
-      Left            =   184
+      Left            =   187
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   True
@@ -145,10 +145,133 @@ Begin DesktopWindow wMaster
       Visible         =   True
       Width           =   97
    End
+   Begin DesktopButton debugAudit
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Cancel          =   False
+      Caption         =   "Audit"
+      Default         =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   21
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   298
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      MacButtonStyle  =   0
+      Scope           =   0
+      TabIndex        =   4
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   68
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   97
+   End
+   Begin DesktopButton debugSettings
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Cancel          =   False
+      Caption         =   "Settings"
+      Default         =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   21
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   409
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      MacButtonStyle  =   0
+      Scope           =   0
+      TabIndex        =   5
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   68
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   97
+   End
+   Begin DesktopButton debugUsers
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Cancel          =   False
+      Caption         =   "Users"
+      Default         =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   21
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   520
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      MacButtonStyle  =   0
+      Scope           =   0
+      TabIndex        =   6
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   68
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   97
+   End
 End
 #tag EndDesktopWindow
 
 #tag WindowCode
+	#tag Event
+		Sub Activated()
+		  if CurrentContainer = nil then 
+		    var c as new IndicationsContainer 
+		    CurrentContainer = c
+		    c.EmbedWithin(Placeholder, 0, 0, Placeholder.width, Placeholder.Height)
+		  end if
+		End Sub
+	#tag EndEvent
+
+
+	#tag Method, Flags = &h0
+		Sub handleLoadContainer(sender as DesktopContainer, targetContainer as DesktopContainer)
+		  var c as DesktopContainer
+		  
+		  if targetContainer isa IssuesContainer then c = new IssuesContainer
+		  if targetContainer isa AuditContainer then c = new AuditContainer
+		  if targetContainer isa SettingsContainer then c = new SettingsContainer
+		  if targetContainer isa UsersContainer then c = new UsersContainer
+		  if targetContainer isa IndicationsContainer then c = new IndicationsContainer
+		  
+		  
+		  
+		  if CurrentContainer <> nil then Placeholder.RemoveControl(CurrentContainer)
+		  CurrentContainer = c
+		  c.EmbedWithin(Placeholder, 0, 0, Placeholder.width, placeholder.Height)
+		End Sub
+	#tag EndMethod
+
+
 	#tag Property, Flags = &h0
 		CurrentContainer As DesktopContainer
 	#tag EndProperty
@@ -160,7 +283,7 @@ End
 
 #tag EndWindowCode
 
-#tag Events Button1
+#tag Events debugIndications
 	#tag Event
 		Sub Pressed()
 		  if CurrentContainer <> nil then Placeholder.RemoveControl(CurrentContainer)
@@ -170,11 +293,41 @@ End
 		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events Button2
+#tag Events debugIssues
 	#tag Event
 		Sub Pressed()
 		  if CurrentContainer <> nil then Placeholder.RemoveControl(CurrentContainer)
 		  var c as new IssuesContainer 
+		  CurrentContainer = c
+		  c.EmbedWithin(Placeholder, 0, 0, Placeholder.width, placeholder.Height)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events debugAudit
+	#tag Event
+		Sub Pressed()
+		  if CurrentContainer <> nil then Placeholder.RemoveControl(CurrentContainer)
+		  var c as new AuditContainer 
+		  CurrentContainer = c
+		  c.EmbedWithin(Placeholder, 0, 0, Placeholder.width, placeholder.Height)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events debugSettings
+	#tag Event
+		Sub Pressed()
+		  if CurrentContainer <> nil then Placeholder.RemoveControl(CurrentContainer)
+		  var c as new SettingsContainer 
+		  CurrentContainer = c
+		  c.EmbedWithin(Placeholder, 0, 0, Placeholder.width, placeholder.Height)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events debugUsers
+	#tag Event
+		Sub Pressed()
+		  if CurrentContainer <> nil then Placeholder.RemoveControl(CurrentContainer)
+		  var c as new UsersContainer 
 		  CurrentContainer = c
 		  c.EmbedWithin(Placeholder, 0, 0, Placeholder.width, placeholder.Height)
 		End Sub
