@@ -244,11 +244,14 @@ End
 #tag WindowCode
 	#tag Event
 		Sub Activated()
-		  if CurrentContainer = nil then 
-		    var c as new IndicationsContainer 
-		    CurrentContainer = c
-		    c.EmbedWithin(Placeholder, 0, 0, Placeholder.width, Placeholder.Height)
-		  end if
+		  ' Initialize NavigationManager once
+		  If Not NavInitialized Then
+		    DesktopNavigationManager.Initialize(Self)
+		    NavInitialized = True
+
+		    ' Navigate to initial container
+		    DesktopNavigationManager.NavigateTo("Indications")
+		  End If
 		End Sub
 	#tag EndEvent
 
@@ -280,56 +283,45 @@ End
 		SectionTitle As String
 	#tag EndProperty
 
+	#tag Property, Flags = &h0
+		NavInitialized As Boolean = False
+	#tag EndProperty
+
 
 #tag EndWindowCode
 
 #tag Events debugIndications
 	#tag Event
 		Sub Pressed()
-		  if CurrentContainer <> nil then Placeholder.RemoveControl(CurrentContainer)
-		  var c as new IndicationsContainer 
-		  CurrentContainer = c
-		  c.EmbedWithin(Placeholder, 0, 0, Placeholder.width, placeholder.Height)
+		  DesktopNavigationManager.NavigateTo("Indications")
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events debugIssues
 	#tag Event
 		Sub Pressed()
-		  if CurrentContainer <> nil then Placeholder.RemoveControl(CurrentContainer)
-		  var c as new IssuesContainer 
-		  CurrentContainer = c
-		  c.EmbedWithin(Placeholder, 0, 0, Placeholder.width, placeholder.Height)
+		  DesktopNavigationManager.NavigateTo("Issues")
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events debugAudit
 	#tag Event
 		Sub Pressed()
-		  if CurrentContainer <> nil then Placeholder.RemoveControl(CurrentContainer)
-		  var c as new AuditContainer 
-		  CurrentContainer = c
-		  c.EmbedWithin(Placeholder, 0, 0, Placeholder.width, placeholder.Height)
+		  DesktopNavigationManager.NavigateTo("Audit")
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events debugSettings
 	#tag Event
 		Sub Pressed()
-		  if CurrentContainer <> nil then Placeholder.RemoveControl(CurrentContainer)
-		  var c as new SettingsContainer 
-		  CurrentContainer = c
-		  c.EmbedWithin(Placeholder, 0, 0, Placeholder.width, placeholder.Height)
+		  DesktopNavigationManager.NavigateTo("Settings")
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events debugUsers
 	#tag Event
 		Sub Pressed()
-		  if CurrentContainer <> nil then Placeholder.RemoveControl(CurrentContainer)
-		  var c as new UsersContainer 
-		  CurrentContainer = c
-		  c.EmbedWithin(Placeholder, 0, 0, Placeholder.width, placeholder.Height)
+		  DesktopNavigationManager.NavigateTo("Users")
 		End Sub
 	#tag EndEvent
 #tag EndEvents
