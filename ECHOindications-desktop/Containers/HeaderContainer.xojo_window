@@ -576,17 +576,54 @@ End
 #tag Events btnIssues
 	#tag Event
 		Sub Pressed()
-		  var c as new IssuesContainer
-		  RaiseEvent loadContainer(c)
-		  
-		  
-		  ' 
-		  ' var w as new wHome = self.Parent
-		  ' 
-		  ' if w.CurrentContainer <> nil then w.Placeholder.RemoveControl(w.CurrentContainer)
-		  ' var c as new IssuesContainer 
-		  ' w.CurrentContainer = c
-		  ' c.EmbedWithin(w.Placeholder, 0, 0, w.Placeholder.width, w.placeholder.Height)
+		  DesktopNavigationManager.NavigateTo("Issues")
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnUsers
+	#tag Event
+		Sub Pressed()
+		  DesktopNavigationManager.NavigateTo("Users")
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnSettings
+	#tag Event
+		Sub Pressed()
+		  DesktopNavigationManager.NavigateTo("Settings")
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnAudit
+	#tag Event
+		Sub Pressed()
+		  DesktopNavigationManager.NavigateTo("Audit")
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnBack
+	#tag Event
+		Sub Pressed()
+		  DesktopNavigationManager.NavigateBack()
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnLogin
+	#tag Event
+		Sub Pressed()
+		  ' TODO: Show login dialog
+		  Var dlg As New dlg_Login
+		  dlg.ShowModal()
+
+		  ' After successful login, broadcast event
+		  If AuthManager.IsAuthenticated Then
+		    Var userData As New Dictionary
+		    userData.Value("id") = AuthManager.CurrentUserID
+		    userData.Value("username") = AuthManager.CurrentUsername
+		    userData.Value("email") = AuthManager.CurrentUserEmail
+		    userData.Value("fullName") = AuthManager.CurrentUserFullName
+		    PubSub.Broadcast(Events.AUTH_LOGIN, userData)
+		  End If
 		End Sub
 	#tag EndEvent
 #tag EndEvents
