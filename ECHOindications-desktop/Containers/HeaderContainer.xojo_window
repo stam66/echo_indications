@@ -42,7 +42,7 @@ Begin DesktopContainer HeaderContainer
       LockRight       =   True
       LockTop         =   True
       Multiline       =   False
-      Scope           =   2
+      Scope           =   0
       Selectable      =   False
       TabIndex        =   0
       TabPanelIndex   =   0
