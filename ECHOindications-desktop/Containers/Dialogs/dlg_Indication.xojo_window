@@ -920,8 +920,357 @@ End
 #tag EndDesktopWindow
 
 #tag WindowCode
+	#tag Event
+		Sub Opening()
+		  ' Set up initial state
+		  mIsNewIndication = True
+		  mCurrentIndication = Nil
+
+		  ' Load contexts for the checkbox list
+		  LoadContextsList()
+
+		  ' Set up form based on authentication
+		  SetupFormAccess()
+
+		  ' If new indication, clear form; otherwise LoadIndication will be called
+		  If mIsNewIndication Then
+		    ClearForm()
+		  End If
+		End Sub
+	#tag EndEvent
+
+
+	#tag Method, Flags = &h0
+		Sub LoadIndication(indication As Indication)
+		  ' Load an existing indication for viewing/editing
+		  mCurrentIndication = indication
+		  mIsNewIndication = False
+
+		  If indication = Nil Then Return
+
+		  ' Update header
+		  lblDialogHeader.Text = "Indication Detail - " + indication.Title
+
+		  ' Populate fields
+		  txtIndication.Text = indication.Title
+		  txtKeywords.Text = indication.Keywords
+		  txtComments.Text = indication.Comments
+
+		  ' Set attribution checkboxes
+		  chkSourceASE.Value = indication.SourceASE
+		  chkSourceEACVI.Value = indication.SourceEACVI
+		  chkSourceBSE.Value = indication.SourceBSE
+		  chkSourceConsensus.Value = indication.SourceConsensus
+
+		  ' Set care settings (popup menu indices: 0=Indicated, 1=Not indicated, 2=May be considered)
+		  popPrimaryCare.SelectedRowIndex = MapCareSettingToIndex(indication.PrimaryCare)
+		  popSecondaryOP.SelectedRowIndex = MapCareSettingToIndex(indication.SecondaryOutpatient)
+		  popSecondaryIP.SelectedRowIndex = MapCareSettingToIndex(indication.SecondaryInpatient)
+
+		  ' Set urgency
+		  popUrgency.SelectedRowIndex = MapUrgencyToIndex(indication.Urgency)
+
+		  ' Check contexts that this indication belongs to
+		  For i As Integer = 0 To lstContexts.LastRowIndex
+		    Var contextID As Integer = lstContexts.RowTagAt(i)
+		    If indication.ContextIDs.IndexOf(contextID) >= 0 Then
+		      lstContexts.CellCheckBoxStateAt(i, 0) = DesktopCheckBox.VisualStates.Checked
+		    Else
+		      lstContexts.CellCheckBoxStateAt(i, 0) = DesktopCheckBox.VisualStates.Unchecked
+		    End If
+		  Next
+
+		  ' Enable/disable navigation buttons (would need context from parent)
+		  btnPreviousIndication.Enabled = False
+		  btnNextIndication.Enabled = False
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub ClearForm()
+		  ' Clear all form fields for new indication
+		  lblDialogHeader.Text = "New Indication"
+
+		  txtIndication.Text = ""
+		  txtKeywords.Text = ""
+		  txtComments.Text = ""
+
+		  chkSourceASE.Value = False
+		  chkSourceEACVI.Value = False
+		  chkSourceBSE.Value = False
+		  chkSourceConsensus.Value = False
+
+		  popPrimaryCare.SelectedRowIndex = -1
+		  popSecondaryOP.SelectedRowIndex = -1
+		  popSecondaryIP.SelectedRowIndex = -1
+		  popUrgency.SelectedRowIndex = -1
+
+		  ' Uncheck all contexts
+		  For i As Integer = 0 To lstContexts.LastRowIndex
+		    lstContexts.CellCheckBoxStateAt(i, 0) = DesktopCheckBox.VisualStates.Unchecked
+		  Next
+
+		  ' Disable navigation buttons for new indication
+		  btnPreviousIndication.Enabled = False
+		  btnNextIndication.Enabled = False
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub LoadContextsList()
+		  Try
+		    lstContexts.RemoveAllRows()
+
+		    Var contexts() As Context = Context.GetAll()
+
+		    For Each ctx As Context In contexts
+		      If ctx.IsActive Then
+		        lstContexts.AddRow("")
+		        Var row As Integer = lstContexts.LastAddedRowIndex
+		        lstContexts.CellTypeAt(row, 0) = DesktopListBox.CellTypes.CheckBox
+		        lstContexts.CellTextAt(row, 0) = ctx.Name
+		        lstContexts.RowTagAt(row) = ctx.ID
+		        lstContexts.CellCheckBoxStateAt(row, 0) = DesktopCheckBox.VisualStates.Unchecked
+		      End If
+		    Next
+
+		  Catch err As RuntimeException
+		    If AppConfig.DEBUG_MODE Then
+		      System.DebugLog("dlg_Indication: Error loading contexts - " + err.Message)
+		    End If
+		  End Try
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub SetupFormAccess()
+		  ' Enable/disable form controls based on authentication
+		  Var isAuthenticated As Boolean = AuthManager.IsAuthenticated
+
+		  txtIndication.ReadOnly = Not isAuthenticated
+		  txtKeywords.ReadOnly = Not isAuthenticated
+		  txtComments.ReadOnly = Not isAuthenticated
+
+		  chkSourceASE.Enabled = isAuthenticated
+		  chkSourceEACVI.Enabled = isAuthenticated
+		  chkSourceBSE.Enabled = isAuthenticated
+		  chkSourceConsensus.Enabled = isAuthenticated
+
+		  popPrimaryCare.Enabled = isAuthenticated
+		  popSecondaryOP.Enabled = isAuthenticated
+		  popSecondaryIP.Enabled = isAuthenticated
+		  popUrgency.Enabled = isAuthenticated
+
+		  lstContexts.Enabled = isAuthenticated
+		  btnSave.Enabled = isAuthenticated
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function ValidateForm() As Boolean
+		  ' Validate required fields
+		  If txtIndication.Text.Trim.Length = 0 Then
+		    MessageBox("Please enter an indication title.")
+		    txtIndication.SetFocus()
+		    Return False
+		  End If
+
+		  ' Ensure at least one context is selected
+		  Var hasContext As Boolean = False
+		  For i As Integer = 0 To lstContexts.LastRowIndex
+		    If lstContexts.CellCheckBoxStateAt(i, 0) = DesktopCheckBox.VisualStates.Checked Then
+		      hasContext = True
+		      Exit For
+		    End If
+		  Next
+
+		  If Not hasContext Then
+		    MessageBox("Please select at least one context.")
+		    Return False
+		  End If
+
+		  Return True
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub SaveIndication()
+		  If Not ValidateForm() Then Return
+
+		  Try
+		    ' Collect selected context IDs
+		    Var contextIDs() As Integer
+		    For i As Integer = 0 To lstContexts.LastRowIndex
+		      If lstContexts.CellCheckBoxStateAt(i, 0) = DesktopCheckBox.VisualStates.Checked Then
+		        contextIDs.Add(lstContexts.RowTagAt(i))
+		      End If
+		    Next
+
+		    ' Prepare data dictionary for API
+		    Var data As New Dictionary
+		    data.Value("title") = txtIndication.Text.Trim
+		    data.Value("keywords") = txtKeywords.Text.Trim
+		    data.Value("comments") = txtComments.Text.Trim
+		    data.Value("source_ase") = chkSourceASE.Value
+		    data.Value("source_eacvi") = chkSourceEACVI.Value
+		    data.Value("source_bse") = chkSourceBSE.Value
+		    data.Value("source_consensus") = chkSourceConsensus.Value
+		    data.Value("primary_care") = MapIndexToCareSetting(popPrimaryCare.SelectedRowIndex)
+		    data.Value("secondary_outpatient") = MapIndexToCareSetting(popSecondaryOP.SelectedRowIndex)
+		    data.Value("secondary_inpatient") = MapIndexToCareSetting(popSecondaryIP.SelectedRowIndex)
+		    data.Value("urgency") = MapIndexToUrgency(popUrgency.SelectedRowIndex)
+		    data.Value("context_ids") = contextIDs
+
+		    Var result As Dictionary
+
+		    If mIsNewIndication Then
+		      ' Create new indication
+		      result = APIClient.Post("indications.lc", "create", data)
+
+		      If result.Value("status") = "success" Then
+		        ' Broadcast creation event
+		        PubSub.Broadcast(Events.INDICATION_CREATED, result.Value("data"))
+		        MessageBox("Indication created successfully.")
+		        Self.Close()
+		      Else
+		        MessageBox("Failed to create indication: " + result.Value("message").StringValue)
+		      End If
+
+		    Else
+		      ' Update existing indication
+		      data.Value("id") = mCurrentIndication.ID
+		      result = APIClient.Post("indications.lc", "update", data)
+
+		      If result.Value("status") = "success" Then
+		        ' Broadcast update event
+		        PubSub.Broadcast(Events.INDICATION_UPDATED, result.Value("data"))
+		        MessageBox("Indication updated successfully.")
+		        Self.Close()
+		      Else
+		        MessageBox("Failed to update indication: " + result.Value("message").StringValue)
+		      End If
+		    End If
+
+		  Catch err As RuntimeException
+		    MessageBox("Error saving indication: " + err.Message)
+		  End Try
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function MapCareSettingToIndex(setting As String) As Integer
+		  ' Map care setting string to popup menu index
+		  Select Case setting.Lowercase
+		  Case "indicated"
+		    Return 0
+		  Case "not indicated"
+		    Return 1
+		  Case "may be considered"
+		    Return 2
+		  Else
+		    Return -1
+		  End Select
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function MapIndexToCareSetting(index As Integer) As String
+		  ' Map popup menu index to care setting string
+		  Select Case index
+		  Case 0
+		    Return "Indicated"
+		  Case 1
+		    Return "Not indicated"
+		  Case 2
+		    Return "May be considered"
+		  Else
+		    Return ""
+		  End Select
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function MapUrgencyToIndex(urgency As String) As Integer
+		  ' Map urgency string to popup menu index
+		  Select Case urgency.Lowercase
+		  Case "not indicated"
+		    Return 0
+		  Case "can be considered"
+		    Return 1
+		  Case "routine"
+		    Return 2
+		  Case "soon"
+		    Return 3
+		  Case "urgent"
+		    Return 4
+		  Else
+		    Return -1
+		  End Select
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function MapIndexToUrgency(index As Integer) As String
+		  ' Map popup menu index to urgency string
+		  Select Case index
+		  Case 0
+		    Return "Not indicated"
+		  Case 1
+		    Return "Can be considered"
+		  Case 2
+		    Return "Routine"
+		  Case 3
+		    Return "Soon"
+		  Case 4
+		    Return "Urgent"
+		  Else
+		    Return ""
+		  End Select
+		End Function
+	#tag EndMethod
+
+
+	#tag Property, Flags = &h21
+		Private mCurrentIndication As Indication
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mIsNewIndication As Boolean = True
+	#tag EndProperty
+
+
 #tag EndWindowCode
 
+#tag Events btnSave
+	#tag Event
+		Sub Pressed()
+		  SaveIndication()
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnCancel
+	#tag Event
+		Sub Pressed()
+		  Self.Close()
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnPreviousIndication
+	#tag Event
+		Sub Pressed()
+		  ' TODO: Implement previous/next navigation
+		  ' This would require passing the full list context from parent
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnNextIndication
+	#tag Event
+		Sub Pressed()
+		  ' TODO: Implement previous/next navigation
+		  ' This would require passing the full list context from parent
+		End Sub
+	#tag EndEvent
+#tag EndEvents
 #tag ViewBehavior
 	#tag ViewProperty
 		Name="Name"
