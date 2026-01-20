@@ -55,7 +55,7 @@ Protected Module DesktopNavigationManager
 		  LoadContainer(previousRoute)
 
 		  ' Broadcast navigation event
-		  PubSub.Broadcast(Events.NAVIGATION_CHANGED, previousRoute)
+		  PubSub.Broadcast(EventConstants.NAVIGATION_CHANGED, previousRoute)
 		End Sub
 	#tag EndMethod
 
@@ -73,7 +73,7 @@ Protected Module DesktopNavigationManager
 		  LoadContainer(nextRoute)
 
 		  ' Broadcast navigation event
-		  PubSub.Broadcast(Events.NAVIGATION_CHANGED, nextRoute)
+		  PubSub.Broadcast(EventConstants.NAVIGATION_CHANGED, nextRoute)
 		End Sub
 	#tag EndMethod
 
@@ -105,7 +105,7 @@ Protected Module DesktopNavigationManager
 		  LoadContainer(containerName)
 
 		  ' Broadcast navigation event
-		  PubSub.Broadcast(Events.NAVIGATION_CHANGED, containerName)
+		  PubSub.Broadcast(EventConstants.NAVIGATION_CHANGED, containerName)
 		End Sub
 	#tag EndMethod
 
