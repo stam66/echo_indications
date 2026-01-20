@@ -1058,7 +1058,7 @@ End
 		  popSecondaryIP.Enabled = isAuthenticated
 		  popUrgency.Enabled = isAuthenticated
 
-		  lstContexts.Enabled = isAuthenticated
+		  ' Keep lstContexts enabled to allow scrolling, but prevent checkbox changes via CellAction event
 		  btnSave.Enabled = isAuthenticated
 		End Sub
 	#tag EndMethod
@@ -1238,6 +1238,18 @@ End
 
 #tag EndWindowCode
 
+#tag Events lstContexts
+	#tag Event
+		Function CellAction(row As Integer, column As Integer) As Boolean
+		  ' Prevent checkbox changes when not authenticated (allow scrolling only)
+		  If Not AuthManager.IsAuthenticated Then
+		    Return True  ' Cancel the action
+		  End If
+
+		  Return False  ' Allow the action
+		End Function
+	#tag EndEvent
+#tag EndEvents
 #tag Events btnSave
 	#tag Event
 		Sub Pressed()
