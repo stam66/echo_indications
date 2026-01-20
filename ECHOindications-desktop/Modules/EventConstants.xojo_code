@@ -11,8 +11,8 @@ Protected Module EventConstants
 		### Subscribe to events:
 		```xojo
 		Sub Opening()
-		  PubSub.Subscribe(Events.INDICATION_UPDATED, AddressOf HandleIndicationUpdated, Self)
-		  PubSub.Subscribe(Events.AUTH_LOGIN, AddressOf HandleLogin, Self)
+		  PubSub.Subscribe(EventConstants.INDICATION_UPDATED, AddressOf HandleIndicationUpdated, Self)
+		  PubSub.Subscribe(EventConstants.AUTH_LOGIN, AddressOf HandleLogin, Self)
 		End Sub
 
 		Sub HandleIndicationUpdated(data As Variant)
@@ -28,13 +28,13 @@ Protected Module EventConstants
 		### Broadcast events:
 		```xojo
 		' After saving an indication
-		PubSub.Broadcast(Events.INDICATION_CREATED, indicationObject)
+		PubSub.Broadcast(EventConstants.INDICATION_CREATED, indicationObject)
 
 		' After deleting
-		PubSub.Broadcast(Events.INDICATION_DELETED, indicationID)
+		PubSub.Broadcast(EventConstants.INDICATION_DELETED, indicationID)
 
 		' Generic data refresh
-		PubSub.Broadcast(Events.DATA_REFRESH, nil)
+		PubSub.Broadcast(EventConstants.DATA_REFRESH, nil)
 		```
 
 		## Event Data Conventions:
@@ -50,54 +50,71 @@ Protected Module EventConstants
 
 
 	#tag Constant, Name = AUDIT_CREATED, Type = String, Dynamic = False, Default = \"audit.created", Scope = Public
+		#Tag Instance, Platform = Any, Language = Default, Definition  = \"audit.created"
 	#tag EndConstant
 
 	#tag Constant, Name = AUTH_LOGIN, Type = String, Dynamic = False, Default = \"auth.login", Scope = Public
+		#Tag Instance, Platform = Any, Language = Default, Definition  = \"auth.login"
 	#tag EndConstant
 
 	#tag Constant, Name = AUTH_LOGOUT, Type = String, Dynamic = False, Default = \"auth.logout", Scope = Public
+		#Tag Instance, Platform = Any, Language = Default, Definition  = \"auth.logout"
 	#tag EndConstant
 
 	#tag Constant, Name = CHANGEREQUEST_CREATED, Type = String, Dynamic = False, Default = \"changerequest.created", Scope = Public
+		#Tag Instance, Platform = Any, Language = Default, Definition  = \"changerequest.created"
 	#tag EndConstant
 
 	#tag Constant, Name = CHANGEREQUEST_DELETED, Type = String, Dynamic = False, Default = \"changerequest.deleted", Scope = Public
+		#Tag Instance, Platform = Any, Language = Default, Definition  = \"changerequest.deleted"
 	#tag EndConstant
 
 	#tag Constant, Name = CHANGEREQUEST_UPDATED, Type = String, Dynamic = False, Default = \"changerequest.updated", Scope = Public
+		#Tag Instance, Platform = Any, Language = Default, Definition  = \"changerequest.updated"
 	#tag EndConstant
 
 	#tag Constant, Name = CONTEXT_CREATED, Type = String, Dynamic = False, Default = \"context.created", Scope = Public
+		#Tag Instance, Platform = Any, Language = Default, Definition  = \"context.created"
 	#tag EndConstant
 
 	#tag Constant, Name = CONTEXT_DELETED, Type = String, Dynamic = False, Default = \"context.deleted", Scope = Public
+		#Tag Instance, Platform = Any, Language = Default, Definition  = \"context.deleted"
 	#tag EndConstant
 
 	#tag Constant, Name = CONTEXT_UPDATED, Type = String, Dynamic = False, Default = \"context.updated", Scope = Public
+		#Tag Instance, Platform = Any, Language = Default, Definition  = \"context.updated"
 	#tag EndConstant
 
 	#tag Constant, Name = DATA_REFRESH, Type = String, Dynamic = False, Default = \"data.refresh", Scope = Public
+		#Tag Instance, Platform = Any, Language = Default, Definition  = \"data.refresh"
 	#tag EndConstant
 
 	#tag Constant, Name = INDICATION_CREATED, Type = String, Dynamic = False, Default = \"indication.created", Scope = Public
+		#Tag Instance, Platform = Any, Language = Default, Definition  = \"indication.created"
 	#tag EndConstant
 
 	#tag Constant, Name = INDICATION_DELETED, Type = String, Dynamic = False, Default = \"indication.deleted", Scope = Public
+		#Tag Instance, Platform = Any, Language = Default, Definition  = \"indication.deleted"
 	#tag EndConstant
 
 	#tag Constant, Name = INDICATION_UPDATED, Type = String, Dynamic = False, Default = \"indication.updated", Scope = Public
+		#Tag Instance, Platform = Any, Language = Default, Definition  = \"indication.updated"
 	#tag EndConstant
 
 	#tag Constant, Name = NAVIGATION_CHANGED, Type = String, Dynamic = False, Default = \"navigation.changed", Scope = Public
+		#Tag Instance, Platform = Any, Language = Default, Definition  = \"navigation.changed"
 	#tag EndConstant
 
 	#tag Constant, Name = USER_CREATED, Type = String, Dynamic = False, Default = \"user.created", Scope = Public
+		#Tag Instance, Platform = Any, Language = Default, Definition  = \"user.created"
 	#tag EndConstant
 
 	#tag Constant, Name = USER_DELETED, Type = String, Dynamic = False, Default = \"user.deleted", Scope = Public
+		#Tag Instance, Platform = Any, Language = Default, Definition  = \"user.deleted"
 	#tag EndConstant
 
 	#tag Constant, Name = USER_UPDATED, Type = String, Dynamic = False, Default = \"user.updated", Scope = Public
+		#Tag Instance, Platform = Any, Language = Default, Definition  = \"user.updated"
 	#tag EndConstant
 
 
