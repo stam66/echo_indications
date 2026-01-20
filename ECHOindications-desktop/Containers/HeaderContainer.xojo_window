@@ -42,7 +42,7 @@ Begin DesktopContainer HeaderContainer
       LockRight       =   True
       LockTop         =   True
       Multiline       =   False
-      Scope           =   2
+      Scope           =   0
       Selectable      =   False
       TabIndex        =   0
       TabPanelIndex   =   0
@@ -64,9 +64,9 @@ Begin DesktopContainer HeaderContainer
       AllowTabs       =   False
       Backdrop        =   0
       Enabled         =   True
-      Height          =   60
+      Height          =   50
       Index           =   -2147483648
-      Left            =   5
+      Left            =   11
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   True
@@ -77,10 +77,10 @@ Begin DesktopContainer HeaderContainer
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   4
+      Top             =   10
       Transparent     =   False
       Visible         =   True
-      Width           =   60
+      Width           =   50
    End
    Begin DesktopCustomButton btnBack
       AcceptFocus     =   False
@@ -572,33 +572,17 @@ End
 		  
 		End Sub
 	#tag EndEvent
-#tag EndEvents
-#tag Events btnIssues
 	#tag Event
-		Sub Pressed()
-		  DesktopNavigationManager.NavigateTo("Issues")
+		Sub MouseUp(x As Integer, y As Integer)
+		  var w as new wHome
+		  w.Show
+		  me.Window.Close
 		End Sub
 	#tag EndEvent
-#tag EndEvents
-#tag Events btnUsers
 	#tag Event
-		Sub Pressed()
-		  DesktopNavigationManager.NavigateTo("Users")
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events btnSettings
-	#tag Event
-		Sub Pressed()
-		  DesktopNavigationManager.NavigateTo("Settings")
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events btnAudit
-	#tag Event
-		Sub Pressed()
-		  DesktopNavigationManager.NavigateTo("Audit")
-		End Sub
+		Function MouseDown(x As Integer, y As Integer) As Boolean
+		  return true
+		End Function
 	#tag EndEvent
 #tag EndEvents
 #tag Events btnBack
@@ -614,7 +598,7 @@ End
 		  ' TODO: Show login dialog
 		  Var dlg As New dlg_Login
 		  dlg.ShowModal()
-
+		  
 		  ' After successful login, broadcast event
 		  If AuthManager.IsAuthenticated Then
 		    Var userData As New Dictionary
@@ -624,6 +608,34 @@ End
 		    userData.Value("fullName") = AuthManager.CurrentUserFullName
 		    PubSub.Broadcast(Events.AUTH_LOGIN, userData)
 		  End If
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnIssues
+	#tag Event
+		Sub Pressed()
+		  DesktopNavigationManager.NavigateTo("Issues")
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnAudit
+	#tag Event
+		Sub Pressed()
+		  DesktopNavigationManager.NavigateTo("Audit")
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnSettings
+	#tag Event
+		Sub Pressed()
+		  DesktopNavigationManager.NavigateTo("Settings")
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnUsers
+	#tag Event
+		Sub Pressed()
+		  DesktopNavigationManager.NavigateTo("Users")
 		End Sub
 	#tag EndEvent
 #tag EndEvents
