@@ -1,30 +1,30 @@
 #tag Module
 Protected Module EventConstants
 	#tag Note, Name = Usage
-		# EventConstants Module - PubSub Event Constants
-
+		# Events Module - PubSub Event Constants
+		
 		This module defines all PubSub event names used throughout the application.
 		Using constants ensures consistency and helps prevent typos.
-
+		
 		## Usage Pattern:
-
+		
 		### Subscribe to events:
 		```xojo
 		Sub Opening()
 		  PubSub.Subscribe(EventConstants.INDICATION_UPDATED, AddressOf HandleIndicationUpdated, Self)
 		  PubSub.Subscribe(EventConstants.AUTH_LOGIN, AddressOf HandleLogin, Self)
 		End Sub
-
+		
 		Sub HandleIndicationUpdated(data As Variant)
 		  ' Refresh the list
 		  LoadData()
 		End Sub
-
+		
 		Sub Closing()
 		  PubSub.UnsubscribeTarget(Self)  ' Clean up all subscriptions for this object
 		End Sub
 		```
-
+		
 		### Broadcast events:
 		```xojo
 		' After saving an indication
@@ -36,9 +36,9 @@ Protected Module EventConstants
 		' Generic data refresh
 		PubSub.Broadcast(EventConstants.DATA_REFRESH, nil)
 		```
-
+		
 		## Event Data Conventions:
-
+		
 		- **_CREATED**: Pass the new object (Indication, User, etc.)
 		- **_UPDATED**: Pass the updated object
 		- **_DELETED**: Pass the deleted object's ID (Integer)
