@@ -165,11 +165,11 @@ Begin DesktopWindow wHome
       Index           =   -2147483648
       Italic          =   False
       Left            =   20
-      LockBottom      =   False
+      LockBottom      =   True
       LockedInPosition=   False
       LockLeft        =   True
       LockRight       =   False
-      LockTop         =   True
+      LockTop         =   False
       Multiline       =   False
       Scope           =   0
       Selectable      =   False
@@ -197,11 +197,11 @@ Begin DesktopWindow wHome
       Index           =   -2147483648
       Italic          =   True
       Left            =   20
-      LockBottom      =   False
+      LockBottom      =   True
       LockedInPosition=   False
       LockLeft        =   True
       LockRight       =   False
-      LockTop         =   True
+      LockTop         =   False
       Multiline       =   False
       Scope           =   0
       Selectable      =   False
