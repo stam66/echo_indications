@@ -309,10 +309,16 @@ End
 		    popContexts.AddRow("All Contexts")
 		    popContexts.RowTagAt(0) = 0
 
+		    ' Initialize context lookup dictionary
+		    mContextLookup = New Dictionary
+
 		    ' Load contexts from API
 		    Var contexts() As Context = Context.GetAllWithCounts()
 
 		    For Each ctx As Context In contexts
+		      ' Add to lookup dictionary (maps ID to name)
+		      mContextLookup.Value(ctx.ID) = ctx.Name
+
 		      If ctx.IsActive Then
 		        Var displayText As String = ctx.Name
 		        If ctx.IndicationCount > 0 Then
@@ -379,13 +385,26 @@ End
 		      ' Store indication object in row tag for later retrieval
 		      lstIndications.RowTagAt(row) = ind
 
-		      ' Add contexts
+		      ' Add contexts - map IDs to names if ContextNames is empty
 		      If ind.ContextNames.Count > 0 Then
 		        lstIndications.CellTextAt(row, 1) = String.FromArray(ind.ContextNames, ", ")
+		      ElseIf ind.ContextIDs.Count > 0 And mContextLookup <> Nil Then
+		        ' Map context IDs to names using lookup
+		        Var contextNames() As String
+		        For Each contextID As Integer In ind.ContextIDs
+		          If mContextLookup.HasKey(contextID) Then
+		            contextNames.Add(mContextLookup.Value(contextID).StringValue)
+		          End If
+		        Next
+		        If contextNames.Count > 0 Then
+		          lstIndications.CellTextAt(row, 1) = String.FromArray(contextNames, ", ")
+		        Else
+		          lstIndications.CellTextAt(row, 1) = ""
+		        End If
 		      Else
 		        lstIndications.CellTextAt(row, 1) = ""
 		        If AppConfig.DEBUG_MODE Then
-		          System.DebugLog("Indication " + ind.ID.ToString + " has no context names")
+		          System.DebugLog("Indication " + ind.ID.ToString + " has no context names or IDs")
 		        End If
 		      End If
 
@@ -418,6 +437,10 @@ End
 
 	#tag Property, Flags = &h21
 		Private mIndications() As Indication
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mContextLookup As Dictionary
 	#tag EndProperty
 
 
