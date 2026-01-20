@@ -557,6 +557,8 @@ End
 #tag Events Canvas1
 	#tag Event
 		Sub Paint(g As Graphics, areas() As Rect)
+		  #Pragma Unused areas
+		  
 		  var aspectRatio As Double = ECHO_White.Width / ECHO_White.Height
 		  Dim newWidth, newHeight As Integer
 		  If g.Width / g.Height > aspectRatio Then
@@ -574,6 +576,9 @@ End
 	#tag EndEvent
 	#tag Event
 		Sub MouseUp(x As Integer, y As Integer)
+		  #Pragma Unused x
+		  #Pragma Unused y
+		  
 		  var w as new wHome
 		  w.Show
 		  me.Window.Close
@@ -581,6 +586,9 @@ End
 	#tag EndEvent
 	#tag Event
 		Function MouseDown(x As Integer, y As Integer) As Boolean
+		  #Pragma Unused x
+		  #Pragma Unused y
+		  
 		  return true
 		End Function
 	#tag EndEvent

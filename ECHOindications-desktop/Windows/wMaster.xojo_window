@@ -258,6 +258,8 @@ End
 
 	#tag Method, Flags = &h0
 		Sub handleLoadContainer(sender as DesktopContainer, targetContainer as DesktopContainer)
+		  #Pragma Unused sender
+		  
 		  var c as DesktopContainer
 		  
 		  if targetContainer isa IssuesContainer then c = new IssuesContainer
