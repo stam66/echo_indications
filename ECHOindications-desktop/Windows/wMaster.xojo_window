@@ -7,24 +7,24 @@ Begin DesktopWindow wMaster
    FullScreen      =   False
    HasBackgroundColor=   False
    HasCloseButton  =   True
-   HasFullScreenButton=   False
+   HasFullScreenButton=   True
    HasMaximizeButton=   True
    HasMinimizeButton=   True
    HasTitleBar     =   True
-   Height          =   730
+   Height          =   740
    ImplicitInstance=   True
    MacProcID       =   0
    MaximumHeight   =   32000
    MaximumWidth    =   32000
    MenuBar         =   ""
    MenuBarVisible  =   False
-   MinimumHeight   =   64
-   MinimumWidth    =   64
+   MinimumHeight   =   650
+   MinimumWidth    =   1110
    Resizeable      =   True
    Title           =   "Untitled"
    Type            =   0
    Visible         =   True
-   Width           =   1138
+   Width           =   1126
    Begin HeaderContainer Header
       AllowAutoDeactivate=   True
       AllowFocus      =   False
@@ -52,7 +52,7 @@ Begin DesktopWindow wMaster
       Top             =   0
       Transparent     =   False
       Visible         =   True
-      Width           =   1138
+      Width           =   1126
    End
    Begin ContainerForPlaceholder Placeholder
       AllowAutoDeactivate=   True
@@ -64,7 +64,7 @@ Begin DesktopWindow wMaster
       Composited      =   False
       Enabled         =   True
       HasBackgroundColor=   False
-      Height          =   630
+      Height          =   640
       Index           =   -2147483648
       InitialParent   =   ""
       Left            =   0
@@ -81,7 +81,7 @@ Begin DesktopWindow wMaster
       Top             =   100
       Transparent     =   False
       Visible         =   True
-      Width           =   1138
+      Width           =   1126
    End
    Begin DesktopButton debugIndications
       AllowAutoDeactivate=   True
@@ -248,7 +248,7 @@ End
 		  If Not NavInitialized Then
 		    DesktopNavigationManager.Initialize(Self)
 		    NavInitialized = True
-
+		    
 		    ' Navigate to initial container
 		    DesktopNavigationManager.NavigateTo("Indications")
 		  End If
@@ -280,11 +280,11 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		SectionTitle As String
+		NavInitialized As Boolean = False
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		NavInitialized As Boolean = False
+		SectionTitle As String
 	#tag EndProperty
 
 
@@ -574,7 +574,15 @@ End
 		Visible=false
 		Group="Behavior"
 		InitialValue=""
-		Type="Integer"
+		Type="String"
+		EditorType="MultiLineEditor"
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="NavInitialized"
+		Visible=false
+		Group="Behavior"
+		InitialValue="False"
+		Type="Boolean"
 		EditorType=""
 	#tag EndViewProperty
 #tag EndViewBehavior
