@@ -1199,7 +1199,6 @@ End
 		  popSecondaryIP.Enabled = isAuthenticated
 		  popUrgency.Enabled = isAuthenticated
 		  
-		  lstContexts.Enabled = isAuthenticated
 		  btnSave.Enabled = isAuthenticated
 		End Sub
 	#tag EndMethod
