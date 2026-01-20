@@ -459,13 +459,15 @@ End
 		  End If
 
 		  ' Confirm deletion
-		  Var result As MessageDialogButton = MessageDialog.Show( _
-		    "Are you sure you want to delete the indication:" + EndOfLine + EndOfLine + _
-		    """" + ind.Title + """?", _
-		    "Confirm Deletion", _
-		    MessageDialog.ButtonYes, MessageDialog.ButtonNo)
+		  Var d As New MessageDialog
+		  d.Message = "Are you sure you want to delete the indication:" + EndOfLine + EndOfLine + _
+		    """" + ind.Title + """?"
+		  d.Title = "Confirm Deletion"
+		  d.ActionButton.Caption = "Delete"
+		  d.CancelButton.Visible = True
+		  d.CancelButton.Caption = "Cancel"
 
-		  If result = MessageDialog.ButtonYes Then
+		  If d.ShowModal = d.ActionButton Then
 		    Try
 		      If ind.Delete() Then
 		        ' Broadcast deletion event
