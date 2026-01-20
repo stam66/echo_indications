@@ -1129,7 +1129,7 @@ End
 
 		      If result.Value("status") = "success" Then
 		        ' Broadcast creation event
-		        PubSub.Broadcast(Events.INDICATION_CREATED, result.Value("data"))
+		        PubSub.Broadcast(EventConstants.INDICATION_CREATED, result.Value("data"))
 		        MessageBox("Indication created successfully.")
 		        Self.Close()
 		      Else
@@ -1143,7 +1143,7 @@ End
 
 		      If result.Value("status") = "success" Then
 		        ' Broadcast update event
-		        PubSub.Broadcast(Events.INDICATION_UPDATED, result.Value("data"))
+		        PubSub.Broadcast(EventConstants.INDICATION_UPDATED, result.Value("data"))
 		        MessageBox("Indication updated successfully.")
 		        Self.Close()
 		      Else

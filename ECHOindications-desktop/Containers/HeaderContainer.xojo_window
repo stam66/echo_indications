@@ -606,7 +606,7 @@ End
 		    userData.Value("username") = AuthManager.CurrentUsername
 		    userData.Value("email") = AuthManager.CurrentUserEmail
 		    userData.Value("fullName") = AuthManager.CurrentUserFullName
-		    PubSub.Broadcast(Events.AUTH_LOGIN, userData)
+		    PubSub.Broadcast(EventConstants.AUTH_LOGIN, userData)
 		  End If
 		End Sub
 	#tag EndEvent
