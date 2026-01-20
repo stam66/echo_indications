@@ -260,12 +260,257 @@ End
 #tag EndDesktopWindow
 
 #tag WindowCode
+	#tag Event
+		Sub Opening()
+		  ' Subscribe to PubSub events
+		  PubSub.Subscribe(Events.INDICATION_CREATED, AddressOf HandleIndicationChanged, Self)
+		  PubSub.Subscribe(Events.INDICATION_UPDATED, AddressOf HandleIndicationChanged, Self)
+		  PubSub.Subscribe(Events.INDICATION_DELETED, AddressOf HandleIndicationChanged, Self)
+		  PubSub.Subscribe(Events.DATA_REFRESH, AddressOf HandleDataRefresh, Self)
+
+		  ' Load contexts for filter dropdown
+		  LoadContexts()
+
+		  ' Load initial data
+		  LoadIndications()
+		End Sub
+	#tag EndEvent
+
+	#tag Event
+		Sub Closing()
+		  ' Clean up PubSub subscriptions
+		  PubSub.UnsubscribeTarget(Self)
+		End Sub
+	#tag EndEvent
+
+
+	#tag Method, Flags = &h21
+		Private Sub HandleIndicationChanged(data As Variant)
+		  ' Refresh the list when any indication changes
+		  LoadIndications()
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub HandleDataRefresh(data As Variant)
+		  ' Generic refresh handler
+		  LoadIndications()
+		  LoadContexts()
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub LoadContexts()
+		  Try
+		    ' Clear existing items
+		    popContexts.RemoveAllRows()
+
+		    ' Add "All Contexts" option
+		    popContexts.AddRow("All Contexts")
+		    popContexts.RowTagAt(0) = 0
+
+		    ' Load contexts from API
+		    Var contexts() As Context = Context.GetAllWithCounts()
+
+		    For Each ctx As Context In contexts
+		      If ctx.IsActive Then
+		        Var displayText As String = ctx.Name
+		        If ctx.IndicationCount > 0 Then
+		          displayText = displayText + " (" + ctx.IndicationCount.ToString + ")"
+		        End If
+		        popContexts.AddRow(displayText)
+		        popContexts.RowTagAt(popContexts.LastAddedRowIndex) = ctx.ID
+		      End If
+		    Next
+
+		    ' Select "All Contexts" by default
+		    popContexts.SelectedRowIndex = 0
+
+		  Catch err As RuntimeException
+		    If AppConfig.DEBUG_MODE Then
+		      System.DebugLog("IndicationsContainer: Error loading contexts - " + err.Message)
+		    End If
+		  End Try
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub LoadIndications()
+		  Try
+		    lstIndications.RemoveAllRows()
+
+		    Var indications() As Indication
+		    Var searchText As String = txtSearch.Text.Trim
+		    Var selectedContextID As Integer = 0
+
+		    ' Get selected context ID from popup
+		    If popContexts.SelectedRowIndex >= 0 Then
+		      selectedContextID = popContexts.RowTagAt(popContexts.SelectedRowIndex)
+		    End If
+
+		    ' Determine which API call to make
+		    If searchText.Length > 0 Then
+		      ' Search by keywords
+		      indications = Indication.Search(searchText)
+		    ElseIf selectedContextID > 0 Then
+		      ' Filter by context
+		      indications = Indication.GetByContext(selectedContextID)
+		    Else
+		      ' Get all indications
+		      indications = Indication.GetAll()
+		    End If
+
+		    ' Filter by context if search was performed and context is selected
+		    If searchText.Length > 0 And selectedContextID > 0 Then
+		      Var filtered() As Indication
+		      For Each ind As Indication In indications
+		        If ind.ContextIDs.IndexOf(selectedContextID) >= 0 Then
+		          filtered.Add(ind)
+		        End If
+		      Next
+		      indications = filtered
+		    End If
+
+		    ' Populate the listbox
+		    For Each ind As Indication In indications
+		      lstIndications.AddRow(ind.Title)
+		      Var row As Integer = lstIndications.LastAddedRowIndex
+
+		      ' Store indication object in row tag for later retrieval
+		      lstIndications.RowTagAt(row) = ind
+
+		      ' Add contexts
+		      lstIndications.CellTextAt(row, 1) = String.FromArray(ind.ContextNames, ", ")
+
+		      ' Add keywords
+		      lstIndications.CellTextAt(row, 2) = ind.Keywords
+		    Next
+
+		    ' Update count label
+		    UpdateCountLabel(indications.Count)
+
+		  Catch err As RuntimeException
+		    If AppConfig.DEBUG_MODE Then
+		      System.DebugLog("IndicationsContainer: Error loading indications - " + err.Message)
+		    End If
+		    MessageBox("Error loading indications: " + err.Message)
+		  End Try
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub UpdateCountLabel(count As Integer)
+		  If count = 1 Then
+		    lblFoundCount.Text = "1 indication found"
+		  Else
+		    lblFoundCount.Text = count.ToString + " indications found"
+		  End If
+		End Sub
+	#tag EndMethod
+
+
+	#tag Property, Flags = &h21
+		Private mIndications() As Indication
+	#tag EndProperty
+
+
 	#tag Constant, Name = kSectionTitle, Type = String, Dynamic = False, Default = \"Echocardiography Indications", Scope = Public
 	#tag EndConstant
 
 
 #tag EndWindowCode
 
+#tag Events txtSearch
+	#tag Event
+		Sub TextChanged()
+		  ' Real-time search as user types
+		  LoadIndications()
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnNew
+	#tag Event
+		Sub Pressed()
+		  ' Open dialog for creating new indication
+		  Var dlg As New dlg_Indication
+
+		  ' Show dialog modally
+		  dlg.ShowModal()
+
+		  ' No need to refresh manually - PubSub will handle it when dialog broadcasts event
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnDelete
+	#tag Event
+		Sub Pressed()
+		  ' Delete selected indication
+		  If lstIndications.SelectedRowIndex < 0 Then
+		    MessageBox("Please select an indication to delete.")
+		    Return
+		  End If
+
+		  ' Get the indication from the row tag
+		  Var ind As Indication = lstIndications.RowTagAt(lstIndications.SelectedRowIndex)
+
+		  If ind = Nil Then
+		    MessageBox("Error: Could not retrieve indication data.")
+		    Return
+		  End If
+
+		  ' Confirm deletion
+		  Var result As MessageDialogButton = MessageDialog.Show( _
+		    "Are you sure you want to delete the indication:" + EndOfLine + EndOfLine + _
+		    """" + ind.Title + """?", _
+		    "Confirm Deletion", _
+		    MessageDialog.ButtonYes, MessageDialog.ButtonNo)
+
+		  If result = MessageDialog.ButtonYes Then
+		    Try
+		      If ind.Delete() Then
+		        ' Broadcast deletion event
+		        PubSub.Broadcast(Events.INDICATION_DELETED, ind.ID)
+		        MessageBox("Indication deleted successfully.")
+		      Else
+		        MessageBox("Failed to delete indication.")
+		      End If
+		    Catch err As RuntimeException
+		      MessageBox("Error deleting indication: " + err.Message)
+		    End Try
+		  End If
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events popContexts
+	#tag Event
+		Sub SelectionChanged(item As DesktopMenuItem)
+		  ' Filter by selected context
+		  LoadIndications()
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events lstIndications
+	#tag Event
+		Sub DoublePressed()
+		  ' Open indication detail dialog on double-click
+		  If Me.SelectedRowIndex < 0 Then Return
+
+		  ' Get the indication from the row tag
+		  Var ind As Indication = Me.RowTagAt(Me.SelectedRowIndex)
+
+		  If ind <> Nil Then
+		    Var dlg As New dlg_Indication
+
+		    ' TODO: Pass the indication to the dialog for editing
+		    ' dlg.LoadIndication(ind)
+
+		    dlg.ShowModal()
+
+		    ' No need to refresh manually - PubSub will handle it
+		  End If
+		End Sub
+	#tag EndEvent
+#tag EndEvents
 #tag ViewBehavior
 	#tag ViewProperty
 		Name="Name"
