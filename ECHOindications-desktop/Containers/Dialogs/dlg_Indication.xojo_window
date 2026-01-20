@@ -209,10 +209,10 @@ Begin DesktopContainer dlg_Indication
       Width           =   80
    End
    Begin DesktopListBox lstContexts
-      AllowAutoDeactivate=   True
+      AllowAutoDeactivate=   False
       AllowAutoHideScrollbars=   True
       AllowExpandableRows=   False
-      AllowFocusRing  =   True
+      AllowFocusRing  =   False
       AllowResizableColumns=   False
       AllowRowDragging=   False
       AllowRowReordering=   False
@@ -1061,6 +1061,14 @@ End
 		  chkSourceBSE.Value = indication.SourceBSE
 		  chkSourceConsensus.Value = indication.SourceConsensus
 		  
+		  If AppConfig.DEBUG_MODE Then
+		    System.DebugLog("LoadIndication: Setting popup values")
+		    System.DebugLog("  PrimaryCare value: '" + indication.PrimaryCare + "' -> index " + MapCareSettingToIndex(indication.PrimaryCare).ToString)
+		    System.DebugLog("  SecondaryOutpatient value: '" + indication.SecondaryOutpatient + "' -> index " + MapCareSettingToIndex(indication.SecondaryOutpatient).ToString)
+		    System.DebugLog("  SecondaryInpatient value: '" + indication.SecondaryInpatient + "' -> index " + MapCareSettingToIndex(indication.SecondaryInpatient).ToString)
+		    System.DebugLog("  Urgency value: '" + indication.Urgency + "' -> index " + MapUrgencyToIndex(indication.Urgency).ToString)
+		  End If
+		  
 		  ' Set care settings (popup menu indices: 0=Indicated, 1=Not indicated, 2=May be considered)
 		  popPrimaryCare.SelectedRowIndex = MapCareSettingToIndex(indication.PrimaryCare)
 		  popSecondaryOP.SelectedRowIndex = MapCareSettingToIndex(indication.SecondaryOutpatient)
@@ -1124,11 +1132,14 @@ End
 		  Select Case setting.Lowercase
 		  Case "indicated"
 		    Return 0
-		  Case "not indicated"
+		  Case "not_indicated", "not indicated"
 		    Return 1
-		  Case "may be considered"
+		  Case "may_be_considered", "may be considered", "can_be_considered", "can be considered"
 		    Return 2
 		  Else
+		    If AppConfig.DEBUG_MODE Then
+		      System.DebugLog("MapCareSettingToIndex: Unknown value '" + setting + "'")
+		    End If
 		    Return -1
 		  End Select
 		End Function
@@ -1136,14 +1147,14 @@ End
 
 	#tag Method, Flags = &h21
 		Private Function MapIndexToCareSetting(index As Integer) As String
-		  ' Map popup menu index to care setting string
+		  ' Map popup menu index to database care setting string (with underscores)
 		  Select Case index
 		  Case 0
-		    Return "Indicated"
+		    Return "indicated"
 		  Case 1
-		    Return "Not indicated"
+		    Return "not_indicated"
 		  Case 2
-		    Return "May be considered"
+		    Return "may_be_considered"
 		  Else
 		    Return ""
 		  End Select
@@ -1152,18 +1163,18 @@ End
 
 	#tag Method, Flags = &h21
 		Private Function MapIndexToUrgency(index As Integer) As String
-		  ' Map popup menu index to urgency string
+		  ' Map popup menu index to database urgency string (with underscores)
 		  Select Case index
 		  Case 0
-		    Return "Not indicated"
+		    Return "not_indicated"
 		  Case 1
-		    Return "Can be considered"
+		    Return "can_be_considered"
 		  Case 2
-		    Return "Routine"
+		    Return "routine"
 		  Case 3
-		    Return "Soon"
+		    Return "soon"
 		  Case 4
-		    Return "Urgent"
+		    Return "urgent"
 		  Else
 		    Return ""
 		  End Select
@@ -1173,10 +1184,11 @@ End
 	#tag Method, Flags = &h21
 		Private Function MapUrgencyToIndex(urgency As String) As Integer
 		  ' Map urgency string to popup menu index
+		  ' Database uses underscores, popup shows spaces
 		  Select Case urgency.Lowercase
-		  Case "not indicated"
+		  Case "not_indicated", "not indicated"
 		    Return 0
-		  Case "can be considered"
+		  Case "can_be_considered", "can be considered"
 		    Return 1
 		  Case "routine"
 		    Return 2
@@ -1185,6 +1197,9 @@ End
 		  Case "urgent"
 		    Return 4
 		  Else
+		    If AppConfig.DEBUG_MODE Then
+		      System.DebugLog("MapUrgencyToIndex: Unknown value '" + urgency + "'")
+		    End If
 		    Return -1
 		  End Select
 		End Function
