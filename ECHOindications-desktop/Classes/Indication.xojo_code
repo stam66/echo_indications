@@ -83,13 +83,29 @@ Protected Class Indication
 		    If data.HasKey("urgency") And data.Value("urgency") <> Nil Then
 		      indication.Urgency = data.Value("urgency").StringValue
 		    End If
-		    
+
+		    // Parse context_ids array if available
+		    If data.HasKey("context_ids") And data.Value("context_ids") <> Nil Then
+		      Var contextIDsVariant As Variant = data.Value("context_ids")
+		      Var contextIDs() As Integer
+
+		      If VarType(contextIDsVariant) = 4096 Then // Array type
+		        Var idsArray() As Variant = contextIDsVariant
+		        For Each idVariant As Variant In idsArray
+		          contextIDs.Add(idVariant.IntegerValue)
+		        Next
+		      End If
+
+		      indication.ContextIDs = contextIDs
+		    End If
+
 		    // Parse contexts - handle both array and string formats
 		    If data.HasKey("contexts") And data.Value("contexts") <> Nil Then
 		      Var contextsValue As Variant = data.Value("contexts")
 		      Var contextNames() As String
+		      Var contextIDs() As Integer
 		      Var valueType As Integer = VarType(contextsValue)
-		      
+
 		      If valueType = 8 Then
 		        // String type - parse as comma-separated string
 		        Var contextsStr As String = contextsValue.StringValue
@@ -100,23 +116,29 @@ Protected Class Indication
 		            contextNames(i) = contextNames(i).Trim
 		          Next
 		        End If
-		        
+
 		      ElseIf valueType = 4096 Then
 		        // Array type - process as array of dictionaries
 		        Var contextsArray() As Variant = contextsValue
-		        
+
 		        For Each ctx As Variant In contextsArray
 		          If ctx IsA Dictionary Then
 		            Var ctxDict As Dictionary = Dictionary(ctx)
 		            If ctxDict.HasKey("name") And ctxDict.Value("name") <> Nil Then
 		              contextNames.Add(ctxDict.Value("name").StringValue)
 		            End If
+		            If ctxDict.HasKey("id") And ctxDict.Value("id") <> Nil Then
+		              contextIDs.Add(ctxDict.Value("id").IntegerValue)
+		            End If
 		          End If
 		        Next
-		        
+
 		      End If
-		      
+
 		      indication.ContextNames = contextNames
+		      If contextIDs.Count > 0 Then
+		        indication.ContextIDs = contextIDs
+		      End If
 		    End If
 		    
 		    Return indication
