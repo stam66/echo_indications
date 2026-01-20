@@ -922,18 +922,15 @@ End
 #tag WindowCode
 	#tag Event
 		Sub Opening()
-		  ' Set up initial state
-		  mIsNewIndication = True
-		  mCurrentIndication = Nil
-
 		  ' Load contexts for the checkbox list
 		  LoadContextsList()
 
 		  ' Set up form based on authentication
 		  SetupFormAccess()
 
-		  ' If new indication, clear form; otherwise LoadIndication will be called
-		  If mIsNewIndication Then
+		  ' If this is a new indication (LoadIndication wasn't called), initialize
+		  If mCurrentIndication = Nil Then
+		    mIsNewIndication = True
 		    ClearForm()
 		  End If
 		End Sub
