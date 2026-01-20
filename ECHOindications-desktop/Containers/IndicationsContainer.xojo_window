@@ -380,7 +380,14 @@ End
 		      lstIndications.RowTagAt(row) = ind
 
 		      ' Add contexts
-		      lstIndications.CellTextAt(row, 1) = String.FromArray(ind.ContextNames, ", ")
+		      If ind.ContextNames.Count > 0 Then
+		        lstIndications.CellTextAt(row, 1) = String.FromArray(ind.ContextNames, ", ")
+		      Else
+		        lstIndications.CellTextAt(row, 1) = ""
+		        If AppConfig.DEBUG_MODE Then
+		          System.DebugLog("Indication " + ind.ID.ToString + " has no context names")
+		        End If
+		      End If
 
 		      ' Add keywords
 		      lstIndications.CellTextAt(row, 2) = ind.Keywords
