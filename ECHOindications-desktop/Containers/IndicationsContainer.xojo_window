@@ -501,8 +501,8 @@ End
 		  If ind <> Nil Then
 		    Var dlg As New dlg_Indication
 
-		    ' TODO: Pass the indication to the dialog for editing
-		    ' dlg.LoadIndication(ind)
+		    ' Pass the indication to the dialog for editing
+		    dlg.LoadIndication(ind)
 
 		    dlg.ShowModal()
 
