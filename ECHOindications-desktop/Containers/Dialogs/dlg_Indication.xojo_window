@@ -8,7 +8,7 @@ Begin DesktopContainer dlg_Indication
    BackgroundColor =   &c00000000
    Composited      =   False
    Enabled         =   True
-   HasBackgroundColor=   True
+   HasBackgroundColor=   False
    Height          =   706
    Index           =   -2147483648
    InitialParent   =   ""
@@ -55,7 +55,7 @@ Begin DesktopContainer dlg_Indication
          FontName        =   "System"
          FontSize        =   22.0
          FontUnit        =   0
-         Height          =   42
+         Height          =   62
          Index           =   -2147483648
          InitialParent   =   "HeaderRect"
          Italic          =   False
@@ -75,11 +75,11 @@ Begin DesktopContainer dlg_Indication
          TextAlignment   =   0
          TextColor       =   &cFFFFFF00
          Tooltip         =   ""
-         Top             =   10
+         Top             =   0
          Transparent     =   False
          Underline       =   False
          Visible         =   True
-         Width           =   508
+         Width           =   896
       End
       Begin DesktopButton btnNextIndication
          AllowAutoDeactivate=   True
@@ -101,7 +101,7 @@ Begin DesktopContainer dlg_Indication
          LockLeft        =   True
          LockRight       =   False
          LockTop         =   True
-         MacButtonStyle  =   6
+         MacButtonStyle  =   7
          Scope           =   0
          TabIndex        =   1
          TabPanelIndex   =   0
@@ -133,7 +133,7 @@ Begin DesktopContainer dlg_Indication
          LockLeft        =   True
          LockRight       =   False
          LockTop         =   True
-         MacButtonStyle  =   6
+         MacButtonStyle  =   7
          Scope           =   0
          TabIndex        =   2
          TabPanelIndex   =   0
@@ -930,6 +930,9 @@ End
 		  ' Load contexts for the checkbox list
 		  LoadContextsList()
 		  
+		  ' Apply context checkboxes if we have a current indication
+		  ApplyContextCheckboxes()
+		  
 		  ' Set up form based on authentication
 		  SetupFormAccess()
 		  
@@ -941,6 +944,35 @@ End
 		End Sub
 	#tag EndEvent
 
+
+	#tag Method, Flags = &h21
+		Private Sub ApplyContextCheckboxes()
+		  ' Check the appropriate context checkboxes based on mCurrentIndication
+		  If mCurrentIndication = Nil Then Return
+		  If lstContexts.LastRowIndex < 0 Then Return
+		  
+		  If AppConfig.DEBUG_MODE Then
+		    System.DebugLog("ApplyContextCheckboxes: Indication ID=" + mCurrentIndication.ID.ToString)
+		    System.DebugLog("  ContextIDs to check: " + mCurrentIndication.ContextIDs.Count.ToString)
+		    Var rowCount As Integer = lstContexts.LastRowIndex + 1
+		    System.DebugLog("  lstContexts rows: " + rowCount.ToString)
+		  End If
+		  
+		  For i As Integer = 0 To lstContexts.LastRowIndex
+		    Var contextID As Integer = lstContexts.RowTagAt(i)
+		    Var contextName As String = lstContexts.CellTextAt(i, 0)
+		    
+		    If mCurrentIndication.ContextIDs.IndexOf(contextID) >= 0 Then
+		      lstContexts.CellCheckBoxStateAt(i, 0) = DesktopCheckBox.VisualStates.Checked
+		      If AppConfig.DEBUG_MODE Then
+		        System.DebugLog("  CHECKED row " + i.ToString + ": ID=" + contextID.ToString + " (" + contextName + ")")
+		      End If
+		    Else
+		      lstContexts.CellCheckBoxStateAt(i, 0) = DesktopCheckBox.VisualStates.Unchecked
+		    End If
+		  Next
+		End Sub
+	#tag EndMethod
 
 	#tag Method, Flags = &h21
 		Private Sub ClearForm()
@@ -1001,13 +1033,22 @@ End
 	#tag Method, Flags = &h0
 		Sub LoadIndication(indication As Indication)
 		  ' Load an existing indication for viewing/editing
+		  If AppConfig.DEBUG_MODE Then
+		    System.DebugLog("=== LoadIndication called ===")
+		  End If
+		  
 		  mCurrentIndication = indication
 		  mIsNewIndication = False
 		  
-		  If indication = Nil Then Return
+		  If indication = Nil Then
+		    If AppConfig.DEBUG_MODE Then
+		      System.DebugLog("LoadIndication: indication is Nil!")
+		    End If
+		    Return
+		  End If
 		  
 		  ' Update header
-		  lblDialogHeader.Text = "Indication Detail - " + indication.Title
+		  lblDialogHeader.Text = "Indication Detail"
 		  
 		  ' Populate fields
 		  txtIndication.Text = indication.Title
@@ -1029,14 +1070,47 @@ End
 		  popUrgency.SelectedRowIndex = MapUrgencyToIndex(indication.Urgency)
 		  
 		  ' Check contexts that this indication belongs to
+		  If AppConfig.DEBUG_MODE Then
+		    System.DebugLog("LoadIndication: Indication ID=" + indication.ID.ToString + " Title='" + indication.Title + "'")
+		    System.DebugLog("  ContextIDs.Count = " + indication.ContextIDs.Count.ToString)
+		    System.DebugLog("  ContextNames.Count = " + indication.ContextNames.Count.ToString)
+		    
+		    If indication.ContextIDs.Count > 0 Then
+		      Var idsList As String = ""
+		      For Each id As Integer In indication.ContextIDs
+		        If idsList.Length > 0 Then idsList = idsList + ", "
+		        idsList = idsList + id.ToString
+		      Next
+		      System.DebugLog("  Context IDs: " + idsList)
+		    End If
+		    
+		    If indication.ContextNames.Count > 0 Then
+		      System.DebugLog("  Context Names: " + String.FromArray(indication.ContextNames, ", "))
+		    End If
+		    
+		    System.DebugLog("  lstContexts has " + lstContexts.LastRowIndex.ToString + " rows")
+		  End If
+		  
 		  For i As Integer = 0 To lstContexts.LastRowIndex
 		    Var contextID As Integer = lstContexts.RowTagAt(i)
+		    Var contextName As String = lstContexts.CellTextAt(i, 0)
+		    
 		    If indication.ContextIDs.IndexOf(contextID) >= 0 Then
 		      lstContexts.CellCheckBoxStateAt(i, 0) = DesktopCheckBox.VisualStates.Checked
+		      If AppConfig.DEBUG_MODE Then
+		        System.DebugLog("  CHECKED context ID " + contextID.ToString + " (" + contextName + ")")
+		      End If
 		    Else
 		      lstContexts.CellCheckBoxStateAt(i, 0) = DesktopCheckBox.VisualStates.Unchecked
+		      If AppConfig.DEBUG_MODE Then
+		        System.DebugLog("  unchecked context ID " + contextID.ToString + " (" + contextName + ")")
+		      End If
 		    End If
 		  Next
+		  
+		  If AppConfig.DEBUG_MODE Then
+		    System.DebugLog("=== LoadIndication completed ===")
+		  End If
 		  
 		  ' Enable/disable navigation buttons (would need context from parent)
 		  btnPreviousIndication.Enabled = False
@@ -1189,16 +1263,6 @@ End
 		  txtKeywords.ReadOnly = Not isAuthenticated
 		  txtComments.ReadOnly = Not isAuthenticated
 		  
-		  chkSourceASE.Enabled = isAuthenticated
-		  chkSourceEACVI.Enabled = isAuthenticated
-		  chkSourceBSE.Enabled = isAuthenticated
-		  chkSourceConsensus.Enabled = isAuthenticated
-		  
-		  popPrimaryCare.Enabled = isAuthenticated
-		  popSecondaryOP.Enabled = isAuthenticated
-		  popSecondaryIP.Enabled = isAuthenticated
-		  popUrgency.Enabled = isAuthenticated
-		  
 		  btnSave.Enabled = isAuthenticated
 		End Sub
 	#tag EndMethod
@@ -1269,6 +1333,13 @@ End
 	#tag Event
 		Sub Pressed()
 		  Self.Close()
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events lstContexts
+	#tag Event
+		Sub Opening()
+		  me.ColumnTypeAt(0) = DesktopListBox.CellTypes.CheckBox
 		End Sub
 	#tag EndEvent
 #tag EndEvents
