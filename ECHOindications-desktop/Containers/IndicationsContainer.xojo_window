@@ -263,10 +263,10 @@ End
 	#tag Event
 		Sub Opening()
 		  ' Subscribe to PubSub events
-		  PubSub.Subscribe(Events.INDICATION_CREATED, AddressOf HandleIndicationChanged, Self)
-		  PubSub.Subscribe(Events.INDICATION_UPDATED, AddressOf HandleIndicationChanged, Self)
-		  PubSub.Subscribe(Events.INDICATION_DELETED, AddressOf HandleIndicationChanged, Self)
-		  PubSub.Subscribe(Events.DATA_REFRESH, AddressOf HandleDataRefresh, Self)
+		  PubSub.Subscribe(EventConstants.INDICATION_CREATED, AddressOf HandleIndicationChanged, Self)
+		  PubSub.Subscribe(EventConstants.INDICATION_UPDATED, AddressOf HandleIndicationChanged, Self)
+		  PubSub.Subscribe(EventConstants.INDICATION_DELETED, AddressOf HandleIndicationChanged, Self)
+		  PubSub.Subscribe(EventConstants.DATA_REFRESH, AddressOf HandleDataRefresh, Self)
 
 		  ' Load contexts for filter dropdown
 		  LoadContexts()
@@ -469,7 +469,7 @@ End
 		    Try
 		      If ind.Delete() Then
 		        ' Broadcast deletion event
-		        PubSub.Broadcast(Events.INDICATION_DELETED, ind.ID)
+		        PubSub.Broadcast(EventConstants.INDICATION_DELETED, ind.ID)
 		        MessageBox("Indication deleted successfully.")
 		      Else
 		        MessageBox("Failed to delete indication.")

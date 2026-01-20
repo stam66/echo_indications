@@ -1,7 +1,7 @@
 #tag Module
-Protected Module Events
+Protected Module EventConstants
 	#tag Note, Name = Usage
-		# Events Module - PubSub Event Constants
+		# EventConstants Module - PubSub Event Constants
 
 		This module defines all PubSub event names used throughout the application.
 		Using constants ensures consistency and helps prevent typos.
