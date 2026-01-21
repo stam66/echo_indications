@@ -330,8 +330,8 @@ End
 		  ' Clear any previous values
 		  txtUsername.Text = ""
 		  txtPassword.Text = ""
-		  lblError.Visible = False
-		  lblError.Text = ""
+		  lblErrorMessage.Visible = False
+		  lblErrorMessage.Text = ""
 
 		  ' Set focus to username field
 		  txtUsername.SetFocus
@@ -345,20 +345,20 @@ End
 	#tag Event
 		Sub Pressed()
 		  ' Hide any previous error
-		  lblError.Visible = False
-		  lblError.Text = ""
+		  lblErrorMessage.Visible = False
+		  lblErrorMessage.Text = ""
 
 		  ' Validate inputs
 		  If txtUsername.Text.Trim.Length = 0 Then
-		    lblError.Text = "Please enter a username"
-		    lblError.Visible = True
+		    lblErrorMessage.Text = "Please enter a username"
+		    lblErrorMessage.Visible = True
 		    txtUsername.SetFocus
 		    Return
 		  End If
 
 		  If txtPassword.Text.Length = 0 Then
-		    lblError.Text = "Please enter a password"
-		    lblError.Visible = True
+		    lblErrorMessage.Text = "Please enter a password"
+		    lblErrorMessage.Visible = True
 		    txtPassword.SetFocus
 		    Return
 		  End If
@@ -369,8 +369,8 @@ End
 		    Self.Close
 		  Else
 		    ' Login failed - show error
-		    lblError.Text = AuthManager.LastError
-		    lblError.Visible = True
+		    lblErrorMessage.Text = AuthManager.LastError
+		    lblErrorMessage.Visible = True
 		    txtPassword.Text = ""
 		    txtPassword.SetFocus
 		  End If
@@ -391,8 +391,8 @@ End
 		  ' Clear all fields
 		  txtUsername.Text = ""
 		  txtPassword.Text = ""
-		  lblError.Visible = False
-		  lblError.Text = ""
+		  lblErrorMessage.Visible = False
+		  lblErrorMessage.Text = ""
 
 		  ' Set focus to username field
 		  txtUsername.SetFocus
