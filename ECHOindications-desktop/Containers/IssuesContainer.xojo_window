@@ -13,9 +13,9 @@ Begin DesktopContainer IssuesContainer
    Index           =   -2147483648
    InitialParent   =   ""
    Left            =   0
-   LockBottom      =   False
+   LockBottom      =   True
    LockLeft        =   True
-   LockRight       =   False
+   LockRight       =   True
    LockTop         =   True
    TabIndex        =   0
    TabPanelIndex   =   0
@@ -191,6 +191,7 @@ Begin DesktopContainer IssuesContainer
       TabStop         =   False
       Tooltip         =   ""
       Top             =   22
+      Transparent     =   False
       Visible         =   True
       Width           =   496
    End

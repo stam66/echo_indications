@@ -613,7 +613,7 @@ End
 		  dlg.Top = parentWindow.Top + (parentWindow.Height - dlg.Height) / 2
 		  
 		  ' Show modal within the parent window to block interactions
-		  dlg.ShowModalWithin(parentWindow)
+		  dlg.ShowModal
 		  
 		  ' After successful login, broadcast event and navigate if needed
 		  If AuthManager.IsAuthenticated Then

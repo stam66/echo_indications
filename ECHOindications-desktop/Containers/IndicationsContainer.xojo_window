@@ -13,9 +13,9 @@ Begin DesktopContainer IndicationsContainer
    Index           =   -2147483648
    InitialParent   =   ""
    Left            =   0
-   LockBottom      =   False
+   LockBottom      =   True
    LockLeft        =   True
-   LockRight       =   False
+   LockRight       =   True
    LockTop         =   True
    TabIndex        =   0
    TabPanelIndex   =   0
@@ -476,16 +476,16 @@ End
 		  ' Get parent window for centering
 		  Var parentWindow As DesktopWindow = Self.Window
 		  If parentWindow = Nil Then Return
-
+		  
 		  Var dlg As New dlg_Indication
-
+		  
 		  ' Center dialog on parent window
 		  dlg.Left = parentWindow.Left + (parentWindow.Width - dlg.Width) / 2
 		  dlg.Top = parentWindow.Top + (parentWindow.Height - dlg.Height) / 2
-
+		  
 		  ' Show modal within parent to block interactions
-		  dlg.ShowModalWithin(parentWindow)
-
+		  dlg.ShowModal
+		  
 		  ' No need to refresh manually - PubSub will handle it when dialog broadcasts event
 		End Sub
 	#tag EndEvent
@@ -547,18 +547,18 @@ End
 		Sub DoublePressed()
 		  ' Open indication detail dialog on double-click
 		  If Me.SelectedRowIndex < 0 Then Return
-
+		  
 		  ' Get the indication from the row tag
 		  Var ind As Indication = Me.RowTagAt(Me.SelectedRowIndex)
-
+		  
 		  If ind <> Nil Then
 		    ' Get parent window for centering
 		    Var parentWindow As DesktopWindow = Self.Window
 		    If parentWindow = Nil Then Return
-
+		    
 		    ' Create dialog
 		    Var dlg As New dlg_Indication
-
+		    
 		    ' Build array of all indications in the list for navigation
 		    Var indications() As Indication
 		    For i As Integer = 0 To Me.LastRowIndex
@@ -567,20 +567,20 @@ End
 		        indications.Add(rowInd)
 		      End If
 		    Next
-
+		    
 		    ' Pass the indication to the dialog for editing
 		    dlg.LoadIndication(ind)
-
+		    
 		    ' Set up navigation context
 		    dlg.SetNavigationContext(indications, Me.SelectedRowIndex, Me)
-
+		    
 		    ' Center dialog on parent window
 		    dlg.Left = parentWindow.Left + (parentWindow.Width - dlg.Width) / 2
 		    dlg.Top = parentWindow.Top + (parentWindow.Height - dlg.Height) / 2
-
+		    
 		    ' Show modal within parent to block interactions
-		    dlg.ShowModalWithin(parentWindow)
-
+		    dlg.ShowModal
+		    
 		    ' No need to refresh manually - PubSub will handle it
 		  End If
 		End Sub
