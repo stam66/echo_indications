@@ -123,6 +123,8 @@ End
 #tag Events Canvas1
 	#tag Event
 		Sub Paint(g As Graphics, areas() As Rect)
+		  #Pragma Unused areas
+		  
 		  var aspectRatio As Double = ECHO_White.Width / ECHO_White.Height
 		  Dim newWidth, newHeight As Integer
 		  If g.Width / g.Height > aspectRatio Then

@@ -26,6 +26,7 @@ Begin DesktopContainer IndicationsContainer
    Visible         =   True
    Width           =   1100
    Begin DesktopSearchField txtSearch
+      Active          =   False
       AllowAutoDeactivate=   True
       AllowFocusRing  =   True
       AllowRecentItems=   False
@@ -43,6 +44,7 @@ Begin DesktopContainer IndicationsContainer
       LockRight       =   True
       LockTop         =   True
       MaximumRecentItems=   -1
+      PanelIndex      =   0
       RecentItemsValue=   "Recent Searches"
       Scope           =   0
       TabIndex        =   0
@@ -53,6 +55,10 @@ Begin DesktopContainer IndicationsContainer
       Transparent     =   False
       Visible         =   True
       Width           =   663
+      _mIndex         =   0
+      _mInitialParent =   ""
+      _mName          =   ""
+      _mPanelIndex    =   0
    End
    Begin DesktopButton btnNew
       AllowAutoDeactivate=   True
@@ -254,6 +260,7 @@ Begin DesktopContainer IndicationsContainer
       Underline       =   False
       Visible         =   True
       Width           =   1060
+      _ScrollOffset   =   0
       _ScrollWidth    =   -1
    End
 End
@@ -261,41 +268,45 @@ End
 
 #tag WindowCode
 	#tag Event
-		Sub Opening()
-		  ' Subscribe to PubSub events
-		  PubSub.Subscribe(EventConstants.INDICATION_CREATED, AddressOf HandleIndicationChanged, Self)
-		  PubSub.Subscribe(EventConstants.INDICATION_UPDATED, AddressOf HandleIndicationChanged, Self)
-		  PubSub.Subscribe(EventConstants.INDICATION_DELETED, AddressOf HandleIndicationChanged, Self)
-		  PubSub.Subscribe(EventConstants.DATA_REFRESH, AddressOf HandleDataRefresh, Self)
-
-		  ' Load contexts for filter dropdown
-		  LoadContexts()
-
-		  ' Load initial data
-		  LoadIndications()
-		End Sub
-	#tag EndEvent
-
-	#tag Event
 		Sub Closing()
 		  ' Clean up PubSub subscriptions
 		  PubSub.UnsubscribeTarget(Self)
 		End Sub
 	#tag EndEvent
 
+	#tag Event
+		Sub Opening()
+		  ' Subscribe to PubSub events
+		  PubSub.Subscribe(EventConstants.INDICATION_CREATED, AddressOf HandleIndicationChanged, Self)
+		  PubSub.Subscribe(EventConstants.INDICATION_UPDATED, AddressOf HandleIndicationChanged, Self)
+		  PubSub.Subscribe(EventConstants.INDICATION_DELETED, AddressOf HandleIndicationChanged, Self)
+		  PubSub.Subscribe(EventConstants.DATA_REFRESH, AddressOf HandleDataRefresh, Self)
+		  
+		  ' Load contexts for filter dropdown
+		  LoadContexts()
+		  
+		  ' Load initial data
+		  LoadIndications()
+		End Sub
+	#tag EndEvent
+
 
 	#tag Method, Flags = &h21
-		Private Sub HandleIndicationChanged(data As Variant)
-		  ' Refresh the list when any indication changes
+		Private Sub HandleDataRefresh(data As Variant)
+		  #Pragma Unused data
+		  
+		  ' Generic refresh handler
 		  LoadIndications()
+		  LoadContexts()
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub HandleDataRefresh(data As Variant)
-		  ' Generic refresh handler
+		Private Sub HandleIndicationChanged(data As Variant)
+		  #Pragma Unused  data
+		  
+		  ' Refresh the list when any indication changes
 		  LoadIndications()
-		  LoadContexts()
 		End Sub
 	#tag EndMethod
 
@@ -304,21 +315,21 @@ End
 		  Try
 		    ' Clear existing items
 		    popContexts.RemoveAllRows()
-
+		    
 		    ' Add "All Contexts" option
 		    popContexts.AddRow("All Contexts")
 		    popContexts.RowTagAt(0) = 0
-
+		    
 		    ' Initialize context lookup dictionary
 		    mContextLookup = New Dictionary
-
+		    
 		    ' Load contexts from API
 		    Var contexts() As Context = Context.GetAllWithCounts()
-
+		    
 		    For Each ctx As Context In contexts
 		      ' Add to lookup dictionary (maps ID to name)
 		      mContextLookup.Value(ctx.ID) = ctx.Name
-
+		      
 		      If ctx.IsActive Then
 		        Var displayText As String = ctx.Name
 		        If ctx.IndicationCount > 0 Then
@@ -328,10 +339,10 @@ End
 		        popContexts.RowTagAt(popContexts.LastAddedRowIndex) = ctx.ID
 		      End If
 		    Next
-
+		    
 		    ' Select "All Contexts" by default
 		    popContexts.SelectedRowIndex = 0
-
+		    
 		  Catch err As RuntimeException
 		    If AppConfig.DEBUG_MODE Then
 		      System.DebugLog("IndicationsContainer: Error loading contexts - " + err.Message)
@@ -344,16 +355,16 @@ End
 		Private Sub LoadIndications()
 		  Try
 		    lstIndications.RemoveAllRows()
-
+		    
 		    Var indications() As Indication
 		    Var searchText As String = txtSearch.Text.Trim
 		    Var selectedContextID As Integer = 0
-
+		    
 		    ' Get selected context ID from popup
 		    If popContexts.SelectedRowIndex >= 0 Then
 		      selectedContextID = popContexts.RowTagAt(popContexts.SelectedRowIndex)
 		    End If
-
+		    
 		    ' Determine which API call to make
 		    If searchText.Length > 0 Then
 		      ' Search by keywords
@@ -365,7 +376,7 @@ End
 		      ' Get all indications
 		      indications = Indication.GetAll()
 		    End If
-
+		    
 		    ' Filter by context if search was performed and context is selected
 		    If searchText.Length > 0 And selectedContextID > 0 Then
 		      Var filtered() As Indication
@@ -376,15 +387,15 @@ End
 		      Next
 		      indications = filtered
 		    End If
-
+		    
 		    ' Populate the listbox
 		    For Each ind As Indication In indications
 		      lstIndications.AddRow(ind.Title)
 		      Var row As Integer = lstIndications.LastAddedRowIndex
-
+		      
 		      ' Store indication object in row tag for later retrieval
 		      lstIndications.RowTagAt(row) = ind
-
+		      
 		      ' Add contexts - map IDs to names if ContextNames is empty
 		      If ind.ContextNames.Count > 0 Then
 		        lstIndications.CellTextAt(row, 1) = String.FromArray(ind.ContextNames, ", ")
@@ -407,14 +418,14 @@ End
 		          System.DebugLog("Indication " + ind.ID.ToString + " has no context names or IDs")
 		        End If
 		      End If
-
+		      
 		      ' Add keywords
 		      lstIndications.CellTextAt(row, 2) = ind.Keywords
 		    Next
-
+		    
 		    ' Update count label
 		    UpdateCountLabel(indications.Count)
-
+		    
 		  Catch err As RuntimeException
 		    If AppConfig.DEBUG_MODE Then
 		      System.DebugLog("IndicationsContainer: Error loading indications - " + err.Message)
@@ -436,11 +447,11 @@ End
 
 
 	#tag Property, Flags = &h21
-		Private mIndications() As Indication
+		Private mContextLookup As Dictionary
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private mContextLookup As Dictionary
+		Private mIndications() As Indication
 	#tag EndProperty
 
 
@@ -463,10 +474,10 @@ End
 		Sub Pressed()
 		  ' Open dialog for creating new indication
 		  Var dlg As New dlg_Indication
-
+		  
 		  ' Show dialog modally
 		  dlg.ShowModal()
-
+		  
 		  ' No need to refresh manually - PubSub will handle it when dialog broadcasts event
 		End Sub
 	#tag EndEvent
@@ -479,24 +490,24 @@ End
 		    MessageBox("Please select an indication to delete.")
 		    Return
 		  End If
-
+		  
 		  ' Get the indication from the row tag
 		  Var ind As Indication = lstIndications.RowTagAt(lstIndications.SelectedRowIndex)
-
+		  
 		  If ind = Nil Then
 		    MessageBox("Error: Could not retrieve indication data.")
 		    Return
 		  End If
-
+		  
 		  ' Confirm deletion
 		  Var d As New MessageDialog
 		  d.Message = "Are you sure you want to delete the indication:" + EndOfLine + EndOfLine + _
-		    """" + ind.Title + """?"
+		  """" + ind.Title + """?"
 		  d.Title = "Confirm Deletion"
 		  d.ActionButton.Caption = "Delete"
 		  d.CancelButton.Visible = True
 		  d.CancelButton.Caption = "Cancel"
-
+		  
 		  If d.ShowModal = d.ActionButton Then
 		    Try
 		      If ind.Delete() Then
@@ -516,6 +527,8 @@ End
 #tag Events popContexts
 	#tag Event
 		Sub SelectionChanged(item As DesktopMenuItem)
+		  #Pragma Unused item
+		  
 		  ' Filter by selected context
 		  LoadIndications()
 		End Sub
@@ -526,18 +539,18 @@ End
 		Sub DoublePressed()
 		  ' Open indication detail dialog on double-click
 		  If Me.SelectedRowIndex < 0 Then Return
-
+		  
 		  ' Get the indication from the row tag
 		  Var ind As Indication = Me.RowTagAt(Me.SelectedRowIndex)
-
+		  
 		  If ind <> Nil Then
 		    Var dlg As New dlg_Indication
-
+		    
 		    ' Pass the indication to the dialog for editing
 		    dlg.LoadIndication(ind)
-
+		    
 		    dlg.ShowModal()
-
+		    
 		    ' No need to refresh manually - PubSub will handle it
 		  End If
 		End Sub
