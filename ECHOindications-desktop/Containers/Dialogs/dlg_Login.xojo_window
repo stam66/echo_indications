@@ -331,7 +331,7 @@ Begin DesktopContainer dlg_Login
       Height          =   38
       Index           =   -2147483648
       Italic          =   False
-      Left            =   20
+      Left            =   42
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   True
@@ -351,7 +351,7 @@ Begin DesktopContainer dlg_Login
       Transparent     =   False
       Underline       =   False
       Visible         =   False
-      Width           =   342
+      Width           =   296
    End
 End
 #tag EndDesktopWindow
@@ -364,7 +364,7 @@ End
 		  txtPassword.Text = ""
 		  lblErrorMessage.Visible = False
 		  lblErrorMessage.Text = ""
-
+		  
 		  ' Set focus to username field
 		  txtUsername.SetFocus
 		End Sub
@@ -373,36 +373,73 @@ End
 
 #tag EndWindowCode
 
+#tag Events txtUsername
+	#tag Event
+		Function KeyDown(key As String) As Boolean
+		  ' Handle Return key - move to password field
+		  If key = Chr(13) Then
+		    if txtUsername.Text.Trim.IsEmpty then
+		      messageShow (lblErrorMessage, "You must enter both a username.")
+		    else
+		      txtPassword.SetFocus
+		    end if
+		    Return True
+		  End If
+		  
+		  ' Handle Escape key - cancel
+		  If key = Chr(27) Then
+		    btnCancel.Press
+		    Return True
+		  End If
+		  
+		  Return False
+		End Function
+	#tag EndEvent
+#tag EndEvents
+#tag Events txtPassword
+	#tag Event
+		Function KeyDown(key As String) As Boolean
+		  ' Handle Return key - submit login
+		  If key = Chr(13) Then
+		    if txtUsername.Text.Trim.IsEmpty or txtPassword.Text.Trim.IsEmpty then
+		      messageShow (lblErrorMessage, "You must enter both a username and a password.")
+		    else
+		      btnLogin.Press
+		    end if
+		    Return True
+		  End If
+		  
+		  ' Handle Escape key - cancel
+		  If key = Chr(27) Then
+		    btnCancel.Press
+		    Return True
+		  End If
+		  
+		  Return False
+		End Function
+	#tag EndEvent
+#tag EndEvents
 #tag Events btnLogin
 	#tag Event
 		Sub Pressed()
 		  ' Hide any previous error
 		  lblErrorMessage.Visible = False
 		  lblErrorMessage.Text = ""
-
+		  
 		  ' Validate inputs
-		  If txtUsername.Text.Trim.Length = 0 Then
-		    lblErrorMessage.Text = "Please enter a username"
-		    lblErrorMessage.Visible = True
+		  if txtUsername.Text.Trim.IsEmpty then
+		    messageShow (lblErrorMessage, "You must enter both a username and a password.")
 		    txtUsername.SetFocus
 		    Return
-		  End If
-
-		  If txtPassword.Text.Length = 0 Then
-		    lblErrorMessage.Text = "Please enter a password"
-		    lblErrorMessage.Visible = True
-		    txtPassword.SetFocus
-		    Return
-		  End If
-
+		  end if
+		  
 		  ' Attempt login
 		  If AuthManager.Login(txtUsername.Text, txtPassword.Text) Then
 		    ' Login successful - close dialog
 		    Self.Close
 		  Else
 		    ' Login failed - show error
-		    lblErrorMessage.Text = AuthManager.LastError
-		    lblErrorMessage.Visible = True
+		    messageShow (lblErrorMessage, AuthManager.LastError)
 		    txtPassword.Text = ""
 		    txtPassword.SetFocus
 		  End If
@@ -425,51 +462,12 @@ End
 		  txtPassword.Text = ""
 		  lblErrorMessage.Visible = False
 		  lblErrorMessage.Text = ""
-
+		  
 		  ' Set focus to username field
 		  txtUsername.SetFocus
 		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events txtUsername
-	#tag Event
-		Function KeyDown(key As String) As Boolean
-		  ' Handle Return key - move to password field
-		  If key = Chr(13) Then
-		    txtPassword.SetFocus
-		    Return True
-		  End If
-
-		  ' Handle Escape key - cancel
-		  If key = Chr(27) Then
-		    btnCancel.Pressed
-		    Return True
-		  End If
-
-		  Return False
-		End Function
-	#tag EndEvent
-#tag EndEvents
-#tag Events txtPassword
-	#tag Event
-		Function KeyDown(key As String) As Boolean
-		  ' Handle Return key - submit login
-		  If key = Chr(13) Then
-		    btnLogin.Pressed
-		    Return True
-		  End If
-
-		  ' Handle Escape key - cancel
-		  If key = Chr(27) Then
-		    btnCancel.Pressed
-		    Return True
-		  End If
-
-		  Return False
-		End Function
-	#tag EndEvent
-#tag EndEvents
-
 #tag ViewBehavior
 	#tag ViewProperty
 		Name="Name"
