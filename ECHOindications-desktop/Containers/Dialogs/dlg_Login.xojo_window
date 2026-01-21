@@ -347,7 +347,7 @@ Begin DesktopContainer dlg_Login
       TextAlignment   =   0
       TextColor       =   &cFF260000
       Tooltip         =   ""
-      Top             =   323
+      Top             =   322
       Transparent     =   False
       Underline       =   False
       Visible         =   False
