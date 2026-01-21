@@ -1,5 +1,5 @@
 #tag DesktopWindow
-Begin DesktopContainer dlg_ResetPassword
+Begin DesktopContainer dlg_ResetPassword2
    AllowAutoDeactivate=   True
    AllowFocus      =   False
    AllowFocusRing  =   False

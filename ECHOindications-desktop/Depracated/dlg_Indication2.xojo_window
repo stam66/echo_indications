@@ -1,5 +1,5 @@
 #tag DesktopWindow
-Begin DesktopContainer dlg_Indication
+Begin DesktopContainer dlg_Indication2
    AllowAutoDeactivate=   True
    AllowFocus      =   False
    AllowFocusRing  =   False
@@ -926,25 +926,6 @@ End
 
 #tag WindowCode
 	#tag Event
-		Sub Opening()
-		  ' Load contexts for the checkbox list
-		  LoadContextsList()
-
-		  ' Apply context checkboxes if we have a current indication
-		  ApplyContextCheckboxes()
-
-		  ' Set up form based on authentication
-		  SetupFormAccess()
-
-		  ' If this is a new indication (LoadIndication wasn't called), initialize
-		  If mCurrentIndication = Nil Then
-		    mIsNewIndication = True
-		    ClearForm()
-		  End If
-		End Sub
-	#tag EndEvent
-
-	#tag Event
 		Sub Closing()
 		  ' Update parent listbox selection to show last viewed indication
 		  If mParentListbox <> Nil And mCurrentIndex >= 0 And mIndicationsList.Count > 0 Then
@@ -959,6 +940,25 @@ End
 		        End If
 		      End If
 		    Next
+		  End If
+		End Sub
+	#tag EndEvent
+
+	#tag Event
+		Sub Opening()
+		  ' Load contexts for the checkbox list
+		  LoadContextsList()
+		  
+		  ' Apply context checkboxes if we have a current indication
+		  ApplyContextCheckboxes()
+		  
+		  ' Set up form based on authentication
+		  SetupFormAccess()
+		  
+		  ' If this is a new indication (LoadIndication wasn't called), initialize
+		  If mCurrentIndication = Nil Then
+		    mIsNewIndication = True
+		    ClearForm()
 		  End If
 		End Sub
 	#tag EndEvent
@@ -1284,6 +1284,24 @@ End
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub SetNavigationContext(indications() As Indication, currentIndex As Integer, parentListbox As DesktopListBox)
+		  ' Set up navigation through a list of indications
+		  mIndicationsList = indications
+		  mCurrentIndex = currentIndex
+		  mParentListbox = parentListbox
+		  
+		  ' Enable navigation buttons if we have a list
+		  If mIndicationsList.Count > 0 Then
+		    btnPreviousIndication.Enabled = True
+		    btnNextIndication.Enabled = True
+		  Else
+		    btnPreviousIndication.Enabled = False
+		    btnNextIndication.Enabled = False
+		  End If
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h21
 		Private Sub SetupFormAccess()
 		  ' Enable/disable form controls based on authentication
@@ -1325,31 +1343,12 @@ End
 	#tag EndMethod
 
 
-	#tag Method, Flags = &h0
-		Sub SetNavigationContext(indications() As Indication, currentIndex As Integer, parentListbox As DesktopListBox)
-		  ' Set up navigation through a list of indications
-		  mIndicationsList = indications
-		  mCurrentIndex = currentIndex
-		  mParentListbox = parentListbox
-
-		  ' Enable navigation buttons if we have a list
-		  If mIndicationsList.Count > 0 Then
-		    btnPreviousIndication.Enabled = True
-		    btnNextIndication.Enabled = True
-		  Else
-		    btnPreviousIndication.Enabled = False
-		    btnNextIndication.Enabled = False
-		  End If
-		End Sub
-	#tag EndMethod
-
-
 	#tag Property, Flags = &h21
-		Private mCurrentIndication As Indication
+		Private mCurrentIndex As Integer = -1
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private mIsNewIndication As Boolean = True
+		Private mCurrentIndication As Indication
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
@@ -1357,7 +1356,7 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private mCurrentIndex As Integer = -1
+		Private mIsNewIndication As Boolean = True
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
@@ -1372,13 +1371,13 @@ End
 		Sub Pressed()
 		  ' Navigate to next indication with wrapping
 		  If mIndicationsList.Count = 0 Then Return
-
+		  
 		  ' Increment index with wrapping
 		  mCurrentIndex = mCurrentIndex + 1
 		  If mCurrentIndex >= mIndicationsList.Count Then
 		    mCurrentIndex = 0  ' Wrap to beginning
 		  End If
-
+		  
 		  ' Load the indication at new index
 		  LoadIndication(mIndicationsList(mCurrentIndex))
 		End Sub
@@ -1389,13 +1388,13 @@ End
 		Sub Pressed()
 		  ' Navigate to previous indication with wrapping
 		  If mIndicationsList.Count = 0 Then Return
-
+		  
 		  ' Decrement index with wrapping
 		  mCurrentIndex = mCurrentIndex - 1
 		  If mCurrentIndex < 0 Then
 		    mCurrentIndex = mIndicationsList.Count - 1  ' Wrap to end
 		  End If
-
+		  
 		  ' Load the indication at new index
 		  LoadIndication(mIndicationsList(mCurrentIndex))
 		End Sub

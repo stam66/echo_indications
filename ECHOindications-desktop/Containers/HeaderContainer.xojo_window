@@ -606,15 +606,15 @@ End
 		  ' Get the parent window
 		  Var parentWindow As DesktopWindow = Self.Window
 		  If parentWindow = Nil Then Return
-
+		  
 		  ' Create and center the login dialog
 		  Var dlg As New dlg_Login
 		  dlg.Left = parentWindow.Left + (parentWindow.Width - dlg.Width) / 2
 		  dlg.Top = parentWindow.Top + (parentWindow.Height - dlg.Height) / 2
-
+		  
 		  ' Show modal within the parent window to block interactions
 		  dlg.ShowModalWithin(parentWindow)
-
+		  
 		  ' After successful login, broadcast event and navigate if needed
 		  If AuthManager.IsAuthenticated Then
 		    Var userData As New Dictionary
@@ -623,7 +623,7 @@ End
 		    userData.Value("email") = AuthManager.CurrentUserEmail
 		    userData.Value("fullName") = AuthManager.CurrentUserFullName
 		    PubSub.Broadcast(EventConstants.AUTH_LOGIN, userData)
-
+		    
 		    ' If we're on wHome, navigate to wMaster
 		    If parentWindow IsA wHome Then
 		      Var w As New wMaster

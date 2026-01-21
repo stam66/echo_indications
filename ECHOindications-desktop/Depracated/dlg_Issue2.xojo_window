@@ -1,14 +1,14 @@
 #tag DesktopWindow
-Begin DesktopContainer dlg_Issue
+Begin DesktopContainer dlg_Issue2
    AllowAutoDeactivate=   True
    AllowFocus      =   False
    AllowFocusRing  =   False
    AllowTabs       =   True
    Backdrop        =   0
-   BackgroundColor =   &cF9FCFC00
+   BackgroundColor =   &c00000000
    Composited      =   False
    Enabled         =   True
-   HasBackgroundColor=   True
+   HasBackgroundColor=   False
    Height          =   768
    Index           =   -2147483648
    InitialParent   =   ""
