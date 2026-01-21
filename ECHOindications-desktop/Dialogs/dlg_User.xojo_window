@@ -1,28 +1,28 @@
 #tag DesktopWindow
-Begin DesktopContainer dlg_User
-   AllowAutoDeactivate=   True
-   AllowFocus      =   False
-   AllowFocusRing  =   False
-   AllowTabs       =   True
+Begin DesktopWindow dlg_User
    Backdrop        =   0
    BackgroundColor =   &c00000000
-   Composited      =   False
-   Enabled         =   True
+   Composite       =   False
+   DefaultLocation =   2
+   FullScreen      =   False
    HasBackgroundColor=   False
+   HasCloseButton  =   True
+   HasFullScreenButton=   False
+   HasMaximizeButton=   True
+   HasMinimizeButton=   True
+   HasTitleBar     =   True
    Height          =   462
-   Index           =   -2147483648
-   InitialParent   =   ""
-   Left            =   0
-   LockBottom      =   False
-   LockLeft        =   True
-   LockRight       =   False
-   LockTop         =   True
-   TabIndex        =   0
-   TabPanelIndex   =   0
-   TabStop         =   True
-   Tooltip         =   ""
-   Top             =   0
-   Transparent     =   False
+   ImplicitInstance=   True
+   MacProcID       =   0
+   MaximumHeight   =   32000
+   MaximumWidth    =   32000
+   MenuBar         =   ""
+   MenuBarVisible  =   False
+   MinimumHeight   =   64
+   MinimumWidth    =   64
+   Resizeable      =   True
+   Title           =   "Log in as admin"
+   Type            =   2
    Visible         =   True
    Width           =   382
    Begin DesktopRectangle HeaderRect
@@ -249,7 +249,7 @@ Begin DesktopContainer dlg_User
       LockTop         =   False
       MacButtonStyle  =   0
       Scope           =   0
-      TabIndex        =   6
+      TabIndex        =   5
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
@@ -280,7 +280,7 @@ Begin DesktopContainer dlg_User
       LockTop         =   False
       MacButtonStyle  =   0
       Scope           =   0
-      TabIndex        =   7
+      TabIndex        =   6
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
@@ -309,7 +309,7 @@ Begin DesktopContainer dlg_User
       Multiline       =   False
       Scope           =   0
       Selectable      =   False
-      TabIndex        =   9
+      TabIndex        =   7
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "Name"
@@ -349,7 +349,7 @@ Begin DesktopContainer dlg_User
       Password        =   False
       ReadOnly        =   False
       Scope           =   0
-      TabIndex        =   10
+      TabIndex        =   8
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   ""
@@ -382,7 +382,7 @@ Begin DesktopContainer dlg_User
       Multiline       =   False
       Scope           =   0
       Selectable      =   False
-      TabIndex        =   11
+      TabIndex        =   9
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "Title"
@@ -422,7 +422,7 @@ Begin DesktopContainer dlg_User
       Password        =   False
       ReadOnly        =   False
       Scope           =   0
-      TabIndex        =   12
+      TabIndex        =   10
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   ""
@@ -454,13 +454,14 @@ Begin DesktopContainer dlg_User
       LockRight       =   False
       LockTop         =   True
       Scope           =   0
-      TabIndex        =   13
+      TabIndex        =   11
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
       Top             =   358
       Transparent     =   False
       Underline       =   False
+      Value           =   False
       Visible         =   True
       VisualState     =   0
       Width           =   120
@@ -481,6 +482,14 @@ End
 		EditorType=""
 	#tag EndViewProperty
 	#tag ViewProperty
+		Name="Interfaces"
+		Visible=true
+		Group="ID"
+		InitialValue=""
+		Type="String"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
 		Name="Super"
 		Visible=true
 		Group="ID"
@@ -489,18 +498,10 @@ End
 		EditorType=""
 	#tag EndViewProperty
 	#tag ViewProperty
-		Name="Index"
-		Visible=true
-		Group="ID"
-		InitialValue="-2147483648"
-		Type="Integer"
-		EditorType=""
-	#tag EndViewProperty
-	#tag ViewProperty
 		Name="Width"
 		Visible=true
 		Group="Size"
-		InitialValue="300"
+		InitialValue="600"
 		Type="Integer"
 		EditorType=""
 	#tag EndViewProperty
@@ -508,127 +509,178 @@ End
 		Name="Height"
 		Visible=true
 		Group="Size"
-		InitialValue="300"
+		InitialValue="400"
 		Type="Integer"
 		EditorType=""
 	#tag EndViewProperty
 	#tag ViewProperty
-		Name="InitialParent"
-		Visible=false
-		Group="Position"
-		InitialValue=""
+		Name="MinimumWidth"
+		Visible=true
+		Group="Size"
+		InitialValue="64"
+		Type="Integer"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="MinimumHeight"
+		Visible=true
+		Group="Size"
+		InitialValue="64"
+		Type="Integer"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="MaximumWidth"
+		Visible=true
+		Group="Size"
+		InitialValue="32000"
+		Type="Integer"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="MaximumHeight"
+		Visible=true
+		Group="Size"
+		InitialValue="32000"
+		Type="Integer"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="Type"
+		Visible=true
+		Group="Frame"
+		InitialValue="0"
+		Type="Types"
+		EditorType="Enum"
+		#tag EnumValues
+			"0 - Document"
+			"1 - Movable Modal"
+			"2 - Modal Dialog"
+			"3 - Floating Window"
+			"4 - Plain Box"
+			"5 - Shadowed Box"
+			"6 - Rounded Window"
+			"7 - Global Floating Window"
+			"8 - Sheet Window"
+			"9 - Modeless Dialog"
+		#tag EndEnumValues
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="Title"
+		Visible=true
+		Group="Frame"
+		InitialValue="Untitled"
 		Type="String"
 		EditorType=""
 	#tag EndViewProperty
 	#tag ViewProperty
-		Name="Left"
+		Name="HasCloseButton"
 		Visible=true
-		Group="Position"
-		InitialValue="0"
-		Type="Integer"
-		EditorType=""
-	#tag EndViewProperty
-	#tag ViewProperty
-		Name="Top"
-		Visible=true
-		Group="Position"
-		InitialValue="0"
-		Type="Integer"
-		EditorType=""
-	#tag EndViewProperty
-	#tag ViewProperty
-		Name="LockLeft"
-		Visible=true
-		Group="Position"
+		Group="Frame"
 		InitialValue="True"
 		Type="Boolean"
 		EditorType=""
 	#tag EndViewProperty
 	#tag ViewProperty
-		Name="LockTop"
+		Name="HasMaximizeButton"
 		Visible=true
-		Group="Position"
+		Group="Frame"
 		InitialValue="True"
 		Type="Boolean"
 		EditorType=""
 	#tag EndViewProperty
 	#tag ViewProperty
-		Name="LockRight"
+		Name="HasMinimizeButton"
 		Visible=true
-		Group="Position"
+		Group="Frame"
+		InitialValue="True"
+		Type="Boolean"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="HasFullScreenButton"
+		Visible=true
+		Group="Frame"
 		InitialValue="False"
 		Type="Boolean"
 		EditorType=""
 	#tag EndViewProperty
 	#tag ViewProperty
-		Name="LockBottom"
+		Name="HasTitleBar"
 		Visible=true
-		Group="Position"
-		InitialValue="False"
+		Group="Frame"
+		InitialValue="True"
 		Type="Boolean"
 		EditorType=""
 	#tag EndViewProperty
 	#tag ViewProperty
-		Name="TabIndex"
+		Name="Resizeable"
 		Visible=true
-		Group="Position"
-		InitialValue="0"
-		Type="Integer"
+		Group="Frame"
+		InitialValue="True"
+		Type="Boolean"
 		EditorType=""
 	#tag EndViewProperty
 	#tag ViewProperty
-		Name="TabPanelIndex"
+		Name="Composite"
 		Visible=false
-		Group="Position"
+		Group="OS X (Carbon)"
+		InitialValue="False"
+		Type="Boolean"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="MacProcID"
+		Visible=false
+		Group="OS X (Carbon)"
 		InitialValue="0"
 		Type="Integer"
 		EditorType=""
 	#tag EndViewProperty
 	#tag ViewProperty
-		Name="TabStop"
+		Name="FullScreen"
 		Visible=true
-		Group="Position"
-		InitialValue="True"
-		Type="Boolean"
-		EditorType=""
-	#tag EndViewProperty
-	#tag ViewProperty
-		Name="AllowAutoDeactivate"
-		Visible=true
-		Group="Appearance"
-		InitialValue="True"
-		Type="Boolean"
-		EditorType=""
-	#tag EndViewProperty
-	#tag ViewProperty
-		Name="Enabled"
-		Visible=true
-		Group="Appearance"
-		InitialValue="True"
-		Type="Boolean"
-		EditorType=""
-	#tag EndViewProperty
-	#tag ViewProperty
-		Name="Tooltip"
-		Visible=true
-		Group="Appearance"
-		InitialValue=""
-		Type="String"
-		EditorType="MultiLineEditor"
-	#tag EndViewProperty
-	#tag ViewProperty
-		Name="AllowFocusRing"
-		Visible=true
-		Group="Appearance"
+		Group="Behavior"
 		InitialValue="False"
 		Type="Boolean"
 		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="DefaultLocation"
+		Visible=true
+		Group="Behavior"
+		InitialValue="2"
+		Type="Locations"
+		EditorType="Enum"
+		#tag EnumValues
+			"0 - Default"
+			"1 - Parent Window"
+			"2 - Main Screen"
+			"3 - Parent Window Screen"
+			"4 - Stagger"
+		#tag EndEnumValues
 	#tag EndViewProperty
 	#tag ViewProperty
 		Name="Visible"
 		Visible=true
-		Group="Appearance"
+		Group="Behavior"
 		InitialValue="True"
+		Type="Boolean"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="ImplicitInstance"
+		Visible=true
+		Group="Window Behavior"
+		InitialValue="True"
+		Type="Boolean"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="HasBackgroundColor"
+		Visible=true
+		Group="Background"
+		InitialValue="False"
 		Type="Boolean"
 		EditorType=""
 	#tag EndViewProperty
@@ -636,7 +688,7 @@ End
 		Name="BackgroundColor"
 		Visible=true
 		Group="Background"
-		InitialValue="&hFFFFFF"
+		InitialValue="&cFFFFFF"
 		Type="ColorGroup"
 		EditorType="ColorGroup"
 	#tag EndViewProperty
@@ -649,41 +701,17 @@ End
 		EditorType=""
 	#tag EndViewProperty
 	#tag ViewProperty
-		Name="HasBackgroundColor"
+		Name="MenuBar"
 		Visible=true
-		Group="Background"
-		InitialValue="False"
-		Type="Boolean"
+		Group="Menus"
+		InitialValue=""
+		Type="DesktopMenuBar"
 		EditorType=""
 	#tag EndViewProperty
 	#tag ViewProperty
-		Name="AllowFocus"
+		Name="MenuBarVisible"
 		Visible=true
-		Group="Behavior"
-		InitialValue="False"
-		Type="Boolean"
-		EditorType=""
-	#tag EndViewProperty
-	#tag ViewProperty
-		Name="AllowTabs"
-		Visible=true
-		Group="Behavior"
-		InitialValue="True"
-		Type="Boolean"
-		EditorType=""
-	#tag EndViewProperty
-	#tag ViewProperty
-		Name="Transparent"
-		Visible=true
-		Group="Behavior"
-		InitialValue="False"
-		Type="Boolean"
-		EditorType=""
-	#tag EndViewProperty
-	#tag ViewProperty
-		Name="Composited"
-		Visible=true
-		Group="Window Behavior"
+		Group="Deprecated"
 		InitialValue="False"
 		Type="Boolean"
 		EditorType=""

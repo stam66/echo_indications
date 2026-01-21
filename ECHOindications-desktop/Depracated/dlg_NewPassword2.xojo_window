@@ -1,15 +1,15 @@
 #tag DesktopWindow
-Begin DesktopContainer dlg_Login
+Begin DesktopContainer dlg_NewPassword2
    AllowAutoDeactivate=   True
    AllowFocus      =   False
    AllowFocusRing  =   False
    AllowTabs       =   True
    Backdrop        =   0
-   BackgroundColor =   &c00000000
+   BackgroundColor =   &cFFFFFF
    Composited      =   False
    Enabled         =   True
    HasBackgroundColor=   False
-   Height          =   430
+   Height          =   346
    Index           =   -2147483648
    InitialParent   =   ""
    Left            =   0
@@ -24,7 +24,7 @@ Begin DesktopContainer dlg_Login
    Top             =   0
    Transparent     =   False
    Visible         =   True
-   Width           =   382
+   Width           =   438
    Begin DesktopRectangle HeaderRect
       AllowAutoDeactivate=   True
       BorderColor     =   &c0060BE00
@@ -47,7 +47,7 @@ Begin DesktopContainer dlg_Login
       Top             =   0
       Transparent     =   False
       Visible         =   True
-      Width           =   382
+      Width           =   438
       Begin DesktopLabel lblDialogHeader
          AllowAutoDeactivate=   True
          Bold            =   True
@@ -71,7 +71,7 @@ Begin DesktopContainer dlg_Login
          TabIndex        =   0
          TabPanelIndex   =   0
          TabStop         =   True
-         Text            =   "Log in as Admin"
+         Text            =   "Password expired: Choose a new one"
          TextAlignment   =   0
          TextColor       =   &cFFFFFF00
          Tooltip         =   ""
@@ -79,12 +79,15 @@ Begin DesktopContainer dlg_Login
          Transparent     =   False
          Underline       =   False
          Visible         =   True
-         Width           =   352
+         Width           =   408
       End
    End
-   Begin DesktopLabel lblUsername
+   Begin DesktopButton btnUpdate
       AllowAutoDeactivate=   True
       Bold            =   False
+      Cancel          =   False
+      Caption         =   "Update"
+      Default         =   True
       Enabled         =   True
       FontName        =   "System"
       FontSize        =   0.0
@@ -92,72 +95,30 @@ Begin DesktopContainer dlg_Login
       Height          =   20
       Index           =   -2147483648
       Italic          =   False
-      Left            =   20
-      LockBottom      =   False
+      Left            =   338
+      LockBottom      =   True
       LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      Multiline       =   False
-      Scope           =   0
-      Selectable      =   False
-      TabIndex        =   1
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Text            =   "Username"
-      TextAlignment   =   0
-      TextColor       =   &c000000
-      Tooltip         =   ""
-      Top             =   111
-      Transparent     =   False
-      Underline       =   False
-      Visible         =   True
-      Width           =   100
-   End
-   Begin DesktopTextField txtUsername
-      AllowAutoDeactivate=   True
-      AllowFocusRing  =   True
-      AllowSpellChecking=   False
-      AllowTabs       =   False
-      BackgroundColor =   &cFFFFFF
-      Bold            =   False
-      Enabled         =   True
-      FontName        =   "System"
-      FontSize        =   0.0
-      FontUnit        =   0
-      Format          =   ""
-      HasBorder       =   True
-      Height          =   26
-      Hint            =   ""
-      Index           =   -2147483648
-      Italic          =   False
-      Left            =   20
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
+      LockLeft        =   False
       LockRight       =   True
-      LockTop         =   True
-      MaximumCharactersAllowed=   0
-      Password        =   False
-      ReadOnly        =   False
+      LockTop         =   False
+      MacButtonStyle  =   0
       Scope           =   0
-      TabIndex        =   2
+      TabIndex        =   6
       TabPanelIndex   =   0
       TabStop         =   True
-      Text            =   ""
-      TextAlignment   =   0
-      TextColor       =   &c00000000
       Tooltip         =   ""
-      Top             =   138
+      Top             =   306
       Transparent     =   False
       Underline       =   False
-      ValidationMask  =   ""
       Visible         =   True
-      Width           =   342
+      Width           =   80
    End
-   Begin DesktopLabel lblPassword
+   Begin DesktopButton btnCancel
       AllowAutoDeactivate=   True
       Bold            =   False
+      Cancel          =   True
+      Caption         =   "Cancel"
+      Default         =   False
       Enabled         =   True
       FontName        =   "System"
       FontSize        =   0.0
@@ -165,27 +126,23 @@ Begin DesktopContainer dlg_Login
       Height          =   20
       Index           =   -2147483648
       Italic          =   False
-      Left            =   20
-      LockBottom      =   False
+      Left            =   246
+      LockBottom      =   True
       LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      Multiline       =   False
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   False
+      MacButtonStyle  =   0
       Scope           =   0
-      Selectable      =   False
-      TabIndex        =   3
+      TabIndex        =   7
       TabPanelIndex   =   0
       TabStop         =   True
-      Text            =   "Password"
-      TextAlignment   =   0
-      TextColor       =   &c000000
       Tooltip         =   ""
-      Top             =   203
+      Top             =   306
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   100
+      Width           =   80
    End
    Begin DesktopTextField txtPassword
       AllowAutoDeactivate=   True
@@ -214,26 +171,23 @@ Begin DesktopContainer dlg_Login
       Password        =   True
       ReadOnly        =   False
       Scope           =   0
-      TabIndex        =   4
+      TabIndex        =   2
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   ""
       TextAlignment   =   0
       TextColor       =   &c000000
       Tooltip         =   ""
-      Top             =   230
+      Top             =   123
       Transparent     =   False
       Underline       =   False
       ValidationMask  =   ""
       Visible         =   True
-      Width           =   342
+      Width           =   398
    End
-   Begin DesktopButton btnLogin
+   Begin DesktopLabel lblPassword
       AllowAutoDeactivate=   True
       Bold            =   False
-      Cancel          =   False
-      Caption         =   "Log in"
-      Default         =   True
       Enabled         =   True
       FontName        =   "System"
       FontSize        =   0.0
@@ -241,233 +195,107 @@ Begin DesktopContainer dlg_Login
       Height          =   20
       Index           =   -2147483648
       Italic          =   False
-      Left            =   282
-      LockBottom      =   True
-      LockedInPosition=   False
-      LockLeft        =   False
-      LockRight       =   True
-      LockTop         =   False
-      MacButtonStyle  =   0
-      Scope           =   0
-      TabIndex        =   6
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   390
-      Transparent     =   False
-      Underline       =   False
-      Visible         =   True
-      Width           =   80
-   End
-   Begin DesktopButton btnCancel
-      AllowAutoDeactivate=   True
-      Bold            =   False
-      Cancel          =   True
-      Caption         =   "Cancel"
-      Default         =   False
-      Enabled         =   True
-      FontName        =   "System"
-      FontSize        =   0.0
-      FontUnit        =   0
-      Height          =   20
-      Index           =   -2147483648
-      Italic          =   False
-      Left            =   190
-      LockBottom      =   True
-      LockedInPosition=   False
-      LockLeft        =   False
-      LockRight       =   True
-      LockTop         =   False
-      MacButtonStyle  =   0
-      Scope           =   0
-      TabIndex        =   7
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   390
-      Transparent     =   False
-      Underline       =   False
-      Visible         =   True
-      Width           =   80
-   End
-   Begin DesktopButton btnReset
-      AllowAutoDeactivate=   True
-      Bold            =   False
-      Cancel          =   False
-      Caption         =   "Reset"
-      Default         =   False
-      Enabled         =   True
-      FontName        =   "System"
-      FontSize        =   0.0
-      FontUnit        =   0
-      Height          =   20
-      Index           =   -2147483648
-      Italic          =   False
-      Left            =   282
+      Left            =   20
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   True
       LockRight       =   False
       LockTop         =   True
-      MacButtonStyle  =   0
+      Multiline       =   False
       Scope           =   0
+      Selectable      =   False
+      TabIndex        =   1
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Password"
+      TextAlignment   =   0
+      TextColor       =   &c000000
+      Tooltip         =   ""
+      Top             =   96
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   100
+   End
+   Begin DesktopLabel lblRepeatPassword
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Multiline       =   False
+      Scope           =   0
+      Selectable      =   False
       TabIndex        =   8
       TabPanelIndex   =   0
       TabStop         =   True
+      Text            =   "Again"
+      TextAlignment   =   0
+      TextColor       =   &c000000
       Tooltip         =   ""
-      Top             =   268
+      Top             =   183
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   80
+      Width           =   100
    End
-   Begin DesktopLabel lblErrorMessage
+   Begin DesktopTextField txtRepeatPassword
       AllowAutoDeactivate=   True
+      AllowFocusRing  =   True
+      AllowSpellChecking=   False
+      AllowTabs       =   False
+      BackgroundColor =   &cFFFFFF
       Bold            =   False
       Enabled         =   True
       FontName        =   "System"
       FontSize        =   0.0
       FontUnit        =   0
-      Height          =   38
+      Format          =   ""
+      HasBorder       =   True
+      Height          =   26
+      Hint            =   ""
       Index           =   -2147483648
       Italic          =   False
-      Left            =   42
+      Left            =   20
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   True
-      LockRight       =   False
+      LockRight       =   True
       LockTop         =   True
-      Multiline       =   True
-      Scope           =   2
-      Selectable      =   False
+      MaximumCharactersAllowed=   0
+      Password        =   True
+      ReadOnly        =   False
+      Scope           =   0
       TabIndex        =   9
       TabPanelIndex   =   0
       TabStop         =   True
-      Text            =   "Untitled"
+      Text            =   ""
       TextAlignment   =   0
-      TextColor       =   &cFF260000
+      TextColor       =   &c000000
       Tooltip         =   ""
-      Top             =   322
+      Top             =   210
       Transparent     =   False
       Underline       =   False
-      Visible         =   False
-      Width           =   296
+      ValidationMask  =   ""
+      Visible         =   True
+      Width           =   398
    End
 End
 #tag EndDesktopWindow
 
 #tag WindowCode
-	#tag Event
-		Sub Opening()
-		  ' Clear any previous values
-		  txtUsername.Text = ""
-		  txtPassword.Text = ""
-		  lblErrorMessage.Visible = False
-		  lblErrorMessage.Text = ""
-		  
-		  ' Set focus to username field
-		  txtUsername.SetFocus
-		End Sub
-	#tag EndEvent
-
-
 #tag EndWindowCode
 
-#tag Events txtUsername
-	#tag Event
-		Function KeyDown(key As String) As Boolean
-		  ' Handle Return key - move to password field
-		  If key = Chr(13) Then
-		    if txtUsername.Text.Trim.IsEmpty then
-		      messageShow (lblErrorMessage, "You must enter both a username.")
-		    else
-		      txtPassword.SetFocus
-		    end if
-		    Return True
-		  End If
-		  
-		  ' Handle Escape key - cancel
-		  If key = Chr(27) Then
-		    btnCancel.Press
-		    Return True
-		  End If
-		  
-		  Return False
-		End Function
-	#tag EndEvent
-#tag EndEvents
-#tag Events txtPassword
-	#tag Event
-		Function KeyDown(key As String) As Boolean
-		  ' Handle Return key - submit login
-		  If key = Chr(13) Then
-		    if txtUsername.Text.Trim.IsEmpty or txtPassword.Text.Trim.IsEmpty then
-		      messageShow (lblErrorMessage, "You must enter both a username and a password.")
-		    else
-		      btnLogin.Press
-		    end if
-		    Return True
-		  End If
-		  
-		  ' Handle Escape key - cancel
-		  If key = Chr(27) Then
-		    btnCancel.Press
-		    Return True
-		  End If
-		  
-		  Return False
-		End Function
-	#tag EndEvent
-#tag EndEvents
-#tag Events btnLogin
-	#tag Event
-		Sub Pressed()
-		  ' Hide any previous error
-		  lblErrorMessage.Visible = False
-		  lblErrorMessage.Text = ""
-		  
-		  ' Validate inputs
-		  if txtUsername.Text.Trim.IsEmpty then
-		    messageShow (lblErrorMessage, "You must enter both a username and a password.")
-		    txtUsername.SetFocus
-		    Return
-		  end if
-		  
-		  ' Attempt login
-		  If AuthManager.Login(txtUsername.Text, txtPassword.Text) Then
-		    ' Login successful - close dialog
-		    Self.Close
-		  Else
-		    ' Login failed - show error
-		    messageShow (lblErrorMessage, AuthManager.LastError)
-		    txtPassword.Text = ""
-		    txtPassword.SetFocus
-		  End If
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events btnCancel
-	#tag Event
-		Sub Pressed()
-		  ' Close dialog without authenticating
-		  Self.Close
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events btnReset
-	#tag Event
-		Sub Pressed()
-		  ' Clear all fields
-		  txtUsername.Text = ""
-		  txtPassword.Text = ""
-		  lblErrorMessage.Visible = False
-		  lblErrorMessage.Text = ""
-		  
-		  ' Set focus to username field
-		  txtUsername.SetFocus
-		End Sub
-	#tag EndEvent
-#tag EndEvents
 #tag ViewBehavior
 	#tag ViewProperty
 		Name="Name"
