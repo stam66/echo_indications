@@ -929,17 +929,36 @@ End
 		Sub Opening()
 		  ' Load contexts for the checkbox list
 		  LoadContextsList()
-		  
+
 		  ' Apply context checkboxes if we have a current indication
 		  ApplyContextCheckboxes()
-		  
+
 		  ' Set up form based on authentication
 		  SetupFormAccess()
-		  
+
 		  ' If this is a new indication (LoadIndication wasn't called), initialize
 		  If mCurrentIndication = Nil Then
 		    mIsNewIndication = True
 		    ClearForm()
+		  End If
+		End Sub
+	#tag EndEvent
+
+	#tag Event
+		Sub Closing()
+		  ' Update parent listbox selection to show last viewed indication
+		  If mParentListbox <> Nil And mCurrentIndex >= 0 And mIndicationsList.Count > 0 Then
+		    ' Find the row that matches the current indication
+		    For i As Integer = 0 To mParentListbox.LastRowIndex
+		      Var rowInd As Indication = mParentListbox.RowTagAt(i)
+		      If rowInd <> Nil And mCurrentIndication <> Nil Then
+		        If rowInd.ID = mCurrentIndication.ID Then
+		          mParentListbox.SelectedRowIndex = i
+		          mParentListbox.ScrollToRow(i)
+		          Exit For i
+		        End If
+		      End If
+		    Next
 		  End If
 		End Sub
 	#tag EndEvent
@@ -1119,10 +1138,6 @@ End
 		  If AppConfig.DEBUG_MODE Then
 		    System.DebugLog("=== LoadIndication completed ===")
 		  End If
-		  
-		  ' Enable/disable navigation buttons (would need context from parent)
-		  btnPreviousIndication.Enabled = False
-		  btnNextIndication.Enabled = False
 		End Sub
 	#tag EndMethod
 
@@ -1310,6 +1325,25 @@ End
 	#tag EndMethod
 
 
+	#tag Method, Flags = &h0
+		Sub SetNavigationContext(indications() As Indication, currentIndex As Integer, parentListbox As DesktopListBox)
+		  ' Set up navigation through a list of indications
+		  mIndicationsList = indications
+		  mCurrentIndex = currentIndex
+		  mParentListbox = parentListbox
+
+		  ' Enable navigation buttons if we have a list
+		  If mIndicationsList.Count > 0 Then
+		    btnPreviousIndication.Enabled = True
+		    btnNextIndication.Enabled = True
+		  Else
+		    btnPreviousIndication.Enabled = False
+		    btnNextIndication.Enabled = False
+		  End If
+		End Sub
+	#tag EndMethod
+
+
 	#tag Property, Flags = &h21
 		Private mCurrentIndication As Indication
 	#tag EndProperty
@@ -1318,22 +1352,52 @@ End
 		Private mIsNewIndication As Boolean = True
 	#tag EndProperty
 
+	#tag Property, Flags = &h21
+		Private mIndicationsList() As Indication
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mCurrentIndex As Integer = -1
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mParentListbox As DesktopListBox
+	#tag EndProperty
+
 
 #tag EndWindowCode
 
 #tag Events btnNextIndication
 	#tag Event
 		Sub Pressed()
-		  ' TODO: Implement previous/next navigation
-		  ' This would require passing the full list context from parent
+		  ' Navigate to next indication with wrapping
+		  If mIndicationsList.Count = 0 Then Return
+
+		  ' Increment index with wrapping
+		  mCurrentIndex = mCurrentIndex + 1
+		  If mCurrentIndex >= mIndicationsList.Count Then
+		    mCurrentIndex = 0  ' Wrap to beginning
+		  End If
+
+		  ' Load the indication at new index
+		  LoadIndication(mIndicationsList(mCurrentIndex))
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events btnPreviousIndication
 	#tag Event
 		Sub Pressed()
-		  ' TODO: Implement previous/next navigation
-		  ' This would require passing the full list context from parent
+		  ' Navigate to previous indication with wrapping
+		  If mIndicationsList.Count = 0 Then Return
+
+		  ' Decrement index with wrapping
+		  mCurrentIndex = mCurrentIndex - 1
+		  If mCurrentIndex < 0 Then
+		    mCurrentIndex = mIndicationsList.Count - 1  ' Wrap to end
+		  End If
+
+		  ' Load the indication at new index
+		  LoadIndication(mIndicationsList(mCurrentIndex))
 		End Sub
 	#tag EndEvent
 #tag EndEvents
