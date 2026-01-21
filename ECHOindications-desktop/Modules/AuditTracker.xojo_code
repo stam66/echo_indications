@@ -2,6 +2,11 @@
 Protected Module AuditTracker
 	#tag Method, Flags = &h0
 		Function LogCreate(tableName As String, primaryKey As Integer, username As String, newData As Dictionary) As Boolean
+		  #Pragma Unused tablename
+		  #Pragma Unused primarykey
+		  #Pragma Unused  username
+		  #Pragma Unused  newdata
+		  
 		  Var sql As String
 		  Var newValuesJSON As String = GenerateJSON(newData)
 		  
@@ -34,6 +39,11 @@ Protected Module AuditTracker
 
 	#tag Method, Flags = &h0
 		Function LogDelete(tableName As String, primaryKey As Integer, username As String, oldData As Dictionary) As Boolean
+		  #Pragma Unused tablename
+		  #Pragma Unused primarykey
+		  #Pragma Unused  username
+		  #Pragma Unused  oldData
+		  
 		  Var sql As String
 		  Var oldValuesJSON As String = GenerateJSON(oldData)
 		  
@@ -66,6 +76,12 @@ Protected Module AuditTracker
 
 	#tag Method, Flags = &h0
 		Function LogUpdate(tableName As String, primaryKey As Integer, username As String, oldData As Dictionary, newData As Dictionary) As Boolean
+		  #Pragma Unused tablename
+		  #Pragma Unused primarykey
+		  #Pragma Unused  username
+		  #Pragma Unused  newdata
+		  #Pragma Unused oldData
+		  
 		  // Build list of changed fields
 		  Var changedFields() As String
 		  Var oldValues As New Dictionary
