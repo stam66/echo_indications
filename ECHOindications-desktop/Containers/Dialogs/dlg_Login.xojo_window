@@ -357,43 +357,119 @@ End
 #tag EndDesktopWindow
 
 #tag WindowCode
+	#tag Event
+		Sub Opening()
+		  ' Clear any previous values
+		  txtUsername.Text = ""
+		  txtPassword.Text = ""
+		  lblErrorMessage.Visible = False
+		  lblErrorMessage.Text = ""
+
+		  ' Set focus to username field
+		  txtUsername.SetFocus
+		End Sub
+	#tag EndEvent
+
+
 #tag EndWindowCode
 
-#tag Events txtUsername
-	#tag Event
-		Function KeyDown(key As String) As Boolean
-		  
-		End Function
-	#tag EndEvent
-#tag EndEvents
-#tag Events txtPassword
-	#tag Event
-		Function KeyDown(key As String) As Boolean
-		  
-		End Function
-	#tag EndEvent
-#tag EndEvents
 #tag Events btnLogin
 	#tag Event
 		Sub Pressed()
-		  
+		  ' Hide any previous error
+		  lblErrorMessage.Visible = False
+		  lblErrorMessage.Text = ""
+
+		  ' Validate inputs
+		  If txtUsername.Text.Trim.Length = 0 Then
+		    lblErrorMessage.Text = "Please enter a username"
+		    lblErrorMessage.Visible = True
+		    txtUsername.SetFocus
+		    Return
+		  End If
+
+		  If txtPassword.Text.Length = 0 Then
+		    lblErrorMessage.Text = "Please enter a password"
+		    lblErrorMessage.Visible = True
+		    txtPassword.SetFocus
+		    Return
+		  End If
+
+		  ' Attempt login
+		  If AuthManager.Login(txtUsername.Text, txtPassword.Text) Then
+		    ' Login successful - close dialog
+		    Self.Close
+		  Else
+		    ' Login failed - show error
+		    lblErrorMessage.Text = AuthManager.LastError
+		    lblErrorMessage.Visible = True
+		    txtPassword.Text = ""
+		    txtPassword.SetFocus
+		  End If
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events btnCancel
 	#tag Event
 		Sub Pressed()
-		  self.Close
+		  ' Close dialog without authenticating
+		  Self.Close
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events btnReset
 	#tag Event
 		Sub Pressed()
-		  
+		  ' Clear all fields
+		  txtUsername.Text = ""
+		  txtPassword.Text = ""
+		  lblErrorMessage.Visible = False
+		  lblErrorMessage.Text = ""
+
+		  ' Set focus to username field
+		  txtUsername.SetFocus
 		End Sub
 	#tag EndEvent
 #tag EndEvents
+#tag Events txtUsername
+	#tag Event
+		Function KeyDown(key As String) As Boolean
+		  ' Handle Return key - move to password field
+		  If key = Chr(13) Then
+		    txtPassword.SetFocus
+		    Return True
+		  End If
+
+		  ' Handle Escape key - cancel
+		  If key = Chr(27) Then
+		    btnCancel.Pressed
+		    Return True
+		  End If
+
+		  Return False
+		End Function
+	#tag EndEvent
+#tag EndEvents
+#tag Events txtPassword
+	#tag Event
+		Function KeyDown(key As String) As Boolean
+		  ' Handle Return key - submit login
+		  If key = Chr(13) Then
+		    btnLogin.Pressed
+		    Return True
+		  End If
+
+		  ' Handle Escape key - cancel
+		  If key = Chr(27) Then
+		    btnCancel.Pressed
+		    Return True
+		  End If
+
+		  Return False
+		End Function
+	#tag EndEvent
+#tag EndEvents
+
 #tag ViewBehavior
 	#tag ViewProperty
 		Name="Name"
