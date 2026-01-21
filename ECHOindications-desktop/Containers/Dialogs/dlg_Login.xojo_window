@@ -146,7 +146,7 @@ Begin DesktopContainer dlg_Login
       TabStop         =   True
       Text            =   ""
       TextAlignment   =   0
-      TextColor       =   &c000000
+      TextColor       =   &c00000000
       Tooltip         =   ""
       Top             =   138
       Transparent     =   False
@@ -321,12 +321,79 @@ Begin DesktopContainer dlg_Login
       Visible         =   True
       Width           =   80
    End
+   Begin DesktopLabel lblErrorMessage
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   38
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Multiline       =   True
+      Scope           =   2
+      Selectable      =   False
+      TabIndex        =   9
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Untitled"
+      TextAlignment   =   0
+      TextColor       =   &cFF260000
+      Tooltip         =   ""
+      Top             =   323
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   False
+      Width           =   342
+   End
 End
 #tag EndDesktopWindow
 
 #tag WindowCode
 #tag EndWindowCode
 
+#tag Events txtUsername
+	#tag Event
+		Function KeyDown(key As String) As Boolean
+		  
+		End Function
+	#tag EndEvent
+#tag EndEvents
+#tag Events txtPassword
+	#tag Event
+		Function KeyDown(key As String) As Boolean
+		  
+		End Function
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnLogin
+	#tag Event
+		Sub Pressed()
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnCancel
+	#tag Event
+		Sub Pressed()
+		  self.Close
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnReset
+	#tag Event
+		Sub Pressed()
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
 #tag ViewBehavior
 	#tag ViewProperty
 		Name="Name"
