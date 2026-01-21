@@ -935,7 +935,7 @@ End
 		      If rowInd <> Nil And mCurrentIndication <> Nil Then
 		        If rowInd.ID = mCurrentIndication.ID Then
 		          mParentListbox.SelectedRowIndex = i
-		          mParentListbox.ScrollToRow(i)
+		          mParentListbox.ScrollPosition = i
 		          Exit For i
 		        End If
 		      End If

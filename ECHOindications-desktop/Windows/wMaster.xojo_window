@@ -21,7 +21,7 @@ Begin DesktopWindow wMaster
    MinimumHeight   =   650
    MinimumWidth    =   1110
    Resizeable      =   True
-   Title           =   "Untitled"
+   Title           =   "ECHOindications"
    Type            =   0
    Visible         =   True
    Width           =   1126

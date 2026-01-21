@@ -13,9 +13,9 @@ Begin DesktopContainer SettingsContainer
    Index           =   -2147483648
    InitialParent   =   ""
    Left            =   0
-   LockBottom      =   False
+   LockBottom      =   True
    LockLeft        =   True
-   LockRight       =   False
+   LockRight       =   True
    LockTop         =   True
    TabIndex        =   0
    TabPanelIndex   =   0
