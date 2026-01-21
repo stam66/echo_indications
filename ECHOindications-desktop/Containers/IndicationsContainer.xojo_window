@@ -473,18 +473,10 @@ End
 	#tag Event
 		Sub Pressed()
 		  ' Open dialog for creating new indication
-		  ' Get parent window for centering
-		  Var parentWindow As DesktopWindow = Self.Window
-		  If parentWindow = Nil Then Return
-
 		  Var dlg As New dlg_Indication
 
-		  ' Center dialog on parent window
-		  dlg.Left = parentWindow.Left + (parentWindow.Width - dlg.Width) / 2
-		  dlg.Top = parentWindow.Top + (parentWindow.Height - dlg.Height) / 2
-
-		  ' Show modal within parent to block interactions
-		  dlg.ShowModalWithin(parentWindow)
+		  ' Show modal
+		  dlg.ShowModal()
 
 		  ' No need to refresh manually - PubSub will handle it when dialog broadcasts event
 		End Sub
@@ -552,10 +544,6 @@ End
 		  Var ind As Indication = Me.RowTagAt(Me.SelectedRowIndex)
 
 		  If ind <> Nil Then
-		    ' Get parent window for centering
-		    Var parentWindow As DesktopWindow = Self.Window
-		    If parentWindow = Nil Then Return
-
 		    ' Create dialog
 		    Var dlg As New dlg_Indication
 
@@ -574,12 +562,8 @@ End
 		    ' Set up navigation context
 		    dlg.SetNavigationContext(indications, Me.SelectedRowIndex, Me)
 
-		    ' Center dialog on parent window
-		    dlg.Left = parentWindow.Left + (parentWindow.Width - dlg.Width) / 2
-		    dlg.Top = parentWindow.Top + (parentWindow.Height - dlg.Height) / 2
-
-		    ' Show modal within parent to block interactions
-		    dlg.ShowModalWithin(parentWindow)
+		    ' Show modal
+		    dlg.ShowModal()
 
 		    ' No need to refresh manually - PubSub will handle it
 		  End If
