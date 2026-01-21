@@ -224,6 +224,22 @@ Protected Module General
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub MessageHide(target as variant)
+		  DesktopLabel(target).Text = ""
+		  DesktopLabel(target).Visible = False
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub MessageShow(target as DesktopLabel, message as String)
+		  target.Text = message
+		  target.Visible = true
+		  Timer.CallLater(2000, AddressOf MessageHide, target)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function RandomString(randomLength as Integer) As string
 		  var s as string
 		  var chars() as string = split("abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ123456789%^!$*", "")

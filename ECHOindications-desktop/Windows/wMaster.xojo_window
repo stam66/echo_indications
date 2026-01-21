@@ -64,7 +64,7 @@ Begin DesktopWindow wMaster
       Composited      =   False
       Enabled         =   True
       HasBackgroundColor=   False
-      Height          =   640
+      Height          =   660
       Index           =   -2147483648
       InitialParent   =   ""
       Left            =   0
@@ -78,165 +78,10 @@ Begin DesktopWindow wMaster
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   100
+      Top             =   80
       Transparent     =   False
       Visible         =   True
       Width           =   1126
-   End
-   Begin DesktopButton debugIndications
-      AllowAutoDeactivate=   True
-      Bold            =   False
-      Cancel          =   False
-      Caption         =   "Indications"
-      Default         =   False
-      Enabled         =   True
-      FontName        =   "System"
-      FontSize        =   0.0
-      FontUnit        =   0
-      Height          =   20
-      Index           =   -2147483648
-      Italic          =   False
-      Left            =   75
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      MacButtonStyle  =   0
-      Scope           =   0
-      TabIndex        =   2
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   68
-      Transparent     =   False
-      Underline       =   False
-      Visible         =   True
-      Width           =   97
-   End
-   Begin DesktopButton debugIssues
-      AllowAutoDeactivate=   True
-      Bold            =   False
-      Cancel          =   False
-      Caption         =   "Issues"
-      Default         =   False
-      Enabled         =   True
-      FontName        =   "System"
-      FontSize        =   0.0
-      FontUnit        =   0
-      Height          =   21
-      Index           =   -2147483648
-      Italic          =   False
-      Left            =   187
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      MacButtonStyle  =   0
-      Scope           =   0
-      TabIndex        =   3
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   68
-      Transparent     =   False
-      Underline       =   False
-      Visible         =   True
-      Width           =   97
-   End
-   Begin DesktopButton debugAudit
-      AllowAutoDeactivate=   True
-      Bold            =   False
-      Cancel          =   False
-      Caption         =   "Audit"
-      Default         =   False
-      Enabled         =   True
-      FontName        =   "System"
-      FontSize        =   0.0
-      FontUnit        =   0
-      Height          =   21
-      Index           =   -2147483648
-      Italic          =   False
-      Left            =   298
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      MacButtonStyle  =   0
-      Scope           =   0
-      TabIndex        =   4
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   68
-      Transparent     =   False
-      Underline       =   False
-      Visible         =   True
-      Width           =   97
-   End
-   Begin DesktopButton debugSettings
-      AllowAutoDeactivate=   True
-      Bold            =   False
-      Cancel          =   False
-      Caption         =   "Settings"
-      Default         =   False
-      Enabled         =   True
-      FontName        =   "System"
-      FontSize        =   0.0
-      FontUnit        =   0
-      Height          =   21
-      Index           =   -2147483648
-      Italic          =   False
-      Left            =   409
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      MacButtonStyle  =   0
-      Scope           =   0
-      TabIndex        =   5
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   68
-      Transparent     =   False
-      Underline       =   False
-      Visible         =   True
-      Width           =   97
-   End
-   Begin DesktopButton debugUsers
-      AllowAutoDeactivate=   True
-      Bold            =   False
-      Cancel          =   False
-      Caption         =   "Users"
-      Default         =   False
-      Enabled         =   True
-      FontName        =   "System"
-      FontSize        =   0.0
-      FontUnit        =   0
-      Height          =   21
-      Index           =   -2147483648
-      Italic          =   False
-      Left            =   520
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      MacButtonStyle  =   0
-      Scope           =   0
-      TabIndex        =   6
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   68
-      Transparent     =   False
-      Underline       =   False
-      Visible         =   True
-      Width           =   97
    End
 End
 #tag EndDesktopWindow
@@ -292,41 +137,6 @@ End
 
 #tag EndWindowCode
 
-#tag Events debugIndications
-	#tag Event
-		Sub Pressed()
-		  DesktopNavigationManager.NavigateTo("Indications")
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events debugIssues
-	#tag Event
-		Sub Pressed()
-		  DesktopNavigationManager.NavigateTo("Issues")
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events debugAudit
-	#tag Event
-		Sub Pressed()
-		  DesktopNavigationManager.NavigateTo("Audit")
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events debugSettings
-	#tag Event
-		Sub Pressed()
-		  DesktopNavigationManager.NavigateTo("Settings")
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events debugUsers
-	#tag Event
-		Sub Pressed()
-		  DesktopNavigationManager.NavigateTo("Users")
-		End Sub
-	#tag EndEvent
-#tag EndEvents
 #tag ViewBehavior
 	#tag ViewProperty
 		Name="Name"
