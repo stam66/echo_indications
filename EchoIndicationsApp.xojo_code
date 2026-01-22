@@ -294,9 +294,7 @@ Inherits WebApplication
 
 	#tag Method, Flags = &h0
 		Sub SendMail(toAddress As String, subject As String, message As String)
-		  
-		  MailSemaphore.Signal
-		  
+
 		  ' Connect to Gmail
 		  MailSocket.Address = "smtp.gmail.com"
 		  MailSocket.Port = 465
@@ -309,7 +307,7 @@ Inherits WebApplication
 		  
 		  ' Create EmailMessage
 		  Var mail As New EmailMessage
-		  mail.FromAddress = "echoauc@gmail.com"
+		  mail.FromAddress = "aucecho@gmail.com"
 		  mail.AddRecipient(toAddress)
 		  mail.Subject = subject
 		  mail.BodyPlainText = message
