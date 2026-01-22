@@ -263,8 +263,7 @@ Inherits WebApplication
 
 		  #If TargetWeb Then
 		    ' Log to all active sessions
-		    For i As Integer = 0 To app.SessionCount - 1
-		      Var sess As WebSession = app.SessionAtIndex(i)
+		    For Each sess As WebSession In App.Sessions
 		      If sess <> Nil Then
 		        sess.ExecuteJavaScript("console.log('Email sent successfully, releasing semaphore');")
 		      End If
@@ -282,8 +281,7 @@ Inherits WebApplication
 
 		  #If TargetWeb Then
 		    ' Log to all active sessions
-		    For i As Integer = 0 To app.SessionCount - 1
-		      Var sess As WebSession = app.SessionAtIndex(i)
+		    For Each sess As WebSession In App.Sessions
 		      If sess <> Nil Then
 		        sess.ExecuteJavaScript("console.error('Email error (ID: " + errorID.ToString + "): " + errorMessage.ReplaceAll("'", "\\'") + "');")
 		        sess.ExecuteJavaScript("console.log('Releasing semaphore after error');")
