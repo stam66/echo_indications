@@ -6,9 +6,8 @@ Inherits WebApplication
 		  #Pragma Unused args
 
 		  ' Semaphore is used to ensure that only one session at a time tries
-		  ' to send an email.
+		  ' to send an email. Constructor defaults to count 1 (one resource available).
 		  MailSemaphore = New Semaphore ' Mail Semaphore is a Property: MailSemaphore As Semaphore
-		  MailSemaphore.Signal ' Initialize semaphore count to 1 (available)
 
 		  ' Global socket for sending emails
 		  MailSocket = New SMTPSecureSocket ' MailSocket is a Property: MailSocket As SMTPSecureSocket
@@ -297,7 +296,7 @@ Inherits WebApplication
 		Sub SendMail(toAddress As String, subject As String, message As String)
 
 		  ' Acquire the semaphore to ensure only one email is sent at a time
-		  MailSemaphore.Wait
+		  MailSemaphore.Signal
 
 		  ' Connect to Gmail
 		  MailSocket.Address = "smtp.gmail.com"

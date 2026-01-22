@@ -259,7 +259,7 @@ Protected Module General
 		Sub SendMail(toAddress As String, subject As String, message As String)
 
 		  ' Acquire the semaphore to ensure only one email is sent at a time
-		  MailSemaphore.Wait
+		  MailSemaphore.Signal
 
 		  ' Connect to Gmail
 		  MailSocket.Address = "smtp.gmail.com"
