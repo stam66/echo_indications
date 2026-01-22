@@ -260,7 +260,11 @@ Inherits WebApplication
 	#tag Method, Flags = &h0
 		Sub MailSentHandler(m As SMTPSecureSocket)
 		  #Pragma Unused m
-		  
+
+		  #If TargetWeb Then
+		    ExecuteJavaScript("console.log('Email sent successfully, releasing semaphore');")
+		  #EndIf
+
 		  MailSemaphore.Release ' Release the Semaphore to make the socket available for use
 		End Sub
 	#tag EndMethod
@@ -268,9 +272,13 @@ Inherits WebApplication
 	#tag Method, Flags = &h0
 		Sub MailServerErrorHandler(m As SMTPSecureSocket, errorID As Integer, errorMessage As String, email As EmailMessage)
 		  #Pragma Unused m
-		  #Pragma Unused errorID
 		  #Pragma Unused email
-		  
+
+		  #If TargetWeb Then
+		    ExecuteJavaScript("console.error('Email error (ID: " + errorID.ToString + "): " + errorMessage + "');")
+		    ExecuteJavaScript("console.log('Releasing semaphore after error');")
+		  #EndIf
+
 		  MailSemaphore.Release ' Release the Semaphore to make the socket available for use
 		  MessageBox(errorMessage)
 		End Sub
@@ -295,8 +303,47 @@ Inherits WebApplication
 	#tag Method, Flags = &h0
 		Sub SendMail(toAddress As String, subject As String, message As String)
 
-		  ' Acquire the semaphore to ensure only one email is sent at a time
-		  MailSemaphore.Signal
+		  ' Try to acquire the semaphore (non-blocking)
+		  ' If we can't acquire it, another email is being sent - wait briefly and retry
+		  Var retryCount As Integer = 0
+		  Var maxRetries As Integer = 30  ' Wait up to ~30 seconds
+
+		  While Not MailSemaphore.TrySignal And retryCount < maxRetries
+		    retryCount = retryCount + 1
+		    #If TargetWeb Then
+		      ExecuteJavaScript("console.log('Waiting for email semaphore... attempt " + retryCount.ToString + "');")
+		    #EndIf
+
+		    ' Wait 1 second before retry
+		    Var deadline As Double = System.Microseconds + 1000000
+		    While System.Microseconds < deadline
+		      ' Busy wait
+		    Wend
+		  Wend
+
+		  If retryCount >= maxRetries Then
+		    ' Failed to acquire semaphore - another email is stuck
+		    #If TargetWeb Then
+		      ExecuteJavaScript("console.error('Failed to acquire email semaphore after " + maxRetries.ToString + " attempts. Forcing release.');")
+		    #EndIf
+
+		    ' Force release the stuck semaphore and try one more time
+		    Try
+		      MailSemaphore.Release
+		    Catch e As RuntimeException
+		      ' Ignore if already released
+		    End Try
+
+		    If Not MailSemaphore.TrySignal Then
+		      ' Still can't acquire - give up
+		      MessageBox("Email system is busy. Please try again in a moment.")
+		      Return
+		    End If
+		  End If
+
+		  #If TargetWeb Then
+		    ExecuteJavaScript("console.log('Sending email to: " + toAddress + "');")
+		  #EndIf
 
 		  ' Connect to Gmail
 		  MailSocket.Address = "smtp.gmail.com"
@@ -319,8 +366,8 @@ Inherits WebApplication
 		  ' Send it
 		  MailSocket.Messages.AddRow(mail)
 		  MailSocket.SendMail
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
