@@ -257,27 +257,28 @@ Protected Module General
 
 	#tag Method, Flags = &h0
 		Sub SendMail(toAddress As String, subject As String, message As String)
-		  
+
+		  ' Acquire the semaphore to ensure only one email is sent at a time
 		  MailSemaphore.Signal
-		  
+
 		  ' Connect to Gmail
 		  MailSocket.Address = "smtp.gmail.com"
 		  MailSocket.Port = 465
 		  MailSocket.SSLConnectionType = SSLSocket.SSLConnectionTypes.TLSv1
 		  MailSocket.SMTPConnectionType = SMTPSecureSocket.SMTPConnectionTypes.SSLTLS
 		  MailSocket.SSLEnabled = True
-		  
+
 		  MailSocket.Username = "aucecho@gmail.com"
 		  MailSocket.Password = "asjc ccuv sgki kjbb"
-		  
+
 		  ' Create EmailMessage
 		  Var mail As New EmailMessage
-		  mail.FromAddress = "echoauc@gmail.com"
+		  mail.FromAddress = "aucecho@gmail.com"
 		  mail.AddRecipient(toAddress)
 		  mail.Subject = subject
 		  mail.BodyPlainText = message
 		  mail.Headers.AddHeader("X-Mailer","SMTP Test")
-		  
+
 		  ' Send it
 		  MailSocket.Messages.AddRow(mail)
 		  MailSocket.SendMail

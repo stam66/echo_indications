@@ -4,14 +4,14 @@ Inherits WebApplication
 	#tag Event
 		Sub Opening(args() As String)
 		  #Pragma Unused args
-		  
+
 		  ' Semaphore is used to ensure that only one session at a time tries
-		  ' to send an email.
+		  ' to send an email. Constructor defaults to count 1 (one resource available).
 		  MailSemaphore = New Semaphore ' Mail Semaphore is a Property: MailSemaphore As Semaphore
-		  
+
 		  ' Global socket for sending emails
 		  MailSocket = New SMTPSecureSocket ' MailSocket is a Property: MailSocket As SMTPSecureSocket
-		  
+
 		  ' Map the socket's error events to methods on the App object
 		  AddHandler MailSocket.MailSent, AddressOf MailSentHandler
 		  AddHandler MailSocket.ServerError, AddressOf MailServerErrorHandler
@@ -295,16 +295,19 @@ Inherits WebApplication
 	#tag Method, Flags = &h0
 		Sub SendMail(toAddress As String, subject As String, message As String)
 
+		  ' Acquire the semaphore to ensure only one email is sent at a time
+		  MailSemaphore.Signal
+
 		  ' Connect to Gmail
 		  MailSocket.Address = "smtp.gmail.com"
 		  MailSocket.Port = 465
 		  MailSocket.SSLConnectionType = SSLSocket.SSLConnectionTypes.TLSv1
 		  MailSocket.SMTPConnectionType = SMTPSecureSocket.SMTPConnectionTypes.SSLTLS
 		  MailSocket.SSLEnabled = True
-		  
+
 		  MailSocket.Username = "aucecho@gmail.com"
 		  MailSocket.Password = "asjc ccuv sgki kjbb"
-		  
+
 		  ' Create EmailMessage
 		  Var mail As New EmailMessage
 		  mail.FromAddress = "aucecho@gmail.com"
@@ -312,7 +315,7 @@ Inherits WebApplication
 		  mail.Subject = subject
 		  mail.BodyPlainText = message
 		  mail.Headers.AddHeader("X-Mailer","SMTP Test")
-		  
+
 		  ' Send it
 		  MailSocket.Messages.AddRow(mail)
 		  MailSocket.SendMail
