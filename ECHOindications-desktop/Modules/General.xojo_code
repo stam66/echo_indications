@@ -258,8 +258,36 @@ Protected Module General
 	#tag Method, Flags = &h0
 		Sub SendMail(toAddress As String, subject As String, message As String)
 
-		  ' Acquire the semaphore to ensure only one email is sent at a time
-		  MailSemaphore.Signal
+		  ' Try to acquire the semaphore (non-blocking)
+		  ' If we can't acquire it, another email is being sent - wait briefly and retry
+		  Var retryCount As Integer = 0
+		  Var maxRetries As Integer = 30  ' Wait up to ~30 seconds
+
+		  While Not MailSemaphore.TrySignal And retryCount < maxRetries
+		    retryCount = retryCount + 1
+
+		    ' Wait 1 second before retry
+		    Var deadline As Double = System.Microseconds + 1000000
+		    While System.Microseconds < deadline
+		      ' Busy wait
+		    Wend
+		  Wend
+
+		  If retryCount >= maxRetries Then
+		    ' Failed to acquire semaphore - another email is stuck
+		    ' Force release the stuck semaphore and try one more time
+		    Try
+		      MailSemaphore.Release
+		    Catch e As RuntimeException
+		      ' Ignore if already released
+		    End Try
+
+		    If Not MailSemaphore.TrySignal Then
+		      ' Still can't acquire - give up
+		      MessageBox("Email system is busy. Please try again in a moment.")
+		      Return
+		    End If
+		  End If
 
 		  ' Connect to Gmail
 		  MailSocket.Address = "smtp.gmail.com"
@@ -282,8 +310,8 @@ Protected Module General
 		  ' Send it
 		  MailSocket.Messages.AddRow(mail)
 		  MailSocket.SendMail
-		  
-		  
+
+
 		End Sub
 	#tag EndMethod
 
