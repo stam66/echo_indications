@@ -286,7 +286,7 @@ End
 		      rs.Column("OTP").IntegerValue = 1
 		      rs.SaveRow
 
-		      app.SendMail(email, "Your one-time password for ECHOAUC", "Your one-time password is:      " + tempPass + EndOfLine + EndOfLine + "After logging in with this password you will be asked to create a new password.")
+		      app.SendMail(email, "Your one-time password for ECHOAUC", "Your one-time password is:      " + tempPass + EndOfLine + EndOfLine + "After logging in with this password you will be asked to create a new password.", Session)
 
 		      MessageBox("An email with a 1-time password has been sent to this address - if you cannot see the email please check your junk mail folder.")
 		      self.Close
