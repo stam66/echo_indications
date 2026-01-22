@@ -289,15 +289,16 @@ Protected Module General
 		    End If
 		  End If
 
-		  ' Connect to Gmail
-		  MailSocket.Address = "smtp.gmail.com"
-		  MailSocket.Port = 465
-		  MailSocket.SSLConnectionType = SSLSocket.SSLConnectionTypes.TLSv1
-		  MailSocket.SMTPConnectionType = SMTPSecureSocket.SMTPConnectionTypes.SSLTLS
-		  MailSocket.SSLEnabled = True
+		  ' Connect to local Postfix relay (which forwards to Gmail)
+		  MailSocket.Address = "localhost"
+		  MailSocket.Port = 25
+		  MailSocket.SSLConnectionType = SSLSocket.SSLConnectionTypes.None
+		  MailSocket.SMTPConnectionType = SMTPSecureSocket.SMTPConnectionTypes.Clear
+		  MailSocket.SSLEnabled = False
 
-		  MailSocket.Username = "aucecho@gmail.com"
-		  MailSocket.Password = "asjc ccuv sgki kjbb"
+		  ' No authentication needed for localhost - Postfix handles Gmail auth
+		  MailSocket.Username = ""
+		  MailSocket.Password = ""
 
 		  ' Create EmailMessage
 		  Var mail As New EmailMessage
