@@ -280,21 +280,21 @@ End
 		    if rs.Column("email").StringValue = email then
 		      var tempPass as string = app.RandomString(8)
 		      var tempPassHashed as string = app.hashPassword( tempPass)
-
+		      
 		      rs.EditRow
 		      rs.Column("password_hash").StringValue = tempPassHashed
 		      rs.Column("OTP").IntegerValue = 1
 		      rs.SaveRow
-
-		      app.SendMail(email, "Your one-time password for ECHOAUC", "Your one-time password is:      " + tempPass + EndOfLine + EndOfLine + "After logging in with this password you will be asked to create a new password.", Session)
-
+		      
+		      app.SendMail(email, "Your one-time password for ECHOIndications.org", "Your one-time password is:      " + tempPass + EndOfLine + EndOfLine + "After logging in with this password you will be asked to create a new password.", Session)
+		      
 		      MessageBox("An email with a 1-time password has been sent to this address - if you cannot see the email please check your junk mail folder.")
 		      self.Close
 		      return
 		    end if
 		    rs.MoveToNextRow
 		  wend
-
+		  
 		  ' If we get here, no matching email was found
 		  MessageBox ("The email entered does not corresond to a registerd user.")
 		  
