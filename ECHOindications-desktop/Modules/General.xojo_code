@@ -257,22 +257,22 @@ Protected Module General
 
 	#tag Method, Flags = &h0
 		Sub SendMail(toAddress As String, subject As String, message As String)
-
+		  
 		  ' Try to acquire the semaphore (non-blocking)
 		  ' If we can't acquire it, another email is being sent - wait briefly and retry
 		  Var retryCount As Integer = 0
 		  Var maxRetries As Integer = 30  ' Wait up to ~30 seconds
-
+		  
 		  While Not MailSemaphore.TrySignal And retryCount < maxRetries
 		    retryCount = retryCount + 1
-
+		    
 		    ' Wait 1 second before retry
 		    Var deadline As Double = System.Microseconds + 1000000
 		    While System.Microseconds < deadline
 		      ' Busy wait
 		    Wend
 		  Wend
-
+		  
 		  If retryCount >= maxRetries Then
 		    ' Failed to acquire semaphore - another email is stuck
 		    ' Force release the stuck semaphore and try one more time
@@ -281,19 +281,19 @@ Protected Module General
 		    Catch e As RuntimeException
 		      ' Ignore if already released
 		    End Try
-
+		    
 		    If Not MailSemaphore.TrySignal Then
 		      ' Still can't acquire - give up
 		      MessageBox("Email system is busy. Please try again in a moment.")
 		      Return
 		    End If
 		  End If
-
+		  
 		  ' Send email via MailJet API v3.1
 		  ' IMPORTANT: Replace these with your actual MailJet API credentials
-		  Var apiKey As String = "YOUR_MAILJET_API_KEY"
-		  Var apiSecret As String = "YOUR_MAILJET_SECRET_KEY"
-
+		  Var apiKey As String = "aeb158a2ac1a32e526b124a2cb7aa3a7"
+		  Var apiSecret As String = "384238973b036e63d5240aa0a3cfa65a"
+		  
 		  ' Build JSON payload for MailJet API v3.1
 		  Var json As String = "{" + _
 		  """Messages"": [{" + _
@@ -307,35 +307,35 @@ Protected Module General
 		  """Subject"": """ + subject.ReplaceAll("""", "\""") + """," + _
 		  """TextPart"": """ + message.ReplaceAll("""", "\""").ReplaceAll(EndOfLine, "\n") + """" + _
 		  "}]}"
-
+		  
 		  ' Create URLConnection for synchronous HTTP request
 		  Var socket As New URLConnection
 		  socket.RequestHeader("Content-Type") = "application/json"
-
+		  
 		  ' Add Basic Authentication header
 		  Var credentials As String = apiKey + ":" + apiSecret
 		  Var credentialsEncoded As String = EncodeBase64(credentials)
 		  socket.RequestHeader("Authorization") = "Basic " + credentialsEncoded
-
+		  
 		  ' Send POST request to MailJet API
 		  Try
 		    Var response As String = socket.SendSync("POST", "https://api.mailjet.com/v3.1/send", 30, json)
-
+		    
 		    ' Check response status
 		    If socket.HTTPStatusCode = 200 Then
 		      ' Email sent successfully
 		    Else
 		      MessageBox("Failed to send email. HTTP Status: " + socket.HTTPStatusCode.ToString)
 		    End If
-
+		    
 		  Catch e As RuntimeException
 		    MessageBox("Error sending email: " + e.Message)
 		  End Try
-
+		  
 		  ' Release the semaphore
 		  MailSemaphore.Release
-
-
+		  
+		  
 		End Sub
 	#tag EndMethod
 
