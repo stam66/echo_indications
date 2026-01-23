@@ -317,24 +317,25 @@ Protected Module General
 		  Var credentialsEncoded As String = EncodeBase64(credentials)
 		  socket.RequestHeader("Authorization") = "Basic " + credentialsEncoded
 
-		  ' Set timeout (30 seconds)
-		  socket.ConnectionTimeout = 30
+		  ' Set request body
+		  socket.SetRequestContent(json, "application/json")
 
 		  ' Send POST request to MailJet API
 		  Try
-		    Var response As String = socket.SendSync("POST", "https://api.mailjet.com/v3.1/send", json)
+		    socket.Send("POST", "https://api.mailjet.com/v3.1/send")
 
 		    ' Check response status
 		    If socket.HTTPStatusCode = 200 Then
 		      ' Email sent successfully
 		    Else
+		      Var response As String = socket.ResponseContent
 		      MessageBox("Failed to send email. HTTP Status: " + socket.HTTPStatusCode.ToString)
 		    End If
-		    
+
 		  Catch e As RuntimeException
 		    MessageBox("Error sending email: " + e.Message)
 		  End Try
-		  
+
 		  ' Release the semaphore
 		  MailSemaphore.Release
 		  
@@ -345,10 +346,6 @@ Protected Module General
 
 	#tag Property, Flags = &h0
 		MailSemaphore As Semaphore
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		MailSocket As SMTPSecureSocket
 	#tag EndProperty
 
 

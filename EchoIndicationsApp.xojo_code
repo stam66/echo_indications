@@ -363,9 +363,8 @@ Inherits WebApplication
 		  #EndIf
 
 		  ' Send email via MailJet API v3.1
-		  ' IMPORTANT: Replace these with your actual MailJet API credentials
-		  Var apiKey As String = "YOUR_MAILJET_API_KEY"
-		  Var apiSecret As String = "YOUR_MAILJET_SECRET_KEY"
+		  Var apiKey As String = "aeb158a2ac1a32e526b124a2cb7aa3a7"
+		  Var apiSecret As String = "384238973b036e63d5240aa0a3cfa65a"
 
 		  ' Build JSON payload for MailJet API v3.1
 		  Var json As String = "{" + _
@@ -390,12 +389,12 @@ Inherits WebApplication
 		  Var credentialsEncoded As String = EncodeBase64(credentials)
 		  socket.RequestHeader("Authorization") = "Basic " + credentialsEncoded
 
-		  ' Set timeout (30 seconds)
-		  socket.ConnectionTimeout = 30
+		  ' Set request body
+		  socket.SetRequestContent(json, "application/json")
 
 		  ' Send POST request to MailJet API
 		  Try
-		    Var response As String = socket.SendSync("POST", "https://api.mailjet.com/v3.1/send", json)
+		    socket.Send("POST", "https://api.mailjet.com/v3.1/send")
 
 		    ' Check response status
 		    If socket.HTTPStatusCode = 200 Then
@@ -405,6 +404,7 @@ Inherits WebApplication
 		        End If
 		      #EndIf
 		    Else
+		      Var response As String = socket.ResponseContent
 		      #If TargetWeb Then
 		        If webSession <> Nil Then
 		          webSession.ExecuteJavaScript("console.error('MailJet API error: HTTP " + socket.HTTPStatusCode.ToString + " - " + response + "');")
