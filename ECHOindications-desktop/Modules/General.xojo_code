@@ -311,10 +311,11 @@ Protected Module General
 		  ' Create URLConnection for synchronous HTTP request
 		  Var socket As New URLConnection
 
-		  ' Use URLConnection's built-in Basic Authentication properties
-		  ' This is the CORRECT way to do Basic Auth with URLConnection!
-		  socket.Username = apiKey
-		  socket.Password = apiSecret
+		  ' Build Authorization header manually (Username/Password properties don't exist in Xojo 2025 R3)
+		  Var credentials As String = apiKey + ":" + apiSecret
+		  Var credentialsEncoded As String = EncodeBase64(credentials, 0)
+		  credentialsEncoded = credentialsEncoded.ReplaceAll(EndOfLine, "").ReplaceAll(Chr(13), "").ReplaceAll(Chr(10), "")
+		  socket.RequestHeader("Authorization") = "Basic " + credentialsEncoded
 
 		  ' Set request body (SetRequestContent sets Content-Type automatically)
 		  socket.SetRequestContent(json, "application/json")
