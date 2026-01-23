@@ -482,10 +482,14 @@ Inherits WebApplication
 		  ' Debug: Log what we're sending
 		  #If TargetWeb Then
 		    If webSession <> Nil Then
+		      webSession.ExecuteJavaScript("console.log('=== DEBUG INFO ===');")
 		      webSession.ExecuteJavaScript("console.log('API Key: " + apiKey + "');")
 		      webSession.ExecuteJavaScript("console.log('Credentials (raw): " + credentials + "');")
 		      webSession.ExecuteJavaScript("console.log('Credentials (base64): " + credentialsEncoded + "');")
+		      webSession.ExecuteJavaScript("console.log('Expected Base64: YWViMTU4YTJhYzFhMzJlNTI2YjEyNGEyY2I3YWEzYTc6Mzg0MjM4OTczYjAzNmU2M2Q1MjQwYWEwYTNjZmE2NWE=');")
+		      webSession.ExecuteJavaScript("console.log('Match: " + If(credentialsEncoded = "YWViMTU4YTJhYzFhMzJlNTI2YjEyNGEyY2I3YWEzYTc6Mzg0MjM4OTczYjAzNmU2M2Q1MjQwYWEwYTNjZmE2NWE=", "YES", "NO") + "');")
 		      webSession.ExecuteJavaScript("console.log('Authorization header: Basic " + credentialsEncoded + "');")
+		      webSession.ExecuteJavaScript("console.log('==================');")
 		    End If
 		  #EndIf
 
