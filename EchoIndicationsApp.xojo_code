@@ -384,17 +384,10 @@ Inherits WebApplication
 		  ' Create URLConnection for synchronous HTTP request
 		  Var socket As New URLConnection
 
-		  ' Add Basic Authentication header
-		  Var credentials As String = apiKey + ":" + apiSecret
-		  Var credentialsEncoded As String = EncodeBase64(credentials)
-
-		  ' Remove any line breaks that EncodeBase64 might add (CRITICAL for HTTP Basic Auth)
-		  credentialsEncoded = credentialsEncoded.ReplaceAll(EndOfLine, "")
-		  credentialsEncoded = credentialsEncoded.ReplaceAll(Chr(13), "")
-		  credentialsEncoded = credentialsEncoded.ReplaceAll(Chr(10), "")
-		  credentialsEncoded = credentialsEncoded.ReplaceAll(" ", "")
-
-		  socket.RequestHeader("Authorization") = "Basic " + credentialsEncoded
+		  ' Use URLConnection's built-in Basic Authentication properties
+		  ' This is the CORRECT way to do Basic Auth with URLConnection!
+		  socket.Username = apiKey
+		  socket.Password = apiSecret
 
 		  ' Set request body (SetRequestContent sets Content-Type automatically)
 		  socket.SetRequestContent(json, "application/json")
@@ -467,29 +460,18 @@ Inherits WebApplication
 		  ' Create URLConnection for synchronous HTTP request
 		  Var socket As New URLConnection
 
-		  ' Add Basic Authentication header
-		  Var credentials As String = apiKey + ":" + apiSecret
-		  Var credentialsEncoded As String = EncodeBase64(credentials)
-
-		  ' Remove any line breaks that EncodeBase64 might add (CRITICAL for HTTP Basic Auth)
-		  credentialsEncoded = credentialsEncoded.ReplaceAll(EndOfLine, "")
-		  credentialsEncoded = credentialsEncoded.ReplaceAll(Chr(13), "")
-		  credentialsEncoded = credentialsEncoded.ReplaceAll(Chr(10), "")
-		  credentialsEncoded = credentialsEncoded.ReplaceAll(" ", "")
-
-		  socket.RequestHeader("Authorization") = "Basic " + credentialsEncoded
+		  ' Use URLConnection's built-in Basic Authentication properties
+		  ' This is the CORRECT way to do Basic Auth with URLConnection!
+		  socket.Username = apiKey
+		  socket.Password = apiSecret
 
 		  ' Debug: Log what we're sending
 		  #If TargetWeb Then
 		    If webSession <> Nil Then
-		      webSession.ExecuteJavaScript("console.log('=== DEBUG INFO ===');")
-		      webSession.ExecuteJavaScript("console.log('API Key: " + apiKey + "');")
-		      webSession.ExecuteJavaScript("console.log('Credentials (raw): " + credentials + "');")
-		      webSession.ExecuteJavaScript("console.log('Credentials (base64): " + credentialsEncoded + "');")
-		      webSession.ExecuteJavaScript("console.log('Expected Base64: YWViMTU4YTJhYzFhMzJlNTI2YjEyNGEyY2I3YWEzYTc6Mzg0MjM4OTczYjAzNmU2M2Q1MjQwYWEwYTNjZmE2NWE=');")
-		      webSession.ExecuteJavaScript("console.log('Match: " + If(credentialsEncoded = "YWViMTU4YTJhYzFhMzJlNTI2YjEyNGEyY2I3YWEzYTc6Mzg0MjM4OTczYjAzNmU2M2Q1MjQwYWEwYTNjZmE2NWE=", "YES", "NO") + "');")
-		      webSession.ExecuteJavaScript("console.log('Authorization header: Basic " + credentialsEncoded + "');")
-		      webSession.ExecuteJavaScript("console.log('==================');")
+		      webSession.ExecuteJavaScript("console.log('=== USING NATIVE BASIC AUTH ===');")
+		      webSession.ExecuteJavaScript("console.log('API Key (Username): " + apiKey + "');")
+		      webSession.ExecuteJavaScript("console.log('API Secret (Password): [hidden]');")
+		      webSession.ExecuteJavaScript("console.log('================================');")
 		    End If
 		  #EndIf
 
