@@ -298,8 +298,8 @@ Protected Module General
 		  Var json As String = "{" + _
 		  """Messages"": [{" + _
 		  """From"": {" + _
-		  """Email"": ""aucecho@gmail.com""," + _
-		  """Name"": ""ECHOAUC""" + _
+		  """Email"": ""info@echoindications.org""," + _
+		  """Name"": ""ECHOindications""" + _
 		  "}," + _
 		  """To"": [{" + _
 		  """Email"": """ + toAddress + """" + _
@@ -311,17 +311,10 @@ Protected Module General
 		  ' Create URLConnection for synchronous HTTP request
 		  Var socket As New URLConnection
 
-		  ' Add Basic Authentication header
-		  Var credentials As String = apiKey + ":" + apiSecret
-		  Var credentialsEncoded As String = EncodeBase64(credentials)
-
-		  ' Remove any line breaks that EncodeBase64 might add (CRITICAL for HTTP Basic Auth)
-		  credentialsEncoded = credentialsEncoded.ReplaceAll(EndOfLine, "")
-		  credentialsEncoded = credentialsEncoded.ReplaceAll(Chr(13), "")
-		  credentialsEncoded = credentialsEncoded.ReplaceAll(Chr(10), "")
-		  credentialsEncoded = credentialsEncoded.ReplaceAll(" ", "")
-
-		  socket.RequestHeader("Authorization") = "Basic " + credentialsEncoded
+		  ' Use URLConnection's built-in Basic Authentication properties
+		  ' This is the CORRECT way to do Basic Auth with URLConnection!
+		  socket.Username = apiKey
+		  socket.Password = apiSecret
 
 		  ' Set request body (SetRequestContent sets Content-Type automatically)
 		  socket.SetRequestContent(json, "application/json")
