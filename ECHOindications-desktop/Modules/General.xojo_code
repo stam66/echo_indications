@@ -317,9 +317,12 @@ Protected Module General
 		  Var credentialsEncoded As String = EncodeBase64(credentials)
 		  socket.RequestHeader("Authorization") = "Basic " + credentialsEncoded
 
+		  ' Set timeout (30 seconds)
+		  socket.ConnectionTimeout = 30
+
 		  ' Send POST request to MailJet API
 		  Try
-		    Var response As String = socket.SendSync("POST", "https://api.mailjet.com/v3.1/send", 30, json)
+		    Var response As String = socket.SendSync("POST", "https://api.mailjet.com/v3.1/send", json)
 
 		    ' Check response status
 		    If socket.HTTPStatusCode = 200 Then
