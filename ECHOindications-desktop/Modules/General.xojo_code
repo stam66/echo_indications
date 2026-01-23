@@ -314,6 +314,13 @@ Protected Module General
 		  ' Add Basic Authentication header
 		  Var credentials As String = apiKey + ":" + apiSecret
 		  Var credentialsEncoded As String = EncodeBase64(credentials)
+
+		  ' Remove any line breaks that EncodeBase64 might add (CRITICAL for HTTP Basic Auth)
+		  credentialsEncoded = credentialsEncoded.ReplaceAll(EndOfLine, "")
+		  credentialsEncoded = credentialsEncoded.ReplaceAll(Chr(13), "")
+		  credentialsEncoded = credentialsEncoded.ReplaceAll(Chr(10), "")
+		  credentialsEncoded = credentialsEncoded.ReplaceAll(" ", "")
+
 		  socket.RequestHeader("Authorization") = "Basic " + credentialsEncoded
 
 		  ' Set request body (SetRequestContent sets Content-Type automatically)
