@@ -371,8 +371,8 @@ Inherits WebApplication
 		  Var json As String = "{" + _
 		  """Messages"": [{" + _
 		  """From"": {" + _
-		  """Email"": ""noreply@echoindications.org""," + _
-		  """Name"": ""Echo Indications""" + _
+		  """Email"": ""info@echoindications.org""," + _
+		  """Name"": ""ECHOindications""" + _
 		  "}," + _
 		  """To"": [{" + _
 		  """Email"": """ + toAddress + """" + _
