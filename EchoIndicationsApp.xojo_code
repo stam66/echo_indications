@@ -435,12 +435,64 @@ Inherits WebApplication
 		  var db as MySQLCommunityServer, sql as string
 		  db = session.db
 		  sql = "insert into changes  (changeRequest, cUser, cStatus) values (?, ?, 'New')"
-		  
+
 		  try
 		    db.ExecuteSQL(sql, changeRequest, cUser)
 		  catch e as DatabaseException
 		    MessageBox(e.Message)
 		  end try
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub TestMailJetAuth(webSession As WebSession = Nil)
+		  ' Test MailJet API credentials with a simple GET request
+		  ' Replace these with your actual MailJet API credentials
+		  Var apiKey As String = "aeb158a2ac1a32e526b124a2cb7aa3a7"
+		  Var apiSecret As String = "384238973b036e63d5240aa0a3cfa65a"
+
+		  #If TargetWeb Then
+		    If webSession <> Nil Then
+		      webSession.ExecuteJavaScript("console.log('Testing MailJet API authentication...');")
+		    End If
+		  #EndIf
+
+		  ' Create URLConnection for synchronous HTTP request
+		  Var socket As New URLConnection
+
+		  ' Add Basic Authentication header
+		  Var credentials As String = apiKey + ":" + apiSecret
+		  Var credentialsEncoded As String = EncodeBase64(credentials)
+		  socket.RequestHeader("Authorization") = "Basic " + credentialsEncoded
+
+		  ' Send GET request to MailJet API stats endpoint (10 second timeout)
+		  Try
+		    Var url As String = "https://api.mailjet.com/v3/REST/statcounters?CounterSource=APIKey&CounterTiming=Message&CounterResolution=Lifetime"
+		    Var response As String = socket.SendSync("GET", url, 10)
+
+		    ' Check response status
+		    #If TargetWeb Then
+		      If webSession <> Nil Then
+		        webSession.ExecuteJavaScript("console.log('MailJet API Test - HTTP Status: " + socket.HTTPStatusCode.ToString + "');")
+		        webSession.ExecuteJavaScript("console.log('Response: " + response.ReplaceAll("'", "\\'").ReplaceAll("""", "\""").ReplaceAll(EndOfLine, " ") + "');")
+		      End If
+		    #EndIf
+
+		    If socket.HTTPStatusCode = 200 Then
+		      MessageBox("MailJet API Test Success!" + EndOfLine + "HTTP Status: 200" + EndOfLine + "Response: " + response)
+		    Else
+		      MessageBox("MailJet API Test Failed" + EndOfLine + "HTTP Status: " + socket.HTTPStatusCode.ToString + EndOfLine + "Response: " + response)
+		    End If
+
+		  Catch e As RuntimeException
+		    #If TargetWeb Then
+		      If webSession <> Nil Then
+		        webSession.ExecuteJavaScript("console.error('MailJet API test exception: " + e.Message + "');")
+		      End If
+		    #EndIf
+		    MessageBox("Error testing MailJet API: " + e.Message)
+		  End Try
+
 		End Sub
 	#tag EndMethod
 
