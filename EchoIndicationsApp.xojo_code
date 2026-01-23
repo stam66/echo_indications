@@ -383,17 +383,17 @@ Inherits WebApplication
 		  
 		  ' Create URLConnection for synchronous HTTP request
 		  Var socket As New URLConnection
-		  socket.RequestHeader("Content-Type") = "application/json"
-		  
+
 		  ' Add Basic Authentication header
 		  Var credentials As String = apiKey + ":" + apiSecret
 		  Var credentialsEncoded As String = EncodeBase64(credentials)
 		  socket.RequestHeader("Authorization") = "Basic " + credentialsEncoded
 
-		  ' Set request body
+		  ' Set request body (SetRequestContent sets Content-Type automatically)
 		  socket.SetRequestContent(json, "application/json")
 
 		  ' Send POST request to MailJet API (30 second timeout)
+		  ' Note: If you have a US-based account, change to: https://api.us.mailjet.com/v3.1/send
 		  Try
 		    Var response As String = socket.SendSync("POST", "https://api.mailjet.com/v3.1/send", 30)
 
@@ -407,10 +407,11 @@ Inherits WebApplication
 		    Else
 		      #If TargetWeb Then
 		        If webSession <> Nil Then
-		          webSession.ExecuteJavaScript("console.error('MailJet API error: HTTP " + socket.HTTPStatusCode.ToString + " - " + response + "');")
+		          webSession.ExecuteJavaScript("console.error('MailJet API error: HTTP " + socket.HTTPStatusCode.ToString + "');")
+		          webSession.ExecuteJavaScript("console.error('Response: " + response.ReplaceAll("'", "\\'").ReplaceAll("""", "\""") + "');")
 		        End If
 		      #EndIf
-		      MessageBox("Failed to send email. HTTP Status: " + socket.HTTPStatusCode.ToString)
+		      MessageBox("Failed to send email. HTTP Status: " + socket.HTTPStatusCode.ToString + EndOfLine + "Response: " + response)
 		    End If
 		    
 		  Catch e As RuntimeException
