@@ -289,28 +289,51 @@ Protected Module General
 		    End If
 		  End If
 
-		  ' Connect to local Postfix relay (which forwards to Gmail)
-		  MailSocket.Address = "localhost"
-		  MailSocket.Port = 25
-		  MailSocket.SSLConnectionType = SSLSocket.SSLConnectionTypes.None
-		  MailSocket.SMTPConnectionType = SMTPSecureSocket.SMTPConnectionTypes.Clear
-		  MailSocket.SSLEnabled = False
+		  ' Send email via MailJet API v3.1
+		  ' IMPORTANT: Replace these with your actual MailJet API credentials
+		  Var apiKey As String = "YOUR_MAILJET_API_KEY"
+		  Var apiSecret As String = "YOUR_MAILJET_SECRET_KEY"
 
-		  ' No authentication needed for localhost - Postfix handles Gmail auth
-		  MailSocket.Username = ""
-		  MailSocket.Password = ""
+		  ' Build JSON payload for MailJet API v3.1
+		  Var json As String = "{" + _
+		  """Messages"": [{" + _
+		  """From"": {" + _
+		  """Email"": ""aucecho@gmail.com""," + _
+		  """Name"": ""ECHOAUC""" + _
+		  "}," + _
+		  """To"": [{" + _
+		  """Email"": """ + toAddress + """" + _
+		  "}]," + _
+		  """Subject"": """ + subject.ReplaceAll("""", "\""") + """," + _
+		  """TextPart"": """ + message.ReplaceAll("""", "\""").ReplaceAll(EndOfLine, "\n") + """" + _
+		  "}]}"
 
-		  ' Create EmailMessage
-		  Var mail As New EmailMessage
-		  mail.FromAddress = "aucecho@gmail.com"
-		  mail.AddRecipient(toAddress)
-		  mail.Subject = subject
-		  mail.BodyPlainText = message
-		  mail.Headers.AddHeader("X-Mailer","SMTP Test")
+		  ' Create URLConnection for synchronous HTTP request
+		  Var socket As New URLConnection
+		  socket.RequestHeader("Content-Type") = "application/json"
 
-		  ' Send it
-		  MailSocket.Messages.AddRow(mail)
-		  MailSocket.SendMail
+		  ' Add Basic Authentication header
+		  Var credentials As String = apiKey + ":" + apiSecret
+		  Var credentialsEncoded As String = EncodeBase64(credentials)
+		  socket.RequestHeader("Authorization") = "Basic " + credentialsEncoded
+
+		  ' Send POST request to MailJet API
+		  Try
+		    Var response As String = socket.SendSync("POST", "https://api.mailjet.com/v3.1/send", 30, json)
+
+		    ' Check response status
+		    If socket.HTTPStatusCode = 200 Then
+		      ' Email sent successfully
+		    Else
+		      MessageBox("Failed to send email. HTTP Status: " + socket.HTTPStatusCode.ToString)
+		    End If
+
+		  Catch e As RuntimeException
+		    MessageBox("Error sending email: " + e.Message)
+		  End Try
+
+		  ' Release the semaphore
+		  MailSemaphore.Release
 
 
 		End Sub
