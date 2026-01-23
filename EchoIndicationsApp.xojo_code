@@ -370,8 +370,8 @@ Inherits WebApplication
 		  Var json As String = "{" + _
 		  """Messages"": [{" + _
 		  """From"": {" + _
-		  """Email"": ""aucecho@gmail.com""," + _
-		  """Name"": ""ECHOAUC""" + _
+		  """Email"": ""pilot@mailjet.com""," + _
+		  """Name"": ""Mailjet Pilot""" + _
 		  "}," + _
 		  """To"": [{" + _
 		  """Email"": """ + toAddress + """" + _
