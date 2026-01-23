@@ -387,6 +387,13 @@ Inherits WebApplication
 		  ' Add Basic Authentication header
 		  Var credentials As String = apiKey + ":" + apiSecret
 		  Var credentialsEncoded As String = EncodeBase64(credentials)
+
+		  ' Remove any line breaks that EncodeBase64 might add (CRITICAL for HTTP Basic Auth)
+		  credentialsEncoded = credentialsEncoded.ReplaceAll(EndOfLine, "")
+		  credentialsEncoded = credentialsEncoded.ReplaceAll(Chr(13), "")
+		  credentialsEncoded = credentialsEncoded.ReplaceAll(Chr(10), "")
+		  credentialsEncoded = credentialsEncoded.ReplaceAll(" ", "")
+
 		  socket.RequestHeader("Authorization") = "Basic " + credentialsEncoded
 
 		  ' Set request body (SetRequestContent sets Content-Type automatically)
@@ -463,7 +470,24 @@ Inherits WebApplication
 		  ' Add Basic Authentication header
 		  Var credentials As String = apiKey + ":" + apiSecret
 		  Var credentialsEncoded As String = EncodeBase64(credentials)
+
+		  ' Remove any line breaks that EncodeBase64 might add (CRITICAL for HTTP Basic Auth)
+		  credentialsEncoded = credentialsEncoded.ReplaceAll(EndOfLine, "")
+		  credentialsEncoded = credentialsEncoded.ReplaceAll(Chr(13), "")
+		  credentialsEncoded = credentialsEncoded.ReplaceAll(Chr(10), "")
+		  credentialsEncoded = credentialsEncoded.ReplaceAll(" ", "")
+
 		  socket.RequestHeader("Authorization") = "Basic " + credentialsEncoded
+
+		  ' Debug: Log what we're sending
+		  #If TargetWeb Then
+		    If webSession <> Nil Then
+		      webSession.ExecuteJavaScript("console.log('API Key: " + apiKey + "');")
+		      webSession.ExecuteJavaScript("console.log('Credentials (raw): " + credentials + "');")
+		      webSession.ExecuteJavaScript("console.log('Credentials (base64): " + credentialsEncoded + "');")
+		      webSession.ExecuteJavaScript("console.log('Authorization header: Basic " + credentialsEncoded + "');")
+		    End If
+		  #EndIf
 
 		  ' Send GET request to MailJet API stats endpoint (10 second timeout)
 		  Try
