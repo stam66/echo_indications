@@ -205,12 +205,17 @@ Inherits WebApplication
 
 	#tag Method, Flags = &h0
 		Function GenerateRandomSalt(length as Integer) As String
-		  // Generate random salt for password hashing
-		  Var mb As New MemoryBlock(length)
-		  For i As Integer = 0 To length - 1
-		    mb.UInt8Value(i) = System.Random.InRange(0, 255)
+		  // Generate random salt for password hashing (alphanumeric)
+		  // Compatible with API: 32 alphanumeric characters
+		  Var chars As String = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+		  Var salt As String = ""
+
+		  For i As Integer = 1 To length
+		    Var randomIndex As Integer = System.Random.InRange(0, chars.Length - 1)
+		    salt = salt + chars.Middle(randomIndex, 1)
 		  Next
-		  Return EncodeHex(mb)
+
+		  Return salt
 		End Function
 	#tag EndMethod
 
