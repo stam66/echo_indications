@@ -1020,6 +1020,9 @@ End
 		  ' Disable navigation buttons for new indication
 		  btnPreviousIndication.Enabled = False
 		  btnNextIndication.Enabled = False
+
+		  ' Capture the original state (empty) for change detection
+		  CaptureOriginalState()
 		End Sub
 	#tag EndMethod
 
@@ -1134,7 +1137,10 @@ End
 		      End If
 		    End If
 		  Next
-		  
+
+		  ' Capture the original state for change detection
+		  CaptureOriginalState()
+
 		  If AppConfig.DEBUG_MODE Then
 		    System.DebugLog("=== LoadIndication completed ===")
 		  End If
@@ -1323,7 +1329,7 @@ End
 		    txtIndication.SetFocus()
 		    Return False
 		  End If
-		  
+
 		  ' Ensure at least one context is selected
 		  Var hasContext As Boolean = False
 		  For i As Integer = 0 To lstContexts.LastRowIndex
@@ -1332,14 +1338,130 @@ End
 		      Exit For
 		    End If
 		  Next
-		  
+
 		  If Not hasContext Then
 		    MessageBox("Please select at least one context.")
 		    Return False
 		  End If
-		  
+
 		  Return True
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub CaptureOriginalState()
+		  '/// Captures the current form state as the original state for change detection
+
+		  mOriginalTitle = txtIndication.Text
+		  mOriginalKeywords = txtKeywords.Text
+		  mOriginalComments = txtComments.Text
+		  mOriginalSourceASE = chkSourceASE.Value
+		  mOriginalSourceEACVI = chkSourceEACVI.Value
+		  mOriginalSourceBSE = chkSourceBSE.Value
+		  mOriginalSourceConsensus = chkSourceConsensus.Value
+		  mOriginalPrimaryCare = popPrimaryCare.SelectedRowIndex
+		  mOriginalSecondaryOP = popSecondaryOP.SelectedRowIndex
+		  mOriginalSecondaryIP = popSecondaryIP.SelectedRowIndex
+		  mOriginalUrgency = popUrgency.SelectedRowIndex
+
+		  ' Capture selected context IDs
+		  Redim mOriginalContextIDs(-1)
+		  For i As Integer = 0 To lstContexts.LastRowIndex
+		    If lstContexts.CellCheckBoxStateAt(i, 0) = DesktopCheckBox.VisualStates.Checked Then
+		      mOriginalContextIDs.Add(lstContexts.RowTagAt(i))
+		    End If
+		  Next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function HasUnsavedChanges() As Boolean
+		  '/// Checks if the form has been modified from its original state
+		  '///
+		  '/// @returns True if there are unsaved changes, False otherwise
+
+		  ' Check text fields
+		  If txtIndication.Text <> mOriginalTitle Then Return True
+		  If txtKeywords.Text <> mOriginalKeywords Then Return True
+		  If txtComments.Text <> mOriginalComments Then Return True
+
+		  ' Check checkboxes
+		  If chkSourceASE.Value <> mOriginalSourceASE Then Return True
+		  If chkSourceEACVI.Value <> mOriginalSourceEACVI Then Return True
+		  If chkSourceBSE.Value <> mOriginalSourceBSE Then Return True
+		  If chkSourceConsensus.Value <> mOriginalSourceConsensus Then Return True
+
+		  ' Check popup menus
+		  If popPrimaryCare.SelectedRowIndex <> mOriginalPrimaryCare Then Return True
+		  If popSecondaryOP.SelectedRowIndex <> mOriginalSecondaryOP Then Return True
+		  If popSecondaryIP.SelectedRowIndex <> mOriginalSecondaryIP Then Return True
+		  If popUrgency.SelectedRowIndex <> mOriginalUrgency Then Return True
+
+		  ' Check context IDs
+		  Var currentContextIDs() As Integer
+		  For i As Integer = 0 To lstContexts.LastRowIndex
+		    If lstContexts.CellCheckBoxStateAt(i, 0) = DesktopCheckBox.VisualStates.Checked Then
+		      currentContextIDs.Add(lstContexts.RowTagAt(i))
+		    End If
+		  Next
+
+		  ' Compare context arrays
+		  If currentContextIDs.Count <> mOriginalContextIDs.Count Then Return True
+
+		  For Each id As Integer In currentContextIDs
+		    If mOriginalContextIDs.IndexOf(id) < 0 Then Return True
+		  Next
+
+		  Return False
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub NavigateToIndication(newIndex As Integer)
+		  '/// Navigates to an indication, prompting to save if there are unsaved changes
+		  '///
+		  '/// @param newIndex The index of the indication to navigate to
+
+		  If mIndicationsList.Count = 0 Then Return
+
+		  ' Check for unsaved changes
+		  If HasUnsavedChanges() Then
+		    Var d As New MessageDialog
+		    d.Message = "Save changes before navigating?"
+		    d.Explanation = "You have unsaved changes. Would you like to save them before continuing?"
+		    d.ActionButton.Caption = "Save"
+		    d.CancelButton.Visible = True
+		    d.AlternateActionButton.Visible = True
+		    d.AlternateActionButton.Caption = "Don't Save"
+
+		    Var result As MessageDialogButton = d.ShowModal
+
+		    If result = d.ActionButton Then
+		      ' User chose to save
+		      SaveIndication()
+		      ' SaveIndication closes the window on success, so check if we're still open
+		      If Self.Visible Then
+		        ' Save failed, don't navigate
+		        Return
+		      Else
+		        ' Window was closed after save, exit
+		        Return
+		      End If
+
+		    ElseIf result = d.CancelButton Then
+		      ' User chose Cancel, don't navigate
+		      Return
+
+		    ' If AlternateActionButton (Don't Save), continue with navigation
+		    End If
+		  End If
+
+		  ' Update the index
+		  mCurrentIndex = newIndex
+
+		  ' Load the indication at new index
+		  LoadIndication(mIndicationsList(mCurrentIndex))
+		End Sub
 	#tag EndMethod
 
 
@@ -1363,6 +1485,54 @@ End
 		Private mParentListbox As DesktopListBox
 	#tag EndProperty
 
+	#tag Property, Flags = &h21
+		Private mOriginalTitle As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mOriginalKeywords As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mOriginalComments As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mOriginalContextIDs() As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mOriginalSourceASE As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mOriginalSourceEACVI As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mOriginalSourceBSE As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mOriginalSourceConsensus As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mOriginalPrimaryCare As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mOriginalSecondaryOP As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mOriginalSecondaryIP As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mOriginalUrgency As Integer
+	#tag EndProperty
+
 
 #tag EndWindowCode
 
@@ -1371,15 +1541,15 @@ End
 		Sub Pressed()
 		  ' Navigate to next indication with wrapping
 		  If mIndicationsList.Count = 0 Then Return
-		  
-		  ' Increment index with wrapping
-		  mCurrentIndex = mCurrentIndex + 1
-		  If mCurrentIndex >= mIndicationsList.Count Then
-		    mCurrentIndex = 0  ' Wrap to beginning
+
+		  ' Calculate next index with wrapping
+		  Var newIndex As Integer = mCurrentIndex + 1
+		  If newIndex >= mIndicationsList.Count Then
+		    newIndex = 0  ' Wrap to beginning
 		  End If
-		  
-		  ' Load the indication at new index
-		  LoadIndication(mIndicationsList(mCurrentIndex))
+
+		  ' Navigate with save prompt
+		  NavigateToIndication(newIndex)
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -1388,15 +1558,15 @@ End
 		Sub Pressed()
 		  ' Navigate to previous indication with wrapping
 		  If mIndicationsList.Count = 0 Then Return
-		  
-		  ' Decrement index with wrapping
-		  mCurrentIndex = mCurrentIndex - 1
-		  If mCurrentIndex < 0 Then
-		    mCurrentIndex = mIndicationsList.Count - 1  ' Wrap to end
+
+		  ' Calculate previous index with wrapping
+		  Var newIndex As Integer = mCurrentIndex - 1
+		  If newIndex < 0 Then
+		    newIndex = mIndicationsList.Count - 1  ' Wrap to end
 		  End If
-		  
-		  ' Load the indication at new index
-		  LoadIndication(mIndicationsList(mCurrentIndex))
+
+		  ' Navigate with save prompt
+		  NavigateToIndication(newIndex)
 		End Sub
 	#tag EndEvent
 #tag EndEvents
