@@ -13,17 +13,20 @@ Protected Module AuthManager
 	#tag Method, Flags = &h0
 		Function Login(username As String, password As String) As Boolean
 		  mLastError = ""
-		  
+
 		  If username.Trim.Length = 0 Or password.Trim.Length = 0 Then
 		    mLastError = "Username and password are required"
 		    Return False
 		  End If
-		  
+
 		  Try
+		    ' Hash password using SHA-256 to match web app behavior
+		    Var hashedPassword As String = HashPassword(password)
+
 		    Var data As New Dictionary
 		    data.Value("username") = username.Trim
-		    data.Value("password") = password
-		    
+		    data.Value("password") = hashedPassword
+
 		    Var result As Dictionary = APIClient.Post("auth.lc", "login", data)
 		    
 		    If result.Value("status") = "success" Then
@@ -74,11 +77,33 @@ Protected Module AuthManager
 		  mCurrentUserEmail = ""
 		  mCurrentUserFullName = ""
 		  mLastError = ""
-		  
+
 		  If AppConfig.DEBUG_MODE Then
 		    System.DebugLog("AuthManager: Logged out")
 		  End If
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function HashPassword(password As String) As String
+		  '/// Hashes password using SHA-256 to match web app behavior
+		  '///
+		  '/// @param password The plain text password
+		  '/// @returns 64-character lowercase hex string (SHA-256 hash)
+
+		  Var crypto As New Crypto
+		  Var passwordData As MemoryBlock = password.ConvertEncoding(Encodings.UTF8)
+		  Var hashData As MemoryBlock = crypto.SHA256(passwordData)
+
+		  ' Convert to lowercase hex string (64 characters)
+		  Var hexHash As String = EncodeHex(hashData).Lowercase
+
+		  If AppConfig.DEBUG_MODE Then
+		    System.DebugLog("AuthManager: Password hashed to " + hexHash.Length.ToString + " char hex string")
+		  End If
+
+		  Return hexHash
+		End Function
 	#tag EndMethod
 
 
