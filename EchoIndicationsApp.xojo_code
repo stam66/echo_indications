@@ -204,6 +204,34 @@ Inherits WebApplication
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GenerateRandomSalt(length as Integer) As String
+		  // Generate random salt for password hashing
+		  Var mb As New MemoryBlock(length)
+		  For i As Integer = 0 To length - 1
+		    mb.UInt8Value(i) = System.Random.InRange(0, 255)
+		  Next
+		  Return EncodeHex(mb)
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function EncodeHex(mb as MemoryBlock) As String
+		  // Convert MemoryBlock to hexadecimal string
+		  Var hexChars As String = "0123456789abcdef"
+		  Var result As String = ""
+
+		  For i As Integer = 0 To mb.Size - 1
+		    Var b As UInt8 = mb.UInt8Value(i)
+		    Var highNibble As Integer = b \ 16
+		    Var lowNibble As Integer = b Mod 16
+		    result = result + hexChars.Middle(highNibble, 1) + hexChars.Middle(lowNibble, 1)
+		  Next
+
+		  Return result
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function isValidEmail(email as string) As Boolean
 		  var regex as new RegEx
 		  regex.SearchPattern = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
