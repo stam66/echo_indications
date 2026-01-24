@@ -279,10 +279,17 @@ End
 		  while not rs.AfterLastRow
 		    if rs.Column("email").StringValue = email then
 		      var tempPass as string = app.RandomString(8)
-		      var tempPassHashed as string = app.hashPassword( tempPass)
-		      
+
+		      // Generate salt and hash with PBKDF2
+		      Dim salt As String = app.GenerateRandomSalt(32)
+		      Dim passwordData As New MemoryBlock(tempPass.LenB)
+		      passwordData.StringValue(0, tempPass.LenB) = tempPass
+		      Dim hash As MemoryBlock = Crypto.PBKDF2(salt, passwordData, 10000, 32, Crypto.HashAlgorithms.SHA2_256)
+		      Dim hashHex As String = app.EncodeHex(hash)
+
 		      rs.EditRow
-		      rs.Column("password_hash").StringValue = tempPassHashed
+		      rs.Column("password_hash").StringValue = hashHex
+		      rs.Column("password_salt").StringValue = salt
 		      rs.Column("OTP").IntegerValue = 1
 		      rs.SaveRow
 		      

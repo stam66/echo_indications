@@ -318,16 +318,23 @@ End
 		  if txtPassword.Text <> txtPasswordAgain.Text then
 		    messageBox("Passwords do not match. Please correct and try again")
 		  else
-		    var passHashed as String = app.hashPassword(self.txtPassword.Text)
-		    
-		    var sql as string = "UPDATE users SET password_hash = ?, OTP = ? WHERE username = ?"
+		    // Generate salt and hash with PBKDF2
+		    Dim salt As String = app.GenerateRandomSalt(32)
+		    Dim passwordData As New MemoryBlock(txtPassword.Text.LenB)
+		    passwordData.StringValue(0, txtPassword.Text.LenB) = txtPassword.Text
+		    Dim hash As MemoryBlock = Crypto.PBKDF2(salt, passwordData, 10000, 32, Crypto.HashAlgorithms.SHA2_256)
+		    Dim hashHex As String = app.EncodeHex(hash)
+
+		    var sql as string = "UPDATE users SET password_hash = ?, password_salt = ?, OTP = ? WHERE username = ?"
 		    var ps as MySQLPreparedStatement = session.db.Prepare(sql)
 		    ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		    ps.BindType(1, MySQLPreparedStatement.MYSQL_TYPE_TINY)
-		    ps.BindType(2, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		    ps.Bind(0, passHashed)
-		    ps.Bind(1, 0)
-		    ps.Bind(2, username)
+		    ps.BindType(1, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		    ps.BindType(2, MySQLPreparedStatement.MYSQL_TYPE_TINY)
+		    ps.BindType(3, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		    ps.Bind(0, hashHex)
+		    ps.Bind(1, salt)
+		    ps.Bind(2, 0)
+		    ps.Bind(3, username)
 		    ps.ExecuteSQL
 		    
 		    
