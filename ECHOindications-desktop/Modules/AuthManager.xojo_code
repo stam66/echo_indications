@@ -13,19 +13,29 @@ Protected Module AuthManager
 	#tag Method, Flags = &h0
 		Function Login(username As String, password As String) As Boolean
 		  mLastError = ""
-		  
+
 		  If username.Trim.Length = 0 Or password.Trim.Length = 0 Then
 		    mLastError = "Username and password are required"
 		    Return False
 		  End If
-		  
+
 		  Try
+		    If AppConfig.DEBUG_MODE Then
+		      System.DebugLog("=== AuthManager.Login starting ===")
+		      System.DebugLog("Username: " + username.Trim)
+		    End If
+
+		    ' Send plain text password - API handles hashing (PBKDF2 for new users, SHA-256 for legacy web app users)
 		    Var data As New Dictionary
 		    data.Value("username") = username.Trim
 		    data.Value("password") = password
-		    
+
 		    Var result As Dictionary = APIClient.Post("auth.lc", "login", data)
-		    
+
+		    If AppConfig.DEBUG_MODE Then
+		      System.DebugLog("Login result status: " + result.Value("status").StringValue)
+		    End If
+
 		    If result.Value("status") = "success" Then
 		      Var responseData As Dictionary = result.Value("data")
 		      
@@ -51,14 +61,26 @@ Protected Module AuthManager
 		      End If
 		      
 		      Return True
-		      
+
 		    Else
 		      mLastError = result.Value("message").StringValue
+
+		      If AppConfig.DEBUG_MODE Then
+		        System.DebugLog("Login failed: " + mLastError)
+		        System.DebugLog("=== AuthManager.Login failed ===")
+		      End If
+
 		      Return False
 		    End If
-		    
+
 		  Catch err As RuntimeException
 		    mLastError = "Login error: " + err.Message
+
+		    If AppConfig.DEBUG_MODE Then
+		      System.DebugLog("Login exception: " + err.Message)
+		      System.DebugLog("=== AuthManager.Login exception ===")
+		    End If
+
 		    Return False
 		  End Try
 		End Function
@@ -74,7 +96,7 @@ Protected Module AuthManager
 		  mCurrentUserEmail = ""
 		  mCurrentUserFullName = ""
 		  mLastError = ""
-		  
+
 		  If AppConfig.DEBUG_MODE Then
 		    System.DebugLog("AuthManager: Logged out")
 		  End If
