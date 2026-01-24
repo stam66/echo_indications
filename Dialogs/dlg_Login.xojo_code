@@ -339,20 +339,16 @@ End
 		  var username as string = txtUsername.Text, LoginUser as string
 		  var password as string = txtPassword.Text
 		  Var rs as RowSet
-		  var hashedPassword as string
-		  
+
 		  // check fields not empty
 		  if username.IsEmpty or password.IsEmpty then
 		    MessageBox("You must enter both a username and password")
 		    return
 		  end If
-		  
-		  //hash the password for db comparison
-		  hashedPassword = app.hashPassword(password) 
-		  
+
 		  var sql as string = "SELECT * from  users"
 		  rs = session.DB.SelectSQL(sql)
-		  
+
 		  while not rs.AfterLastRow
 		    if rs.Column("username").StringValue = username then
 		      LoginUser = username
@@ -361,20 +357,29 @@ End
 		      rs.MoveToNextRow
 		    end if
 		  wend
-		  
+
 		  if loginUser.IsEmpty then
 		    MessageBox("The username does not correspond to a registered user.")
 		    return
 		  end if
-		  
-		  
+
+
 		  sql = "Select * from users where username = ?"
 		  var ps as MySQLPreparedStatement = session.db.Prepare(sql)
 		  ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_STRING)
 		  ps.Bind(0, username)
 		  rs = ps.SelectSQL
-		  
-		  if rs.Column("password_hash").StringValue = hashedPassword then
+
+		  // Verify password using PBKDF2
+		  Var storedHash As String = rs.Column("password_hash").StringValue
+		  Var storedSalt As String = rs.Column("password_salt").StringValue
+
+		  Dim passwordData As New MemoryBlock(password.LenB)
+		  passwordData.StringValue(0, password.LenB) = password
+		  Dim computedHash As MemoryBlock = Crypto.PBKDF2(storedSalt, passwordData, 10000, 32, Crypto.HashAlgorithms.SHA2_256)
+		  Dim computedHashHex As String = app.EncodeHex(computedHash)
+
+		  if computedHashHex = storedHash then
 		    if rs.Column("OTP").IntegerValue = 1  then
 		      self.txtPassword.Text = ""
 		      var w as new dlg_NewPassword
