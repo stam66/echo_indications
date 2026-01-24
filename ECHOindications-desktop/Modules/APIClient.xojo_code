@@ -134,7 +134,12 @@ Protected Module APIClient
 		    
 		    // Check HTTP status
 		    Var httpStatus As Integer = socket.HTTPStatusCode
-		    
+
+		    If AppConfig.DEBUG_MODE Then
+		      System.DebugLog("APIClient.Post response: HTTP " + httpStatus.ToString)
+		      System.DebugLog("APIClient.Post response body: " + response)
+		    End If
+
 		    Select Case httpStatus
 		    Case 200, 201
 		      // Success
@@ -148,7 +153,7 @@ Protected Module APIClient
 		    Else
 		      Return CreateErrorResponse("HTTP " + httpStatus.ToString + ": " + response)
 		    End Select
-		    
+
 		    Return ParseResponse(response)
 		    
 		  Catch err As IOException
