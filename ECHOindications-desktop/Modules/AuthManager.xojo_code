@@ -20,12 +20,10 @@ Protected Module AuthManager
 		  End If
 
 		  Try
-		    ' Hash password using SHA-256 to match web app behavior
-		    Var hashedPassword As String = HashPassword(password)
-
+		    ' Send plain text password - API handles hashing (PBKDF2 for new users, SHA-256 for legacy web app users)
 		    Var data As New Dictionary
 		    data.Value("username") = username.Trim
-		    data.Value("password") = hashedPassword
+		    data.Value("password") = password
 
 		    Var result As Dictionary = APIClient.Post("auth.lc", "login", data)
 		    
@@ -82,28 +80,6 @@ Protected Module AuthManager
 		    System.DebugLog("AuthManager: Logged out")
 		  End If
 		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
-		Private Function HashPassword(password As String) As String
-		  '/// Hashes password using SHA-256 to match web app behavior
-		  '///
-		  '/// @param password The plain text password
-		  '/// @returns 64-character lowercase hex string (SHA-256 hash)
-
-		  Var crypto As New Crypto
-		  Var passwordData As MemoryBlock = password.ConvertEncoding(Encodings.UTF8)
-		  Var hashData As MemoryBlock = crypto.SHA256(passwordData)
-
-		  ' Convert to lowercase hex string (64 characters)
-		  Var hexHash As String = EncodeHex(hashData).Lowercase
-
-		  If AppConfig.DEBUG_MODE Then
-		    System.DebugLog("AuthManager: Password hashed to " + hexHash.Length.ToString + " char hex string")
-		  End If
-
-		  Return hexHash
-		End Function
 	#tag EndMethod
 
 
