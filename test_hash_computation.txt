@@ -1,0 +1,116 @@
+=================================================================
+PBKDF2 HASH COMPUTATION TEST
+=================================================================
+
+This test will verify that the Xojo web app and LiveCode API
+compute the same hash for the same password and salt.
+
+-----------------------------------------------------------------
+TEST 1: Known Test Vector
+-----------------------------------------------------------------
+
+Use these exact values:
+- Password: "testpass123"
+- Salt: "abcdefghijklmnopqrstuvwxyz012345" (32 chars)
+- Iterations: 10000
+- Output: 32 bytes
+- Algorithm: SHA2-256 / HMAC-SHA256
+
+XOJO TEST CODE:
+Add this to your web app (in a button click event):
+
+```xojo
+Dim testPassword As String = "testpass123"
+Dim testSalt As String = "abcdefghijklmnopqrstuvwxyz012345"
+
+Dim passwordData As New MemoryBlock(testPassword.LenB)
+passwordData.StringValue(0, testPassword.LenB) = testPassword
+
+Dim hash As MemoryBlock = Crypto.PBKDF2(testSalt, passwordData, 10000, 32, Crypto.HashAlgorithms.SHA2_256)
+Dim hashHex As String = app.EncodeHex(hash)
+
+MessageBox("Xojo Hash: " + hashHex)
+```
+
+LIVECODE API TEST CODE:
+Create test_pbkdf2.lc on your API server:
+
+```livecode
+<?lc
+include "lib/db-functions.lc"
+
+put "testpass123" into tPassword
+put "abcdefghijklmnopqrstuvwxyz012345" into tSalt
+
+put hashPassword(tPassword, tSalt) into tResult
+set the itemDelimiter to ":"
+put item 2 of tResult into tHash
+
+put "Content-Type: text/plain" & return & return
+put "LiveCode Hash: " & tHash
+?>
+```
+
+Access via: https://api.echoindications.org/test_pbkdf2.lc
+
+BOTH SHOULD PRODUCE THE EXACT SAME HASH.
+
+-----------------------------------------------------------------
+TEST 2: Actual User Password
+-----------------------------------------------------------------
+
+After getting the database values for 'stam', use the ACTUAL
+salt and password to test:
+
+XOJO CODE:
+
+```xojo
+Dim actualSalt As String = "..." // Copy from database
+Dim actualPassword As String = "..." // The password you set
+
+Dim passwordData As New MemoryBlock(actualPassword.LenB)
+passwordData.StringValue(0, actualPassword.LenB) = actualPassword
+
+Dim hash As MemoryBlock = Crypto.PBKDF2(actualSalt, passwordData, 10000, 32, Crypto.HashAlgorithms.SHA2_256)
+Dim hashHex As String = app.EncodeHex(hash)
+
+MessageBox("Computed: " + hashHex + EndOfLine + EndOfLine + "Stored: " + storedHashFromDB)
+```
+
+These should match EXACTLY (case-insensitive).
+
+-----------------------------------------------------------------
+EXPECTED RESULTS
+-----------------------------------------------------------------
+
+If hashes match in Test 1:
+  ✅ Both implementations are compatible
+  ❌ Problem is elsewhere (encoding, whitespace, etc.)
+
+If hashes DON'T match in Test 1:
+  ❌ Implementations are incompatible
+  → Need to fix one or both
+
+If hashes match in Test 2:
+  ✅ Hash computation is correct
+  ❌ Problem is in API verification logic
+
+If hashes DON'T match in Test 2:
+  ❌ Web app is computing wrong hash
+  → Check password/salt for hidden characters
+
+-----------------------------------------------------------------
+DEBUGGING CHECKLIST
+-----------------------------------------------------------------
+
+[ ] Verified salt is exactly 32 alphanumeric characters
+[ ] Verified hash is exactly 64 lowercase hex characters
+[ ] No leading/trailing spaces in salt or hash
+[ ] Password has no special encoding issues
+[ ] Both systems use 10000 iterations
+[ ] Both systems use SHA-256/HMAC-SHA256
+[ ] Both systems output 32 bytes
+[ ] Test vector hashes match
+[ ] Actual password hashes match
+
+=================================================================
