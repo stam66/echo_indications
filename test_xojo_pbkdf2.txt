@@ -1,0 +1,63 @@
+XOJO PBKDF2 TEST CODE
+=====================
+
+Add this code to a button in your Xojo web app to test PBKDF2:
+
+```xojo
+// Test 1: Simple known values
+Dim testPassword As String = "testpass123"
+Dim testSalt As String = "saltsaltsaltsaltsaltsaltsal12"  // 32 chars
+
+Dim passwordData As New MemoryBlock(testPassword.LenB)
+passwordData.StringValue(0, testPassword.LenB) = testPassword
+
+Dim hash As MemoryBlock = Crypto.PBKDF2(testSalt, passwordData, 10000, 32, Crypto.HashAlgorithms.SHA2_256)
+Dim hashHex As String = app.EncodeHex(hash)
+
+Var msg As String = "Test PBKDF2 Hash Computation" + EndOfLine + EndOfLine
+msg = msg + "Password: " + testPassword + EndOfLine
+msg = msg + "Salt: " + testSalt + EndOfLine
+msg = msg + "Salt length: " + testSalt.Length.ToString + EndOfLine
+msg = msg + "Iterations: 10000" + EndOfLine
+msg = msg + "Key length: 32 bytes" + EndOfLine
+msg = msg + "Algorithm: HMAC-SHA256" + EndOfLine + EndOfLine
+msg = msg + "Computed hash: " + hashHex + EndOfLine
+
+MessageBox(msg)
+
+
+// Test 2: Actual 'stam' user values
+Dim stamPassword As String = "YOUR_STAM_PASSWORD_HERE"  // Replace with actual
+Dim stamSalt As String = "5LsiOTd6xiSXOZUCm9RAyPcrYK4wtFcA"
+Dim stamStoredHash As String = "67773741fd29b900ac545de1cc22ad34cbe9de944a622f4339e2525e87823f1d"
+
+Dim stamPasswordData As New MemoryBlock(stamPassword.LenB)
+stamPasswordData.StringValue(0, stamPasswordData.Size) = stamPassword
+
+Dim stamHash As MemoryBlock = Crypto.PBKDF2(stamSalt, stamPasswordData, 10000, 32, Crypto.HashAlgorithms.SHA2_256)
+Dim stamHashHex As String = app.EncodeHex(stamHash)
+
+Var msg2 As String = "Stam User Test" + EndOfLine + EndOfLine
+msg2 = msg2 + "Salt: " + stamSalt + EndOfLine
+msg2 = msg2 + "Password: " + stamPassword + EndOfLine + EndOfLine
+msg2 = msg2 + "Computed hash: " + stamHashHex + EndOfLine
+msg2 = msg2 + "Stored hash:   " + stamStoredHash + EndOfLine + EndOfLine
+msg2 = msg2 + "Match: " + If(stamHashHex = stamStoredHash, "YES ✓", "NO ✗")
+
+MessageBox(msg2)
+```
+
+COMPARISON STEPS:
+=================
+
+1. Upload test_simple.lc to your API server
+2. Access https://api.echoindications.org/test_simple.lc in browser
+3. Copy the hash output from the API
+
+4. Run the Xojo test code above (Test 1)
+5. Compare the hash outputs
+
+If the hashes match: ✓ Implementations are compatible
+If they don't match: ✗ There's a PBKDF2 incompatibility
+
+Then repeat for Test 2 with actual 'stam' user data.
