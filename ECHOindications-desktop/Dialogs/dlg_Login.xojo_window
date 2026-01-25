@@ -364,7 +364,7 @@ End
 		  txtPassword.Text = ""
 		  lblErrorMessage.Visible = False
 		  lblErrorMessage.Text = ""
-		  
+
 		  ' Set focus to username field
 		  txtUsername.SetFocus
 		End Sub
@@ -387,21 +387,25 @@ End
 		  ' Hide any previous error
 		  lblErrorMessage.Visible = False
 		  lblErrorMessage.Text = ""
-		  
+
 		  ' Validate inputs
-		  if txtUsername.Text.Trim.IsEmpty then
-		    messageShow (lblErrorMessage, "You must enter both a username and a password.")
-		    txtUsername.SetFocus
+		  If txtUsername.Text.Trim.IsEmpty Or txtPassword.Text.Trim.IsEmpty Then
+		    messageShow(lblErrorMessage, "You must enter both a username and a password.")
+		    If txtUsername.Text.Trim.IsEmpty Then
+		      txtUsername.SetFocus
+		    Else
+		      txtPassword.SetFocus
+		    End If
 		    Return
-		  end if
-		  
+		  End If
+
 		  ' Attempt login
 		  If AuthManager.Login(txtUsername.Text, txtPassword.Text) Then
 		    ' Login successful - close dialog
 		    Self.Close
 		  Else
 		    ' Login failed - show error
-		    messageShow (lblErrorMessage, AuthManager.LastError)
+		    messageShow(lblErrorMessage, AuthManager.LastError)
 		    txtPassword.Text = ""
 		    txtPassword.SetFocus
 		  End If
@@ -451,19 +455,19 @@ End
 		  ' Handle Return key - move to password field
 		  If key = Chr(13) Then
 		    if txtUsername.Text.Trim.IsEmpty then
-		      messageShow (lblErrorMessage, "You must enter both a username.")
+		      messageShow (lblErrorMessage, "You must enter a username.")
 		    else
 		      txtPassword.SetFocus
 		    end if
 		    Return True
 		  End If
-		  
+
 		  ' Handle Escape key - cancel
 		  If key = Chr(27) Then
 		    btnCancel.Press
 		    Return True
 		  End If
-		  
+
 		  Return False
 		End Function
 	#tag EndEvent
