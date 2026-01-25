@@ -50,7 +50,7 @@ Begin WebPage wp_LandingPage
       LayoutType      =   "LayoutTypes.Fixed"
       Left            =   0
       LockBottom      =   False
-      LockedInPosition=   True
+      LockedInPosition=   False
       LockHorizontal  =   False
       LockLeft        =   True
       LockRight       =   True
@@ -497,6 +497,36 @@ Begin WebPage wp_LandingPage
       Width           =   314
       _mPanelIndex    =   -1
    End
+   Begin WebButton Button1
+      AllowAutoDisable=   False
+      Cancel          =   False
+      Caption         =   "Button"
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Default         =   False
+      Enabled         =   True
+      Height          =   38
+      Index           =   -2147483648
+      Indicator       =   0
+      Left            =   99
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      Outlined        =   False
+      PanelIndex      =   0
+      Scope           =   2
+      TabIndex        =   16
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   710
+      Visible         =   True
+      Width           =   100
+      _mPanelIndex    =   -1
+   End
 End
 #tag EndWebPage
 
@@ -579,6 +609,30 @@ End
 		  var tStyle as new WebStyle
 		  tStyle.Bold  = true
 		  me.Style = tStyle
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events Button1
+	#tag Event
+		Sub Pressed()
+		  // Test with actual stam user values
+		  Dim stamPassword As String = "reject67"
+		  Dim stamSalt As String = "oJwXBZD2Z0deSfQ0slG3Pkmp12F91b9H"
+		  
+		  Dim passwordData As New MemoryBlock(stamPassword.LenB)
+		  passwordData.StringValue(0, passwordData.Size) = stamPassword
+		  
+		  Dim hash As MemoryBlock = Crypto.PBKDF2(stamSalt, passwordData, 10000, 32, Crypto.HashAlgorithms.SHA2_256)
+		  Dim hashHex As String = app.EncodeHex(hash)
+		  
+		  MessageBox("Xojo computed hash: " + hashHex + EndOfLine + EndOfLine + _
+		  "Database stored:    265f237d8b32f7d4b16db1b6b513389ece9a428521a16bee7b3eeba32ec057d5" + EndOfLine + EndOfLine + _
+		  "Match: " + If(hashHex = "265f237d8b32f7d4b16db1b6b513389ece9a428521a16bee7b3eeba32ec057d5", "YES", "NO"))
+		  
+		  
+		  ' Xojo computed hash: 265f237d8b32f7d4b16db1b6b513389ece9a428521a16bee7b3eeba32ec057d5
+		  ' Database stored: 265f237d8b32f7d4b16db1b6b513389ece9a428521a16bee7b3eeba32ec057d5
+		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents
