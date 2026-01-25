@@ -10,21 +10,20 @@ row 364, col 20: Expression: missing ')' before factor (bitShift)
 
 ## Root Cause
 
-The pbkdf2 function was using `bitShift` and `bitAnd` as **operators**:
+The pbkdf2 function was trying to call custom functions named `bitShift` and `bitAnd`, but LiveCode recognizes these as **built-in operators** (in some versions), causing a "double binary operator" syntax error.
+
+The solution is to use **inline arithmetic operations** instead of function calls:
 ```livecode
-put numToChar((tBlockIndex bitShift 24) bitAnd 255) into tBlockBytes
+put numToChar((tBlockIndex div 16777216) mod 256) into tBlockBytes
 ```
 
-But LiveCode requires them to be called as **functions**:
-```livecode
-put numToChar(bitAnd(bitShift(tBlockIndex, -24), 255)) into tBlockBytes
-```
+This uses simple division and modulo operations that work in all LiveCode versions.
 
 ## What Was Fixed
 
-Changed lines 364-367 in the pbkdf2 function from operator syntax to function call syntax:
+Changed lines 364-368 in the pbkdf2 function to use inline arithmetic instead of custom function calls:
 
-**Before (INCORRECT):**
+**Before (INCORRECT - causes "double binary operator" error):**
 ```livecode
 put numToChar((tBlockIndex bitShift 24) bitAnd 255) into tBlockBytes
 put numToChar((tBlockIndex bitShift 16) bitAnd 255) after tBlockBytes
@@ -32,15 +31,19 @@ put numToChar((tBlockIndex bitShift 8) bitAnd 255) after tBlockBytes
 put numToChar(tBlockIndex bitAnd 255) after tBlockBytes
 ```
 
-**After (CORRECT):**
+**After (CORRECT - uses arithmetic operations):**
 ```livecode
-put numToChar(bitAnd(bitShift(tBlockIndex, -24), 255)) into tBlockBytes
-put numToChar(bitAnd(bitShift(tBlockIndex, -16), 255)) after tBlockBytes
-put numToChar(bitAnd(bitShift(tBlockIndex, -8), 255)) after tBlockBytes
-put numToChar(bitAnd(tBlockIndex, 255)) after tBlockBytes
+put numToChar((tBlockIndex div 16777216) mod 256) into tBlockBytes  -- Byte 1 (bits 24-31)
+put numToChar((tBlockIndex div 65536) mod 256) after tBlockBytes     -- Byte 2 (bits 16-23)
+put numToChar((tBlockIndex div 256) mod 256) after tBlockBytes       -- Byte 3 (bits 8-15)
+put numToChar(tBlockIndex mod 256) after tBlockBytes                 -- Byte 4 (bits 0-7)
 ```
 
-**Note:** The bitShift function uses **negative values for left shift** and positive values for right shift.
+**How it works:**
+- `div 16777216` = divide by 2^24 (equivalent to right shift by 24 bits)
+- `div 65536` = divide by 2^16 (equivalent to right shift by 16 bits)
+- `div 256` = divide by 2^8 (equivalent to right shift by 8 bits)
+- `mod 256` = extract lowest 8 bits (equivalent to bitwise AND with 255)
 
 ## Deployment Instructions
 
@@ -101,28 +104,25 @@ The fix converts the block index to a 4-byte big-endian representation, which is
 
 ## Technical Details
 
-### The bitShift Function
-```livecode
-function bitShift pValue, pShift
-  -- Negative shift means left shift
-  if pShift < 0 then
-    put pValue * (2 ^ (-pShift)) into tResult
-    return tResult
-  end if
+### Big-Endian Conversion Using Arithmetic
 
-  -- Positive shift means right shift
-  put pValue div (2 ^ pShift) into tResult
-  return tResult
-end bitShift
-```
+For a 32-bit integer to 4-byte big-endian conversion:
 
-For a 32-bit big-endian conversion:
-- `bitShift(value, -24)` = shift left 24 bits (most significant byte)
-- `bitShift(value, -16)` = shift left 16 bits
-- `bitShift(value, -8)` = shift left 8 bits
-- No shift needed for least significant byte
+**Block index = 1 (0x00000001):**
+- Byte 1 (MSB): `(1 div 16777216) mod 256` = 0
+- Byte 2: `(1 div 65536) mod 256` = 0
+- Byte 3: `(1 div 256) mod 256` = 0
+- Byte 4 (LSB): `1 mod 256` = 1
+- Result: `[0x00, 0x00, 0x00, 0x01]`
 
-Then `bitAnd(result, 255)` extracts just the byte value (0-255).
+**Block index = 258 (0x00000102):**
+- Byte 1 (MSB): `(258 div 16777216) mod 256` = 0
+- Byte 2: `(258 div 65536) mod 256` = 0
+- Byte 3: `(258 div 256) mod 256` = 1
+- Byte 4 (LSB): `258 mod 256` = 2
+- Result: `[0x00, 0x00, 0x01, 0x02]`
+
+This arithmetic approach works identically to bit shifting and masking, but avoids any function calls or operator naming conflicts.
 
 ## Next Steps After Successful Deployment
 
