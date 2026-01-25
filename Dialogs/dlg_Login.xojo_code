@@ -376,7 +376,7 @@ End
 
 		  Dim passwordData As New MemoryBlock(password.LenB)
 		  passwordData.StringValue(0, password.LenB) = password
-		  Dim computedHash As MemoryBlock = Crypto.PBKDF2(storedSalt, passwordData, 1000, 32, Crypto.HashAlgorithms.SHA2_256)
+		  Dim computedHash As MemoryBlock = Crypto.PBKDF2(storedSalt, passwordData, 10000, 32, Crypto.HashAlgorithms.SHA2_256)
 		  Dim computedHashHex As String = app.EncodeHex(computedHash)
 
 		  if computedHashHex = storedHash then

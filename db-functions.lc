@@ -315,11 +315,11 @@ end constantTimeCompare
 
 
 -- Get number of password hashing iterations (configurable)
--- Returns: Integer (default 1,000)
--- Note: OWASP recommends 600,000+ for PBKDF2-SHA256, but 1,000 provides
--- reasonable security while maintaining good performance for LiveCode Server
+-- Returns: Integer (default 10,000)
+-- Note: OWASP recommends 600,000+ for PBKDF2-SHA256, but 10,000 provides
+-- good security while maintaining reasonable performance with native bitXor
 function getPasswordIterations
-  return 1000
+  return 10000
 end getPasswordIterations
 
 
@@ -382,7 +382,7 @@ function pbkdf2 pPassword, pSalt, pIterations, pDkLen
       repeat with k = 1 to the length of tF
         put charToNum(char k of tF) into tByte1
         put charToNum(char k of tUBinary) into tByte2
-        put numToChar(xorByte(tByte1, tByte2)) after tNewF
+        put numToChar(tByte1 bitXor tByte2) after tNewF
       end repeat
       put tNewF into tF
     end repeat
@@ -783,8 +783,8 @@ function hmacSHA256 pMessage, pKey
   
   repeat with i = 1 to tBlockSize
     put charToNum(char i of pKey) into tKeyByte
-    put numToChar(xorByte(tKeyByte, 54)) after tInnerPad  -- 0x36 = 54
-    put numToChar(xorByte(tKeyByte, 92)) after tOuterPad  -- 0x5C = 92
+    put numToChar(tKeyByte bitXor 54) after tInnerPad  -- 0x36 = 54
+    put numToChar(tKeyByte bitXor 92) after tOuterPad  -- 0x5C = 92
   end repeat
   
   -- Calculate inner hash (messageDigest returns binary)
