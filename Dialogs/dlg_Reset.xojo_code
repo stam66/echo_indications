@@ -303,7 +303,7 @@ End
 		  wend
 		  
 		  ' If we get here, no matching email was found
-		  MessageBox ("The email entered does not corresond to a registerd user.")
+		  MessageBox ("The email entered does not correspond to a registered user.")
 		  
 		End Sub
 	#tag EndMethod
