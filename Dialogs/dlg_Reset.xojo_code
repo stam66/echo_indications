@@ -284,7 +284,7 @@ End
 		      Dim salt As String = app.GenerateRandomSalt(32)
 		      Dim passwordData As New MemoryBlock(tempPass.LenB)
 		      passwordData.StringValue(0, tempPass.LenB) = tempPass
-		      Dim hash As MemoryBlock = Crypto.PBKDF2(salt, passwordData, 10000, 32, Crypto.HashAlgorithms.SHA2_256)
+		      Dim hash As MemoryBlock = Crypto.PBKDF2(salt, passwordData, 1000, 32, Crypto.HashAlgorithms.SHA2_256)
 		      Dim hashHex As String = app.EncodeHex(hash)
 
 		      rs.EditRow
