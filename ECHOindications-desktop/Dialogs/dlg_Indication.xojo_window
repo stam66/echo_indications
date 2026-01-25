@@ -1295,57 +1295,13 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub NavigateToIndication(newIndex As Integer)
-		  '/// Navigates to an indication, prompting to save if there are unsaved changes
-		  '///
-		  '/// @param newIndex The index of the indication to navigate to
-		  
-		  If mIndicationsList.Count = 0 Then Return
-		  
-		  ' Check for unsaved changes
-		  If HasUnsavedChanges() Then
-		    Var d As New MessageDialog
-		    d.Message = "Save changes before navigating?"
-		    d.Explanation = "You have unsaved changes. Would you like to save them before continuing?"
-		    d.ActionButton.Caption = "Save"
-		    d.CancelButton.Visible = True
-		    d.AlternateActionButton.Visible = True
-		    d.AlternateActionButton.Caption = "Don't Save"
-		    
-		    Var result As MessageDialogButton = d.ShowModal
-		    
-		    If result = d.ActionButton Then
-		      ' User chose to save
-		      SaveIndication()
-		      ' SaveIndication closes the window on success, so check if we're still open
-		      If Self.Visible Then
-		        ' Save failed, don't navigate
-		        Return
-		      Else
-		        ' Window was closed after save, exit
-		        Return
-		      End If
-		      
-		    ElseIf result = d.CancelButton Then
-		      ' User chose Cancel, don't navigate
-		      Return
-		      
-		      ' If AlternateActionButton (Don't Save), continue with navigation
-		    End If
-		  End If
-		  
-		  ' Update the index
-		  mCurrentIndex = newIndex
-		  
-		  ' Load the indication at new index
-		  LoadIndication(mIndicationsList(mCurrentIndex))
-		End Sub
-	#tag EndMethod
+		Private Function SaveIndication(closeOnSuccess As Boolean = True) As Boolean
+		  '/// Saves the current indication (create or update)
+		  '/// @param closeOnSuccess If True, closes the dialog on successful save
+		  '/// @returns True if save was successful, False otherwise
 
-	#tag Method, Flags = &h21
-		Private Sub SaveIndication()
-		  If Not ValidateForm() Then Return
-		  
+		  If Not ValidateForm() Then Return False
+
 		  Try
 		    ' Collect selected context IDs
 		    Var contextIDs() As Integer
@@ -1354,7 +1310,7 @@ End
 		        contextIDs.Add(lstContexts.RowTagAt(i))
 		      End If
 		    Next
-		    
+
 		    ' Prepare data dictionary for API
 		    Var data As New Dictionary
 		    data.Value("title") = txtIndication.Text.Trim
@@ -1369,41 +1325,44 @@ End
 		    data.Value("secondary_inpatient") = MapIndexToCareSetting(popSecondaryIP.SelectedRowIndex)
 		    data.Value("urgency") = MapIndexToUrgency(popUrgency.SelectedRowIndex)
 		    data.Value("context_ids") = contextIDs
-		    
+
 		    Var result As Dictionary
-		    
+
 		    If mIsNewIndication Then
 		      ' Create new indication
 		      result = APIClient.Post("indications.lc", "create", data)
-		      
+
 		      If result.Value("status") = "success" Then
 		        ' Broadcast creation event
 		        PubSub.Broadcast(EventConstants.INDICATION_CREATED, result.Value("data"))
-		        MessageBox("Indication created successfully.")
-		        Self.Close()
+		        If closeOnSuccess Then Self.Close()
+		        Return True
 		      Else
 		        MessageBox("Failed to create indication: " + result.Value("message").StringValue)
+		        Return False
 		      End If
-		      
+
 		    Else
 		      ' Update existing indication
 		      data.Value("id") = mCurrentIndication.ID
 		      result = APIClient.Post("indications.lc", "update", data)
-		      
+
 		      If result.Value("status") = "success" Then
 		        ' Broadcast update event
 		        PubSub.Broadcast(EventConstants.INDICATION_UPDATED, result.Value("data"))
-		        MessageBox("Indication updated successfully.")
-		        Self.Close()
+		        If closeOnSuccess Then Self.Close()
+		        Return True
 		      Else
 		        MessageBox("Failed to update indication: " + result.Value("message").StringValue)
+		        Return False
 		      End If
 		    End If
-		    
+
 		  Catch err As RuntimeException
 		    MessageBox("Error saving indication: " + err.Message)
+		    Return False
 		  End Try
-		End Sub
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -1462,6 +1421,118 @@ End
 		  
 		  Return True
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub CaptureOriginalState()
+		  '/// Captures the current form state as the original state for change detection
+
+		  mOriginalTitle = txtIndication.Text
+		  mOriginalKeywords = txtKeywords.Text
+		  mOriginalComments = txtComments.Text
+		  mOriginalSourceASE = chkSourceASE.Value
+		  mOriginalSourceEACVI = chkSourceEACVI.Value
+		  mOriginalSourceBSE = chkSourceBSE.Value
+		  mOriginalSourceConsensus = chkSourceConsensus.Value
+		  mOriginalPrimaryCare = popPrimaryCare.SelectedRowIndex
+		  mOriginalSecondaryOP = popSecondaryOP.SelectedRowIndex
+		  mOriginalSecondaryIP = popSecondaryIP.SelectedRowIndex
+		  mOriginalUrgency = popUrgency.SelectedRowIndex
+
+		  ' Capture selected context IDs
+		  Redim mOriginalContextIDs(-1)
+		  For i As Integer = 0 To lstContexts.LastRowIndex
+		    If lstContexts.CellCheckBoxStateAt(i, 0) = DesktopCheckBox.VisualStates.Checked Then
+		      mOriginalContextIDs.Add(lstContexts.RowTagAt(i))
+		    End If
+		  Next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function HasUnsavedChanges() As Boolean
+		  '/// Checks if the form has been modified from its original state
+		  '///
+		  '/// @returns True if there are unsaved changes, False otherwise
+
+		  ' Check text fields
+		  If txtIndication.Text <> mOriginalTitle Then Return True
+		  If txtKeywords.Text <> mOriginalKeywords Then Return True
+		  If txtComments.Text <> mOriginalComments Then Return True
+
+		  ' Check checkboxes
+		  If chkSourceASE.Value <> mOriginalSourceASE Then Return True
+		  If chkSourceEACVI.Value <> mOriginalSourceEACVI Then Return True
+		  If chkSourceBSE.Value <> mOriginalSourceBSE Then Return True
+		  If chkSourceConsensus.Value <> mOriginalSourceConsensus Then Return True
+
+		  ' Check popup menus
+		  If popPrimaryCare.SelectedRowIndex <> mOriginalPrimaryCare Then Return True
+		  If popSecondaryOP.SelectedRowIndex <> mOriginalSecondaryOP Then Return True
+		  If popSecondaryIP.SelectedRowIndex <> mOriginalSecondaryIP Then Return True
+		  If popUrgency.SelectedRowIndex <> mOriginalUrgency Then Return True
+
+		  ' Check context IDs
+		  Var currentContextIDs() As Integer
+		  For i As Integer = 0 To lstContexts.LastRowIndex
+		    If lstContexts.CellCheckBoxStateAt(i, 0) = DesktopCheckBox.VisualStates.Checked Then
+		      currentContextIDs.Add(lstContexts.RowTagAt(i))
+		    End If
+		  Next
+
+		  ' Compare context arrays
+		  If currentContextIDs.Count <> mOriginalContextIDs.Count Then Return True
+
+		  For Each id As Integer In currentContextIDs
+		    If mOriginalContextIDs.IndexOf(id) < 0 Then Return True
+		  Next
+
+		  Return False
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub NavigateToIndication(newIndex As Integer)
+		  '/// Navigates to an indication, prompting to save if there are unsaved changes
+		  '///
+		  '/// @param newIndex The index of the indication to navigate to
+
+		  If mIndicationsList.Count = 0 Then Return
+
+		  ' Check for unsaved changes
+		  If HasUnsavedChanges() Then
+		    Var d As New MessageDialog
+		    d.Message = "Save changes before navigating?"
+		    d.Explanation = "You have unsaved changes. Would you like to save them before continuing?"
+		    d.ActionButton.Caption = "Save"
+		    d.CancelButton.Visible = True
+		    d.AlternateActionButton.Visible = True
+		    d.AlternateActionButton.Caption = "Don't Save"
+
+		    Var result As MessageDialogButton = d.ShowModal
+
+		    If result = d.ActionButton Then
+		      ' User chose to save - don't close dialog, just save
+		      If Not SaveIndication(False) Then
+		        ' Save failed, don't navigate
+		        Return
+		      End If
+		      ' Save succeeded, continue to navigate
+
+		    ElseIf result = d.CancelButton Then
+		      ' User chose Cancel, don't navigate
+		      Return
+
+		    ' If AlternateActionButton (Don't Save), continue with navigation
+		    End If
+		  End If
+
+		  ' Update the index
+		  mCurrentIndex = newIndex
+
+		  ' Load the indication at new index
+		  LoadIndication(mIndicationsList(mCurrentIndex))
+		End Sub
 	#tag EndMethod
 
 
@@ -1573,7 +1644,7 @@ End
 #tag Events btnSave
 	#tag Event
 		Sub Pressed()
-		  SaveIndication()
+		  Call SaveIndication()
 		End Sub
 	#tag EndEvent
 #tag EndEvents
