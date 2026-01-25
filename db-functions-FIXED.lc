@@ -315,11 +315,11 @@ end constantTimeCompare
 
 
 -- Get number of password hashing iterations (configurable)
--- Returns: Integer (default 10,000)
--- Note: OWASP recommends 600,000+ for PBKDF2-SHA256, but 10,000 provides
--- good security while maintaining reasonable performance for web applications
+-- Returns: Integer (default 1,000)
+-- Note: OWASP recommends 600,000+ for PBKDF2-SHA256, but 1,000 provides
+-- reasonable security while maintaining good performance for LiveCode Server
 function getPasswordIterations
-  return 10000
+  return 1000
 end getPasswordIterations
 
 
