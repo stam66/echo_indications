@@ -16,15 +16,18 @@ Protected Module APIClient
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Function CreateErrorResponse(message As String) As Dictionary
+		Private Function CreateErrorResponse(message As String, errorCode As String = "") As Dictionary
 		  Var result As New Dictionary
 		  result.Value("status") = "error"
 		  result.Value("message") = message
-		  
+		  If errorCode.Length > 0 Then
+		    result.Value("errorCode") = errorCode
+		  End If
+
 		  If AppConfig.DEBUG_MODE Then
 		    System.DebugLog("APIClient error: " + message)
 		  End If
-		  
+
 		  Return result
 		End Function
 	#tag EndMethod
@@ -52,16 +55,43 @@ Protected Module APIClient
 		    
 		    // Check HTTP status
 		    Var httpStatus As Integer = socket.HTTPStatusCode
-		    If httpStatus <> 200 Then
-		      Return CreateErrorResponse("HTTP " + httpStatus.ToString + ": " + response)
-		    End If
-		    
-		    Return ParseResponse(response)
-		    
+
+		    Select Case httpStatus
+		    Case 200
+		      Return ParseResponse(response)
+
+		    Case 401
+		      If AuthManager.IsAuthenticated Then
+		        AuthManager.Logout
+		        Return CreateErrorResponse("Your session has expired. Please log in again.", "SESSION_EXPIRED")
+		      Else
+		        Return ParseErrorResponse(response, "Authentication required.", "UNAUTHORIZED")
+		      End If
+
+		    Case 403
+		      Return CreateErrorResponse("Access denied.", "FORBIDDEN")
+
+		    Case 404
+		      Return CreateErrorResponse("The requested resource was not found.", "NOT_FOUND")
+
+		    Case 429
+		      Return CreateErrorResponse("Too many requests. Please wait a moment and try again.", "RATE_LIMITED")
+
+		    Case 500, 502, 503
+		      Return CreateErrorResponse("Server error. Please try again later.", "SERVER_ERROR")
+
+		    Case 504
+		      Return CreateErrorResponse("The server took too long to respond. Please try again.", "GATEWAY_TIMEOUT")
+
+		    Else
+		      Return ParseErrorResponse(response, "Unexpected error (HTTP " + httpStatus.ToString + ").", "HTTP_" + httpStatus.ToString)
+
+		    End Select
+
 		  Catch err As IOException
-		    Return CreateErrorResponse("Network error: " + err.Message)
+		    Return CreateErrorResponse("Unable to connect to server. Please check your internet connection.", "NETWORK_ERROR")
 		  Catch err As RuntimeException
-		    Return CreateErrorResponse("Request failed: " + err.Message)
+		    Return CreateErrorResponse("Connection failed: " + err.Message, "CONNECTION_ERROR")
 		  End Try
 		End Function
 	#tag EndMethod
@@ -83,18 +113,40 @@ Protected Module APIClient
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
+		Private Function ParseErrorResponse(json As String, defaultMessage As String, errorCode As String) As Dictionary
+		  ' Try to extract error message from API response, fall back to default
+		  Try
+		    Var parsed As Variant = ParseJSON(json)
+		    If parsed IsA Dictionary Then
+		      Var responseDict As Dictionary = Dictionary(parsed)
+		      ' Check for API error message in response
+		      If responseDict.HasKey("message") Then
+		        Return CreateErrorResponse(responseDict.Value("message").StringValue, errorCode)
+		      ElseIf responseDict.HasKey("error") Then
+		        Return CreateErrorResponse(responseDict.Value("error").StringValue, errorCode)
+		      End If
+		    End If
+		  Catch err As RuntimeException
+		    ' Failed to parse - use default message
+		  End Try
+
+		  Return CreateErrorResponse(defaultMessage, errorCode)
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
 		Private Function ParseResponse(json As String) As Dictionary
 		  Try
 		    Var result As New Dictionary
 		    Var parsed As Variant = ParseJSON(json)
-		    
+
 		    If parsed IsA Dictionary Then
 		      result = Dictionary(parsed)
 		      Return result
 		    Else
 		      Return CreateErrorResponse("Invalid JSON response format")
 		    End If
-		    
+
 		  Catch err As RuntimeException
 		    Return CreateErrorResponse("JSON parsing error: " + err.Message)
 		  End Try
@@ -142,24 +194,54 @@ Protected Module APIClient
 
 		    Select Case httpStatus
 		    Case 200, 201
-		      // Success
-		    Case 401
-		      AuthManager.Logout
-		      Return CreateErrorResponse("Authentication required. Please log in again.")
-		    Case 429
-		      Return CreateErrorResponse("Rate limit exceeded. Please wait and try again.")
-		    Case 500, 502, 503
-		      Return CreateErrorResponse("Server error. Please try again later.")
-		    Else
-		      Return CreateErrorResponse("HTTP " + httpStatus.ToString + ": " + response)
-		    End Select
+		      // Success - parse the response
+		      Return ParseResponse(response)
 
-		    Return ParseResponse(response)
+		    Case 400
+		      // Bad Request - try to get error message from response
+		      Return ParseErrorResponse(response, "Invalid request. Please check your input.", "BAD_REQUEST")
+
+		    Case 401
+		      // Unauthorized - could be invalid credentials or expired token
+		      If AuthManager.IsAuthenticated Then
+		        AuthManager.Logout
+		        Return CreateErrorResponse("Your session has expired. Please log in again.", "SESSION_EXPIRED")
+		      Else
+		        // During login - try to get specific error from API response
+		        Return ParseErrorResponse(response, "Invalid username or password.", "INVALID_CREDENTIALS")
+		      End If
+
+		    Case 403
+		      Return CreateErrorResponse("Access denied. You don't have permission to perform this action.", "FORBIDDEN")
+
+		    Case 404
+		      Return CreateErrorResponse("The requested resource was not found.", "NOT_FOUND")
+
+		    Case 429
+		      Return CreateErrorResponse("Too many requests. Please wait a moment and try again.", "RATE_LIMITED")
+
+		    Case 500
+		      Return CreateErrorResponse("Internal server error. Please try again later.", "SERVER_ERROR")
+
+		    Case 502
+		      Return CreateErrorResponse("The server is temporarily unavailable. Please try again later.", "BAD_GATEWAY")
+
+		    Case 503
+		      Return CreateErrorResponse("The service is temporarily unavailable. Please try again later.", "SERVICE_UNAVAILABLE")
+
+		    Case 504
+		      Return CreateErrorResponse("The server took too long to respond. Please try again.", "GATEWAY_TIMEOUT")
+
+		    Else
+		      // Unknown error - try to parse response for details
+		      Return ParseErrorResponse(response, "Unexpected error (HTTP " + httpStatus.ToString + ").", "HTTP_" + httpStatus.ToString)
+
+		    End Select
 		    
 		  Catch err As IOException
-		    Return CreateErrorResponse("Network error: " + err.Message)
+		    Return CreateErrorResponse("Unable to connect to server. Please check your internet connection.", "NETWORK_ERROR")
 		  Catch err As RuntimeException
-		    Return CreateErrorResponse("Request failed: " + err.Message)
+		    Return CreateErrorResponse("Connection failed: " + err.Message, "CONNECTION_ERROR")
 		  End Try
 		End Function
 	#tag EndMethod
