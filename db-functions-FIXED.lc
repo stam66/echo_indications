@@ -1,0 +1,839 @@
+<?lc
+-- ============================================================================
+-- DATABASE HELPER FUNCTIONS for LiveCode Server API
+-- ============================================================================
+-- Version: 2.1 - Fixed HMAC with Manual XOR (No bitXor dependency)
+-- Includes: Database, JSON, Security, Passwords, JWT
+-- Dependencies: photon-library.lc, settings.lc
+-- ============================================================================
+
+-- Include dependencies
+include "photon-library.lc"
+include "settings.lc"
+
+-- ============================================================================
+-- DATABASE FUNCTIONS
+-- ============================================================================
+
+-- Connect to MySQL database
+-- Returns: Connection ID (number) or ERROR string
+function dbConnect
+  put getDBHost() into tHost
+  put getDBName() into tDatabase
+  put getDBUser() into tUser
+  put getDBPassword() into tPassword
+  
+  put revOpenDatabase("mysql", tHost, tDatabase, tUser, tPassword) into tConnectionID
+  
+  if tConnectionID is a number then
+    return tConnectionID
+  else
+    return "ERROR: Database connection failed -" && tConnectionID
+  end if
+end dbConnect
+
+
+-- ============================================================================
+-- SECURITY HEADER FUNCTIONS
+-- ============================================================================
+
+-- Set security headers for all API responses
+-- Prevents common web vulnerabilities: clickjacking, XSS, MIME-sniffing
+-- Should be called at the start of every API endpoint
+on setSecurityHeaders
+  -- Prevent MIME-sniffing attacks
+  put header "X-Content-Type-Options: nosniff"
+
+  -- Prevent clickjacking attacks
+  put header "X-Frame-Options: DENY"
+
+  -- Enable browser XSS protection
+  put header "X-XSS-Protection: 1; mode=block"
+
+  -- Control referrer information
+  put header "Referrer-Policy: strict-origin-when-cross-origin"
+
+  -- CORS headers - Allow cross-origin requests
+  -- Note: Adjust the origin based on your frontend domain
+  put header "Access-Control-Allow-Origin: *"
+  put header "Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS"
+  put header "Access-Control-Allow-Headers: Authorization, Content-Type"
+  put header "Access-Control-Max-Age: 86400"
+
+  -- HSTS - Force HTTPS (uncomment when using HTTPS in production)
+  -- put header "Strict-Transport-Security: max-age=31536000; includeSubDomains"
+
+  -- Content Security Policy - Restrict resource loading
+  put header "Content-Security-Policy: default-src 'self'"
+end setSecurityHeaders
+
+
+-- ============================================================================
+-- JSON RESPONSE FUNCTIONS
+-- ============================================================================
+
+-- Return JSON error response
+-- Parameters: pMessage (String) - Error message
+-- Returns: JSON string with error status
+function jsonError pMessage
+  put pMessage into tResult["message"]
+  put "error" into tResult["status"]
+  return JSONStringify(tResult)
+end jsonError
+
+
+-- Return JSON success response
+-- Parameters: pData (Any) - Data to return
+-- Returns: JSON string with success status	
+function jsonSuccess pData
+  put pData into tResult["data"]
+  put "success" into tResult["status"]
+  return JSONStringify(tResult)
+end jsonSuccess
+
+
+-- ============================================================================
+-- SQL SECURITY FUNCTIONS
+-- ============================================================================
+
+-- Trim whitespace from both ends of string
+-- Parameters: pString (String) - String to trim
+-- Returns: String without leading/trailing spaces
+function trimString pString
+  -- Remove leading whitespace
+  put replaceText(pString, "^\s+", empty) into pString
+  -- Remove trailing whitespace
+  put replaceText(pString, "\s+$", empty) into pString
+  return pString
+end trimString
+
+
+-- Escape SQL string to prevent injection
+-- Parameters: pString (String) - String to escape
+-- Returns: Escaped string safe for SQL
+function sqlEscape pString
+  replace "\" with "\\" in pString
+  replace "'" with "\'" in pString
+  replace quote with "\" & quote in pString
+  replace return with "\n" in pString
+  replace tab with "\t" in pString
+  return pString
+end sqlEscape
+
+
+-- Validate numeric ID to prevent SQL injection
+-- Parameters: pID (Any) - ID to validate
+-- Returns: Valid integer or empty string
+function validateNumericID pID
+  -- Remove whitespace
+  put trimString(pID) into pID
+
+  -- Check if empty
+  if pID is empty then
+    return empty
+  end if
+
+  -- Check if it's a number
+  if pID is not an integer then
+    return empty
+  end if
+
+  -- Reject negative numbers
+  if pID < 0 then
+    return empty
+  end if
+
+  -- Reject if conversion changed the value significantly
+  if pID contains " " or pID contains ";" or pID contains "-" or pID contains "'" then
+    return empty
+  end if
+
+  return pID + 0
+end validateNumericID
+
+
+-- ============================================================================
+-- BITWISE HELPER FUNCTIONS
+-- ============================================================================
+
+-- Convert binary hash to hexadecimal string
+-- Parameters: pBinary (String) - Binary data
+-- Returns: Lowercase hex string
+function binaryToHex pBinary
+  put empty into tHex
+  repeat with i = 1 to the length of pBinary
+    put charToNum(char i of pBinary) into tByte
+    put baseConvert(tByte, 10, 16) into tHexByte
+    -- Pad with leading zero if needed
+    if the length of tHexByte = 1 then
+      put "0" before tHexByte
+    end if
+    put tHexByte after tHex
+  end repeat
+  return toLower(tHex)
+end binaryToHex
+
+
+-- Convert hexadecimal string to binary
+-- Parameters: pHex (String) - Hex string
+-- Returns: Binary data
+function hexToBinary pHex
+  -- Validate input
+  if pHex is empty then
+    return empty
+  end if
+  
+  -- Remove any whitespace
+  put replaceText(pHex, "\s+", empty) into pHex
+  
+  put empty into tBinary
+  repeat with i = 1 to the length of pHex step 2
+    put char i to (i+1) of pHex into tHexPair
+    -- Skip if not a valid hex pair
+    if the length of tHexPair < 2 then
+      exit repeat
+    end if
+    
+    -- Validate hex characters (0-9, A-F, a-f)
+    put "0123456789ABCDEFabcdef" into tValidChars
+    if char 1 of tHexPair is not in tValidChars or char 2 of tHexPair is not in tValidChars then
+      -- Skip invalid hex pair
+      next repeat
+    end if
+    
+    -- Convert hex pair to decimal
+    put baseConvert(tHexPair, 16, 10) into tDecimal
+    
+    -- Ensure valid decimal result
+    if tDecimal is empty or tDecimal is not a number then
+      next repeat
+    end if
+    
+    -- Ensure value is within valid byte range (0-255)
+    put tDecimal mod 256 into tDecimal
+    
+    put numToChar(tDecimal) after tBinary
+  end repeat
+  return tBinary
+end hexToBinary
+
+
+-- Manual XOR implementation (bitwise exclusive OR)
+-- Parameters: pA, pB (Integers 0-255) - Bytes to XOR
+-- Returns: Integer result of A XOR B
+function xorByte pA, pB
+  put 0 into tResult
+  put 1 into tBit
+
+  repeat 8 times
+    put pA mod 2 into tBitA
+    put pB mod 2 into tBitB
+
+    if tBitA is not tBitB then
+      put tResult + tBit into tResult
+    end if
+
+    put pA div 2 into pA
+    put pB div 2 into pB
+    put tBit * 2 into tBit
+  end repeat
+
+  return tResult
+end xorByte
+
+
+-- Manual bitwise AND implementation
+-- Parameters: pA, pB (Integers) - Values to AND
+-- Returns: Integer result of A AND B
+function bitAnd pA, pB
+  put 0 into tResult
+  put 1 into tBit
+
+  repeat 32 times  -- Support 32-bit integers
+    put pA mod 2 into tBitA
+    put pB mod 2 into tBitB
+
+    if tBitA is 1 and tBitB is 1 then
+      put tResult + tBit into tResult
+    end if
+
+    put pA div 2 into pA
+    put pB div 2 into pB
+    put tBit * 2 into tBit
+
+    -- Early exit if both values are 0
+    if pA is 0 and pB is 0 then
+      exit repeat
+    end if
+  end repeat
+
+  return tResult
+end bitAnd
+
+
+-- Manual right bit shift implementation
+-- Parameters: pValue (Integer) - Value to shift, pShift (Integer) - Number of bits
+-- Returns: Integer result of pValue >> pShift
+function bitShift pValue, pShift
+  -- Negative shift means left shift
+  if pShift < 0 then
+    put pValue * (2 ^ (-pShift)) into tResult
+    return tResult
+  end if
+
+  -- Positive shift means right shift
+  put pValue div (2 ^ pShift) into tResult
+  return tResult
+end bitShift
+
+
+-- ============================================================================
+-- PASSWORD HASHING FUNCTIONS
+-- ============================================================================
+
+-- Constant-time string comparison to prevent timing attacks
+-- Parameters:
+--   pString1 (String) - First string to compare
+--   pString2 (String) - Second string to compare
+-- Returns: true if strings match, false otherwise
+-- Note: Always compares all characters regardless of where mismatch occurs
+function constantTimeCompare pString1, pString2
+  -- For fixed-length hashes, early length check is safe
+  if the length of pString1 is not the length of pString2 then
+    return false
+  end if
+
+  put 0 into tResult
+  repeat with i = 1 to the length of pString1
+    if charToNum(char i of pString1) is not charToNum(char i of pString2) then
+      put 1 into tResult
+    end if
+  end repeat
+
+  return (tResult = 0)
+end constantTimeCompare
+
+
+-- Get number of password hashing iterations (configurable)
+-- Returns: Integer (default 10,000)
+-- Note: OWASP recommends 600,000+ for PBKDF2-SHA256, but 10,000 provides
+-- good security while maintaining reasonable performance for web applications
+function getPasswordIterations
+  return 10000
+end getPasswordIterations
+
+
+-- Generate random salt for password hashing
+-- Returns: 32-character random string
+function generateSalt
+  put "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789" into tChars
+  put empty into tSalt
+  
+  repeat 32 times
+    put random(62) into tPos
+    put char tPos of tChars after tSalt
+  end repeat
+  
+  return tSalt
+end generateSalt
+
+
+-- PBKDF2 implementation (RFC 2898) using HMAC-SHA256
+-- Parameters:
+--   pPassword (String) - Password to derive key from
+--   pSalt (String) - Cryptographic salt
+--   pIterations (Integer) - Number of iterations (default 10,000)
+--   pDkLen (Integer) - Desired key length in bytes (default 32)
+-- Returns: Binary data of derived key
+-- Note: This matches Xojo's Crypto.PBKDF2 with SHA2_256
+function pbkdf2 pPassword, pSalt, pIterations, pDkLen
+  -- Default parameters
+  if pIterations is empty then put 10000 into pIterations
+  if pDkLen is empty then put 32 into pDkLen
+
+  put 32 into tHLen  -- SHA-256 output is 32 bytes
+
+  -- Calculate number of blocks needed: l = CEIL(dkLen / hLen)
+  put ceiling(pDkLen / tHLen) into tNumBlocks
+
+  put empty into tDerivedKey
+
+  -- For each block
+  repeat with tBlockIndex = 1 to tNumBlocks
+    -- INT_32_BE(i) - Convert block index to 4-byte big-endian
+    put numToChar(bitAnd(bitShift(tBlockIndex, -24), 255)) into tBlockBytes
+    put numToChar(bitAnd(bitShift(tBlockIndex, -16), 255)) after tBlockBytes
+    put numToChar(bitAnd(bitShift(tBlockIndex, -8), 255)) after tBlockBytes
+    put numToChar(bitAnd(tBlockIndex, 255)) after tBlockBytes
+
+    -- U_1 = PRF(Password, Salt || INT(i))
+    put hmacSHA256(pSalt & tBlockBytes, pPassword) into tU
+    put hexToBinary(tU) into tUBinary
+    put tUBinary into tF  -- F starts as U_1
+
+    -- U_2 through U_c
+    repeat with j = 2 to pIterations
+      put hmacSHA256(tUBinary, pPassword) into tU
+      put hexToBinary(tU) into tUBinary
+
+      -- XOR with F: F = F XOR U_j
+      put empty into tNewF
+      repeat with k = 1 to the length of tF
+        put charToNum(char k of tF) into tByte1
+        put charToNum(char k of tUBinary) into tByte2
+        put numToChar(xorByte(tByte1, tByte2)) after tNewF
+      end repeat
+      put tNewF into tF
+    end repeat
+
+    -- Append this block to derived key
+    put tF after tDerivedKey
+  end repeat
+
+  -- Extract first dkLen bytes
+  return char 1 to pDkLen of tDerivedKey
+end pbkdf2
+
+
+-- Hash password with salt using PBKDF2 (RFC 2898) with HMAC-SHA256
+-- Parameters:
+--   pPassword (String) - Plain text password
+--   pSalt (String) - Salt value (32 chars recommended)
+-- Returns: "salt:hash" format string (hash is hex)
+-- Compatible with Xojo's Crypto.PBKDF2(salt, password, 10000, 32, SHA2_256)
+function hashPassword pPassword, pSalt
+  put getPasswordIterations() into tIterations
+
+  -- Use proper PBKDF2 implementation
+  put pbkdf2(pPassword, pSalt, tIterations, 32) into tBinary
+
+  -- Convert binary to hex for storage
+  put binaryToHex(tBinary) into tHash
+
+  return pSalt & ":" & tHash
+end hashPassword
+
+
+-- Verify password against stored hash using PBKDF2
+-- Parameters:
+--   pPassword (String) - Plain text password to verify
+--   pStoredHash (String) - Stored hash in "salt:hash" format
+-- Returns: true/false
+-- Compatible with Xojo's Crypto.PBKDF2(salt, password, 10000, 32, SHA2_256)
+function verifyPassword pPassword, pStoredHash
+  -- PBKDF2 format must be "salt:hash"
+  if ":" is not in pStoredHash then
+    -- Invalid format
+    return false
+  end if
+
+  -- Extract salt and hash
+  set the itemDelimiter to ":"
+  put item 1 of pStoredHash into tSalt
+  put item 2 of pStoredHash into tStoredHashValue
+
+  -- Hash the provided password with the stored salt using PBKDF2
+  put hashPassword(pPassword, tSalt) into tNewHash
+  set the itemDelimiter to ":"
+  put item 2 of tNewHash into tNewHashValue
+
+  -- Compare hashes using constant-time comparison to prevent timing attacks
+  return constantTimeCompare(toLower(tNewHashValue), toLower(tStoredHashValue))
+end verifyPassword
+
+
+-- Check if password hash needs migration to new format
+-- Parameters: pHash (String) - Stored password hash
+-- Returns: true if needs migration, false if already new format
+-- Legacy formats (MD5, SHA-1, SHA-256, plain text) all need migration
+function needsPasswordMigration pHash
+  return (":" is not in pHash)
+end needsPasswordMigration
+
+
+-- ============================================================================
+-- RATE LIMITING FUNCTIONS
+-- ============================================================================
+
+-- Check if IP address is rate limited
+-- Parameters:
+--   pConnectionID (Integer) - Database connection ID
+--   pIP (String) - Client IP address
+--   pEndpoint (String) - Endpoint name (e.g., "login", "api")
+--   pMaxAttempts (Integer) - Maximum attempts allowed in window
+--   pWindowSeconds (Integer) - Time window in seconds
+-- Returns: Empty string if allowed, error message if rate limited
+function checkRateLimit pConnectionID, pIP, pEndpoint, pMaxAttempts, pWindowSeconds
+  -- Escape inputs
+  put sqlEscape(pIP) into tSafeIP
+  put sqlEscape(pEndpoint) into tSafeEndpoint
+
+  -- Clean up old rate limit records first
+  put "DELETE FROM rate_limit WHERE locked_until < NOW() AND locked_until IS NOT NULL" into tSQL
+  revExecuteSQL pConnectionID, tSQL
+
+  put "DELETE FROM rate_limit WHERE last_attempt < DATE_SUB(NOW(), INTERVAL" && pWindowSeconds && "SECOND)" into tSQL
+  revExecuteSQL pConnectionID, tSQL
+
+  -- Check current rate limit status
+  put "SELECT attempts, locked_until FROM rate_limit WHERE ip_address = '" & tSafeIP & "' AND endpoint = '" & tSafeEndpoint & "'" into tSQL
+  put revDataFromQuery(tab, return, pConnectionID, tSQL) into tData
+
+  if tData begins with "revdberr" or tData is empty then
+    -- No existing record, create one
+    put "INSERT INTO rate_limit (ip_address, endpoint, attempts, last_attempt) VALUES ('" & tSafeIP & "', '" & tSafeEndpoint & "', 1, NOW())" into tSQL
+    revExecuteSQL pConnectionID, tSQL
+    return empty  -- Allow request
+  end if
+
+  -- Parse existing record
+  split tData by tab
+  put tData[1] into tAttempts
+  put tData[2] into tLockedUntil
+
+  -- Check if currently locked
+  if tLockedUntil is not empty then
+    return "Too many requests. Please try again later."
+  end if
+
+  -- Increment attempts
+  add 1 to tAttempts
+
+  if tAttempts > pMaxAttempts then
+    -- Lock the IP for the window duration
+    put "UPDATE rate_limit SET attempts =" && tAttempts & ", last_attempt = NOW(), locked_until = DATE_ADD(NOW(), INTERVAL" && pWindowSeconds && "SECOND) WHERE ip_address = '" & tSafeIP & "' AND endpoint = '" & tSafeEndpoint & "'" into tSQL
+    revExecuteSQL pConnectionID, tSQL
+    return "Too many requests. Please try again later."
+  else
+    -- Update attempts
+    put "UPDATE rate_limit SET attempts =" && tAttempts & ", last_attempt = NOW() WHERE ip_address = '" & tSafeIP & "' AND endpoint = '" & tSafeEndpoint & "'" into tSQL
+    revExecuteSQL pConnectionID, tSQL
+    return empty  -- Allow request
+  end if
+end checkRateLimit
+
+
+-- Reset rate limit for an IP address (useful after successful login)
+-- Parameters:
+--   pConnectionID (Integer) - Database connection ID
+--   pIP (String) - Client IP address
+--   pEndpoint (String) - Endpoint name
+on resetRateLimit pConnectionID, pIP, pEndpoint
+  put sqlEscape(pIP) into tSafeIP
+  put sqlEscape(pEndpoint) into tSafeEndpoint
+
+  put "DELETE FROM rate_limit WHERE ip_address = '" & tSafeIP & "' AND endpoint = '" & tSafeEndpoint & "'" into tSQL
+  revExecuteSQL pConnectionID, tSQL
+end resetRateLimit
+
+
+-- Get client IP address from request
+-- Handles proxies and load balancers
+-- Returns: IP address string
+function getClientIP
+  -- Check for IP from proxy headers first
+  put $_SERVER["HTTP_X_FORWARDED_FOR"] into tIP
+  if tIP is not empty then
+    -- X-Forwarded-For can contain multiple IPs, get the first one
+    set the itemDelimiter to ","
+    put trimString(item 1 of tIP) into tIP
+    return tIP
+  end if
+
+  -- Check for real IP header
+  put $_SERVER["HTTP_X_REAL_IP"] into tIP
+  if tIP is not empty then
+    return tIP
+  end if
+
+  -- Fall back to remote address
+  put $_SERVER["REMOTE_ADDR"] into tIP
+  if tIP is not empty then
+    return tIP
+  end if
+
+  -- Default fallback
+  return "0.0.0.0"
+end getClientIP
+
+
+-- ============================================================================
+-- JWT FUNCTIONS
+-- ============================================================================
+
+-- Get JWT token expiration time in seconds (configurable)
+-- Returns: Integer (default 1800 = 30 minutes)
+function getJWTExpiration
+  return 1800
+end getJWTExpiration
+
+
+-- Generate JWT token (convenience function)
+-- Parameters:
+--   pUserID (Integer) - User ID
+--   pUsername (String) - Username
+--   pName (String) - User's full name
+--   pExpiration (Integer) - Expiration time in seconds (optional)
+-- Returns: JWT token string
+function generateJWT pUserID, pUsername, pName, pExpiration
+  put pUserID into tPayload["user_id"]
+  put pUsername into tPayload["username"]
+  put pName into tPayload["name"]
+  
+  if pExpiration is not empty and pExpiration is a number then
+    -- Add timestamps
+    put the seconds into tPayload["iat"]
+    put the seconds + pExpiration into tPayload["exp"]
+    
+    -- Create header
+    put "HS256" into tHeader["alg"]
+    put "JWT" into tHeader["typ"]
+    
+    -- Encode header and payload
+    put base64URLEncode(JSONStringify(tHeader)) into tEncodedHeader
+    put base64URLEncode(JSONStringify(tPayload)) into tEncodedPayload
+    
+    -- Create signature
+    put tEncodedHeader & "." & tEncodedPayload into tData
+    put createSignature(tData, getJWTSecret()) into tSignature
+    
+    if tSignature begins with "ERROR:" then
+      return tSignature
+    end if
+    
+    return tEncodedHeader & "." & tEncodedPayload & "." & tSignature
+  else
+    -- Use default expiration from createJWT
+    return createJWT(tPayload)
+  end if
+end generateJWT
+
+
+-- Create signed JWT token
+-- Parameters:
+--   pPayload (Array) - User data to encode (user_id, username, etc.)
+-- Returns: JWT token string (header.payload.signature)
+function createJWT pPayload
+  -- Add timestamps
+  put the seconds into tPayload["iat"]
+  put the seconds + getJWTExpiration() into tPayload["exp"]
+  
+  -- Merge provided payload
+  repeat for each key tKey in pPayload
+    put pPayload[tKey] into tPayload[tKey]
+  end repeat
+  
+  -- Create header
+  put "HS256" into tHeader["alg"]
+  put "JWT" into tHeader["typ"]
+  
+  -- Encode header and payload
+  put base64URLEncode(JSONStringify(tHeader)) into tEncodedHeader
+  put base64URLEncode(JSONStringify(tPayload)) into tEncodedPayload
+  
+  -- Create signature
+  put tEncodedHeader & "." & tEncodedPayload into tData
+  put createSignature(tData, getJWTSecret()) into tSignature
+  
+  if tSignature begins with "ERROR:" then
+    return tSignature
+  end if
+  
+  return tEncodedHeader & "." & tEncodedPayload & "." & tSignature
+end createJWT
+
+
+-- Verify JWT token
+-- Parameters:
+--   pToken (String) - JWT token to verify
+-- Returns: Payload array if valid, empty if invalid/expired
+function verifyJWT pToken
+  -- Split token into parts
+  set the itemDelimiter to "."
+  
+  if the number of items in pToken is not 3 then
+    return empty
+  end if
+  
+  put item 1 of pToken into tEncodedHeader
+  put item 2 of pToken into tEncodedPayload
+  put item 3 of pToken into tProvidedSignature
+  
+  -- Verify signature
+  put tEncodedHeader & "." & tEncodedPayload into tData
+  put createSignature(tData, getJWTSecret()) into tExpectedSignature
+  
+  if tExpectedSignature begins with "ERROR:" then
+    return empty
+  end if
+  
+  if tProvidedSignature is not tExpectedSignature then
+    return empty
+  end if
+  
+  -- Decode payload
+  put JSONParser(base64URLDecode(tEncodedPayload)) into tPayload
+  
+  if tPayload is not an array then
+    return empty
+  end if
+  
+  -- Check expiration
+  if tPayload["exp"] is a number then
+    if the seconds > tPayload["exp"] then
+      return empty
+    end if
+  end if
+  
+  return tPayload
+end verifyJWT
+
+
+-- Require authentication for protected endpoints
+-- Checks Authorization header and verifies JWT token
+-- Returns: User payload array or exits with 401 error
+function requireAuth
+  -- Get Authorization header
+  put $_SERVER["HTTP_AUTHORIZATION"] into tAuthHeader
+  
+  -- Try alternate header name (some servers use this)
+  if tAuthHeader is empty then
+    put $_SERVER["REDIRECT_HTTP_AUTHORIZATION"] into tAuthHeader
+  end if
+  
+  if tAuthHeader is empty then
+    // put header "HTTP/1.1 401 Unauthorized"
+    put header "Status: 401 Unauthorized" 
+    put jsonError("Authentication required - no token provided")
+    exit to top
+  end if
+  
+  -- Extract Bearer token
+  if tAuthHeader begins with "Bearer " then
+    put char 8 to -1 of tAuthHeader into tToken
+  else
+    // put header "HTTP/1.1 401 Unauthorized"
+    put header "Status: 401 Unauthorized" 
+    put jsonError("Invalid authorization header format - use Bearer token")
+    exit to top
+  end if
+  
+  -- Verify token
+  put verifyJWT(tToken) into tPayload
+  
+  if tPayload is empty or tPayload is not an array then
+    // put header "HTTP/1.1 401 Unauthorized"
+    put header "Status: 401 Unauthorized" 
+    put jsonError("Invalid or expired token")
+    exit to top
+  end if
+  
+  -- Return user payload
+  return tPayload
+end requireAuth
+
+
+-- Create HMAC-SHA256 signature for JWT
+-- Parameters:
+--   pData (String) - Data to sign
+--   pSecret (String) - Secret key
+-- Returns: Base64URL encoded signature
+function createSignature pData, pSecret
+  -- Calculate HMAC-SHA256 (returns hex string)
+  put hmacSHA256(pData, pSecret) into tHash
+  
+  if tHash begins with "ERROR:" then
+    return "ERROR: Failed to create signature"
+  end if
+  
+  -- Convert hex to binary
+  put hexToBinary(tHash) into tBinary
+  
+  -- Base64URL encode
+  return base64URLEncode(tBinary)
+end createSignature
+
+
+-- HMAC-SHA256 implementation for LiveCode (with manual XOR)
+-- Parameters:
+--   pMessage (String) - Message to hash
+--   pKey (String) - Secret key
+-- Returns: Hex string of HMAC-SHA256
+function hmacSHA256 pMessage, pKey
+  -- Block size for SHA256 is 64 bytes
+  put 64 into tBlockSize
+  
+  -- If key is longer than block size, hash it
+  if the length of pKey > tBlockSize then
+    put messageDigest(pKey, "SHA-256") into pKey
+    -- messageDigest returns binary (32 bytes)
+  end if
+  
+  -- Pad key to block size with zeros
+  if the length of pKey < tBlockSize then
+    repeat tBlockSize - the length of pKey times
+      put numToChar(0) after pKey
+    end repeat
+  end if
+  
+  -- Create inner and outer padding using manual XOR
+  put empty into tInnerPad
+  put empty into tOuterPad
+  
+  repeat with i = 1 to tBlockSize
+    put charToNum(char i of pKey) into tKeyByte
+    put numToChar(xorByte(tKeyByte, 54)) after tInnerPad  -- 0x36 = 54
+    put numToChar(xorByte(tKeyByte, 92)) after tOuterPad  -- 0x5C = 92
+  end repeat
+  
+  -- Calculate inner hash (messageDigest returns binary)
+  put messageDigest(tInnerPad & pMessage, "SHA-256") into tInnerBinary
+  
+  -- Calculate outer hash (messageDigest returns binary)
+  put messageDigest(tOuterPad & tInnerBinary, "SHA-256") into tFinalBinary
+  
+  -- Convert binary to hex for return
+  return binaryToHex(tFinalBinary)
+end hmacSHA256
+
+
+-- Base64URL encode (URL-safe Base64)
+-- Parameters: pData (String) - Data to encode
+-- Returns: Base64URL encoded string
+function base64URLEncode pData
+  put base64Encode(pData) into tEncoded
+  
+  -- Remove newlines (base64Encode adds them every 76 chars for MIME compliance)
+  replace return with empty in tEncoded
+  replace linefeed with empty in tEncoded
+  replace numToChar(13) with empty in tEncoded  -- CR
+  replace numToChar(10) with empty in tEncoded  -- LF
+  
+  -- Make URL-safe
+  replace "+" with "-" in tEncoded
+  replace "/" with "_" in tEncoded
+  replace "=" with "" in tEncoded
+  
+  return tEncoded
+end base64URLEncode
+
+
+-- Base64URL decode
+-- Parameters: pData (String) - Base64URL string to decode
+-- Returns: Decoded string
+function base64URLDecode pData
+  -- Convert back from URL-safe
+  replace "-" with "+" in pData
+  replace "_" with "/" in pData
+  
+  -- Add padding if needed
+  put the length of pData mod 4 into tMod
+  if tMod is 2 then
+    put "==" after pData
+  else if tMod is 3 then
+    put "=" after pData
+  end if
+  
+  return base64Decode(pData)
+end base64URLDecode
+?>
