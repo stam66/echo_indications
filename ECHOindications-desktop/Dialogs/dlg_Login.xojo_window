@@ -537,7 +537,7 @@ End
 #tag EndEvents
 #tag Events tmrLogin
 	#tag Event
-		Sub Run()
+		Sub Action()
 		  ' Timer fired - now perform the actual login
 		  ' This allows the UI to update (show progress bar, disable controls) before blocking API call
 		  doLogin
