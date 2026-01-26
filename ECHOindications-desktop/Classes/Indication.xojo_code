@@ -12,10 +12,10 @@ Protected Class Indication
 		  End If
 
 		  Try
-		    Var data As New Dictionary
-		    data.Value("indication_id") = ID
+		    Var params As New Dictionary
+		    params.Value("indication_id") = ID.ToString
 
-		    Var response As Dictionary = APIClient.Post("indications.lc", "delete", data)
+		    Var response As Dictionary = APIClient.Get("indications.lc", "delete", params)
 
 		    If response.Value("status") = "success" Then
 		      Return True
