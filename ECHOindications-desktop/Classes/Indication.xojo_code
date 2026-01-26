@@ -5,25 +5,25 @@ Protected Class Indication
 		  '/// Deletes this indication (requires authentication)
 		  '///
 		  '/// @returns True if successful, False otherwise
-		  
+
 		  If Not AuthManager.IsAuthenticated Then
 		    System.DebugLog("Indication.Delete: Not authenticated")
 		    Return False
 		  End If
-		  
+
 		  Try
 		    Var data As New Dictionary
-		    data.Value("id") = ID
-		    
+		    data.Value("indication_id") = ID
+
 		    Var response As Dictionary = APIClient.Post("indications.lc", "delete", data)
-		    
+
 		    If response.Value("status") = "success" Then
 		      Return True
 		    Else
 		      System.DebugLog("Indication.Delete error: " + response.Value("message").StringValue)
 		      Return False
 		    End If
-		    
+
 		  Catch err As RuntimeException
 		    System.DebugLog("Indication.Delete exception: " + err.Message)
 		    Return False
