@@ -295,14 +295,7 @@ End
 		Private Sub HandleDataRefresh(data As Variant)
 		  #Pragma Unused data
 
-		  ' Generic refresh handler - use CallLater for consistent behavior
-		  Timer.CallLater(100, AddressOf RefreshAll)
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
-		Private Sub RefreshAll()
-		  ' Deferred full refresh
+		  ' Generic refresh handler
 		  LoadIndications()
 		  LoadContexts()
 		End Sub
@@ -313,14 +306,6 @@ End
 		  #Pragma Unused data
 
 		  ' Refresh the list when any indication changes
-		  ' Use CallLater to ensure UI updates after modal dialog closes
-		  Timer.CallLater(100, AddressOf RefreshIndicationsList)
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
-		Private Sub RefreshIndicationsList()
-		  ' Deferred refresh to ensure UI updates properly after modal dialogs
 		  LoadIndications()
 		End Sub
 	#tag EndMethod
