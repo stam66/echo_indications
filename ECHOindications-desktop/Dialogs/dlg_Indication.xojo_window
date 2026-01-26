@@ -1137,8 +1137,8 @@ End
 		    Return
 		  End If
 		  
-		  ' Update header
-		  lblDialogHeader.Text = "Indication Detail"
+		  ' ' Update header
+		  ' lblDialogHeader.Text = "Indication Detail"
 		  
 		  ' Populate fields
 		  txtIndication.Text = indication.Title
@@ -1295,13 +1295,57 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
+		Private Sub NavigateToIndication(newIndex As Integer)
+		  '/// Navigates to an indication, prompting to save if there are unsaved changes
+		  '///
+		  '/// @param newIndex The index of the indication to navigate to
+		  
+		  If mIndicationsList.Count = 0 Then Return
+		  
+		  ' Check for unsaved changes
+		  If HasUnsavedChanges() Then
+		    Var d As New MessageDialog
+		    d.Message = "Save changes before navigating?"
+		    d.Explanation = "You have unsaved changes. Would you like to save them before continuing?"
+		    d.ActionButton.Caption = "Save"
+		    d.CancelButton.Visible = True
+		    d.AlternateActionButton.Visible = True
+		    d.AlternateActionButton.Caption = "Don't Save"
+		    
+		    Var result As MessageDialogButton = d.ShowModal(self)
+		    
+		    If result = d.ActionButton Then
+		      ' User chose to save - don't close dialog, just save
+		      If Not SaveIndication(False) Then
+		        ' Save failed, don't navigate
+		        Return
+		      End If
+		      ' Save succeeded, continue to navigate
+		      
+		    ElseIf result = d.CancelButton Then
+		      ' User chose Cancel, don't navigate
+		      Return
+		      
+		      ' If AlternateActionButton (Don't Save), continue with navigation
+		    End If
+		  End If
+		  
+		  ' Update the index
+		  mCurrentIndex = newIndex
+		  
+		  ' Load the indication at new index
+		  LoadIndication(mIndicationsList(mCurrentIndex))
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
 		Private Function SaveIndication(closeOnSuccess As Boolean = True) As Boolean
 		  '/// Saves the current indication (create or update)
 		  '/// @param closeOnSuccess If True, closes the dialog on successful save
 		  '/// @returns True if save was successful, False otherwise
-
+		  
 		  If Not ValidateForm() Then Return False
-
+		  
 		  Try
 		    ' Collect selected context IDs
 		    Var contextIDs() As Integer
@@ -1310,7 +1354,7 @@ End
 		        contextIDs.Add(lstContexts.RowTagAt(i))
 		      End If
 		    Next
-
+		    
 		    ' Prepare data dictionary for API
 		    Var data As New Dictionary
 		    data.Value("title") = txtIndication.Text.Trim
@@ -1325,13 +1369,13 @@ End
 		    data.Value("secondary_inpatient") = MapIndexToCareSetting(popSecondaryIP.SelectedRowIndex)
 		    data.Value("urgency") = MapIndexToUrgency(popUrgency.SelectedRowIndex)
 		    data.Value("context_ids") = contextIDs
-
+		    
 		    Var result As Dictionary
-
+		    
 		    If mIsNewIndication Then
 		      ' Create new indication
 		      result = APIClient.Post("indications.lc", "create", data)
-
+		      
 		      If result.Value("status") = "success" Then
 		        ' Broadcast creation event
 		        PubSub.Broadcast(EventConstants.INDICATION_CREATED, result.Value("data"))
@@ -1341,12 +1385,12 @@ End
 		        MessageBox("Failed to create indication: " + result.Value("message").StringValue)
 		        Return False
 		      End If
-
+		      
 		    Else
 		      ' Update existing indication
 		      data.Value("id") = mCurrentIndication.ID
 		      result = APIClient.Post("indications.lc", "update", data)
-
+		      
 		      If result.Value("status") = "success" Then
 		        ' Broadcast update event
 		        PubSub.Broadcast(EventConstants.INDICATION_UPDATED, result.Value("data"))
@@ -1357,7 +1401,7 @@ End
 		        Return False
 		      End If
 		    End If
-
+		    
 		  Catch err As RuntimeException
 		    MessageBox("Error saving indication: " + err.Message)
 		    Return False
