@@ -371,6 +371,59 @@ End
 	#tag EndEvent
 
 
+	#tag Method, Flags = &h0
+		Sub setControlsEnabled(enabled As Boolean)
+		  txtUsername.Enabled = enabled
+		  txtPassword.Enabled = enabled
+		  btnLogin.Enabled = enabled
+		  btnCancel.Enabled = enabled
+		  btnReset.Enabled = enabled
+		  pgbLogin.Visible = Not enabled
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub startLogin()
+		  ' Hide any previous error
+		  lblErrorMessage.Visible = False
+		  lblErrorMessage.Text = ""
+
+		  ' Validate inputs before showing loading state
+		  If txtUsername.Text.Trim.IsEmpty Or txtPassword.Text.Trim.IsEmpty Then
+		    messageShow(lblErrorMessage, "You must enter both a username and a password.")
+		    If txtUsername.Text.Trim.IsEmpty Then
+		      txtUsername.SetFocus
+		    Else
+		      txtPassword.SetFocus
+		    End If
+		    Return
+		  End If
+
+		  ' Disable controls and show progress bar
+		  setControlsEnabled(False)
+
+		  ' Use timer to allow UI to update before blocking API call
+		  tmrLogin.RunMode = Timer.RunModes.Single
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub doLogin()
+		  ' Attempt login via API
+		  If AuthManager.Login(txtUsername.Text, txtPassword.Text) Then
+		    ' Login successful - close dialog
+		    Self.Close
+		  Else
+		    ' Login failed - show error and re-enable controls
+		    setControlsEnabled(True)
+		    messageShow(lblErrorMessage, AuthManager.LastError)
+		    txtPassword.Text = ""
+		    txtPassword.SetFocus
+		  End If
+		End Sub
+	#tag EndMethod
+
+
 #tag EndWindowCode
 
 #tag Events btnCancel
@@ -384,31 +437,7 @@ End
 #tag Events btnLogin
 	#tag Event
 		Sub Pressed()
-		  ' Hide any previous error
-		  lblErrorMessage.Visible = False
-		  lblErrorMessage.Text = ""
-
-		  ' Validate inputs
-		  If txtUsername.Text.Trim.IsEmpty Or txtPassword.Text.Trim.IsEmpty Then
-		    messageShow(lblErrorMessage, "You must enter both a username and a password.")
-		    If txtUsername.Text.Trim.IsEmpty Then
-		      txtUsername.SetFocus
-		    Else
-		      txtPassword.SetFocus
-		    End If
-		    Return
-		  End If
-
-		  ' Attempt login
-		  If AuthManager.Login(txtUsername.Text, txtPassword.Text) Then
-		    ' Login successful - close dialog
-		    Self.Close
-		  Else
-		    ' Login failed - show error
-		    messageShow(lblErrorMessage, AuthManager.LastError)
-		    txtPassword.Text = ""
-		    txtPassword.SetFocus
-		  End If
+		  startLogin
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -470,6 +499,15 @@ End
 
 		  Return False
 		End Function
+	#tag EndEvent
+#tag EndEvents
+#tag Events tmrLogin
+	#tag Event
+		Sub Run()
+		  ' Timer fired - now perform the actual login
+		  ' This allows the UI to update (show progress bar, disable controls) before blocking API call
+		  doLogin
+		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag ViewBehavior
