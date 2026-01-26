@@ -1509,7 +1509,7 @@ End
 		    d.AlternateActionButton.Visible = True
 		    d.AlternateActionButton.Caption = "Don't Save"
 
-		    Var result As MessageDialogButton = d.ShowModal
+		    Var result As MessageDialogButton = d.ShowModal(Self)
 
 		    If result = d.ActionButton Then
 		      ' User chose to save - don't close dialog, just save
@@ -1517,7 +1517,13 @@ End
 		        ' Save failed, don't navigate
 		        Return
 		      End If
-		      ' Save succeeded, continue to navigate
+		      ' Save succeeded - refresh the current indication in the list with updated data
+		      If mCurrentIndication <> Nil And mCurrentIndex >= 0 Then
+		        Var refreshed As Indication = Indication.GetByID(mCurrentIndication.ID)
+		        If refreshed <> Nil Then
+		          mIndicationsList(mCurrentIndex) = refreshed
+		        End If
+		      End If
 
 		    ElseIf result = d.CancelButton Then
 		      ' User chose Cancel, don't navigate
