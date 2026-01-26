@@ -353,37 +353,6 @@ Begin DesktopWindow dlg_Login
       Visible         =   True
       Width           =   342
    End
-   Begin DesktopProgressBar pgbLogin
-      Active          =   False
-      AllowAutoDeactivate=   True
-      AllowTabStop    =   True
-      Enabled         =   True
-      Height          =   20
-      Indeterminate   =   True
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Left            =   20
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      MaximumValue    =   100
-      PanelIndex      =   0
-      Scope           =   0
-      TabIndex        =   9
-      TabPanelIndex   =   0
-      Tooltip         =   ""
-      Top             =   290
-      Transparent     =   False
-      Value           =   0.0
-      Visible         =   False
-      Width           =   342
-      _mIndex         =   0
-      _mInitialParent =   ""
-      _mName          =   ""
-      _mPanelIndex    =   0
-   End
    Begin Timer tmrLogin
       Enabled         =   True
       Index           =   -2147483648
@@ -392,6 +361,28 @@ Begin DesktopWindow dlg_Login
       RunMode         =   0
       Scope           =   0
       TabPanelIndex   =   0
+   End
+   Begin DesktopProgressWheel pgbLogin
+      AllowAutoDeactivate=   True
+      AllowTabStop    =   True
+      Enabled         =   True
+      Height          =   42
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Left            =   172
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Scope           =   0
+      TabIndex        =   10
+      TabPanelIndex   =   0
+      Tooltip         =   ""
+      Top             =   289
+      Transparent     =   False
+      Visible         =   False
+      Width           =   38
    End
 End
 #tag EndDesktopWindow
