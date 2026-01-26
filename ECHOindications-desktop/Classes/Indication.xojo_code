@@ -13,7 +13,7 @@ Protected Class Indication
 
 		  Try
 		    Var params As New Dictionary
-		    params.Value("indication_id") = ID.ToString
+		    params.Value("id") = ID.ToString
 
 		    Var response As Dictionary = APIClient.Get("indications.lc", "delete", params)
 
