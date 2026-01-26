@@ -252,44 +252,6 @@ Begin WebDialog dlg_Login
       Width           =   73
       _mPanelIndex    =   -1
    End
-   Begin WebProgressBar pgbLogin
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      Height          =   20
-      Indeterminate   =   True
-      Index           =   -2147483648
-      Indicator       =   1
-      Left            =   77
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   True
-      LockTop         =   True
-      LockVertical    =   False
-      MaximumValue    =   100
-      PanelIndex      =   0
-      Scope           =   0
-      TabIndex        =   9
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   310
-      Value           =   0
-      Visible         =   False
-      Width           =   409
-      _mPanelIndex    =   -1
-   End
-   Begin WebTimer tmrLogin
-      ControlID       =   ""
-      Enabled         =   True
-      Index           =   -2147483648
-      Period          =   100
-      PanelIndex      =   0
-      RunMode         =   0
-      Scope           =   0
-      _mPanelIndex    =   -1
-   End
    Begin WebRectangle Rectangle1
       BorderColor     =   &c000000FF
       BorderThickness =   0
@@ -361,6 +323,50 @@ Begin WebDialog dlg_Login
          _mPanelIndex    =   -1
       End
    End
+   Begin WebProgressBar pgbLogin
+      AllowAnimation  =   True
+      Caption         =   ""
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      Height          =   16
+      Indeterminate   =   True
+      Index           =   -2147483648
+      Indicator       =   0
+      Left            =   77
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      MaximumValue    =   100
+      PanelIndex      =   0
+      Scope           =   2
+      TabIndex        =   10
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   310
+      Value           =   100
+      Visible         =   False
+      Width           =   409
+      _mPanelIndex    =   -1
+   End
+   Begin WebTimer tmrLogin
+      ControlID       =   ""
+      Enabled         =   True
+      Index           =   -2147483648
+      Location        =   0
+      LockedInPosition=   False
+      PanelIndex      =   0
+      Period          =   100
+      RunMode         =   0
+      Scope           =   0
+      TabIndex        =   11
+      TabStop         =   True
+      _mPanelIndex    =   -1
+   End
 End
 #tag EndWebPage
 
@@ -373,42 +379,21 @@ End
 
 
 	#tag Method, Flags = &h0
-		Sub setControlsEnabled(enabled as Boolean)
-		  txtUsername.Enabled = enabled
-		  txtPassword.Enabled = enabled
-		  bLogin.Enabled = enabled
-		  bCancelLogin.Enabled = enabled
-		  btnReset.Enabled = enabled
-		  pgbLogin.Visible = Not enabled
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub startLogin()
-		  // Disable controls and show progress bar
-		  setControlsEnabled(False)
-
-		  // Use timer to allow UI to update before blocking PBKDF2 computation
-		  tmrLogin.RunMode = WebTimer.RunModes.Single
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub doLogin()
 		  var username as string = txtUsername.Text, LoginUser as string
 		  var password as string = txtPassword.Text
 		  Var rs as RowSet
-
+		  
 		  // check fields not empty
 		  if username.IsEmpty or password.IsEmpty then
 		    MessageBox("You must enter both a username and password")
 		    setControlsEnabled(True)
 		    return
 		  end If
-
+		  
 		  var sql as string = "SELECT * from  users"
 		  rs = session.DB.SelectSQL(sql)
-
+		  
 		  while not rs.AfterLastRow
 		    if rs.Column("username").StringValue = username then
 		      LoginUser = username
@@ -417,29 +402,29 @@ End
 		      rs.MoveToNextRow
 		    end if
 		  wend
-
+		  
 		  if loginUser.IsEmpty then
 		    MessageBox("The username does not correspond to a registered user.")
 		    setControlsEnabled(True)
 		    return
 		  end if
-
-
+		  
+		  
 		  sql = "Select * from users where username = ?"
 		  var ps as MySQLPreparedStatement = session.db.Prepare(sql)
 		  ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_STRING)
 		  ps.Bind(0, username)
 		  rs = ps.SelectSQL
-
+		  
 		  // Verify password using PBKDF2
 		  Var storedHash As String = rs.Column("password_hash").StringValue
 		  Var storedSalt As String = rs.Column("password_salt").StringValue
-
+		  
 		  Dim passwordData As New MemoryBlock(password.LenB)
 		  passwordData.StringValue(0, password.LenB) = password
 		  Dim computedHash As MemoryBlock = Crypto.PBKDF2(storedSalt, passwordData, 10000, 32, Crypto.HashAlgorithms.SHA2_256)
 		  Dim computedHashHex As String = app.EncodeHex(computedHash)
-
+		  
 		  if computedHashHex = storedHash then
 		    if rs.Column("OTP").IntegerValue = 1  then
 		      self.txtPassword.Text = ""
@@ -463,6 +448,27 @@ End
 		    MessageBox ("Incorrect password - please correct this and try again.")
 		    setControlsEnabled(True)
 		  end if
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub setControlsEnabled(enabled as Boolean)
+		  txtUsername.Enabled = enabled
+		  txtPassword.Enabled = enabled
+		  bLogin.Enabled = enabled
+		  bCancelLogin.Enabled = enabled
+		  btnReset.Enabled = enabled
+		  pgbLogin.Visible = Not enabled
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub startLogin()
+		  // Disable controls and show progress bar
+		  setControlsEnabled(False)
+		  
+		  // Use timer to allow UI to update before blocking PBKDF2 computation
+		  tmrLogin.RunMode = WebTimer.RunModes.Single
 		End Sub
 	#tag EndMethod
 
@@ -502,15 +508,13 @@ End
 		Sub Pressed()
 		  var w as new dlg_Reset
 		  w.Show
-
+		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events tmrLogin
 	#tag Event
 		Sub Run()
-		  // Timer fired - now perform the actual login
-		  // This allows the UI to update (show progress bar, disable controls) before blocking PBKDF2
 		  doLogin
 		End Sub
 	#tag EndEvent
