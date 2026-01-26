@@ -252,6 +252,44 @@ Begin WebDialog dlg_Login
       Width           =   73
       _mPanelIndex    =   -1
    End
+   Begin WebProgressBar pgbLogin
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      Height          =   20
+      Indeterminate   =   True
+      Index           =   -2147483648
+      Indicator       =   1
+      Left            =   77
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   True
+      LockTop         =   True
+      LockVertical    =   False
+      MaximumValue    =   100
+      PanelIndex      =   0
+      Scope           =   0
+      TabIndex        =   9
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   310
+      Value           =   0
+      Visible         =   False
+      Width           =   409
+      _mPanelIndex    =   -1
+   End
+   Begin WebTimer tmrLogin
+      ControlID       =   ""
+      Enabled         =   True
+      Index           =   -2147483648
+      Period          =   100
+      PanelIndex      =   0
+      RunMode         =   0
+      Scope           =   0
+      _mPanelIndex    =   -1
+   End
    Begin WebRectangle Rectangle1
       BorderColor     =   &c000000FF
       BorderThickness =   0
@@ -335,6 +373,27 @@ End
 
 
 	#tag Method, Flags = &h0
+		Sub setControlsEnabled(enabled as Boolean)
+		  txtUsername.Enabled = enabled
+		  txtPassword.Enabled = enabled
+		  bLogin.Enabled = enabled
+		  bCancelLogin.Enabled = enabled
+		  btnReset.Enabled = enabled
+		  pgbLogin.Visible = Not enabled
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub startLogin()
+		  // Disable controls and show progress bar
+		  setControlsEnabled(False)
+
+		  // Use timer to allow UI to update before blocking PBKDF2 computation
+		  tmrLogin.RunMode = WebTimer.RunModes.Single
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub doLogin()
 		  var username as string = txtUsername.Text, LoginUser as string
 		  var password as string = txtPassword.Text
@@ -343,6 +402,7 @@ End
 		  // check fields not empty
 		  if username.IsEmpty or password.IsEmpty then
 		    MessageBox("You must enter both a username and password")
+		    setControlsEnabled(True)
 		    return
 		  end If
 
@@ -360,6 +420,7 @@ End
 
 		  if loginUser.IsEmpty then
 		    MessageBox("The username does not correspond to a registered user.")
+		    setControlsEnabled(True)
 		    return
 		  end if
 
@@ -400,6 +461,7 @@ End
 		    self.Close
 		  else
 		    MessageBox ("Incorrect password - please correct this and try again.")
+		    setControlsEnabled(True)
 		  end if
 		End Sub
 	#tag EndMethod
@@ -424,7 +486,7 @@ End
 #tag Events bLogin
 	#tag Event
 		Sub Pressed()
-		  doLogin
+		  startLogin
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -440,7 +502,16 @@ End
 		Sub Pressed()
 		  var w as new dlg_Reset
 		  w.Show
-		  
+
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events tmrLogin
+	#tag Event
+		Sub Run()
+		  // Timer fired - now perform the actual login
+		  // This allows the UI to update (show progress bar, disable controls) before blocking PBKDF2
+		  doLogin
 		End Sub
 	#tag EndEvent
 #tag EndEvents
