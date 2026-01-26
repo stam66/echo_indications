@@ -188,12 +188,22 @@ Protected Class Indication
 	#tag Method, Flags = &h0
 		Shared Function GetAll() As Indication()
 		  Var results() As Indication
-		  
+
 		  Try
 		    Var response As Dictionary = APIClient.Get("indications.lc", "list")
-		    
+
 		    If response.Value("status") = "success" Then
 		      Var dataVariant As Variant = response.Value("data")
+
+		      ' Handle Nil or non-array data gracefully
+		      If dataVariant = Nil Then
+		        Return results
+		      End If
+		      If Not (VarType(dataVariant) And &h2000) = &h2000 Then
+		        ' Not an array type, return empty results
+		        Return results
+		      End If
+
 		      Var items() As Variant = dataVariant
 		      
 		      ' ← ADD THE DEBUG CODE HERE, RIGHT AFTER "Var items() As Variant = dataVariant"
@@ -254,8 +264,18 @@ Protected Class Indication
 		    
 		    If response.Value("status") = "success" Then
 		      Var dataVariant As Variant = response.Value("data")
+
+		      ' Handle Nil or non-array data gracefully
+		      If dataVariant = Nil Then
+		        Return results
+		      End If
+		      If Not (VarType(dataVariant) And &h2000) = &h2000 Then
+		        ' Not an array type, return empty results
+		        Return results
+		      End If
+
 		      Var items() As Variant = dataVariant
-		      
+
 		      If AppConfig.DEBUG_MODE And items.Count > 0 Then
 		        Var firstItem As Dictionary = Dictionary(items(0))
 		        System.DebugLog("GetByContext: First item has " + firstItem.KeyCount.ToString + " keys")
@@ -343,8 +363,18 @@ Protected Class Indication
 		    
 		    If response.Value("status") = "success" Then
 		      Var dataVariant As Variant = response.Value("data")
+
+		      ' Handle Nil or non-array data gracefully
+		      If dataVariant = Nil Then
+		        Return results
+		      End If
+		      If Not (VarType(dataVariant) And &h2000) = &h2000 Then
+		        ' Not an array type, return empty results
+		        Return results
+		      End If
+
 		      Var items() As Variant = dataVariant
-		      
+
 		      For Each item As Variant In items
 		        If item IsA Dictionary Then
 		          Var indication As Indication = FromDictionary(Dictionary(item))
