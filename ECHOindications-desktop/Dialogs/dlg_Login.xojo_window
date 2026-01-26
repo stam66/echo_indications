@@ -353,6 +353,40 @@ Begin DesktopWindow dlg_Login
       Visible         =   True
       Width           =   342
    End
+   Begin DesktopProgressBar pgbLogin
+      AllowAutoDeactivate=   True
+      AllowTabStop    =   True
+      Enabled         =   True
+      Height          =   20
+      Indeterminate   =   True
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      MaximumValue    =   100
+      Scope           =   0
+      TabIndex        =   9
+      TabPanelIndex   =   0
+      Tooltip         =   ""
+      Top             =   290
+      Transparent     =   False
+      Value           =   0.0
+      Visible         =   True
+      Width           =   342
+   End
+   Begin Timer tmrLogin
+      Enabled         =   True
+      Index           =   -2147483648
+      LockedInPosition=   False
+      Period          =   100
+      RunMode         =   0
+      Scope           =   0
+      TabPanelIndex   =   0
+   End
 End
 #tag EndDesktopWindow
 
@@ -364,7 +398,7 @@ End
 		  txtPassword.Text = ""
 		  lblErrorMessage.Visible = False
 		  lblErrorMessage.Text = ""
-
+		  
 		  ' Set focus to username field
 		  txtUsername.SetFocus
 		End Sub
@@ -490,13 +524,13 @@ End
 		    end if
 		    Return True
 		  End If
-
+		  
 		  ' Handle Escape key - cancel
 		  If key = Chr(27) Then
 		    btnCancel.Press
 		    Return True
 		  End If
-
+		  
 		  Return False
 		End Function
 	#tag EndEvent
