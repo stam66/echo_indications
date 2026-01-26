@@ -354,6 +354,7 @@ Begin DesktopWindow dlg_Login
       Width           =   342
    End
    Begin DesktopProgressBar pgbLogin
+      Active          =   False
       AllowAutoDeactivate=   True
       AllowTabStop    =   True
       Enabled         =   True
@@ -368,6 +369,7 @@ Begin DesktopWindow dlg_Login
       LockRight       =   False
       LockTop         =   True
       MaximumValue    =   100
+      PanelIndex      =   0
       Scope           =   0
       TabIndex        =   9
       TabPanelIndex   =   0
@@ -375,8 +377,12 @@ Begin DesktopWindow dlg_Login
       Top             =   290
       Transparent     =   False
       Value           =   0.0
-      Visible         =   True
+      Visible         =   False
       Width           =   342
+      _mIndex         =   0
+      _mInitialParent =   ""
+      _mName          =   ""
+      _mPanelIndex    =   0
    End
    Begin Timer tmrLogin
       Enabled         =   True
@@ -406,6 +412,22 @@ End
 
 
 	#tag Method, Flags = &h0
+		Sub doLogin()
+		  ' Attempt login via API
+		  If AuthManager.Login(txtUsername.Text, txtPassword.Text) Then
+		    ' Login successful - close dialog
+		    Self.Close
+		  Else
+		    ' Login failed - show error and re-enable controls
+		    setControlsEnabled(True)
+		    messageShow(lblErrorMessage, AuthManager.LastError)
+		    txtPassword.Text = ""
+		    txtPassword.SetFocus
+		  End If
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub setControlsEnabled(enabled As Boolean)
 		  txtUsername.Enabled = enabled
 		  txtPassword.Enabled = enabled
@@ -421,7 +443,7 @@ End
 		  ' Hide any previous error
 		  lblErrorMessage.Visible = False
 		  lblErrorMessage.Text = ""
-
+		  
 		  ' Validate inputs before showing loading state
 		  If txtUsername.Text.Trim.IsEmpty Or txtPassword.Text.Trim.IsEmpty Then
 		    messageShow(lblErrorMessage, "You must enter both a username and a password.")
@@ -432,28 +454,12 @@ End
 		    End If
 		    Return
 		  End If
-
+		  
 		  ' Disable controls and show progress bar
 		  setControlsEnabled(False)
-
+		  
 		  ' Use timer to allow UI to update before blocking API call
 		  tmrLogin.RunMode = Timer.RunModes.Single
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub doLogin()
-		  ' Attempt login via API
-		  If AuthManager.Login(txtUsername.Text, txtPassword.Text) Then
-		    ' Login successful - close dialog
-		    Self.Close
-		  Else
-		    ' Login failed - show error and re-enable controls
-		    setControlsEnabled(True)
-		    messageShow(lblErrorMessage, AuthManager.LastError)
-		    txtPassword.Text = ""
-		    txtPassword.SetFocus
-		  End If
 		End Sub
 	#tag EndMethod
 
