@@ -20,7 +20,19 @@ Protected Class Indication
 		    If response.Value("status") = "success" Then
 		      Return True
 		    Else
-		      System.DebugLog("Indication.Delete error: " + response.Value("message").StringValue)
+		      ' Workaround for API bug: revExecuteSQL returns affected row count,
+		      ' but the API code treats non-empty result as error.
+		      ' If the "error" message is a positive integer, it's actually the
+		      ' number of deleted rows, so the delete succeeded.
+		      Var errorMsg As String = response.Value("message").StringValue
+		      Var rowCount As Integer = Val(errorMsg)
+		      If rowCount > 0 And errorMsg = rowCount.ToString Then
+		        ' Error message is a positive integer = rows deleted = success
+		        System.DebugLog("Indication.Delete: API bug workaround - " + errorMsg + " row(s) deleted")
+		        Return True
+		      End If
+
+		      System.DebugLog("Indication.Delete error: " + errorMsg)
 		      Return False
 		    End If
 
