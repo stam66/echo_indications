@@ -406,8 +406,15 @@ End
 		Sub doLogin()
 		  ' Attempt login via API
 		  If AuthManager.Login(txtUsername.Text, txtPassword.Text) Then
-		    ' Login successful - close dialog
-		    Self.Close
+		    ' Login successful - check if password needs to be changed (OTP login)
+		    If AuthManager.PasswordExpired Then
+		      ' Password expired - show change password dialog
+		      Self.Close
+		      dlg_NewPassword.Show
+		    Else
+		      ' Normal login - close dialog
+		      Self.Close
+		    End If
 		  Else
 		    ' Login failed - show error and re-enable controls
 		    setControlsEnabled(True)
