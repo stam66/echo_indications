@@ -271,9 +271,10 @@ End
 		  End If
 
 		  ' Attempt password reset via API
-		  If AuthManager.ResetPassword(txtEmail.Text.Trim) Then
+		  If AuthManager.RequestPasswordReset(txtEmail.Text.Trim) Then
 		    ' Success - notify user and close dialog
-		    MessageBox("An email with a one-time password has been sent to this address. Please check your inbox (and junk mail folder) and use the temporary password to log in.")
+		    ' Note: API returns same message for valid/invalid emails for security
+		    MessageBox("If this email is registered, a one-time password has been sent. Please check your inbox (and spam folder) and use the temporary password to log in.")
 		    Self.Close
 		  Else
 		    ' Failed - show error

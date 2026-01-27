@@ -294,7 +294,113 @@ End
 #tag EndDesktopWindow
 
 #tag WindowCode
+	#tag Event
+		Sub Opening()
+		  ' Clear any previous values and set focus to password field
+		  txtPassword.Text = ""
+		  txtRepeatPassword.Text = ""
+		  txtPassword.SetFocus
+		End Sub
+	#tag EndEvent
+
+	#tag Method, Flags = &h0
+		Sub doChangePassword()
+		  ' Validate passwords
+		  If txtPassword.Text.Trim.IsEmpty Then
+		    MessageBox("Please enter a new password.")
+		    txtPassword.SetFocus
+		    Return
+		  End If
+
+		  If txtPassword.Text.Length < 6 Then
+		    MessageBox("Password must be at least 6 characters long.")
+		    txtPassword.Text = ""
+		    txtRepeatPassword.Text = ""
+		    txtPassword.SetFocus
+		    Return
+		  End If
+
+		  If txtPassword.Text <> txtRepeatPassword.Text Then
+		    MessageBox("Passwords do not match. Please try again.")
+		    txtRepeatPassword.Text = ""
+		    txtRepeatPassword.SetFocus
+		    Return
+		  End If
+
+		  ' Attempt to change password via API
+		  If AuthManager.ChangePassword(txtPassword.Text) Then
+		    ' Success - notify user and close dialog
+		    MessageBox("Your password has been changed successfully.")
+		    Self.Close
+		  Else
+		    ' Failed - show error
+		    MessageBox(AuthManager.LastError)
+		    txtPassword.Text = ""
+		    txtRepeatPassword.Text = ""
+		    txtPassword.SetFocus
+		  End If
+		End Sub
+	#tag EndMethod
+
 #tag EndWindowCode
+
+#tag Events btnUpdate
+	#tag Event
+		Sub Pressed()
+		  doChangePassword
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+
+#tag Events btnCancel
+	#tag Event
+		Sub Pressed()
+		  ' Cancel - log out user since they didn't change their password
+		  AuthManager.Logout
+		  Self.Close
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+
+#tag Events txtPassword
+	#tag Event
+		Function KeyDown(key As String) As Boolean
+		  ' Handle Return key - move to repeat password field
+		  If key = Chr(13) Then
+		    txtRepeatPassword.SetFocus
+		    Return True
+		  End If
+
+		  ' Handle Escape key - cancel
+		  If key = Chr(27) Then
+		    btnCancel.Press
+		    Return True
+		  End If
+
+		  Return False
+		End Function
+	#tag EndEvent
+#tag EndEvents
+
+#tag Events txtRepeatPassword
+	#tag Event
+		Function KeyDown(key As String) As Boolean
+		  ' Handle Return key - submit
+		  If key = Chr(13) Then
+		    doChangePassword
+		    Return True
+		  End If
+
+		  ' Handle Escape key - cancel
+		  If key = Chr(27) Then
+		    btnCancel.Press
+		    Return True
+		  End If
+
+		  Return False
+		End Function
+	#tag EndEvent
+#tag EndEvents
 
 #tag ViewBehavior
 	#tag ViewProperty
