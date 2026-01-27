@@ -103,6 +103,64 @@ Protected Module AuthManager
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function ResetPassword(email As String) As Boolean
+		  ' Request password reset via API
+		  ' Returns True if reset email was sent successfully, False otherwise
+		  ' Check mLastError for error message on failure
+
+		  mLastError = ""
+
+		  ' Validate email format
+		  If Not General.isValidEmail(email) Then
+		    mLastError = "The email address entered is not valid. Please check and try again."
+		    Return False
+		  End If
+
+		  Try
+		    If AppConfig.DEBUG_MODE Then
+		      System.DebugLog("=== AuthManager.ResetPassword starting ===")
+		      System.DebugLog("Email: " + email)
+		    End If
+
+		    ' Build request data
+		    Var data As New Dictionary
+		    data.Value("email") = email.Trim
+
+		    ' Call password reset API endpoint
+		    Var result As Dictionary = APIClient.Post("auth.lc", "reset_password", data)
+
+		    If AppConfig.DEBUG_MODE Then
+		      System.DebugLog("ResetPassword result status: " + result.Value("status").StringValue)
+		    End If
+
+		    If result.Value("status") = "success" Then
+		      If AppConfig.DEBUG_MODE Then
+		        System.DebugLog("AuthManager: Password reset email sent successfully")
+		      End If
+		      Return True
+		    Else
+		      mLastError = result.Value("message").StringValue
+
+		      If AppConfig.DEBUG_MODE Then
+		        System.DebugLog("Password reset failed: " + mLastError)
+		      End If
+
+		      Return False
+		    End If
+
+		  Catch err As RuntimeException
+		    mLastError = "Password reset error: " + err.Message
+
+		    If AppConfig.DEBUG_MODE Then
+		      System.DebugLog("Password reset exception: " + err.Message)
+		    End If
+
+		    Return False
+		  End Try
+		End Function
+	#tag EndMethod
+
 
 	#tag ComputedProperty, Flags = &h0
 		#tag Getter
