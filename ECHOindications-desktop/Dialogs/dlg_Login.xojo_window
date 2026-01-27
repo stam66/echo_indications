@@ -111,7 +111,7 @@ Begin DesktopWindow dlg_Login
       TabIndex        =   2
       TabPanelIndex   =   0
       TabStop         =   True
-      Tooltip         =   ""
+      Tooltip         =   "Reset your password"
       Top             =   268
       Transparent     =   False
       Underline       =   False
@@ -475,14 +475,8 @@ End
 #tag Events btnReset
 	#tag Event
 		Sub Pressed()
-		  ' Clear all fields
-		  txtUsername.Text = ""
-		  txtPassword.Text = ""
-		  lblErrorMessage.Visible = False
-		  lblErrorMessage.Text = ""
-		  
-		  ' Set focus to username field
-		  txtUsername.SetFocus
+		  ' Open password reset dialog
+		  dlg_ResetPassword.Show
 		End Sub
 	#tag EndEvent
 #tag EndEvents

@@ -253,7 +253,73 @@ End
 #tag EndDesktopWindow
 
 #tag WindowCode
+	#tag Event
+		Sub Opening()
+		  ' Clear any previous value and set focus to email field
+		  txtEmail.Text = ""
+		  txtEmail.SetFocus
+		End Sub
+	#tag EndEvent
+
+	#tag Method, Flags = &h0
+		Sub doResetPassword()
+		  ' Validate email first
+		  If txtEmail.Text.Trim.IsEmpty Then
+		    MessageBox("Please enter your email address.")
+		    txtEmail.SetFocus
+		    Return
+		  End If
+
+		  ' Attempt password reset via API
+		  If AuthManager.ResetPassword(txtEmail.Text.Trim) Then
+		    ' Success - notify user and close dialog
+		    MessageBox("An email with a one-time password has been sent to this address. Please check your inbox (and junk mail folder) and use the temporary password to log in.")
+		    Self.Close
+		  Else
+		    ' Failed - show error
+		    MessageBox(AuthManager.LastError)
+		    txtEmail.SetFocus
+		  End If
+		End Sub
+	#tag EndMethod
+
 #tag EndWindowCode
+
+#tag Events btnReset
+	#tag Event
+		Sub Pressed()
+		  doResetPassword
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+
+#tag Events btnCancel
+	#tag Event
+		Sub Pressed()
+		  Self.Close
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+
+#tag Events txtEmail
+	#tag Event
+		Function KeyDown(key As String) As Boolean
+		  ' Handle Return key - submit reset request
+		  If key = Chr(13) Then
+		    doResetPassword
+		    Return True
+		  End If
+
+		  ' Handle Escape key - cancel
+		  If key = Chr(27) Then
+		    Self.Close
+		    Return True
+		  End If
+
+		  Return False
+		End Function
+	#tag EndEvent
+#tag EndEvents
 
 #tag ViewBehavior
 	#tag ViewProperty
