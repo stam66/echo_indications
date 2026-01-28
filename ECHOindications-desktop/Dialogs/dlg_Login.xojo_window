@@ -363,6 +363,7 @@ Begin DesktopWindow dlg_Login
       TabPanelIndex   =   0
    End
    Begin DesktopProgressWheel pgbLogin
+      Active          =   False
       AllowAutoDeactivate=   True
       AllowTabStop    =   True
       Enabled         =   True
@@ -375,6 +376,7 @@ Begin DesktopWindow dlg_Login
       LockLeft        =   True
       LockRight       =   False
       LockTop         =   True
+      PanelIndex      =   0
       Scope           =   0
       TabIndex        =   10
       TabPanelIndex   =   0
@@ -383,6 +385,10 @@ Begin DesktopWindow dlg_Login
       Transparent     =   False
       Visible         =   False
       Width           =   38
+      _mIndex         =   0
+      _mInitialParent =   ""
+      _mName          =   ""
+      _mPanelIndex    =   0
    End
 End
 #tag EndDesktopWindow
@@ -409,8 +415,8 @@ End
 		    ' Login successful - check if password needs to be changed (OTP login)
 		    If AuthManager.PasswordExpired Then
 		      ' Password expired - show change password dialog
+		      dlg_NewPassword.ShowModal(self)
 		      Self.Close
-		      dlg_NewPassword.Show
 		    Else
 		      ' Normal login - close dialog
 		      Self.Close
@@ -483,7 +489,7 @@ End
 	#tag Event
 		Sub Pressed()
 		  ' Open password reset dialog
-		  dlg_ResetPassword.Show
+		  dlg_ResetPassword.ShowModal(self)
 		End Sub
 	#tag EndEvent
 #tag EndEvents
