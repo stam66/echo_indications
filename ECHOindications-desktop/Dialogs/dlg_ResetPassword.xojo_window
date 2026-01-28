@@ -3,7 +3,7 @@ Begin DesktopWindow dlg_ResetPassword
    Backdrop        =   0
    BackgroundColor =   &c00000000
    Composite       =   False
-   DefaultLocation =   2
+   DefaultLocation =   1
    FullScreen      =   False
    HasBackgroundColor=   False
    HasCloseButton  =   True
