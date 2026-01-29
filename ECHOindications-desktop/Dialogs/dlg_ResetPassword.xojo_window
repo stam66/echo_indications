@@ -249,6 +249,34 @@ Begin DesktopWindow dlg_ResetPassword
       Visible         =   True
       Width           =   342
    End
+   Begin DesktopProgressWheel pgbLogin
+      Active          =   False
+      AllowAutoDeactivate=   True
+      AllowTabStop    =   True
+      Enabled         =   True
+      Height          =   42
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Left            =   172
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      PanelIndex      =   0
+      Scope           =   0
+      TabIndex        =   6
+      TabPanelIndex   =   0
+      Tooltip         =   ""
+      Top             =   309
+      Transparent     =   False
+      Visible         =   False
+      Width           =   38
+      _mIndex         =   0
+      _mInitialParent =   ""
+      _mName          =   ""
+      _mPanelIndex    =   0
+   End
 End
 #tag EndDesktopWindow
 
@@ -262,10 +290,17 @@ End
 		  End If
 
 		  ' Clear any previous value and set focus to email field
+		  
+		  If dlg_Login <> Nil And dlg_Login.Visible Then
+		    Self.Left = dlg_Login.Left + (dlg_Login.Width - Self.Width) / 2
+		    Self.Top = dlg_Login.Top + (dlg_Login.Height - Self.Height) / 2
+		  End If
+		  
 		  txtEmail.Text = ""
 		  txtEmail.SetFocus
 		End Sub
 	#tag EndEvent
+
 
 	#tag Method, Flags = &h0
 		Sub doResetPassword()
@@ -275,7 +310,7 @@ End
 		    txtEmail.SetFocus
 		    Return
 		  End If
-
+		  
 		  ' Attempt password reset via API
 		  If AuthManager.RequestPasswordReset(txtEmail.Text.Trim) Then
 		    ' Success - notify user and close dialog
@@ -290,23 +325,8 @@ End
 		End Sub
 	#tag EndMethod
 
+
 #tag EndWindowCode
-
-#tag Events btnReset
-	#tag Event
-		Sub Pressed()
-		  doResetPassword
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-
-#tag Events btnCancel
-	#tag Event
-		Sub Pressed()
-		  Self.Close
-		End Sub
-	#tag EndEvent
-#tag EndEvents
 
 #tag Events txtEmail
 	#tag Event
@@ -316,18 +336,33 @@ End
 		    doResetPassword
 		    Return True
 		  End If
-
+		  
 		  ' Handle Escape key - cancel
 		  If key = Chr(27) Then
 		    Self.Close
 		    Return True
 		  End If
-
+		  
 		  Return False
 		End Function
 	#tag EndEvent
 #tag EndEvents
-
+#tag Events btnReset
+	#tag Event
+		Sub Pressed()
+		  pgbLogin.Visible = true
+		  doResetPassword
+		  self.Close
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnCancel
+	#tag Event
+		Sub Pressed()
+		  Self.Close
+		End Sub
+	#tag EndEvent
+#tag EndEvents
 #tag ViewBehavior
 	#tag ViewProperty
 		Name="Name"
