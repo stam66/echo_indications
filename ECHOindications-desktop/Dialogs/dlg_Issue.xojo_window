@@ -843,7 +843,226 @@ End
 #tag EndDesktopWindow
 
 #tag WindowCode
+	#tag Event
+		Sub Opening()
+		  ' Initialize status popup
+		  popStatus.RemoveAllRows
+		  popStatus.AddRow("New")
+		  popStatus.AddRow("In Progress")
+		  popStatus.AddRow("Closed")
+		  popStatus.AddRow("Rejected")
+
+		  ' Initialize reason for close combobox
+		  cobReasonForClose.RemoveAllRows
+		  cobReasonForClose.AddRow("Resolved")
+		  cobReasonForClose.AddRow("Duplicate")
+		  cobReasonForClose.AddRow("Won't Fix")
+		  cobReasonForClose.AddRow("Invalid")
+		  cobReasonForClose.AddRow("Other")
+
+		  ' Hide reason for close unless status is Closed/Rejected
+		  lblReasonForClose.Visible = False
+		  cobReasonForClose.Visible = False
+
+		  ' Enable editing only for authenticated users
+		  Var canEdit As Boolean = AuthManager.IsAuthenticated
+		  popStatus.Enabled = canEdit
+		  cobReasonForClose.Enabled = canEdit
+		  btnSave.Enabled = canEdit
+
+		  ' Load the issue data if we have an ID
+		  If mIssueID > 0 Then
+		    LoadIssue(mIssueID)
+		  End If
+		End Sub
+	#tag EndEvent
+
+	#tag Method, Flags = &h0
+		Sub LoadIssue(id As Integer)
+		  ' Load issue data from API
+		  mCurrentIssue = ChangeRequest.GetByID(id)
+
+		  If mCurrentIssue = Nil Then
+		    MessageBox("Could not load issue #" + id.ToString)
+		    Self.Close
+		    Return
+		  End If
+
+		  ' Populate form fields
+		  txtChangeRequest.Text = mCurrentIssue.Description
+		  txtRequestor.Text = mCurrentIssue.ReporterName
+		  txtIndicationExisting.Text = mCurrentIssue.IndicationExisting
+		  txtIndicationNew.Text = mCurrentIssue.IndicationNew
+		  txtContextsExisting.Text = mCurrentIssue.ContextsExisting
+		  txtContextsNew.Text = mCurrentIssue.ContextsNew
+
+		  ' Set status dropdown
+		  Select Case mCurrentIssue.Status
+		  Case "New"
+		    popStatus.SelectedRowIndex = 0
+		  Case "In Progress"
+		    popStatus.SelectedRowIndex = 1
+		  Case "Closed"
+		    popStatus.SelectedRowIndex = 2
+		  Case "Rejected"
+		    popStatus.SelectedRowIndex = 3
+		  Else
+		    popStatus.SelectedRowIndex = 0
+		  End Select
+
+		  ' Show/hide reason for close based on status
+		  UpdateReasonForCloseVisibility
+
+		  ' Set reason for close if present
+		  If mCurrentIssue.ReasonForClose.Length > 0 Then
+		    cobReasonForClose.Text = mCurrentIssue.ReasonForClose
+		  End If
+
+		  ' Update window title
+		  Self.Title = "Issue #" + id.ToString
+
+		  ' Make fields read-only (change request content shouldn't be edited)
+		  txtChangeRequest.ReadOnly = True
+		  txtRequestor.ReadOnly = True
+		  txtIndicationExisting.ReadOnly = True
+		  txtIndicationNew.ReadOnly = True
+		  txtContextsExisting.ReadOnly = True
+		  txtContextsNew.ReadOnly = True
+
+		  ' Store original status to detect changes
+		  mOriginalStatus = mCurrentIssue.Status
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub UpdateReasonForCloseVisibility()
+		  ' Show reason for close only when status is Closed or Rejected
+		  Var showReason As Boolean = (popStatus.SelectedRowIndex = 2 Or popStatus.SelectedRowIndex = 3)
+		  lblReasonForClose.Visible = showReason
+		  cobReasonForClose.Visible = showReason
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function SaveChanges() As Boolean
+		  ' Validate authentication
+		  If Not AuthManager.IsAuthenticated Then
+		    MessageBox("You must be logged in to update issues.")
+		    Return False
+		  End If
+
+		  If mCurrentIssue = Nil Then
+		    Return False
+		  End If
+
+		  ' Get selected status
+		  Var newStatus As String
+		  Select Case popStatus.SelectedRowIndex
+		  Case 0
+		    newStatus = "New"
+		  Case 1
+		    newStatus = "In Progress"
+		  Case 2
+		    newStatus = "Closed"
+		  Case 3
+		    newStatus = "Rejected"
+		  Else
+		    newStatus = "New"
+		  End Select
+
+		  ' Validate reason for close if status is Closed or Rejected
+		  If (newStatus = "Closed" Or newStatus = "Rejected") And cobReasonForClose.Text.Trim.IsEmpty Then
+		    MessageBox("Please provide a reason for closing/rejecting this issue.")
+		    cobReasonForClose.SetFocus
+		    Return False
+		  End If
+
+		  ' Update the issue object
+		  mCurrentIssue.Status = newStatus
+
+		  If newStatus = "Closed" Or newStatus = "Rejected" Then
+		    mCurrentIssue.ReasonForClose = cobReasonForClose.Text.Trim
+		  Else
+		    mCurrentIssue.ReasonForClose = ""
+		  End If
+
+		  ' Save to API
+		  If mCurrentIssue.Update Then
+		    Return True
+		  Else
+		    MessageBox("Failed to save changes. Please try again.")
+		    Return False
+		  End If
+		End Function
+	#tag EndMethod
+
+	#tag Property, Flags = &h21
+		Private mCurrentIssue As ChangeRequest
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mIssueID As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mOriginalStatus As String
+	#tag EndProperty
+
+	#tag ComputedProperty, Flags = &h0
+		#tag Setter
+			Set
+			  mIssueID = value
+			End Set
+		#tag EndSetter
+		IssueID As Integer
+	#tag EndComputedProperty
+
 #tag EndWindowCode
+
+#tag Events btnSave
+	#tag Event
+		Sub Pressed()
+		  If SaveChanges Then
+		    Self.Close
+		  End If
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+
+#tag Events btnCancel
+	#tag Event
+		Sub Pressed()
+		  Self.Close
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+
+#tag Events popStatus
+	#tag Event
+		Sub SelectionChanged(item As DesktopMenuItem)
+		  #Pragma Unused item
+		  UpdateReasonForCloseVisibility
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+
+#tag Events btnPreviousIndication
+	#tag Event
+		Sub Pressed()
+		  ' Navigate to previous issue - publish event for container to handle
+		  PubSub.Publish("ISSUE_NAVIGATE_PREV", mIssueID)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+
+#tag Events btnNextIndication
+	#tag Event
+		Sub Pressed()
+		  ' Navigate to next issue - publish event for container to handle
+		  PubSub.Publish("ISSUE_NAVIGATE_NEXT", mIssueID)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
 
 #tag ViewBehavior
 	#tag ViewProperty
@@ -1087,6 +1306,14 @@ End
 		Group="Deprecated"
 		InitialValue="False"
 		Type="Boolean"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="IssueID"
+		Visible=false
+		Group="Behavior"
+		InitialValue="0"
+		Type="Integer"
 		EditorType=""
 	#tag EndViewProperty
 #tag EndViewBehavior
