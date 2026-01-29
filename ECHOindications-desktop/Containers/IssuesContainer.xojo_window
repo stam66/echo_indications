@@ -199,11 +199,163 @@ End
 #tag EndDesktopWindow
 
 #tag WindowCode
-	#tag Constant, Name = kSectionTitle, Type = String, Dynamic = False, Default = \"Change reqeusts / Issues", Scope = Public
+	#tag Event
+		Sub Opening()
+		  ' Subscribe to PubSub events
+		  PubSub.Subscribe("ISSUE_CREATED", AddressOf HandleIssueChanged)
+		  PubSub.Subscribe("ISSUE_UPDATED", AddressOf HandleIssueChanged)
+		  PubSub.Subscribe("DATA_REFRESH", AddressOf HandleDataRefresh)
+
+		  ' Load initial data with "All Open" filter
+		  LoadIssues("All Open")
+		End Sub
+	#tag EndEvent
+
+	#tag Event
+		Sub Closing()
+		  ' Unsubscribe from PubSub events
+		  PubSub.Unsubscribe("ISSUE_CREATED", AddressOf HandleIssueChanged)
+		  PubSub.Unsubscribe("ISSUE_UPDATED", AddressOf HandleIssueChanged)
+		  PubSub.Unsubscribe("DATA_REFRESH", AddressOf HandleDataRefresh)
+		End Sub
+	#tag EndEvent
+
+	#tag Method, Flags = &h0
+		Sub LoadIssues(filter As String)
+		  ' Load issues based on filter selection
+		  listIssues.RemoveAllRows
+
+		  Var issues() As ChangeRequest
+
+		  Select Case filter
+		  Case "All Open"
+		    issues = ChangeRequest.GetOpen
+		  Case "New"
+		    issues = ChangeRequest.GetByStatus("New")
+		  Case "In Progress"
+		    issues = ChangeRequest.GetByStatus("In Progress")
+		  Case "Closed"
+		    issues = ChangeRequest.GetByStatus("Closed")
+		  Case "Rejected"
+		    issues = ChangeRequest.GetByStatus("Rejected")
+		  Case "All"
+		    issues = ChangeRequest.GetAll
+		  Else
+		    issues = ChangeRequest.GetOpen
+		  End Select
+
+		  ' Apply search filter if set
+		  Var searchText As String = txtSearch.Text.Trim.Lowercase
+
+		  For Each issue As ChangeRequest In issues
+		    ' Skip if doesn't match search
+		    If searchText.Length > 0 Then
+		      If issue.Description.Lowercase.IndexOf(searchText) < 0 And _
+		        issue.ReporterName.Lowercase.IndexOf(searchText) < 0 Then
+		        Continue
+		      End If
+		    End If
+
+		    ' Add row to list
+		    listIssues.AddRow(issue.GetShortDescription, issue.ReporterName, issue.Status, issue.CreatedAtString)
+		    listIssues.RowTagAt(listIssues.LastAddedRowIndex) = issue.ID
+		  Next
+
+		  ' Update count label
+		  lblFoundCount.Text = listIssues.RowCount.ToString + " issue(s) found"
+
+		  ' Store current filter
+		  mCurrentFilter = filter
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub HandleIssueChanged(data As Variant)
+		  #Pragma Unused data
+		  ' Reload with current filter when an issue is created/updated
+		  LoadIssues(mCurrentFilter)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub HandleDataRefresh(data As Variant)
+		  #Pragma Unused data
+		  ' Reload with current filter on general data refresh
+		  LoadIssues(mCurrentFilter)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetCurrentFilter() As String
+		  Select Case segFilterIssues.SelectedSegmentIndex
+		  Case 0
+		    Return "All Open"
+		  Case 1
+		    Return "New"
+		  Case 2
+		    Return "In Progress"
+		  Case 3
+		    Return "Closed"
+		  Case 4
+		    Return "All"
+		  Else
+		    Return "All Open"
+		  End Select
+		End Function
+	#tag EndMethod
+
+	#tag Property, Flags = &h21
+		Private mCurrentFilter As String = "All Open"
+	#tag EndProperty
+
+	#tag Constant, Name = kSectionTitle, Type = String, Dynamic = False, Default = \"Change requests / Issues", Scope = Public
 	#tag EndConstant
 
 
 #tag EndWindowCode
+
+#tag Events txtSearch
+	#tag Event
+		Sub TextChanged()
+		  ' Reload with current filter when search text changes
+		  LoadIssues(GetCurrentFilter)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+
+#tag Events listIssues
+	#tag Event
+		Sub DoublePressed(row As Integer)
+		  If row < 0 Then Return
+
+		  Var issueID As Integer = listIssues.RowTagAt(row).IntegerValue
+
+		  ' Open issue detail dialog
+		  Var dlg As New dlg_Issue
+		  dlg.IssueID = issueID
+		  dlg.ShowModal
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+
+#tag Events segFilterIssues
+	#tag Event
+		Sub Pressed(segmentIndex As Integer)
+		  Select Case segmentIndex
+		  Case 0
+		    LoadIssues("All Open")
+		  Case 1
+		    LoadIssues("New")
+		  Case 2
+		    LoadIssues("In Progress")
+		  Case 3
+		    LoadIssues("Closed")
+		  Case 4
+		    LoadIssues("All")
+		  End Select
+		End Sub
+	#tag EndEvent
+#tag EndEvents
 
 #tag ViewBehavior
 	#tag ViewProperty
