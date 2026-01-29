@@ -489,7 +489,9 @@ End
 	#tag Event
 		Sub Pressed()
 		  ' Open password reset dialog
+		  self.Visible = false
 		  dlg_ResetPassword.ShowModal(self)
+		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents

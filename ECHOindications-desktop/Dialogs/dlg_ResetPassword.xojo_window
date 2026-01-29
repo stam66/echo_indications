@@ -284,6 +284,12 @@ End
 	#tag Event
 		Sub Opening()
 		  ' Clear any previous value and set focus to email field
+		  
+		  If dlg_Login <> Nil And dlg_Login.Visible Then
+		    Self.Left = dlg_Login.Left + (dlg_Login.Width - Self.Width) / 2
+		    Self.Top = dlg_Login.Top + (dlg_Login.Height - Self.Height) / 2
+		  End If
+		  
 		  txtEmail.Text = ""
 		  txtEmail.SetFocus
 		End Sub
