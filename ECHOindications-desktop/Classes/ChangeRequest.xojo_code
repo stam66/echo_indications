@@ -159,7 +159,19 @@ Protected Class ChangeRequest
 
 		    If response.Value("status") = "success" Then
 		      Var dataVariant As Variant = response.Value("data")
-		      Var items() As Variant = dataVariant
+
+		      ' API may return data as dictionary with "changes" key or direct array
+		      Var items() As Variant
+
+		      If dataVariant IsA Dictionary Then
+		        Var dataDict As Dictionary = Dictionary(dataVariant)
+		        If dataDict.HasKey("changes") Then
+		          items = dataDict.Value("changes")
+		        End If
+		      Else
+		        ' Direct array
+		        items = dataVariant
+		      End If
 
 		      For Each item As Variant In items
 		        If item IsA Dictionary Then
@@ -229,7 +241,19 @@ Protected Class ChangeRequest
 
 		    If response.Value("status") = "success" Then
 		      Var dataVariant As Variant = response.Value("data")
-		      Var items() As Variant = dataVariant
+
+		      ' API may return data as dictionary with "changes" key or direct array
+		      Var items() As Variant
+
+		      If dataVariant IsA Dictionary Then
+		        Var dataDict As Dictionary = Dictionary(dataVariant)
+		        If dataDict.HasKey("changes") Then
+		          items = dataDict.Value("changes")
+		        End If
+		      Else
+		        ' Direct array
+		        items = dataVariant
+		      End If
 
 		      For Each item As Variant In items
 		        If item IsA Dictionary Then
@@ -264,7 +288,19 @@ Protected Class ChangeRequest
 
 		    If response.Value("status") = "success" Then
 		      Var dataVariant As Variant = response.Value("data")
-		      Var items() As Variant = dataVariant
+
+		      ' API may return data as dictionary with "changes" key or direct array
+		      Var items() As Variant
+
+		      If dataVariant IsA Dictionary Then
+		        Var dataDict As Dictionary = Dictionary(dataVariant)
+		        If dataDict.HasKey("changes") Then
+		          items = dataDict.Value("changes")
+		        End If
+		      Else
+		        ' Direct array
+		        items = dataVariant
+		      End If
 
 		      For Each item As Variant In items
 		        If item IsA Dictionary Then
