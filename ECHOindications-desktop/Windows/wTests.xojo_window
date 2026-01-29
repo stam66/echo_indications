@@ -441,7 +441,7 @@ End
 		    
 		    For i As Integer = 0 To Min(3, newChanges.Count - 1)
 		      Var change As ChangeRequest = newChanges(i)
-		      System.DebugLog "  [" + change.ID.ToString + "] " + change.Status + " - " + change.IndicationTitle
+		      System.DebugLog "  [" + change.ID.ToString + "] " + change.Status + " - " + change.IndicationExisting
 		    Next
 		  Else
 		    System.DebugLog "ℹ️  No new change requests"
@@ -463,10 +463,10 @@ End
 		      System.DebugLog "✅ Retrieved change request #" + changeDetail.ID.ToString
 		      System.DebugLog "  Status: " + changeDetail.Status
 		      System.DebugLog "  Reporter: " + changeDetail.ReporterName
-		      System.DebugLog "  Indication: " + changeDetail.IndicationTitle
+		      System.DebugLog "  Indication: " + changeDetail.IndicationExisting
 		      System.DebugLog "  Description: " + changeDetail.Description
-		      If changeDetail.ResolutionNotes.Length > 0 Then
-		        System.DebugLog "  Resolution: " + changeDetail.ResolutionNotes
+		      If changeDetail.ReasonForClose.Length > 0 Then
+		        System.DebugLog "  Resolution: " + changeDetail.ReasonForClose
 		      End If
 		    Else
 		      System.DebugLog "❌ Could not retrieve change request"

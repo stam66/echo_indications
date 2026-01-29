@@ -325,7 +325,8 @@ End
 
 #tag Events listIssues
 	#tag Event
-		Sub DoublePressed(row As Integer)
+		Sub DoublePressed()
+		  Var row As Integer = listIssues.SelectedRowIndex
 		  If row < 0 Then Return
 
 		  Var issueID As Integer = listIssues.RowTagAt(row).IntegerValue
