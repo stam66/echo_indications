@@ -870,6 +870,10 @@ End
 		  cobReasonForClose.Enabled = canEdit
 		  btnSave.Enabled = canEdit
 
+		  ' Disable navigation buttons (not functional in modal dialog)
+		  btnPreviousIndication.Enabled = False
+		  btnNextIndication.Enabled = False
+
 		  ' Load the issue data if we have an ID
 		  If mIssueID > 0 Then
 		    LoadIssue(mIssueID)
@@ -1049,8 +1053,8 @@ End
 #tag Events btnPreviousIndication
 	#tag Event
 		Sub Pressed()
-		  ' Navigate to previous issue - publish event for container to handle
-		  PubSub.Publish("ISSUE_NAVIGATE_PREV", mIssueID)
+		  ' Navigation not available in modal dialog
+		  ' Close and let user select from list
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -1058,8 +1062,8 @@ End
 #tag Events btnNextIndication
 	#tag Event
 		Sub Pressed()
-		  ' Navigate to next issue - publish event for container to handle
-		  PubSub.Publish("ISSUE_NAVIGATE_NEXT", mIssueID)
+		  ' Navigation not available in modal dialog
+		  ' Close and let user select from list
 		End Sub
 	#tag EndEvent
 #tag EndEvents

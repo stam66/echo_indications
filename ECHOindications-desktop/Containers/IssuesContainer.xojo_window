@@ -202,9 +202,9 @@ End
 	#tag Event
 		Sub Opening()
 		  ' Subscribe to PubSub events
-		  PubSub.Subscribe("ISSUE_CREATED", AddressOf HandleIssueChanged)
-		  PubSub.Subscribe("ISSUE_UPDATED", AddressOf HandleIssueChanged)
-		  PubSub.Subscribe("DATA_REFRESH", AddressOf HandleDataRefresh)
+		  PubSub.Subscribe("ISSUE_CREATED", AddressOf HandleIssueChanged, Self)
+		  PubSub.Subscribe("ISSUE_UPDATED", AddressOf HandleIssueChanged, Self)
+		  PubSub.Subscribe("DATA_REFRESH", AddressOf HandleDataRefresh, Self)
 
 		  ' Load initial data with "All Open" filter
 		  LoadIssues("All Open")
@@ -214,9 +214,9 @@ End
 	#tag Event
 		Sub Closing()
 		  ' Unsubscribe from PubSub events
-		  PubSub.Unsubscribe("ISSUE_CREATED", AddressOf HandleIssueChanged)
-		  PubSub.Unsubscribe("ISSUE_UPDATED", AddressOf HandleIssueChanged)
-		  PubSub.Unsubscribe("DATA_REFRESH", AddressOf HandleDataRefresh)
+		  PubSub.Unsubscribe("ISSUE_CREATED", AddressOf HandleIssueChanged, Self)
+		  PubSub.Unsubscribe("ISSUE_UPDATED", AddressOf HandleIssueChanged, Self)
+		  PubSub.Unsubscribe("DATA_REFRESH", AddressOf HandleDataRefresh, Self)
 		End Sub
 	#tag EndEvent
 
