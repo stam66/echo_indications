@@ -112,7 +112,11 @@ Protected Class ChangeRequest
 		    If data.HasKey("reason_for_close") And data.Value("reason_for_close") <> Nil Then
 		      change.ReasonForClose = data.Value("reason_for_close").StringValue
 		    End If
-		    
+
+		    If data.HasKey("resolution_notes") And data.Value("resolution_notes") <> Nil Then
+		      change.ResolutionNotes = data.Value("resolution_notes").StringValue
+		    End If
+
 		    If data.HasKey("indication_existing") And data.Value("indication_existing") <> Nil Then
 		      change.IndicationExisting = data.Value("indication_existing").StringValue
 		    End If
@@ -151,44 +155,47 @@ Protected Class ChangeRequest
 		  '/// Fetches all change requests from the API (PUBLIC - no auth required)
 		  '///
 		  '/// @returns Array of ChangeRequest objects
-		  
+
 		  Var results() As ChangeRequest
-		  
+
 		  Try
 		    Var response As Dictionary = APIClient.Get("changes.lc", "list")
-		    
+
 		    If response.Value("status") = "success" Then
 		      Var dataVariant As Variant = response.Value("data")
 
-		      ' API may return data as dictionary with "changes" key or direct array
-		      Var items() As Variant
-
+		      ' LiveCode returns 1-indexed dictionary: {"1": {...}, "2": {...}}
 		      If dataVariant IsA Dictionary Then
 		        Var dataDict As Dictionary = Dictionary(dataVariant)
-		        If dataDict.HasKey("changes") Then
-		          items = dataDict.Value("changes")
-		        End If
-		      Else
-		        ' Direct array
-		        items = dataVariant
-		      End If
-
-		      For Each item As Variant In items
-		        If item IsA Dictionary Then
-		          Var change As ChangeRequest = FromDictionary(Dictionary(item))
-		          If change <> Nil Then
-		            results.Add(change)
+		        For Each key As Variant In dataDict.Keys
+		          Var item As Variant = dataDict.Value(key)
+		          If item IsA Dictionary Then
+		            Var change As ChangeRequest = FromDictionary(Dictionary(item))
+		            If change <> Nil Then
+		              results.Add(change)
+		            End If
 		          End If
-		        End If
-		      Next
+		        Next
+		      ElseIf dataVariant.IsArray Then
+		        ' Standard JSON array format
+		        Var items() As Variant = dataVariant
+		        For Each item As Variant In items
+		          If item IsA Dictionary Then
+		            Var change As ChangeRequest = FromDictionary(Dictionary(item))
+		            If change <> Nil Then
+		              results.Add(change)
+		            End If
+		          End If
+		        Next
+		      End If
 		    Else
 		      System.DebugLog("ChangeRequest.GetAll error: " + response.Value("message").StringValue)
 		    End If
-		    
+
 		  Catch err As RuntimeException
 		    System.DebugLog("ChangeRequest.GetAll exception: " + err.Message)
 		  End Try
-		  
+
 		  Return results
 		End Function
 	#tag EndMethod
@@ -230,47 +237,50 @@ Protected Class ChangeRequest
 		  '///
 		  '/// @param status Status to filter by (New, In Progress, Closed, Rejected)
 		  '/// @returns Array of ChangeRequest objects
-		  
+
 		  Var results() As ChangeRequest
-		  
+
 		  Try
 		    Var params As New Dictionary
 		    params.Value("status") = status
-		    
+
 		    Var response As Dictionary = APIClient.Get("changes.lc", "by_status", params)
-		    
+
 		    If response.Value("status") = "success" Then
 		      Var dataVariant As Variant = response.Value("data")
 
-		      ' API may return data as dictionary with "changes" key or direct array
-		      Var items() As Variant
-
+		      ' LiveCode returns 1-indexed dictionary: {"1": {...}, "2": {...}}
 		      If dataVariant IsA Dictionary Then
 		        Var dataDict As Dictionary = Dictionary(dataVariant)
-		        If dataDict.HasKey("changes") Then
-		          items = dataDict.Value("changes")
-		        End If
-		      Else
-		        ' Direct array
-		        items = dataVariant
-		      End If
-
-		      For Each item As Variant In items
-		        If item IsA Dictionary Then
-		          Var change As ChangeRequest = FromDictionary(Dictionary(item))
-		          If change <> Nil Then
-		            results.Add(change)
+		        For Each key As Variant In dataDict.Keys
+		          Var item As Variant = dataDict.Value(key)
+		          If item IsA Dictionary Then
+		            Var change As ChangeRequest = FromDictionary(Dictionary(item))
+		            If change <> Nil Then
+		              results.Add(change)
+		            End If
 		          End If
-		        End If
-		      Next
+		        Next
+		      ElseIf dataVariant.IsArray Then
+		        ' Standard JSON array format
+		        Var items() As Variant = dataVariant
+		        For Each item As Variant In items
+		          If item IsA Dictionary Then
+		            Var change As ChangeRequest = FromDictionary(Dictionary(item))
+		            If change <> Nil Then
+		              results.Add(change)
+		            End If
+		          End If
+		        Next
+		      End If
 		    Else
 		      System.DebugLog("ChangeRequest.GetByStatus error: " + response.Value("message").StringValue)
 		    End If
-		    
+
 		  Catch err As RuntimeException
 		    System.DebugLog("ChangeRequest.GetByStatus exception: " + err.Message)
 		  End Try
-		  
+
 		  Return results
 		End Function
 	#tag EndMethod
@@ -278,46 +288,24 @@ Protected Class ChangeRequest
 	#tag Method, Flags = &h0
 		Shared Function GetOpen() As ChangeRequest()
 		  '/// Fetches all open change requests (New or In Progress)
+		  '/// Combines results from two API calls since there's no list_open action
 		  '///
 		  '/// @returns Array of ChangeRequest objects
-		  
+
 		  Var results() As ChangeRequest
-		  
-		  Try
-		    Var response As Dictionary = APIClient.Get("changes.lc", "list_open")
-		    
-		    If response.Value("status") = "success" Then
-		      Var dataVariant As Variant = response.Value("data")
 
-		      ' API may return data as dictionary with "changes" key or direct array
-		      Var items() As Variant
+		  ' Get "New" status items
+		  Var newItems() As ChangeRequest = GetByStatus("New")
+		  For Each item As ChangeRequest In newItems
+		    results.Add(item)
+		  Next
 
-		      If dataVariant IsA Dictionary Then
-		        Var dataDict As Dictionary = Dictionary(dataVariant)
-		        If dataDict.HasKey("changes") Then
-		          items = dataDict.Value("changes")
-		        End If
-		      Else
-		        ' Direct array
-		        items = dataVariant
-		      End If
+		  ' Get "In Progress" status items
+		  Var inProgressItems() As ChangeRequest = GetByStatus("In Progress")
+		  For Each item As ChangeRequest In inProgressItems
+		    results.Add(item)
+		  Next
 
-		      For Each item As Variant In items
-		        If item IsA Dictionary Then
-		          Var change As ChangeRequest = FromDictionary(Dictionary(item))
-		          If change <> Nil Then
-		            results.Add(change)
-		          End If
-		        End If
-		      Next
-		    Else
-		      System.DebugLog("ChangeRequest.GetOpen error: " + response.Value("message").StringValue)
-		    End If
-		    
-		  Catch err As RuntimeException
-		    System.DebugLog("ChangeRequest.GetOpen exception: " + err.Message)
-		  End Try
-		  
 		  Return results
 		End Function
 	#tag EndMethod
@@ -433,6 +421,10 @@ Protected Class ChangeRequest
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
+		ResolutionNotes As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
 		Status As String
 	#tag EndProperty
 
@@ -520,6 +512,14 @@ Protected Class ChangeRequest
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="ReasonForClose"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="String"
+			EditorType="MultiLineEditor"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="ResolutionNotes"
 			Visible=false
 			Group="Behavior"
 			InitialValue=""
