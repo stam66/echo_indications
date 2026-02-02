@@ -330,10 +330,12 @@ End
 		  If row < 0 Then Return
 
 		  Var issueID As Integer = listIssues.RowTagAt(row).IntegerValue
+		  If issueID <= 0 Then Return
 
 		  ' Open issue detail dialog
 		  Var dlg As New dlg_Issue
 		  dlg.IssueID = issueID
+		  dlg.LoadIssue(issueID)
 		  dlg.ShowModal
 		End Sub
 	#tag EndEvent
