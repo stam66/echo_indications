@@ -874,8 +874,8 @@ End
 		  btnPreviousIndication.Enabled = False
 		  btnNextIndication.Enabled = False
 
-		  ' Load the issue data if we have an ID
-		  If mIssueID > 0 Then
+		  ' Load the issue data if we have an ID and not already loaded
+		  If mIssueID > 0 And mCurrentIssue = Nil Then
 		    LoadIssue(mIssueID)
 		  End If
 		End Sub
