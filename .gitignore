@@ -11,3 +11,6 @@ Debug*/Debug*\ Libs
 *.obsolete*
 .DS_store
 
+# Claude Code worktrees / scratch space
+.claude/
+
