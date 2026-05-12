@@ -28,7 +28,7 @@ Begin WebPage wp_indications
    Title           =   "Appropriate Use Criteria for Echocardiography"
    Top             =   0
    Visible         =   True
-   Width           =   996
+   Width           =   1038
    _ImplicitInstance=   False
    _mDesignHeight  =   0
    _mDesignWidth   =   0
@@ -39,8 +39,9 @@ Begin WebPage wp_indications
       CSSClasses      =   ""
       Enabled         =   True
       FontName        =   ""
-      FontSize        =   12.0
-      Height          =   38
+      FontSize        =   14.0
+      Height          =   29
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   ""
       Italic          =   True
@@ -57,14 +58,14 @@ Begin WebPage wp_indications
       Scope           =   0
       TabIndex        =   9
       TabStop         =   True
-      Text            =   "Separate search terms with a comma"
+      Text            =   "Separate search terms with a comma. 'Fuzzy' search - tolerant to misspellings"
       TextAlignment   =   0
       TextColor       =   &c000000FF
       Tooltip         =   ""
-      Top             =   129
+      Top             =   140
       Underline       =   False
       Visible         =   True
-      Width           =   252
+      Width           =   529
       _mPanelIndex    =   -1
    End
    Begin WebSearchField txtSearch
@@ -72,7 +73,7 @@ Begin WebPage wp_indications
       CSSClasses      =   ""
       Enabled         =   True
       Height          =   38
-      Hint            =   "Search by title or keywords..."
+      Hint            =   "e.g. dyspnoea, palpitations"
       Index           =   -2147483648
       Indicator       =   ""
       Left            =   250
@@ -91,7 +92,7 @@ Begin WebPage wp_indications
       Tooltip         =   ""
       Top             =   101
       Visible         =   True
-      Width           =   453
+      Width           =   495
       _mPanelIndex    =   -1
    End
    Begin WebPopupMenu popContext
@@ -104,7 +105,7 @@ Begin WebPage wp_indications
       InitialValue    =   "All Contexts"
       LastAddedRowIndex=   0
       LastRowIndex    =   0
-      Left            =   729
+      Left            =   771
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -133,6 +134,7 @@ Begin WebPage wp_indications
       FontName        =   ""
       FontSize        =   0.0
       Height          =   38
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   ""
       Italic          =   False
@@ -153,7 +155,7 @@ Begin WebPage wp_indications
       TextAlignment   =   0
       TextColor       =   &c000000FF
       Tooltip         =   ""
-      Top             =   199
+      Top             =   216
       Underline       =   False
       Visible         =   True
       Width           =   275
@@ -161,8 +163,8 @@ Begin WebPage wp_indications
    End
    Begin WebListBox lstIndications
       AllowRowReordering=   False
-      ColumnCount     =   3
-      ColumnWidths    =   "60%, 20%, 20%"
+      ColumnCount     =   6
+      ColumnWidths    =   "50%, 20%, 20%,75,75,75"
       ControlID       =   ""
       CSSClasses      =   ""
       DefaultRowHeight=   49
@@ -171,11 +173,11 @@ Begin WebPage wp_indications
       HasBorder       =   True
       HasHeader       =   True
       HeaderHeight    =   0
-      Height          =   424
+      Height          =   407
       HighlightSortedColumn=   True
       Index           =   -2147483648
       Indicator       =   0
-      InitialValue    =   "Indication	Contexts	Keywords"
+      InitialValue    =   "Indication	Contexts	Keywords	GP	IP	OP"
       LastAddedRowIndex=   0
       LastColumnIndex =   0
       LastRowIndex    =   0
@@ -199,9 +201,9 @@ Begin WebPage wp_indications
       TabIndex        =   5
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   245
+      Top             =   262
       Visible         =   True
-      Width           =   956
+      Width           =   998
       _mPanelIndex    =   -1
    End
    Begin wc_WebPageHeader wc_header
@@ -231,7 +233,7 @@ Begin WebPage wp_indications
       Tooltip         =   ""
       Top             =   0
       Visible         =   True
-      Width           =   996
+      Width           =   1038
       _mDesignHeight  =   0
       _mDesignWidth   =   0
       _mPanelIndex    =   -1
@@ -296,6 +298,96 @@ Begin WebPage wp_indications
       Width           =   100
       _mPanelIndex    =   -1
    End
+   Begin WebButton btnShowIndicationDetail
+      AllowAutoDisable=   False
+      Cancel          =   False
+      Caption         =   "Indication detail"
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Default         =   False
+      Enabled         =   True
+      Height          =   38
+      Index           =   -2147483648
+      Indicator       =   0
+      Left            =   849
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      LockVertical    =   False
+      Outlined        =   True
+      PanelIndex      =   0
+      Scope           =   2
+      TabIndex        =   10
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   216
+      Visible         =   True
+      Width           =   169
+      _mPanelIndex    =   -1
+   End
+   Begin WebButton btnRequestIndicationChange
+      AllowAutoDisable=   False
+      Cancel          =   False
+      Caption         =   "Request change"
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Default         =   False
+      Enabled         =   True
+      Height          =   38
+      Index           =   -2147483648
+      Indicator       =   0
+      Left            =   664
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      LockVertical    =   False
+      Outlined        =   True
+      PanelIndex      =   0
+      Scope           =   2
+      TabIndex        =   11
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   216
+      Visible         =   True
+      Width           =   177
+      _mPanelIndex    =   -1
+   End
+   Begin WebButton btnCopyLink
+      AllowAutoDisable=   False
+      Cancel          =   False
+      Caption         =   "Copy Link for indication"
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Default         =   False
+      Enabled         =   True
+      Height          =   38
+      Index           =   -2147483648
+      Indicator       =   0
+      Left            =   439
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      LockVertical    =   False
+      Outlined        =   True
+      PanelIndex      =   0
+      Scope           =   2
+      TabIndex        =   12
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   216
+      Visible         =   True
+      Width           =   217
+      _mPanelIndex    =   -1
+   End
 End
 #tag EndWebPage
 
@@ -304,7 +396,15 @@ End
 		Sub Shown()
 		  btnNew.Enabled = session.IsAuthenticated
 		  btnDelete.Enabled = session.IsAuthenticated
-		  
+		  btnShowIndicationDetail.Enabled = False
+		  btnRequestIndicationChange.Enabled = False
+		  btnCopyLink.Enabled = False
+
+		  // Copy must happen client-side in the user gesture (navigator.clipboard
+		  // refuses out-of-gesture writes). Setup wires onclick + flash; the
+		  // per-row ID is stamped in SelectionChanged.
+		  CopyStringToClipboardHelper.SetupDeepLinkButton(btnCopyLink)
+
 		  LoadContexts
 		  LoadIndications
 		  
@@ -315,9 +415,78 @@ End
 		  // subscribe to login success
 		  PubSub.Subscribe("loginSuccessful", AddressOf Initialise, self)
 		  
+		  // Deep-link: if we arrived via /?id=N, select that row and open it.
+		  If DeepLinkID > 0 Then
+		    Var targetID As Integer = DeepLinkID
+		    DeepLinkID = 0   // consume so refreshes don't reopen
+		    
+		    For i As Integer = 0 To lstIndications.LastRowIndex
+		      If lstIndications.RowTagAt(i) = targetID Then
+		        lstIndications.SelectedRowIndex = i
+		        lstIndications.ScrollTo(i)
+		        
+		        Var allIDs() As Integer
+		        For j As Integer = 0 To lstIndications.LastRowIndex
+		          allIDs.Add(lstIndications.RowTagAt(j))
+		        Next
+		        
+		        Var dlg As New dlg_Indication
+		        dlg.IndicationID = targetID
+		        dlg.IndicationIDs = allIDs
+		        dlg.CurrentIndex = i
+		        AddHandler dlg.IndicationSaved, AddressOf HandleIndicationSaved
+		        AddHandler dlg.DialogClosed, AddressOf HandleDialogClosed
+		        Session.NavigationManager.NavigateToPage(dlg)
+		        Exit
+		      End If
+		    Next
+		  End If
+		  
 		End Sub
 	#tag EndEvent
 
+
+	#tag Method, Flags = &h21
+		Private Sub AddIndicationRow(id As Integer, title As String, contexts As String, keywords As String, gp As String, ip As String, op As String)
+		  lstIndications.AddRow(title, contexts, keywords, "", "", "")
+		  Var rowIdx As Integer = lstIndications.LastAddedRowIndex
+		  lstIndications.RowTagAt(rowIdx) = id
+		  lstIndications.CellValueAt(rowIdx, 3) = AucRenderer(gp)
+		  lstIndications.CellValueAt(rowIdx, 4) = AucRenderer(ip)
+		  lstIndications.CellValueAt(rowIdx, 5) = AucRenderer(op)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function AucRenderer(value As String) As WebListBoxStyleRenderer
+		  // RAG glyph centred in the cell. WebListBoxStyleRenderer has no
+		  // alignment property and WebListBox has no ColumnAlignmentAt in Web
+		  // 2.0 (as of 2025r3), so we use the WebStyle.Value("css-prop") CSS
+		  // escape hatch for text-align. FontSize is supported directly.
+		  Var s As New WebStyle
+		  s.Bold = True
+		  s.FontSize = 26
+		  s.Value("text-align") = "center"
+		  // Bright/high-luminance RAG so the glyph pops against both
+		  // white (light mode), NHS-blue selected rows, AND dark backgrounds
+		  // (dark mode). Mid-luminance colours got swallowed on dark blue.
+		  Var label As String = ""
+		  
+		  Select Case value
+		  Case "indicated"
+		    label = "✔"
+		    s.ForegroundColor = Color.RGB(46, 204, 113)
+		  Case "not_indicated"
+		    label = "✕"
+		    s.ForegroundColor = Color.RGB(231, 76, 60)
+		  Case "can_be_considered"
+		    label = "?"
+		    s.ForegroundColor = Color.RGB(243, 156, 18)
+		  End Select
+		  
+		  Return New WebListBoxStyleRenderer(s, label)
+		End Function
+	#tag EndMethod
 
 	#tag Method, Flags = &h21
 		Private Function GetContextsForIndication(indicationID As Integer) As String
@@ -358,7 +527,7 @@ End
 		      If ind <> Nil Then
 		        if ind.DeleteWithAudit(Session.DB, Session.CurrentUsername) Then
 		          If ind.Delete(Session.DB) Then
-		            MessageBox("Indication deleted successfully")
+		            Session.FlashCaption("Deleted", btnDelete, 1500)
 		            LoadIndications
 		          Else
 		            MessageBox("Error deleting indication")
@@ -477,23 +646,23 @@ End
 		      // Load all indications
 		      sql = "SELECT i.id, i.title, " + _
 		      "GROUP_CONCAT(c.name ORDER BY c.sort_order SEPARATOR ', ') as contexts, " + _
-		      "i.keywords " + _
+		      "i.keywords, i.primary_care, i.secondary_inpatient, i.secondary_outpatient " + _
 		      "FROM indications i " + _
 		      "LEFT JOIN indication_contexts ic ON i.id = ic.indication_id " + _
 		      "LEFT JOIN contexts c ON ic.context_id = c.id " + _
-		      "GROUP BY i.id, i.title, i.keywords " + _
+		      "GROUP BY i.id, i.title, i.keywords, i.primary_care, i.secondary_inpatient, i.secondary_outpatient " + _
 		      "ORDER BY i.title"
 		      rs = Session.DB.SelectSQL(sql)
 		    Else
 		      // Filter by context
 		      sql = "SELECT DISTINCT i.id, i.title, " + _
 		      "GROUP_CONCAT(c.name ORDER BY c.sort_order SEPARATOR ', ') as contexts, " + _
-		      "i.keywords " + _
+		      "i.keywords, i.primary_care, i.secondary_inpatient, i.secondary_outpatient " + _
 		      "FROM indications i " + _
 		      "INNER JOIN indication_contexts ic ON i.id = ic.indication_id " + _
 		      "INNER JOIN contexts c ON ic.context_id = c.id " + _
 		      "WHERE i.id IN (SELECT indication_id FROM indication_contexts WHERE context_id = ?) " + _
-		      "GROUP BY i.id, i.title, i.keywords " + _
+		      "GROUP BY i.id, i.title, i.keywords, i.primary_care, i.secondary_inpatient, i.secondary_outpatient " + _
 		      "ORDER BY i.title"
 		      
 		      Var ps As MySQLPreparedStatement = Session.DB.Prepare(sql)
@@ -509,9 +678,11 @@ End
 		        Var contexts As String = If(rs.Column("contexts").Value = Nil, "", rs.Column("contexts").StringValue)
 		        Var keywords As String = If(rs.Column("keywords").Value = Nil, "", rs.Column("keywords").StringValue)
 		        Var id As Integer = rs.Column("id").IntegerValue
+		        Var gp As String = If(rs.Column("primary_care").Value = Nil, "", rs.Column("primary_care").StringValue)
+		        Var ip As String = If(rs.Column("secondary_inpatient").Value = Nil, "", rs.Column("secondary_inpatient").StringValue)
+		        Var op As String = If(rs.Column("secondary_outpatient").Value = Nil, "", rs.Column("secondary_outpatient").StringValue)
 		        
-		        lstIndications.AddRow(title, contexts, keywords)
-		        lstIndications.RowTagAt(lstIndications.LastAddedRowIndex) = id
+		        AddIndicationRow(id, title, contexts, keywords, gp, ip, op)
 		        
 		        rs.MoveToNextRow
 		      Wend
@@ -593,8 +764,10 @@ End
 		        
 		        // Add row only if ALL terms matched
 		        If allTermsMatch Then
-		          lstIndications.AddRow(title, contexts, keywords)
-		          lstIndications.RowTagAt(lstIndications.LastAddedRowIndex) = id
+		          Var gp As String = If(rs.Column("primary_care").Value = Nil, "", rs.Column("primary_care").StringValue)
+		          Var ip As String = If(rs.Column("secondary_inpatient").Value = Nil, "", rs.Column("secondary_inpatient").StringValue)
+		          Var op As String = If(rs.Column("secondary_outpatient").Value = Nil, "", rs.Column("secondary_outpatient").StringValue)
+		          AddIndicationRow(id, title, contexts, keywords, gp, ip, op)
 		        End If
 		        
 		        rs.MoveToNextRow
@@ -619,6 +792,10 @@ End
 		
 	#tag EndNote
 
+
+	#tag Property, Flags = &h0
+		DeepLinkID As Integer = 0
+	#tag EndProperty
 
 	#tag Property, Flags = &h0
 		FilterContextID As Integer = 0
@@ -664,15 +841,22 @@ End
 	#tag Event
 		Sub SelectionChanged(rows() As Integer)
 		  #Pragma Unused rows
-		  
-		  If me.SelectedRowIndex >= 0 Then
+
+		  Var hasSelection As Boolean = me.SelectedRowIndex >= 0
+		  btnShowIndicationDetail.Enabled = hasSelection
+		  btnRequestIndicationChange.Enabled = hasSelection
+		  btnCopyLink.Enabled = hasSelection
+
+		  If hasSelection Then
 		    IndicationID = me.RowTagAt(me.SelectedRowIndex)
 		    session.SelectedIndicationID = IndicationID
 		    self.SelectdRowIndex = me.SelectedRowIndex
+		    CopyStringToClipboardHelper.SetDeepLinkID(btnCopyLink, IndicationID)
 		  else
 		    IndicationID = 0
 		    session.SelectedIndicationID = 0
 		    self.SelectdRowIndex = -1
+		    CopyStringToClipboardHelper.SetDeepLinkID(btnCopyLink, 0)
 		  End If
 		End Sub
 	#tag EndEvent
@@ -770,6 +954,51 @@ End
 		  AddHandler dlg.buttonpressed, AddressOf HandleDeleteIndicationConfirm
 		  dlg.Show
 		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnShowIndicationDetail
+	#tag Event
+		Sub Pressed()
+		  If lstIndications.SelectedRowIndex < 0 Then Return
+		  
+		  Var selectedID As Integer = lstIndications.RowTagAt(lstIndications.SelectedRowIndex)
+		  
+		  Var allIDs() As Integer
+		  For i As Integer = 0 To lstIndications.LastRowIndex
+		    allIDs.Add(lstIndications.RowTagAt(i))
+		  Next
+		  
+		  Var dlg As New dlg_Indication
+		  dlg.IndicationID = selectedID
+		  dlg.IndicationIDs = allIDs
+		  dlg.CurrentIndex = lstIndications.SelectedRowIndex
+		  AddHandler dlg.IndicationSaved, AddressOf HandleIndicationSaved
+		  AddHandler dlg.DialogClosed, AddressOf HandleDialogClosed
+		  Session.NavigationManager.NavigateToPage(dlg)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnRequestIndicationChange
+	#tag Event
+		Sub Pressed()
+		  If lstIndications.SelectedRowIndex < 0 Then Return
+		  
+		  Var selectedID As Integer = lstIndications.RowTagAt(lstIndications.SelectedRowIndex)
+		  
+		  Var dlg As New dlg_ChangeIndication
+		  dlg.IndicationID = selectedID
+		  Session.SelectedIndicationID = selectedID
+		  dlg.Show
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnCopyLink
+	#tag Event
+		Sub Pressed()
+		  // Copy + flash happen client-side via the JS handler wired by
+		  // CopyStringToClipboardHelper.SetupDeepLinkButton. Browser clipboard
+		  // APIs require an in-gesture call, so no Xojo-side handler.
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -1089,6 +1318,14 @@ End
 		Visible=false
 		Group="Behavior"
 		InitialValue=""
+		Type="Integer"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="DeepLinkID"
+		Visible=false
+		Group="Behavior"
+		InitialValue="0"
 		Type="Integer"
 		EditorType=""
 	#tag EndViewProperty

@@ -51,10 +51,42 @@ Inherits WebSession
 
 	#tag Method, Flags = &h0
 		Sub Disconnect()
-		  
+
 		  If DB <> Nil And DB.IsConnected Then
 		    DB.Close
 		  End If
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub FlashCaption(tempCaption As String, btn As WebButton, durationMs As Integer = 1500)
+		  // Save the current caption (only the first time for this button —
+		  // a rapid second click on the same button keeps the real original),
+		  // swap to tempCaption, schedule a restore.
+		  If btn = Nil Then Return
+
+		  // If a different button is mid-flash, restore it now so we don't
+		  // lose its original caption.
+		  If mFlashButton <> Nil And mFlashButton <> btn Then
+		    mFlashButton.Caption = mFlashOriginal
+		  End If
+
+		  If mFlashButton <> btn Then
+		    mFlashOriginal = btn.Caption
+		    mFlashButton = btn
+		  End If
+
+		  btn.Caption = tempCaption
+		  Timer.CallLater(durationMs, AddressOf RestoreFlashedCaption)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub RestoreFlashedCaption()
+		  If mFlashButton = Nil Then Return
+		  mFlashButton.Caption = mFlashOriginal
+		  mFlashButton = Nil
+		  mFlashOriginal = ""
 		End Sub
 	#tag EndMethod
 
@@ -89,6 +121,14 @@ Inherits WebSession
 
 	#tag Property, Flags = &h0
 		CurrentUserID As Integer = 0
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mFlashButton As WebButton
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mFlashOriginal As String
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

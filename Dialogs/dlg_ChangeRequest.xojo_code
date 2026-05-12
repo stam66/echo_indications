@@ -25,6 +25,7 @@ Begin WebDialog dlg_ChangeRequest
    Width           =   600
    _mDesignHeight  =   0
    _mDesignWidth   =   0
+   _mName          =   ""
    _mPanelIndex    =   -1
    Begin WebRectangle Rectangle1
       BorderColor     =   &c000000FF
@@ -68,6 +69,7 @@ Begin WebDialog dlg_ChangeRequest
          FontName        =   ""
          FontSize        =   24.0
          Height          =   38
+         HTMLElement     =   0
          Index           =   -2147483648
          Indicator       =   0
          Italic          =   False
@@ -86,7 +88,7 @@ Begin WebDialog dlg_ChangeRequest
          TabIndex        =   1
          TabPanelIndex   =   -1
          TabStop         =   True
-         Text            =   "Reqeust a change"
+         Text            =   "Request a change"
          TextAlignment   =   0
          TextColor       =   &cFAFAFA00
          Tooltip         =   ""
@@ -175,6 +177,7 @@ Begin WebDialog dlg_ChangeRequest
       FontName        =   ""
       FontSize        =   14.0
       Height          =   22
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   0
       Italic          =   False
@@ -209,6 +212,7 @@ Begin WebDialog dlg_ChangeRequest
       FontName        =   ""
       FontSize        =   14.0
       Height          =   22
+      HTMLElement     =   0
       Index           =   3
       Indicator       =   0
       Italic          =   False
@@ -301,8 +305,14 @@ End
 #tag WindowCode
 	#tag Method, Flags = &h21
 		Private Function ButtonClicked() As WebButton
-		  
+
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub AutoClose()
+		  Self.Close
+		End Sub
 	#tag EndMethod
 
 
@@ -327,40 +337,44 @@ End
 		    MessageBox("Please enter a change request")
 		    Return
 		  End If
-		  
+
 		  If txtUsername.Text.Trim = "" Then
 		    MessageBox("Please enter your name")
 		    Return
 		  End If
-		  
+
 		  Try
 		    Var sql As String = "INSERT INTO changes (changes_request, changes_requestor, changes_status) VALUES (?, ?, ?)"
 		    Var ps As MySQLPreparedStatement = Session.DB.Prepare(sql)
-		    
+
 		    ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_STRING)
 		    ps.BindType(1, MySQLPreparedStatement.MYSQL_TYPE_STRING)
 		    ps.BindType(2, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		    
+
 		    ps.Bind(0, txtIssue.Text)
 		    ps.Bind(1, txtUsername.Text)
 		    ps.Bind(2, "New")
-		    
+
 		    ps.ExecuteSQL
-		    
-		    MessageBox("Change request submitted successfully")
-		    
+
+		    // In-button flash instead of a modal MessageBox — same pattern as
+		    // btnCopyLink. Disable the button to prevent double-submit, then
+		    // auto-close the dialog just after the flash settles.
+		    Me.Enabled = False
+		    Session.FlashCaption("Thanks — logged!", Me, 1500)
+
 		    // Update badge if on landing page
 		    If wp_LandingPage <> Nil Then
 		      wp_LandingPage.UpdateIssuesBadge
 		    End If
-		    
-		    Self.Close
-		    
+
+		    Timer.CallLater(1700, AddressOf AutoClose)
+
 		  Catch err As DatabaseException
 		    MessageBox("Error submitting request: " + err.Message)
 		    System.DebugLog("SubmitChangeRequest Error: " + err.Message)
 		  End Try
-		  
+
 		End Sub
 	#tag EndEvent
 #tag EndEvents

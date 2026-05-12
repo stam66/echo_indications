@@ -68,6 +68,7 @@ Begin WebDialog dlg_Indication
          FontName        =   ""
          FontSize        =   22.0
          Height          =   38
+         HTMLElement     =   0
          Index           =   -2147483648
          Indicator       =   ""
          Italic          =   False
@@ -120,6 +121,7 @@ Begin WebDialog dlg_Indication
          Parent          =   "Rectangle2"
          Scope           =   0
          TabIndex        =   1
+         TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
          Top             =   12
@@ -151,11 +153,43 @@ Begin WebDialog dlg_Indication
          Parent          =   "Rectangle2"
          Scope           =   0
          TabIndex        =   28
+         TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
          Top             =   12
          Visible         =   True
          Width           =   38
+         _mPanelIndex    =   -1
+      End
+      Begin WebButton btnCopyLink
+         AllowAutoDisable=   False
+         Cancel          =   False
+         Caption         =   "Copy Link for indication"
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Default         =   False
+         Enabled         =   True
+         Height          =   38
+         Index           =   -2147483648
+         Indicator       =   7
+         Left            =   581
+         LockBottom      =   False
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   False
+         LockRight       =   True
+         LockTop         =   True
+         LockVertical    =   False
+         Outlined        =   True
+         PanelIndex      =   0
+         Parent          =   "Rectangle2"
+         Scope           =   2
+         TabIndex        =   29
+         TabStop         =   True
+         Tooltip         =   ""
+         Top             =   12
+         Visible         =   True
+         Width           =   209
          _mPanelIndex    =   -1
       End
    End
@@ -201,6 +235,7 @@ Begin WebDialog dlg_Indication
          FontName        =   ""
          FontSize        =   18.0
          Height          =   38
+         HTMLElement     =   0
          Index           =   -2147483648
          Indicator       =   ""
          Italic          =   False
@@ -219,7 +254,7 @@ Begin WebDialog dlg_Indication
          TabIndex        =   0
          TabPanelIndex   =   0
          TabStop         =   True
-         Text            =   "Appropriate use crtieria"
+         Text            =   "Appropriate use criteria"
          TextAlignment   =   0
          TextColor       =   &c42424200
          Tooltip         =   ""
@@ -270,6 +305,7 @@ Begin WebDialog dlg_Indication
          FontName        =   ""
          FontSize        =   14.0
          Height          =   38
+         HTMLElement     =   0
          Index           =   -2147483648
          Indicator       =   ""
          Italic          =   True
@@ -339,6 +375,7 @@ Begin WebDialog dlg_Indication
          FontName        =   ""
          FontSize        =   14.0
          Height          =   38
+         HTMLElement     =   0
          Index           =   -2147483648
          Indicator       =   ""
          Italic          =   True
@@ -408,6 +445,7 @@ Begin WebDialog dlg_Indication
          FontName        =   ""
          FontSize        =   14.0
          Height          =   38
+         HTMLElement     =   0
          Index           =   -2147483648
          Indicator       =   ""
          Italic          =   True
@@ -444,6 +482,7 @@ Begin WebDialog dlg_Indication
          FontName        =   ""
          FontSize        =   14.0
          Height          =   38
+         HTMLElement     =   0
          Index           =   -2147483648
          Indicator       =   0
          Italic          =   True
@@ -592,6 +631,7 @@ Begin WebDialog dlg_Indication
       FontName        =   ""
       FontSize        =   14.0
       Height          =   38
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   ""
       Italic          =   False
@@ -771,6 +811,7 @@ Begin WebDialog dlg_Indication
       FontName        =   ""
       FontSize        =   14.0
       Height          =   38
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   ""
       Italic          =   False
@@ -805,6 +846,7 @@ Begin WebDialog dlg_Indication
       FontName        =   ""
       FontSize        =   14.0
       Height          =   38
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   ""
       Italic          =   False
@@ -872,6 +914,7 @@ Begin WebDialog dlg_Indication
       FontName        =   ""
       FontSize        =   14.0
       Height          =   38
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   ""
       Italic          =   False
@@ -966,6 +1009,7 @@ Begin WebDialog dlg_Indication
       FontName        =   ""
       FontSize        =   14.0
       Height          =   38
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   ""
       Italic          =   False
@@ -992,6 +1036,41 @@ Begin WebDialog dlg_Indication
       Width           =   171
       _mPanelIndex    =   -1
    End
+   Begin WebLabel lblUpdatedAt
+      Bold            =   False
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      FontName        =   ""
+      FontSize        =   14.0
+      Height          =   23
+      HTMLElement     =   0
+      Index           =   -2147483648
+      Indicator       =   ""
+      Italic          =   True
+      Left            =   232
+      LockBottom      =   True
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   False
+      LockVertical    =   False
+      Multiline       =   False
+      PanelIndex      =   0
+      Scope           =   2
+      TabIndex        =   29
+      TabStop         =   True
+      Text            =   "Last reviewed: <updated_at column>"
+      TextAlignment   =   0
+      TextColor       =   &c000000FF
+      Tooltip         =   ""
+      Top             =   715
+      Underline       =   False
+      Visible         =   True
+      Width           =   367
+      _mPanelIndex    =   -1
+   End
 End
 #tag EndWebPage
 
@@ -1001,7 +1080,10 @@ End
 		  // Load all available contexts
 		  LoadAvailableContexts
 		  btnSave.Enabled = session.IsAuthenticated
-		  
+
+		  // Wire copy + flash JS once. Per-indication ID is stamped after load.
+		  CopyStringToClipboardHelper.SetupDeepLinkButton(btnCopyLink)
+
 		  Var rs As RowSet
 		  If IndicationID = 0 Then
 		    ResetUI
@@ -1064,7 +1146,18 @@ End
 		      
 		      // Load and check selected contexts
 		      LoadSelectedContexts
-		        MarkAsClean()
+
+		      If rs.Column("updated_at").Value <> Nil Then
+		        Var dt As DateTime = rs.Column("updated_at").DateTimeValue
+		        lblUpdatedAt.Text = "Last reviewed: " + dt.ToString(Locale.Current, DateTime.FormatStyles.Medium, DateTime.FormatStyles.None)
+		      Else
+		        lblUpdatedAt.Text = ""
+		      End If
+
+		      CopyStringToClipboardHelper.SetDeepLinkID(btnCopyLink, IndicationID)
+		      btnCopyLink.Enabled = True
+
+		      MarkAsClean()
 		    End If
 		  End If
 		End Sub
@@ -1214,7 +1307,17 @@ End
 		    
 		    // Load and check selected contexts
 		    LoadSelectedContexts
-		    
+
+		    If rs.Column("updated_at").Value <> Nil Then
+		      Var dt As DateTime = rs.Column("updated_at").DateTimeValue
+		      lblUpdatedAt.Text = "Last reviewed: " + dt.ToString(Locale.Current, DateTime.FormatStyles.Medium, DateTime.FormatStyles.None)
+		    Else
+		      lblUpdatedAt.Text = ""
+		    End If
+
+		    CopyStringToClipboardHelper.SetDeepLinkID(btnCopyLink, IndicationID)
+		    btnCopyLink.Enabled = True
+
 		    // Mark as clean after loading
 		    MarkAsClean()
 		  End If
@@ -1393,8 +1496,12 @@ End
 		  For i As Integer = 0 To lstContexts.LastRowIndex
 		    lstContexts.CellCheckBoxValueAt(i, 0) = False
 		  Next
-		  
-		    MarkAsClean()
+
+		  lblUpdatedAt.Text = ""
+		  CopyStringToClipboardHelper.SetDeepLinkID(btnCopyLink, 0)
+		  btnCopyLink.Enabled = False
+
+		  MarkAsClean()
 		End Sub
 	#tag EndMethod
 
@@ -1554,7 +1661,16 @@ End
 #tag Events btnPrevious
 	#tag Event
 		Sub Pressed()
-		    LoadIndicationByIndex(CurrentIndex - 1)
+		  LoadIndicationByIndex(CurrentIndex - 1)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnCopyLink
+	#tag Event
+		Sub Pressed()
+		  // Copy + flash happen client-side via the JS handler wired by
+		  // CopyStringToClipboardHelper.SetupDeepLinkButton. Browser clipboard
+		  // APIs require an in-gesture call, so no Xojo-side handler.
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -1586,14 +1702,14 @@ End
 	#tag Event
 		Sub SelectionChanged(item As WebMenuItem)
 		  #Pragma unused item
-		   MarkAsChanged()
+		  MarkAsChanged()
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events txtTitle
 	#tag Event
 		Sub TextChanged()
-		    MarkAsChanged()
+		  MarkAsChanged()
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -1617,42 +1733,42 @@ End
 #tag Events chkSourceEACVI
 	#tag Event
 		Sub ValueChanged()
-		    MarkAsChanged()
+		  MarkAsChanged()
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events chkSourceBSE
 	#tag Event
 		Sub ValueChanged()
-		    MarkAsChanged()
+		  MarkAsChanged()
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events chkSourceASE
 	#tag Event
 		Sub ValueChanged()
-		    MarkAsChanged()
+		  MarkAsChanged()
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events chkSourceConsensus
 	#tag Event
 		Sub ValueChanged()
-		    MarkAsChanged()
+		  MarkAsChanged()
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events txtKeywords
 	#tag Event
 		Sub TextChanged()
-		    MarkAsChanged()
+		  MarkAsChanged()
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events txtComments
 	#tag Event
 		Sub TextChanged()
-		    MarkAsChanged()
+		  MarkAsChanged()
 		End Sub
 	#tag EndEvent
 #tag EndEvents

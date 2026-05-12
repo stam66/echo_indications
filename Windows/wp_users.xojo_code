@@ -259,7 +259,7 @@ End
 		          Else
 		            SearchUsers
 		          End If
-		          MessageBox("User deleted successfully")
+		          Session.FlashCaption("Deleted", btnDelete, 1500)
 		        Else
 		          MessageBox("Error deleting user")
 		        End If

@@ -788,6 +788,12 @@ End
 	#tag EndEvent
 
 
+	#tag Method, Flags = &h21
+		Private Sub AutoClose()
+		  Self.Close
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Sub LoadIssue()
 		  Try
@@ -932,13 +938,14 @@ End
 		    ps.Bind(2, IssueID)
 		    
 		    ps.ExecuteSQL
-		    
-		    MessageBox("Issue updated successfully")
+
+		    Me.Enabled = False
+		    Session.FlashCaption("Saved", Me, 1500)
 		    Session.UpdateAllIssuesBadges // update all Issues buttons' badges
-		    
+
 		    RaiseEvent IssueSaved(IssueID)
-		    Self.Close
-		    
+		    Timer.CallLater(1700, AddressOf AutoClose)
+
 		  Catch err As DatabaseException
 		    MessageBox("Error saving issue: " + err.Message)
 		    System.DebugLog("SaveIssue Error: " + err.Message)

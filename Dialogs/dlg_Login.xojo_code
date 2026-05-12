@@ -25,6 +25,7 @@ Begin WebDialog dlg_Login
    Width           =   558
    _mDesignHeight  =   0
    _mDesignWidth   =   0
+   _mName          =   ""
    _mPanelIndex    =   -1
    Begin WebLabel Label1
       Bold            =   False
@@ -34,6 +35,7 @@ Begin WebDialog dlg_Login
       FontName        =   ""
       FontSize        =   0.0
       Height          =   38
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   0
       Italic          =   False
@@ -68,6 +70,7 @@ Begin WebDialog dlg_Login
       FontName        =   ""
       FontSize        =   0.0
       Height          =   38
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   0
       Italic          =   False
@@ -294,6 +297,7 @@ Begin WebDialog dlg_Login
          FontName        =   ""
          FontSize        =   24.0
          Height          =   38
+         HTMLElement     =   0
          Index           =   -2147483648
          Indicator       =   0
          Italic          =   False
@@ -363,8 +367,6 @@ Begin WebDialog dlg_Login
       Period          =   100
       RunMode         =   0
       Scope           =   0
-      TabIndex        =   11
-      TabStop         =   True
       _mPanelIndex    =   -1
    End
 End

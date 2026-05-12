@@ -32,6 +32,7 @@ Begin WebPage wp_LandingPage
    _ImplicitInstance=   False
    _mDesignHeight  =   0
    _mDesignWidth   =   0
+   _mName          =   ""
    _mPanelIndex    =   -1
    Begin WebRectangle rectHeroPanel
       BorderColor     =   &c000000FF
@@ -107,6 +108,7 @@ Begin WebPage wp_LandingPage
          FontName        =   ""
          FontSize        =   24.0
          Height          =   38
+         HTMLElement     =   0
          Index           =   -2147483648
          Indicator       =   ""
          Italic          =   False
@@ -143,6 +145,7 @@ Begin WebPage wp_LandingPage
          FontName        =   ""
          FontSize        =   80.0
          Height          =   152
+         HTMLElement     =   0
          Index           =   -2147483648
          Indicator       =   0
          Italic          =   False
@@ -207,7 +210,7 @@ Begin WebPage wp_LandingPage
    Begin WebButton btnIssues
       AllowAutoDisable=   False
       Cancel          =   False
-      Caption         =   "Reported Issues"
+      Caption         =   "Reported issues"
       ControlID       =   ""
       CSSClasses      =   ""
       Default         =   False
@@ -268,7 +271,7 @@ Begin WebPage wp_LandingPage
    Begin WebButton btnRequestChange
       AllowAutoDisable=   False
       Cancel          =   False
-      Caption         =   "Request Changes"
+      Caption         =   "Request a change"
       ControlID       =   ""
       CSSClasses      =   ""
       Default         =   False
@@ -335,6 +338,7 @@ Begin WebPage wp_LandingPage
       FontName        =   ""
       FontSize        =   18.0
       Height          =   38
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   ""
       Italic          =   False
@@ -369,6 +373,7 @@ Begin WebPage wp_LandingPage
       FontName        =   ""
       FontSize        =   11.0
       Height          =   22
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   ""
       Italic          =   True
@@ -403,6 +408,7 @@ Begin WebPage wp_LandingPage
       FontName        =   ""
       FontSize        =   0.0
       Height          =   316
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   ""
       Italic          =   False
@@ -437,6 +443,7 @@ Begin WebPage wp_LandingPage
       FontName        =   ""
       FontSize        =   18.0
       Height          =   38
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   0
       Italic          =   False
@@ -471,6 +478,7 @@ Begin WebPage wp_LandingPage
       FontName        =   ""
       FontSize        =   18.0
       Height          =   38
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   0
       Italic          =   False
@@ -497,36 +505,6 @@ Begin WebPage wp_LandingPage
       Width           =   314
       _mPanelIndex    =   -1
    End
-   Begin WebButton Button1
-      AllowAutoDisable=   False
-      Cancel          =   False
-      Caption         =   "Button"
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Default         =   False
-      Enabled         =   True
-      Height          =   38
-      Index           =   -2147483648
-      Indicator       =   0
-      Left            =   99
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      LockVertical    =   False
-      Outlined        =   False
-      PanelIndex      =   0
-      Scope           =   2
-      TabIndex        =   16
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   710
-      Visible         =   True
-      Width           =   100
-      _mPanelIndex    =   -1
-   End
 End
 #tag EndWebPage
 
@@ -540,6 +518,15 @@ End
 	#tag Event
 		Sub Shown()
 		  UpdateIssuesBadge
+
+		  // Deep-link: if URL had ?id=N, skip the landing page and open that
+		  // indication directly in wp_indications.
+		  Var idValue As Integer = Val(Session.URLParameter("id"))
+		  If idValue > 0 Then
+		    Var w As New wp_indications
+		    w.DeepLinkID = idValue
+		    Session.NavigationManager.NavigateToPage(w)
+		  End If
 		End Sub
 	#tag EndEvent
 
@@ -609,30 +596,6 @@ End
 		  var tStyle as new WebStyle
 		  tStyle.Bold  = true
 		  me.Style = tStyle
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events Button1
-	#tag Event
-		Sub Pressed()
-		  // Test with actual stam user values
-		  Dim stamPassword As String = "reject67"
-		  Dim stamSalt As String = "oJwXBZD2Z0deSfQ0slG3Pkmp12F91b9H"
-		  
-		  Dim passwordData As New MemoryBlock(stamPassword.LenB)
-		  passwordData.StringValue(0, passwordData.Size) = stamPassword
-		  
-		  Dim hash As MemoryBlock = Crypto.PBKDF2(stamSalt, passwordData, 10000, 32, Crypto.HashAlgorithms.SHA2_256)
-		  Dim hashHex As String = app.EncodeHex(hash)
-		  
-		  MessageBox("Xojo computed hash: " + hashHex + EndOfLine + EndOfLine + _
-		  "Database stored:    265f237d8b32f7d4b16db1b6b513389ece9a428521a16bee7b3eeba32ec057d5" + EndOfLine + EndOfLine + _
-		  "Match: " + If(hashHex = "265f237d8b32f7d4b16db1b6b513389ece9a428521a16bee7b3eeba32ec057d5", "YES", "NO"))
-		  
-		  
-		  ' Xojo computed hash: 265f237d8b32f7d4b16db1b6b513389ece9a428521a16bee7b3eeba32ec057d5
-		  ' Database stored: 265f237d8b32f7d4b16db1b6b513389ece9a428521a16bee7b3eeba32ec057d5
-		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents

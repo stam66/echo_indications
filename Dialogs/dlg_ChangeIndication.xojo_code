@@ -25,6 +25,7 @@ Begin WebDialog dlg_ChangeIndication
    Width           =   636
    _mDesignHeight  =   0
    _mDesignWidth   =   0
+   _mName          =   ""
    _mPanelIndex    =   -1
    Begin WebRectangle Rectangle1
       BorderColor     =   &c000000FF
@@ -68,6 +69,7 @@ Begin WebDialog dlg_ChangeIndication
          FontName        =   ""
          FontSize        =   24.0
          Height          =   38
+         HTMLElement     =   0
          Index           =   -2147483648
          Indicator       =   0
          Italic          =   False
@@ -133,7 +135,7 @@ Begin WebDialog dlg_ChangeIndication
       Width           =   259
       _mPanelIndex    =   -1
    End
-   Begin WebLabel lblExistingIndication
+   Begin WebLabel zLabel
       Bold            =   True
       ControlID       =   ""
       CSSClasses      =   ""
@@ -141,7 +143,8 @@ Begin WebDialog dlg_ChangeIndication
       FontName        =   ""
       FontSize        =   14.0
       Height          =   22
-      Index           =   -2147483648
+      HTMLElement     =   0
+      Index           =   2
       Indicator       =   0
       Italic          =   False
       Left            =   20
@@ -167,7 +170,7 @@ Begin WebDialog dlg_ChangeIndication
       Width           =   132
       _mPanelIndex    =   -1
    End
-   Begin WebLabel lblExistingContexts
+   Begin WebLabel zLabel
       Bold            =   True
       ControlID       =   ""
       CSSClasses      =   ""
@@ -175,7 +178,8 @@ Begin WebDialog dlg_ChangeIndication
       FontName        =   ""
       FontSize        =   14.0
       Height          =   22
-      Index           =   -2147483648
+      HTMLElement     =   0
+      Index           =   1
       Indicator       =   0
       Italic          =   False
       Left            =   20
@@ -271,7 +275,7 @@ Begin WebDialog dlg_ChangeIndication
       Width           =   259
       _mPanelIndex    =   -1
    End
-   Begin WebLabel lblRevisedIndication
+   Begin WebLabel zLabel
       Bold            =   True
       ControlID       =   ""
       CSSClasses      =   ""
@@ -279,7 +283,8 @@ Begin WebDialog dlg_ChangeIndication
       FontName        =   ""
       FontSize        =   14.0
       Height          =   22
-      Index           =   -2147483648
+      HTMLElement     =   0
+      Index           =   3
       Indicator       =   0
       Italic          =   False
       Left            =   357
@@ -305,7 +310,7 @@ Begin WebDialog dlg_ChangeIndication
       Width           =   132
       _mPanelIndex    =   -1
    End
-   Begin WebLabel lblRevisedContexts
+   Begin WebLabel zLabel
       Bold            =   True
       ControlID       =   ""
       CSSClasses      =   ""
@@ -313,7 +318,8 @@ Begin WebDialog dlg_ChangeIndication
       FontName        =   ""
       FontSize        =   14.0
       Height          =   22
-      Index           =   -2147483648
+      HTMLElement     =   0
+      Index           =   4
       Indicator       =   0
       Italic          =   False
       Left            =   357
@@ -399,7 +405,7 @@ Begin WebDialog dlg_ChangeIndication
       Width           =   161
       _mPanelIndex    =   -1
    End
-   Begin WebLabel lblID
+   Begin WebLabel zLabel
       Bold            =   True
       ControlID       =   ""
       CSSClasses      =   ""
@@ -407,7 +413,8 @@ Begin WebDialog dlg_ChangeIndication
       FontName        =   ""
       FontSize        =   0.0
       Height          =   38
-      Index           =   -2147483648
+      HTMLElement     =   0
+      Index           =   5
       Indicator       =   0
       Italic          =   False
       Left            =   20
@@ -441,6 +448,7 @@ Begin WebDialog dlg_ChangeIndication
       FontName        =   ""
       FontSize        =   0.0
       Height          =   38
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   0
       Italic          =   False
@@ -538,7 +546,7 @@ Begin WebDialog dlg_ChangeIndication
       Width           =   596
       _mPanelIndex    =   -1
    End
-   Begin WebLabel lblReqeustor
+   Begin WebLabel zLabel
       Bold            =   True
       ControlID       =   ""
       CSSClasses      =   ""
@@ -546,7 +554,8 @@ Begin WebDialog dlg_ChangeIndication
       FontName        =   ""
       FontSize        =   14.0
       Height          =   22
-      Index           =   -2147483648
+      HTMLElement     =   0
+      Index           =   0
       Indicator       =   0
       Italic          =   False
       Left            =   20
@@ -676,6 +685,12 @@ End
 
 
 	#tag Method, Flags = &h21
+		Private Sub AutoClose()
+		  Self.Close
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
 		Private Sub ValidateForm()
 		  // For non-authenticated users, require:
 		  // 1. Name/requestor
@@ -776,16 +791,17 @@ End
 		    ps.Bind(7, Session.SelectedIndicationID)
 		    
 		    ps.ExecuteSQL
-		    
-		    MessageBox("Change request submitted successfully")
-		    
+
+		    btnSubmit.Enabled = False
+		    Session.FlashCaption("Thanks — logged!", btnSubmit, 1500)
+
 		    // Update badge if on landing page
 		    If wp_LandingPage <> Nil Then
 		      wp_LandingPage.UpdateIssuesBadge
 		    End If
-		    
-		    Self.Close
-		    
+
+		    Timer.CallLater(1700, AddressOf AutoClose)
+
 		  Catch err As DatabaseException
 		    MessageBox("Error submitting change request: " + err.Message)
 		    System.DebugLog("SubmitIndicationChange Error: " + err.Message)
