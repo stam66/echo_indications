@@ -28,11 +28,501 @@ Begin WebPage wp_cds_editor
    Title           =   "Decision tree editor"
    Top             =   0
    Visible         =   True
-   Width           =   1117
+   Width           =   1177
    _ImplicitInstance=   False
    _mDesignHeight  =   0
    _mDesignWidth   =   0
    _mPanelIndex    =   -1
+   Begin WebRectangle rectIndication
+      BorderColor     =   &c000000FF
+      BorderThickness =   0
+      ControlCount    =   0
+      ControlID       =   ""
+      CornerSize      =   -1
+      CSSClasses      =   ""
+      Enabled         =   True
+      FillColor       =   &cFFFFFF
+      HasFillColor    =   False
+      Height          =   599
+      Index           =   -2147483648
+      Indicator       =   ""
+      LayoutDirection =   "LayoutDirections.LeftToRight"
+      LayoutType      =   "LayoutTypes.Fixed"
+      Left            =   888
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      LockVertical    =   False
+      PanelIndex      =   0
+      Scope           =   2
+      TabIndex        =   53
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   156
+      Visible         =   True
+      Width           =   289
+      _mDesignHeight  =   0
+      _mDesignWidth   =   0
+      _mPanelIndex    =   -1
+      Begin WebButton btnViewIndication
+         AllowAutoDisable=   False
+         Cancel          =   False
+         Caption         =   "View"
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Default         =   False
+         Enabled         =   True
+         Height          =   26
+         Index           =   -2147483648
+         Indicator       =   0
+         Left            =   969
+         LockBottom      =   True
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   False
+         LockVertical    =   False
+         Outlined        =   False
+         PanelIndex      =   0
+         Parent          =   "rectIndication"
+         Scope           =   0
+         TabIndex        =   0
+         TabPanelIndex   =   0
+         TabStop         =   True
+         Tooltip         =   ""
+         Top             =   198
+         Visible         =   True
+         Width           =   90
+         _mPanelIndex    =   -1
+      End
+      Begin WebLabel lblSelectedIndication
+         Bold            =   False
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         FontName        =   ""
+         FontSize        =   0.0
+         Height          =   157
+         HTMLElement     =   0
+         Index           =   -2147483648
+         Indicator       =   ""
+         Italic          =   False
+         Left            =   897
+         LockBottom      =   True
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   True
+         LockTop         =   False
+         LockVertical    =   False
+         Multiline       =   True
+         PanelIndex      =   0
+         Parent          =   "rectIndication"
+         Scope           =   0
+         TabIndex        =   1
+         TabPanelIndex   =   0
+         TabStop         =   True
+         Text            =   "Indication text shows here."
+         TextAlignment   =   0
+         TextColor       =   &c000000FF
+         Tooltip         =   ""
+         Top             =   244
+         Underline       =   False
+         Visible         =   True
+         Width           =   272
+         _mPanelIndex    =   -1
+      End
+      Begin WebLabel lblSelectedIndicationID
+         Bold            =   False
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         FontName        =   ""
+         FontSize        =   0.0
+         Height          =   26
+         HTMLElement     =   0
+         Index           =   -2147483648
+         Indicator       =   ""
+         Italic          =   False
+         Left            =   897
+         LockBottom      =   True
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   False
+         LockVertical    =   False
+         Multiline       =   False
+         PanelIndex      =   0
+         Parent          =   "rectIndication"
+         Scope           =   0
+         TabIndex        =   2
+         TabPanelIndex   =   0
+         TabStop         =   True
+         Text            =   "ID: 273"
+         TextAlignment   =   0
+         TextColor       =   &c000000FF
+         Tooltip         =   ""
+         Top             =   198
+         Underline       =   False
+         Visible         =   True
+         Width           =   100
+         _mPanelIndex    =   -1
+      End
+      Begin WebLabel lblUrgency
+         Bold            =   False
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         FontName        =   ""
+         FontSize        =   0.0
+         Height          =   38
+         HTMLElement     =   0
+         Index           =   -2147483648
+         Indicator       =   ""
+         Italic          =   False
+         Left            =   897
+         LockBottom      =   True
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   False
+         LockRight       =   True
+         LockTop         =   False
+         LockVertical    =   False
+         Multiline       =   False
+         PanelIndex      =   0
+         Parent          =   "rectIndication"
+         Scope           =   0
+         TabIndex        =   3
+         TabPanelIndex   =   0
+         TabStop         =   True
+         Text            =   "Priority"
+         TextAlignment   =   0
+         TextColor       =   &c000000FF
+         Tooltip         =   ""
+         Top             =   664
+         Underline       =   False
+         Visible         =   True
+         Width           =   172
+         _mPanelIndex    =   -1
+      End
+      Begin WebLabel lblSecondaryIPVerdict
+         Bold            =   False
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         FontName        =   ""
+         FontSize        =   0.0
+         Height          =   38
+         HTMLElement     =   0
+         Index           =   -2147483648
+         Indicator       =   ""
+         Italic          =   False
+         Left            =   897
+         LockBottom      =   True
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   False
+         LockRight       =   True
+         LockTop         =   False
+         LockVertical    =   False
+         Multiline       =   False
+         PanelIndex      =   0
+         Parent          =   "rectIndication"
+         Scope           =   0
+         TabIndex        =   4
+         TabPanelIndex   =   0
+         TabStop         =   True
+         Text            =   "Secondary care (IP)"
+         TextAlignment   =   0
+         TextColor       =   &c000000FF
+         Tooltip         =   ""
+         Top             =   585
+         Underline       =   False
+         Visible         =   True
+         Width           =   172
+         _mPanelIndex    =   -1
+      End
+      Begin WebLabel lblSecondaryOPVerdict
+         Bold            =   False
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         FontName        =   ""
+         FontSize        =   0.0
+         Height          =   38
+         HTMLElement     =   0
+         Index           =   -2147483648
+         Indicator       =   ""
+         Italic          =   False
+         Left            =   897
+         LockBottom      =   True
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   False
+         LockRight       =   True
+         LockTop         =   False
+         LockVertical    =   False
+         Multiline       =   False
+         PanelIndex      =   0
+         Parent          =   "rectIndication"
+         Scope           =   0
+         TabIndex        =   5
+         TabPanelIndex   =   0
+         TabStop         =   True
+         Text            =   "Secondary care (OP)"
+         TextAlignment   =   0
+         TextColor       =   &c000000FF
+         Tooltip         =   ""
+         Top             =   506
+         Underline       =   False
+         Visible         =   True
+         Width           =   172
+         _mPanelIndex    =   -1
+      End
+      Begin WebLabel lblPrimaryCareVerdict
+         Bold            =   False
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         FontName        =   ""
+         FontSize        =   0.0
+         Height          =   38
+         HTMLElement     =   0
+         Index           =   -2147483648
+         Indicator       =   ""
+         Italic          =   False
+         Left            =   897
+         LockBottom      =   True
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   False
+         LockRight       =   True
+         LockTop         =   False
+         LockVertical    =   False
+         Multiline       =   False
+         PanelIndex      =   0
+         Parent          =   "rectIndication"
+         Scope           =   0
+         TabIndex        =   6
+         TabPanelIndex   =   0
+         TabStop         =   True
+         Text            =   "Primary care"
+         TextAlignment   =   0
+         TextColor       =   &c000000FF
+         Tooltip         =   ""
+         Top             =   427
+         Underline       =   False
+         Visible         =   True
+         Width           =   172
+         _mPanelIndex    =   -1
+      End
+      Begin WebPopupMenu popUrgency
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   False
+         Height          =   38
+         Index           =   -2147483648
+         Indicator       =   0
+         InitialValue    =   "Urgency"
+         LastAddedRowIndex=   0
+         LastRowIndex    =   0
+         Left            =   897
+         LockBottom      =   True
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   False
+         LockRight       =   True
+         LockTop         =   False
+         LockVertical    =   False
+         PanelIndex      =   0
+         Parent          =   "rectIndication"
+         RowCount        =   0
+         Scope           =   0
+         SelectedRowIndex=   0
+         SelectedRowText =   ""
+         TabIndex        =   7
+         TabPanelIndex   =   0
+         TabStop         =   True
+         Tooltip         =   ""
+         Top             =   697
+         Visible         =   True
+         Width           =   172
+         _mPanelIndex    =   -1
+      End
+      Begin WebPopupMenu popVerdictSecondaryIP
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   False
+         Height          =   38
+         Index           =   -2147483648
+         Indicator       =   0
+         InitialValue    =   "Verdict"
+         LastAddedRowIndex=   0
+         LastRowIndex    =   0
+         Left            =   897
+         LockBottom      =   True
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   False
+         LockRight       =   True
+         LockTop         =   False
+         LockVertical    =   False
+         PanelIndex      =   0
+         Parent          =   "rectIndication"
+         RowCount        =   0
+         Scope           =   0
+         SelectedRowIndex=   0
+         SelectedRowText =   ""
+         TabIndex        =   8
+         TabPanelIndex   =   0
+         TabStop         =   True
+         Tooltip         =   ""
+         Top             =   618
+         Visible         =   True
+         Width           =   172
+         _mPanelIndex    =   -1
+      End
+      Begin WebPopupMenu popVerdictSecondaryOP
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   False
+         Height          =   38
+         Index           =   -2147483648
+         Indicator       =   0
+         InitialValue    =   "Verdict"
+         LastAddedRowIndex=   0
+         LastRowIndex    =   0
+         Left            =   897
+         LockBottom      =   True
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   False
+         LockRight       =   True
+         LockTop         =   False
+         LockVertical    =   False
+         PanelIndex      =   0
+         Parent          =   "rectIndication"
+         RowCount        =   0
+         Scope           =   0
+         SelectedRowIndex=   0
+         SelectedRowText =   ""
+         TabIndex        =   9
+         TabPanelIndex   =   0
+         TabStop         =   True
+         Tooltip         =   ""
+         Top             =   539
+         Visible         =   True
+         Width           =   172
+         _mPanelIndex    =   -1
+      End
+      Begin WebLabel lblChooseFromList
+         Bold            =   True
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         FontName        =   ""
+         FontSize        =   0.0
+         Height          =   38
+         HTMLElement     =   0
+         Index           =   -2147483648
+         Indicator       =   ""
+         Italic          =   False
+         Left            =   897
+         LockBottom      =   True
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   False
+         LockVertical    =   False
+         Multiline       =   False
+         PanelIndex      =   0
+         Parent          =   "rectIndication"
+         Scope           =   0
+         TabIndex        =   10
+         TabPanelIndex   =   0
+         TabStop         =   True
+         Text            =   "Linked indication"
+         TextAlignment   =   0
+         TextColor       =   &c000000FF
+         Tooltip         =   ""
+         Top             =   165
+         Underline       =   False
+         Visible         =   True
+         Width           =   211
+         _mPanelIndex    =   -1
+      End
+      Begin WebPopupMenu popVerdictPrimary
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   False
+         Height          =   38
+         Index           =   -2147483648
+         Indicator       =   0
+         InitialValue    =   "Verdict"
+         LastAddedRowIndex=   0
+         LastRowIndex    =   0
+         Left            =   897
+         LockBottom      =   True
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   False
+         LockRight       =   True
+         LockTop         =   False
+         LockVertical    =   False
+         PanelIndex      =   0
+         Parent          =   "rectIndication"
+         RowCount        =   0
+         Scope           =   0
+         SelectedRowIndex=   0
+         SelectedRowText =   ""
+         TabIndex        =   11
+         TabPanelIndex   =   0
+         TabStop         =   True
+         Tooltip         =   ""
+         Top             =   460
+         Visible         =   True
+         Width           =   172
+         _mPanelIndex    =   -1
+      End
+      Begin WebButton btnPickIndication
+         AllowAutoDisable=   False
+         Cancel          =   False
+         Caption         =   "Change"
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Default         =   False
+         Enabled         =   True
+         Height          =   26
+         Index           =   -2147483648
+         Indicator       =   0
+         Left            =   1067
+         LockBottom      =   True
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   False
+         LockVertical    =   False
+         Outlined        =   False
+         PanelIndex      =   0
+         Parent          =   "rectIndication"
+         Scope           =   0
+         TabIndex        =   12
+         TabPanelIndex   =   0
+         TabStop         =   True
+         Tooltip         =   ""
+         Top             =   198
+         Visible         =   True
+         Width           =   90
+         _mPanelIndex    =   -1
+      End
+   End
    Begin WebBreadcrumb bcTreeNavigation
       ControlID       =   ""
       CSSClasses      =   ""
@@ -59,7 +549,7 @@ Begin WebPage wp_cds_editor
       Tooltip         =   ""
       Top             =   82
       Visible         =   True
-      Width           =   1077
+      Width           =   1137
       _mPanelIndex    =   -1
    End
    Begin wc_WebPageHeader wc_header
@@ -89,243 +579,9 @@ Begin WebPage wp_cds_editor
       Tooltip         =   ""
       Top             =   0
       Visible         =   True
-      Width           =   1117
+      Width           =   1177
       _mDesignHeight  =   0
       _mDesignWidth   =   0
-      _mPanelIndex    =   -1
-   End
-   Begin WebTextArea txtSelectedNode
-      AllowAutoComplete=   "False"
-      AllowReturnKey  =   True
-      AllowSpellChecking=   False
-      Caption         =   ""
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      FieldType       =   "0"
-      Height          =   95
-      Hint            =   ""
-      Index           =   -2147483648
-      Indicator       =   ""
-      Left            =   887
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   True
-      LockTop         =   True
-      LockVertical    =   False
-      MaximumCharactersAllowed=   0
-      PanelIndex      =   0
-      ReadOnly        =   False
-      Scope           =   0
-      TabIndex        =   9
-      TabStop         =   True
-      Text            =   ""
-      TextAlignment   =   0
-      Tooltip         =   ""
-      Top             =   279
-      Visible         =   True
-      Width           =   210
-      _mPanelIndex    =   -1
-   End
-   Begin WebLabel lblSelectedNode
-      Bold            =   False
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      FontName        =   ""
-      FontSize        =   0.0
-      Height          =   38
-      HTMLElement     =   0
-      Index           =   -2147483648
-      Indicator       =   ""
-      Italic          =   False
-      Left            =   887
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   False
-      LockRight       =   True
-      LockTop         =   True
-      LockVertical    =   False
-      Multiline       =   False
-      PanelIndex      =   0
-      Scope           =   0
-      TabIndex        =   10
-      TabStop         =   True
-      Text            =   "Selected node"
-      TextAlignment   =   0
-      TextColor       =   &c000000FF
-      Tooltip         =   ""
-      Top             =   238
-      Underline       =   False
-      Visible         =   True
-      Width           =   127
-      _mPanelIndex    =   -1
-   End
-   Begin WebLabel lblRationale
-      Bold            =   False
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      FontName        =   ""
-      FontSize        =   0.0
-      Height          =   38
-      HTMLElement     =   0
-      Index           =   -2147483648
-      Indicator       =   ""
-      Italic          =   False
-      Left            =   887
-      LockBottom      =   True
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   False
-      LockRight       =   True
-      LockTop         =   False
-      LockVertical    =   False
-      Multiline       =   False
-      PanelIndex      =   0
-      Scope           =   0
-      TabIndex        =   12
-      TabStop         =   True
-      Text            =   "Rationale"
-      TextAlignment   =   0
-      TextColor       =   &c000000FF
-      Tooltip         =   ""
-      Top             =   382
-      Underline       =   False
-      Visible         =   True
-      Width           =   119
-      _mPanelIndex    =   -1
-   End
-   Begin WebButton btnPickIndication
-      AllowAutoDisable=   False
-      Cancel          =   False
-      Caption         =   "Change"
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Default         =   False
-      Enabled         =   True
-      Height          =   26
-      Index           =   -2147483648
-      Indicator       =   0
-      Left            =   209
-      LockBottom      =   True
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   False
-      LockVertical    =   False
-      Outlined        =   False
-      PanelIndex      =   0
-      Scope           =   0
-      TabIndex        =   16
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   655
-      Visible         =   True
-      Width           =   90
-      _mPanelIndex    =   -1
-   End
-   Begin WebPopupMenu popVerdictPrimary
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   False
-      Height          =   38
-      Index           =   -2147483648
-      Indicator       =   0
-      InitialValue    =   "Verdict"
-      LastAddedRowIndex=   0
-      LastRowIndex    =   0
-      Left            =   359
-      LockBottom      =   True
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   False
-      LockRight       =   True
-      LockTop         =   False
-      LockVertical    =   False
-      PanelIndex      =   0
-      RowCount        =   0
-      Scope           =   0
-      SelectedRowIndex=   0
-      SelectedRowText =   ""
-      TabIndex        =   17
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   647
-      Visible         =   True
-      Width           =   172
-      _mPanelIndex    =   -1
-   End
-   Begin WebTextArea txtRationale
-      AllowReturnKey  =   True
-      AllowSpellChecking=   False
-      Caption         =   ""
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      Height          =   82
-      Hint            =   ""
-      Index           =   -2147483648
-      Indicator       =   ""
-      Left            =   887
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   True
-      LockTop         =   True
-      LockVertical    =   False
-      MaximumCharactersAllowed=   0
-      PanelIndex      =   0
-      ReadOnly        =   False
-      Scope           =   0
-      TabIndex        =   19
-      TabStop         =   True
-      Text            =   ""
-      TextAlignment   =   0
-      Tooltip         =   ""
-      Top             =   428
-      Visible         =   True
-      Width           =   210
-      _mPanelIndex    =   -1
-   End
-   Begin WebLabel lblChooseFromList
-      Bold            =   False
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      FontName        =   ""
-      FontSize        =   0.0
-      Height          =   38
-      HTMLElement     =   0
-      Index           =   -2147483648
-      Indicator       =   ""
-      Italic          =   False
-      Left            =   39
-      LockBottom      =   True
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   False
-      LockVertical    =   False
-      Multiline       =   False
-      PanelIndex      =   0
-      Scope           =   0
-      TabIndex        =   27
-      TabStop         =   True
-      Text            =   "Linked indication"
-      TextAlignment   =   0
-      TextColor       =   &c000000FF
-      Tooltip         =   ""
-      Top             =   614
-      Underline       =   False
-      Visible         =   True
-      Width           =   211
       _mPanelIndex    =   -1
    End
    Begin WebListBox lstParent
@@ -370,7 +626,7 @@ Begin WebPage wp_cds_editor
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   187
+      Top             =   159
       Visible         =   True
       Width           =   430
       _mPanelIndex    =   -1
@@ -386,12 +642,12 @@ Begin WebPage wp_cds_editor
       Height          =   38
       Index           =   -2147483648
       Indicator       =   2
-      Left            =   359
+      Left            =   350
       LockBottom      =   True
       LockedInPosition=   False
       LockHorizontal  =   False
-      LockLeft        =   False
-      LockRight       =   True
+      LockLeft        =   True
+      LockRight       =   False
       LockTop         =   False
       LockVertical    =   False
       Outlined        =   True
@@ -402,7 +658,7 @@ Begin WebPage wp_cds_editor
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   514
+      Top             =   694
       Visible         =   True
       Width           =   91
       _mPanelIndex    =   -1
@@ -427,15 +683,15 @@ Begin WebPage wp_cds_editor
       LastAddedRowIndex=   0
       LastColumnIndex =   0
       LastRowIndex    =   0
-      Left            =   449
+      Left            =   452
       LockBottom      =   True
       LockedInPosition=   False
       LockHorizontal  =   False
       LockLeft        =   True
-      LockRight       =   False
+      LockRight       =   True
       LockTop         =   True
       LockVertical    =   False
-      NoRowsMessage   =   "No child branches found"
+      NoRowsMessage   =   "No child nodes found"
       PanelIndex      =   0
       Parent          =   "nil"
       ProcessingMessage=   ""
@@ -449,7 +705,7 @@ Begin WebPage wp_cds_editor
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   187
+      Top             =   159
       Visible         =   True
       Width           =   430
       _mPanelIndex    =   -1
@@ -465,12 +721,12 @@ Begin WebPage wp_cds_editor
       Height          =   38
       Index           =   -2147483648
       Indicator       =   2
-      Left            =   260
+      Left            =   251
       LockBottom      =   True
       LockedInPosition=   False
       LockHorizontal  =   False
-      LockLeft        =   False
-      LockRight       =   True
+      LockLeft        =   True
+      LockRight       =   False
       LockTop         =   False
       LockVertical    =   False
       Outlined        =   True
@@ -481,7 +737,7 @@ Begin WebPage wp_cds_editor
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   514
+      Top             =   694
       Visible         =   True
       Width           =   91
       _mPanelIndex    =   -1
@@ -497,7 +753,7 @@ Begin WebPage wp_cds_editor
       Height          =   38
       Index           =   -2147483648
       Indicator       =   2
-      Left            =   20
+      Left            =   26
       LockBottom      =   True
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -513,9 +769,147 @@ Begin WebPage wp_cds_editor
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   514
+      Top             =   694
       Visible         =   True
       Width           =   143
+      _mPanelIndex    =   -1
+   End
+   Begin WebTextArea txtSelectedNode
+      AllowAutoComplete=   "False"
+      AllowReturnKey  =   True
+      AllowSpellChecking=   False
+      Caption         =   ""
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      FieldType       =   "0"
+      Height          =   71
+      Hint            =   ""
+      Index           =   -2147483648
+      Indicator       =   ""
+      Left            =   26
+      LockBottom      =   True
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   False
+      LockVertical    =   False
+      MaximumCharactersAllowed=   0
+      PanelIndex      =   0
+      ReadOnly        =   False
+      Scope           =   0
+      TabIndex        =   9
+      TabStop         =   True
+      Text            =   ""
+      TextAlignment   =   0
+      Tooltip         =   ""
+      Top             =   544
+      Visible         =   True
+      Width           =   415
+      _mPanelIndex    =   -1
+   End
+   Begin WebLabel lblSelectedNode
+      Bold            =   False
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      FontName        =   ""
+      FontSize        =   0.0
+      Height          =   38
+      HTMLElement     =   0
+      Index           =   -2147483648
+      Indicator       =   ""
+      Italic          =   False
+      Left            =   26
+      LockBottom      =   True
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   False
+      LockVertical    =   False
+      Multiline       =   False
+      PanelIndex      =   0
+      Scope           =   0
+      TabIndex        =   10
+      TabStop         =   True
+      Text            =   "Selected node"
+      TextAlignment   =   0
+      TextColor       =   &c000000FF
+      Tooltip         =   ""
+      Top             =   503
+      Underline       =   False
+      Visible         =   True
+      Width           =   127
+      _mPanelIndex    =   -1
+   End
+   Begin WebLabel lblRationale
+      Bold            =   False
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      FontName        =   ""
+      FontSize        =   0.0
+      Height          =   38
+      HTMLElement     =   0
+      Index           =   -2147483648
+      Indicator       =   ""
+      Italic          =   False
+      Left            =   449
+      LockBottom      =   True
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   False
+      LockVertical    =   False
+      Multiline       =   False
+      PanelIndex      =   0
+      Scope           =   0
+      TabIndex        =   12
+      TabStop         =   True
+      Text            =   "Rationale"
+      TextAlignment   =   0
+      TextColor       =   &c000000FF
+      Tooltip         =   ""
+      Top             =   503
+      Underline       =   False
+      Visible         =   True
+      Width           =   119
+      _mPanelIndex    =   -1
+   End
+   Begin WebTextArea txtRationale
+      AllowReturnKey  =   True
+      AllowSpellChecking=   False
+      Caption         =   ""
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      Height          =   188
+      Hint            =   ""
+      Index           =   -2147483648
+      Indicator       =   ""
+      Left            =   449
+      LockBottom      =   True
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   True
+      LockTop         =   False
+      LockVertical    =   False
+      MaximumCharactersAllowed=   0
+      PanelIndex      =   0
+      ReadOnly        =   False
+      Scope           =   0
+      TabIndex        =   19
+      TabStop         =   True
+      Text            =   ""
+      TextAlignment   =   0
+      Tooltip         =   ""
+      Top             =   544
+      Visible         =   True
+      Width           =   430
       _mPanelIndex    =   -1
    End
    Begin WebSegmentedButton segNodeKind
@@ -526,360 +920,27 @@ Begin WebPage wp_cds_editor
       Index           =   -2147483648
       Indicator       =   1
       LastSegmentIndex=   0
-      Left            =   887
-      LockBottom      =   False
+      Left            =   26
+      LockBottom      =   True
       LockedInPosition=   False
       LockHorizontal  =   False
       LockLeft        =   True
-      LockRight       =   True
-      LockTop         =   True
+      LockRight       =   False
+      LockTop         =   False
       LockVertical    =   False
       Outlined        =   True
       PanelIndex      =   0
       Scope           =   0
       SegmentCount    =   0
-      Segments        =   "Branch\n\nFalse\rVerdict leaf\n\nFalse"
+      Segments        =   "Branch node\n\nFalse\rVerdict node\n\nFalse"
       SelectedSegmentIndex=   0
       SelectionStyle  =   1
       TabIndex        =   41
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   187
+      Top             =   628
       Visible         =   True
-      Width           =   210
-      _mPanelIndex    =   -1
-   End
-   Begin WebPopupMenu popVerdictSecondaryOP
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   False
-      Height          =   38
-      Index           =   -2147483648
-      Indicator       =   0
-      InitialValue    =   "Verdict"
-      LastAddedRowIndex=   0
-      LastRowIndex    =   0
-      Left            =   539
-      LockBottom      =   True
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   False
-      LockRight       =   True
-      LockTop         =   False
-      LockVertical    =   False
-      PanelIndex      =   0
-      RowCount        =   0
-      Scope           =   0
-      SelectedRowIndex=   0
-      SelectedRowText =   ""
-      TabIndex        =   43
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   647
-      Visible         =   True
-      Width           =   172
-      _mPanelIndex    =   -1
-   End
-   Begin WebPopupMenu popVerdictSecondaryIP
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   False
-      Height          =   38
-      Index           =   -2147483648
-      Indicator       =   0
-      InitialValue    =   "Verdict"
-      LastAddedRowIndex=   0
-      LastRowIndex    =   0
-      Left            =   719
-      LockBottom      =   True
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   False
-      LockRight       =   True
-      LockTop         =   False
-      LockVertical    =   False
-      PanelIndex      =   0
-      RowCount        =   0
-      Scope           =   0
-      SelectedRowIndex=   0
-      SelectedRowText =   ""
-      TabIndex        =   44
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   647
-      Visible         =   True
-      Width           =   172
-      _mPanelIndex    =   -1
-   End
-   Begin WebPopupMenu popUrgency
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   False
-      Height          =   38
-      Index           =   -2147483648
-      Indicator       =   0
-      InitialValue    =   "Urgency"
-      LastAddedRowIndex=   0
-      LastRowIndex    =   0
-      Left            =   719
-      LockBottom      =   True
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   False
-      LockRight       =   True
-      LockTop         =   False
-      LockVertical    =   False
-      PanelIndex      =   0
-      RowCount        =   0
-      Scope           =   0
-      SelectedRowIndex=   0
-      SelectedRowText =   ""
-      TabIndex        =   45
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   743
-      Visible         =   True
-      Width           =   172
-      _mPanelIndex    =   -1
-   End
-   Begin WebLabel lblPrimaryCareVerdict
-      Bold            =   False
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      FontName        =   ""
-      FontSize        =   0.0
-      Height          =   38
-      HTMLElement     =   0
-      Index           =   -2147483648
-      Indicator       =   ""
-      Italic          =   False
-      Left            =   359
-      LockBottom      =   True
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   False
-      LockRight       =   True
-      LockTop         =   False
-      LockVertical    =   False
-      Multiline       =   False
-      PanelIndex      =   0
-      Scope           =   0
-      TabIndex        =   46
-      TabStop         =   True
-      Text            =   "Primary care"
-      TextAlignment   =   0
-      TextColor       =   &c000000FF
-      Tooltip         =   ""
-      Top             =   614
-      Underline       =   False
-      Visible         =   True
-      Width           =   172
-      _mPanelIndex    =   -1
-   End
-   Begin WebLabel lblSecondaryOPVerdict
-      Bold            =   False
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      FontName        =   ""
-      FontSize        =   0.0
-      Height          =   38
-      HTMLElement     =   0
-      Index           =   -2147483648
-      Indicator       =   ""
-      Italic          =   False
-      Left            =   539
-      LockBottom      =   True
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   False
-      LockRight       =   True
-      LockTop         =   False
-      LockVertical    =   False
-      Multiline       =   False
-      PanelIndex      =   0
-      Scope           =   0
-      TabIndex        =   47
-      TabStop         =   True
-      Text            =   "Secondary care (OP)"
-      TextAlignment   =   0
-      TextColor       =   &c000000FF
-      Tooltip         =   ""
-      Top             =   614
-      Underline       =   False
-      Visible         =   True
-      Width           =   172
-      _mPanelIndex    =   -1
-   End
-   Begin WebLabel lblSecondaryIPVerdict
-      Bold            =   False
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      FontName        =   ""
-      FontSize        =   0.0
-      Height          =   38
-      HTMLElement     =   0
-      Index           =   -2147483648
-      Indicator       =   ""
-      Italic          =   False
-      Left            =   719
-      LockBottom      =   True
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   False
-      LockRight       =   True
-      LockTop         =   False
-      LockVertical    =   False
-      Multiline       =   False
-      PanelIndex      =   0
-      Scope           =   0
-      TabIndex        =   48
-      TabStop         =   True
-      Text            =   "Secondary care (IP)"
-      TextAlignment   =   0
-      TextColor       =   &c000000FF
-      Tooltip         =   ""
-      Top             =   614
-      Underline       =   False
-      Visible         =   True
-      Width           =   172
-      _mPanelIndex    =   -1
-   End
-   Begin WebLabel lblUrgency
-      Bold            =   False
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      FontName        =   ""
-      FontSize        =   0.0
-      Height          =   38
-      HTMLElement     =   0
-      Index           =   -2147483648
-      Indicator       =   ""
-      Italic          =   False
-      Left            =   719
-      LockBottom      =   True
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   False
-      LockRight       =   True
-      LockTop         =   False
-      LockVertical    =   False
-      Multiline       =   False
-      PanelIndex      =   0
-      Scope           =   0
-      TabIndex        =   49
-      TabStop         =   True
-      Text            =   "Priority"
-      TextAlignment   =   0
-      TextColor       =   &c000000FF
-      Tooltip         =   ""
-      Top             =   710
-      Underline       =   False
-      Visible         =   True
-      Width           =   172
-      _mPanelIndex    =   -1
-   End
-   Begin WebLabel lblSelectedIndicationID
-      Bold            =   False
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      FontName        =   ""
-      FontSize        =   0.0
-      Height          =   38
-      HTMLElement     =   0
-      Index           =   -2147483648
-      Indicator       =   ""
-      Italic          =   False
-      Left            =   39
-      LockBottom      =   True
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   False
-      LockVertical    =   False
-      Multiline       =   False
-      PanelIndex      =   0
-      Scope           =   0
-      TabIndex        =   50
-      TabStop         =   True
-      Text            =   "ID: 273"
-      TextAlignment   =   0
-      TextColor       =   &c000000FF
-      Tooltip         =   ""
-      Top             =   647
-      Underline       =   False
-      Visible         =   True
-      Width           =   100
-      _mPanelIndex    =   -1
-   End
-   Begin WebLabel lblSelectedIndication
-      Bold            =   False
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      FontName        =   ""
-      FontSize        =   0.0
-      Height          =   71
-      HTMLElement     =   0
-      Index           =   -2147483648
-      Indicator       =   ""
-      Italic          =   False
-      Left            =   359
-      LockBottom      =   True
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   True
-      LockTop         =   False
-      LockVertical    =   False
-      Multiline       =   True
-      PanelIndex      =   0
-      Scope           =   0
-      TabIndex        =   51
-      TabStop         =   True
-      Text            =   "Indication text shows here."
-      TextAlignment   =   0
-      TextColor       =   &c000000FF
-      Tooltip         =   ""
-      Top             =   710
-      Underline       =   False
-      Visible         =   True
-      Width           =   331
-      _mPanelIndex    =   -1
-   End
-   Begin WebButton btnViewIndication
-      AllowAutoDisable=   False
-      Cancel          =   False
-      Caption         =   "View"
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Default         =   False
-      Enabled         =   True
-      Height          =   26
-      Index           =   -2147483648
-      Indicator       =   0
-      Left            =   111
-      LockBottom      =   True
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   False
-      LockVertical    =   False
-      Outlined        =   False
-      PanelIndex      =   0
-      Scope           =   0
-      TabIndex        =   52
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   654
-      Visible         =   True
-      Width           =   90
+      Width           =   415
       _mPanelIndex    =   -1
    End
 End
@@ -913,6 +974,17 @@ End
 	#tag EndEvent
 
 	#tag Event
+		Sub Resized()
+		  // Called by Xojo when the page itself resizes. May not fire reliably for
+		  // browser-window resizes when the page is LayoutType=Fixed — see the JS
+		  // hook in Shown for the responsive fallback. Calling LayoutListboxes
+		  // here keeps things consistent if Xojo ever does fire the event.
+		  
+		  LayoutListboxes
+		End Sub
+	#tag EndEvent
+
+	#tag Event
 		Sub Shown()
 		  Var auth As Boolean = Session.IsAuthenticated
 		  btnAddSibling.Enabled = auth
@@ -920,6 +992,8 @@ End
 		  btnDeleteSelected.Enabled = auth
 		  btnPickIndication.Enabled = auth
 		  wc_header.UpdateAuthenticationStatus(auth)
+		  
+		  LayoutListboxes
 		End Sub
 	#tag EndEvent
 
@@ -947,10 +1021,12 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub ApplyLeafModeUI()
-		  // Branch nodes have no indication-related controls visible — clutter
-		  // free. Verdict leaves show the picker button, the linked-indication
-		  // labels, and the four read-only popups that mirror the indication's
-		  // GP/IP/OP/urgency. txtRationale stays available for both kinds.
+		  // All indication-related controls live inside rectIndication, so a single
+		  // .Visible toggle on the rect hides/shows the whole group — no risk of
+		  // forgetting an individual label. Inside it: picker buttons, linked-
+		  // indication labels, and four read-only popups that mirror the
+		  // indication's GP/IP/OP/urgency. txtRationale stays available for both
+		  // kinds.
 		  Var hasNode As Boolean = (CurrentNode <> Nil)
 		  Var isLeaf As Boolean = hasNode And (segNodeKind.SelectedSegmentIndex = 1)
 		  Var auth As Boolean = Session.IsAuthenticated
@@ -959,18 +1035,9 @@ End
 		  segNodeKind.Enabled = hasNode And auth
 		  txtRationale.Enabled = hasNode And auth
 		  
-		  // Indication-related controls: visible only on leaves.
-		  btnPickIndication.Visible = isLeaf
+		  rectIndication.Visible = isLeaf
 		  btnPickIndication.Enabled = isLeaf And auth
-		  btnViewIndication.Visible = isLeaf
 		  btnViewIndication.Enabled = isLeaf And SelectedIndicationID > 0
-		  lblSelectedIndicationID.Visible = isLeaf
-		  lblSelectedIndication.Visible = isLeaf
-		  
-		  popVerdictPrimary.Visible = isLeaf
-		  popVerdictSecondaryIP.Visible = isLeaf
-		  popVerdictSecondaryOP.Visible = isLeaf
-		  popUrgency.Visible = isLeaf
 		  popVerdictPrimary.Enabled = False
 		  popVerdictSecondaryIP.Enabled = False
 		  popVerdictSecondaryOP.Enabled = False
@@ -1218,6 +1285,46 @@ End
 		  
 		  // Anywhere else (parent is offscreen) → a full reload is the safest fallback.
 		  ReloadView
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub LayoutListboxes()
+		  // Last diagnostic confirmed: Xojo's rectIndication.Left is stuck at the
+		  // IDE-time value (888) even when the browser is wider. But Self.Width
+		  // (the page's own width) tracks the browser. Use that to compute where
+		  // rectIndication actually sits at runtime:
+		  //     runtimeRectLeft = Self.Width - rectIndication.Width
+		  // Then split the strip between window's 20px left gutter and a 4px gap
+		  // before rectIndication, 50/50, 1px overlap.
+		  
+		  Var runtimeRectLeft As Integer = Self.Width - rectIndication.Width
+		  Var totalWidth As Integer = runtimeRectLeft - 24   // 20 (left) + 4 (right gap)
+		  
+		  Var pRight As Integer = lstParent.Left + lstParent.Width
+		  Var cRight As Integer = lstChild.Left + lstChild.Width
+		  Var rRightXojo As Integer = rectIndication.Left + rectIndication.Width
+		  
+		  System.DebugLog("--- LayoutListboxes geometry ---")
+		  System.DebugLog("  Self.Width=" + Self.Width.ToString + _
+		  "   runtimeRectLeft=" + runtimeRectLeft.ToString + _
+		  "   totalWidth=" + totalWidth.ToString)
+		  System.DebugLog("  lstParent      Left=" + lstParent.Left.ToString + _
+		  ", Width=" + lstParent.Width.ToString + ", Right=" + pRight.ToString)
+		  System.DebugLog("  lstChild       Left=" + lstChild.Left.ToString + _
+		  ", Width=" + lstChild.Width.ToString + ", Right=" + cRight.ToString)
+		  System.DebugLog("  rectIndication Left=" + rectIndication.Left.ToString + _
+		  ", Width=" + rectIndication.Width.ToString + ", Right=" + rRightXojo.ToString + _
+		  "   (Xojo-reported, may be stale)")
+		  
+		  If totalWidth < 100 Then Return
+		  Var half As Integer = totalWidth \ 2
+		  Var newChildLeft As Integer = 20 + half - 1
+		  lstParent.Width = half
+		  lstChild.Width = half
+		  lstChild.Left = newChildLeft
+		  
+		  System.DebugLog("  Applied: half=" + half.ToString + ", lstChild.Left=" + newChildLeft.ToString)
 		End Sub
 	#tag EndMethod
 
@@ -1596,6 +1703,70 @@ End
 
 #tag EndWindowCode
 
+#tag Events btnViewIndication
+	#tag Event
+		Sub Pressed()
+		  // Navigate to wp_indications with the linked indication's ID as the deep
+		  // link, so wp_indications auto-opens dlg_Indication for it on Shown.
+		  // Same pattern as the landing-page → wp_indications deep-link flow.
+		  Var indID As Integer = SelectedIndicationID
+		  If indID = 0 Then
+		    MessageBox("No indication picked yet.")
+		    Return
+		  End If
+		  // Save any pending edits before leaving the page.
+		  If Not MaybeSaveCurrent Then Return
+		  Var w As New wp_indications
+		  w.DeepLinkID = indID
+		  Session.NavigationManager.NavigateToPage(w)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events popUrgency
+	#tag Event
+		Sub SelectionChanged(item As WebMenuItem)
+		  #Pragma Unused item
+		  
+		  MarkDirty
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events popVerdictSecondaryIP
+	#tag Event
+		Sub SelectionChanged(item As WebMenuItem)
+		  #Pragma Unused item
+		  MarkDirty
+		  ApplyRagIndicator(popVerdictSecondaryIP)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events popVerdictSecondaryOP
+	#tag Event
+		Sub SelectionChanged(item As WebMenuItem)
+		  #Pragma Unused item
+		  MarkDirty
+		  ApplyRagIndicator(popVerdictSecondaryOP)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events popVerdictPrimary
+	#tag Event
+		Sub SelectionChanged(item As WebMenuItem)
+		  #Pragma Unused item
+		  MarkDirty
+		  ApplyRagIndicator(popVerdictPrimary)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnPickIndication
+	#tag Event
+		Sub Pressed()
+		  // Browse — change the linked indication on an existing leaf. (For new
+		  // leaves, the picker auto-opens via segNodeKind.Pressed.)
+		  OpenIndicationPicker
+		End Sub
+	#tag EndEvent
+#tag EndEvents
 #tag Events bcTreeNavigation
 	#tag Event
 		Sub Pressed(index As Integer)
@@ -1611,43 +1782,6 @@ End
 		    System.DebugLog("bcTreeNavigation.Pressed: " + Introspection.GetType(err).Name + " — " + err.Message)
 		    MessageBox("Internal error navigating — see debug log.")
 		  End Try
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events txtSelectedNode
-	#tag Event
-		Sub TextChanged()
-		  If SuppressDirty Then Return
-		  MarkDirty
-		  // Live-update the listbox row so the user sees their edit immediately.
-		  If CurrentNode <> Nil And CurrentNode.ID > 0 Then
-		    LiveUpdateRowLabel(CurrentNode.ID, txtSelectedNode.Text)
-		  End If
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events btnPickIndication
-	#tag Event
-		Sub Pressed()
-		  // Browse — change the linked indication on an existing leaf. (For new
-		  // leaves, the picker auto-opens via segNodeKind.Pressed.)
-		  OpenIndicationPicker
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events popVerdictPrimary
-	#tag Event
-		Sub SelectionChanged(item As WebMenuItem)
-		  #Pragma Unused item
-		  MarkDirty
-		  ApplyRagIndicator(popVerdictPrimary)
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events txtRationale
-	#tag Event
-		Sub TextChanged()
-		  MarkDirty
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -1828,6 +1962,25 @@ End
 		End Sub
 	#tag EndEvent
 #tag EndEvents
+#tag Events txtSelectedNode
+	#tag Event
+		Sub TextChanged()
+		  If SuppressDirty Then Return
+		  MarkDirty
+		  // Live-update the listbox row so the user sees their edit immediately.
+		  If CurrentNode <> Nil And CurrentNode.ID > 0 Then
+		    LiveUpdateRowLabel(CurrentNode.ID, txtSelectedNode.Text)
+		  End If
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events txtRationale
+	#tag Event
+		Sub TextChanged()
+		  MarkDirty
+		End Sub
+	#tag EndEvent
+#tag EndEvents
 #tag Events segNodeKind
 	#tag Event
 		Sub Pressed(segmentIndex As Integer)
@@ -1850,52 +2003,6 @@ End
 		    ApplyLeafModeUI
 		    RefreshFocusedRowStyle
 		  End If
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events popVerdictSecondaryOP
-	#tag Event
-		Sub SelectionChanged(item As WebMenuItem)
-		  #Pragma Unused item
-		  MarkDirty
-		  ApplyRagIndicator(popVerdictSecondaryOP)
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events popVerdictSecondaryIP
-	#tag Event
-		Sub SelectionChanged(item As WebMenuItem)
-		  #Pragma Unused item
-		  MarkDirty
-		  ApplyRagIndicator(popVerdictSecondaryIP)
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events popUrgency
-	#tag Event
-		Sub SelectionChanged(item As WebMenuItem)
-		  #Pragma Unused item
-		  
-		  MarkDirty
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events btnViewIndication
-	#tag Event
-		Sub Pressed()
-		  // Navigate to wp_indications with the linked indication's ID as the deep
-		  // link, so wp_indications auto-opens dlg_Indication for it on Shown.
-		  // Same pattern as the landing-page → wp_indications deep-link flow.
-		  Var indID As Integer = SelectedIndicationID
-		  If indID = 0 Then
-		    MessageBox("No indication picked yet.")
-		    Return
-		  End If
-		  // Save any pending edits before leaving the page.
-		  If Not MaybeSaveCurrent Then Return
-		  Var w As New wp_indications
-		  w.DeepLinkID = indID
-		  Session.NavigationManager.NavigateToPage(w)
 		End Sub
 	#tag EndEvent
 #tag EndEvents
