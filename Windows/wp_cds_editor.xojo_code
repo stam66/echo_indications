@@ -33,6 +33,35 @@ Begin WebPage wp_cds_editor
    _mDesignHeight  =   0
    _mDesignWidth   =   0
    _mPanelIndex    =   -1
+   Begin WebBreadcrumb bcTreeNavigation
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      Height          =   69
+      Index           =   -2147483648
+      Indicator       =   ""
+      InitialValue    =   "One/Two/Three"
+      LastAddedIndex  =   0
+      LastRowIndex    =   0
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   True
+      LockTop         =   True
+      LockVertical    =   False
+      PanelIndex      =   0
+      RowCount        =   0
+      Scope           =   2
+      TabIndex        =   36
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   82
+      Visible         =   True
+      Width           =   1077
+      _mPanelIndex    =   -1
+   End
    Begin wc_WebPageHeader wc_header
       ControlCount    =   0
       ControlID       =   ""
@@ -74,15 +103,15 @@ Begin WebPage wp_cds_editor
       CSSClasses      =   ""
       Enabled         =   True
       FieldType       =   "0"
-      Height          =   65
+      Height          =   95
       Hint            =   ""
       Index           =   -2147483648
       Indicator       =   ""
-      Left            =   695
+      Left            =   887
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
-      LockLeft        =   False
+      LockLeft        =   True
       LockRight       =   True
       LockTop         =   True
       LockVertical    =   False
@@ -95,9 +124,9 @@ Begin WebPage wp_cds_editor
       Text            =   ""
       TextAlignment   =   0
       Tooltip         =   ""
-      Top             =   187
+      Top             =   279
       Visible         =   True
-      Width           =   402
+      Width           =   210
       _mPanelIndex    =   -1
    End
    Begin WebLabel lblSelectedNode
@@ -112,7 +141,7 @@ Begin WebPage wp_cds_editor
       Index           =   -2147483648
       Indicator       =   ""
       Italic          =   False
-      Left            =   695
+      Left            =   887
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -129,10 +158,10 @@ Begin WebPage wp_cds_editor
       TextAlignment   =   0
       TextColor       =   &c000000FF
       Tooltip         =   ""
-      Top             =   152
+      Top             =   238
       Underline       =   False
       Visible         =   True
-      Width           =   204
+      Width           =   127
       _mPanelIndex    =   -1
    End
    Begin WebLabel lblRationale
@@ -147,7 +176,7 @@ Begin WebPage wp_cds_editor
       Index           =   -2147483648
       Indicator       =   ""
       Italic          =   False
-      Left            =   385
+      Left            =   887
       LockBottom      =   True
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -164,7 +193,7 @@ Begin WebPage wp_cds_editor
       TextAlignment   =   0
       TextColor       =   &c000000FF
       Tooltip         =   ""
-      Top             =   682
+      Top             =   382
       Underline       =   False
       Visible         =   True
       Width           =   119
@@ -173,15 +202,15 @@ Begin WebPage wp_cds_editor
    Begin WebButton btnPickIndication
       AllowAutoDisable=   False
       Cancel          =   False
-      Caption         =   "Browse..."
+      Caption         =   "Change"
       ControlID       =   ""
       CSSClasses      =   ""
       Default         =   False
       Enabled         =   True
-      Height          =   38
+      Height          =   26
       Index           =   -2147483648
       Indicator       =   0
-      Left            =   252
+      Left            =   209
       LockBottom      =   True
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -195,9 +224,9 @@ Begin WebPage wp_cds_editor
       TabIndex        =   16
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   636
+      Top             =   655
       Visible         =   True
-      Width           =   127
+      Width           =   90
       _mPanelIndex    =   -1
    End
    Begin WebPopupMenu popVerdictPrimary
@@ -210,7 +239,7 @@ Begin WebPage wp_cds_editor
       InitialValue    =   "Verdict"
       LastAddedRowIndex=   0
       LastRowIndex    =   0
-      Left            =   385
+      Left            =   359
       LockBottom      =   True
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -226,7 +255,7 @@ Begin WebPage wp_cds_editor
       TabIndex        =   17
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   636
+      Top             =   647
       Visible         =   True
       Width           =   172
       _mPanelIndex    =   -1
@@ -242,13 +271,13 @@ Begin WebPage wp_cds_editor
       Hint            =   ""
       Index           =   -2147483648
       Indicator       =   ""
-      Left            =   385
-      LockBottom      =   True
+      Left            =   887
+      LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
-      LockLeft        =   False
+      LockLeft        =   True
       LockRight       =   True
-      LockTop         =   False
+      LockTop         =   True
       LockVertical    =   False
       MaximumCharactersAllowed=   0
       PanelIndex      =   0
@@ -259,43 +288,9 @@ Begin WebPage wp_cds_editor
       Text            =   ""
       TextAlignment   =   0
       Tooltip         =   ""
-      Top             =   718
+      Top             =   428
       Visible         =   True
-      Width           =   712
-      _mPanelIndex    =   -1
-   End
-   Begin WebCombobox cmbIndication
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      FilteringMode   =   1
-      Height          =   38
-      Hint            =   ""
-      Index           =   -2147483648
-      Indicator       =   0
-      InitialValue    =   ""
-      LastAddedRowIndex=   0
-      LastRowIndex    =   0
-      Left            =   20
-      LockBottom      =   True
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   False
-      LockVertical    =   False
-      PanelIndex      =   0
-      RowCount        =   0
-      Scope           =   0
-      SelectedRowIndex=   -1
-      SelectedRowText =   ""
-      TabIndex        =   26
-      TabStop         =   True
-      Text            =   ""
-      Tooltip         =   ""
-      Top             =   636
-      Visible         =   True
-      Width           =   224
+      Width           =   210
       _mPanelIndex    =   -1
    End
    Begin WebLabel lblChooseFromList
@@ -310,7 +305,7 @@ Begin WebPage wp_cds_editor
       Index           =   -2147483648
       Indicator       =   ""
       Italic          =   False
-      Left            =   20
+      Left            =   39
       LockBottom      =   True
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -323,11 +318,11 @@ Begin WebPage wp_cds_editor
       Scope           =   0
       TabIndex        =   27
       TabStop         =   True
-      Text            =   "Choose indication from list"
+      Text            =   "Linked indication"
       TextAlignment   =   0
       TextColor       =   &c000000FF
       Tooltip         =   ""
-      Top             =   603
+      Top             =   614
       Underline       =   False
       Visible         =   True
       Width           =   211
@@ -377,7 +372,7 @@ Begin WebPage wp_cds_editor
       Tooltip         =   ""
       Top             =   187
       Visible         =   True
-      Width           =   324
+      Width           =   430
       _mPanelIndex    =   -1
    End
    Begin WebButton btnAddChild
@@ -391,7 +386,7 @@ Begin WebPage wp_cds_editor
       Height          =   38
       Index           =   -2147483648
       Indicator       =   2
-      Left            =   584
+      Left            =   359
       LockBottom      =   True
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -432,12 +427,12 @@ Begin WebPage wp_cds_editor
       LastAddedRowIndex=   0
       LastColumnIndex =   0
       LastRowIndex    =   0
-      Left            =   343
+      Left            =   449
       LockBottom      =   True
       LockedInPosition=   False
       LockHorizontal  =   False
       LockLeft        =   True
-      LockRight       =   True
+      LockRight       =   False
       LockTop         =   True
       LockVertical    =   False
       NoRowsMessage   =   "No child branches found"
@@ -456,7 +451,7 @@ Begin WebPage wp_cds_editor
       Tooltip         =   ""
       Top             =   187
       Visible         =   True
-      Width           =   332
+      Width           =   430
       _mPanelIndex    =   -1
    End
    Begin WebButton btnAddSibling
@@ -470,7 +465,7 @@ Begin WebPage wp_cds_editor
       Height          =   38
       Index           =   -2147483648
       Indicator       =   2
-      Left            =   485
+      Left            =   260
       LockBottom      =   True
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -489,35 +484,6 @@ Begin WebPage wp_cds_editor
       Top             =   514
       Visible         =   True
       Width           =   91
-      _mPanelIndex    =   -1
-   End
-   Begin WebBreadcrumb bcTreeNavigation
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      Height          =   69
-      Index           =   -2147483648
-      Indicator       =   ""
-      InitialValue    =   "One/Two/Three"
-      LastAddedIndex  =   0
-      LastRowIndex    =   0
-      Left            =   20
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   True
-      LockTop         =   True
-      LockVertical    =   False
-      PanelIndex      =   0
-      RowCount        =   0
-      Scope           =   2
-      TabIndex        =   36
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   82
-      Visible         =   True
-      Width           =   1077
       _mPanelIndex    =   -1
    End
    Begin WebButton btnDeleteSelected
@@ -556,15 +522,15 @@ Begin WebPage wp_cds_editor
       ControlID       =   ""
       CSSClasses      =   ""
       Enabled         =   True
-      Height          =   38
+      Height          =   43
       Index           =   -2147483648
       Indicator       =   1
       LastSegmentIndex=   0
-      Left            =   695
+      Left            =   887
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
-      LockLeft        =   False
+      LockLeft        =   True
       LockRight       =   True
       LockTop         =   True
       LockVertical    =   False
@@ -578,40 +544,9 @@ Begin WebPage wp_cds_editor
       TabIndex        =   41
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   260
+      Top             =   187
       Visible         =   True
-      Width           =   359
-      _mPanelIndex    =   -1
-   End
-   Begin WebSegmentedButton segLeafKind
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      Height          =   38
-      Index           =   -2147483648
-      Indicator       =   1
-      LastSegmentIndex=   0
-      Left            =   695
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   False
-      LockRight       =   True
-      LockTop         =   True
-      LockVertical    =   False
-      Outlined        =   True
-      PanelIndex      =   0
-      Scope           =   0
-      SegmentCount    =   0
-      Segments        =   "Linked verdict\n\nFalse\rCustom verdict\n\nFalse"
-      SelectedSegmentIndex=   0
-      SelectionStyle  =   1
-      TabIndex        =   42
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   317
-      Visible         =   True
-      Width           =   359
+      Width           =   210
       _mPanelIndex    =   -1
    End
    Begin WebPopupMenu popVerdictSecondaryOP
@@ -624,7 +559,7 @@ Begin WebPage wp_cds_editor
       InitialValue    =   "Verdict"
       LastAddedRowIndex=   0
       LastRowIndex    =   0
-      Left            =   565
+      Left            =   539
       LockBottom      =   True
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -640,7 +575,7 @@ Begin WebPage wp_cds_editor
       TabIndex        =   43
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   636
+      Top             =   647
       Visible         =   True
       Width           =   172
       _mPanelIndex    =   -1
@@ -655,7 +590,7 @@ Begin WebPage wp_cds_editor
       InitialValue    =   "Verdict"
       LastAddedRowIndex=   0
       LastRowIndex    =   0
-      Left            =   745
+      Left            =   719
       LockBottom      =   True
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -671,7 +606,7 @@ Begin WebPage wp_cds_editor
       TabIndex        =   44
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   636
+      Top             =   647
       Visible         =   True
       Width           =   172
       _mPanelIndex    =   -1
@@ -686,7 +621,7 @@ Begin WebPage wp_cds_editor
       InitialValue    =   "Urgency"
       LastAddedRowIndex=   0
       LastRowIndex    =   0
-      Left            =   925
+      Left            =   719
       LockBottom      =   True
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -702,7 +637,7 @@ Begin WebPage wp_cds_editor
       TabIndex        =   45
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   636
+      Top             =   743
       Visible         =   True
       Width           =   172
       _mPanelIndex    =   -1
@@ -719,7 +654,7 @@ Begin WebPage wp_cds_editor
       Index           =   -2147483648
       Indicator       =   ""
       Italic          =   False
-      Left            =   385
+      Left            =   359
       LockBottom      =   True
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -736,7 +671,7 @@ Begin WebPage wp_cds_editor
       TextAlignment   =   0
       TextColor       =   &c000000FF
       Tooltip         =   ""
-      Top             =   603
+      Top             =   614
       Underline       =   False
       Visible         =   True
       Width           =   172
@@ -754,7 +689,7 @@ Begin WebPage wp_cds_editor
       Index           =   -2147483648
       Indicator       =   ""
       Italic          =   False
-      Left            =   565
+      Left            =   539
       LockBottom      =   True
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -771,7 +706,7 @@ Begin WebPage wp_cds_editor
       TextAlignment   =   0
       TextColor       =   &c000000FF
       Tooltip         =   ""
-      Top             =   603
+      Top             =   614
       Underline       =   False
       Visible         =   True
       Width           =   172
@@ -789,7 +724,7 @@ Begin WebPage wp_cds_editor
       Index           =   -2147483648
       Indicator       =   ""
       Italic          =   False
-      Left            =   745
+      Left            =   719
       LockBottom      =   True
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -806,7 +741,7 @@ Begin WebPage wp_cds_editor
       TextAlignment   =   0
       TextColor       =   &c000000FF
       Tooltip         =   ""
-      Top             =   603
+      Top             =   614
       Underline       =   False
       Visible         =   True
       Width           =   172
@@ -824,7 +759,7 @@ Begin WebPage wp_cds_editor
       Index           =   -2147483648
       Indicator       =   ""
       Italic          =   False
-      Left            =   925
+      Left            =   719
       LockBottom      =   True
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -841,7 +776,7 @@ Begin WebPage wp_cds_editor
       TextAlignment   =   0
       TextColor       =   &c000000FF
       Tooltip         =   ""
-      Top             =   603
+      Top             =   710
       Underline       =   False
       Visible         =   True
       Width           =   172
@@ -859,7 +794,7 @@ Begin WebPage wp_cds_editor
       Index           =   -2147483648
       Indicator       =   ""
       Italic          =   False
-      Left            =   20
+      Left            =   39
       LockBottom      =   True
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -876,7 +811,7 @@ Begin WebPage wp_cds_editor
       TextAlignment   =   0
       TextColor       =   &c000000FF
       Tooltip         =   ""
-      Top             =   682
+      Top             =   647
       Underline       =   False
       Visible         =   True
       Width           =   100
@@ -889,12 +824,12 @@ Begin WebPage wp_cds_editor
       Enabled         =   True
       FontName        =   ""
       FontSize        =   0.0
-      Height          =   82
+      Height          =   71
       HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   ""
       Italic          =   False
-      Left            =   20
+      Left            =   359
       LockBottom      =   True
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -911,10 +846,10 @@ Begin WebPage wp_cds_editor
       TextAlignment   =   0
       TextColor       =   &c000000FF
       Tooltip         =   ""
-      Top             =   718
+      Top             =   710
       Underline       =   False
       Visible         =   True
-      Width           =   357
+      Width           =   331
       _mPanelIndex    =   -1
    End
    Begin WebButton btnViewIndication
@@ -928,7 +863,7 @@ Begin WebPage wp_cds_editor
       Height          =   26
       Index           =   -2147483648
       Indicator       =   0
-      Left            =   92
+      Left            =   111
       LockBottom      =   True
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -942,9 +877,9 @@ Begin WebPage wp_cds_editor
       TabIndex        =   52
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   689
+      Top             =   654
       Visible         =   True
-      Width           =   71
+      Width           =   90
       _mPanelIndex    =   -1
    End
 End
@@ -960,7 +895,11 @@ End
 		  PopulateVerdictPopup(popVerdictSecondaryIP)
 		  PopulateVerdictPopup(popVerdictSecondaryOP)
 		  
+		  // popUrgency mirrors the linked indication's urgency, which can be any
+		  // of five values (matches dlg_Indication's popup ordering exactly).
 		  popUrgency.RemoveAllRows
+		  popUrgency.AddRow("Not indicated")
+		  popUrgency.AddRow("Can be considered")
 		  popUrgency.AddRow("Routine")
 		  popUrgency.AddRow("Soon")
 		  popUrgency.AddRow("Urgent")
@@ -1008,27 +947,34 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub ApplyLeafModeUI()
-		  // Enable/disable detail-panel controls based on Branch/Leaf and Linked/Custom.
+		  // Branch nodes have no indication-related controls visible — clutter
+		  // free. Verdict leaves show the picker button, the linked-indication
+		  // labels, and the four read-only popups that mirror the indication's
+		  // GP/IP/OP/urgency. txtRationale stays available for both kinds.
 		  Var hasNode As Boolean = (CurrentNode <> Nil)
 		  Var isLeaf As Boolean = hasNode And (segNodeKind.SelectedSegmentIndex = 1)
-		  Var isLinked As Boolean = isLeaf And (segLeafKind.SelectedSegmentIndex = 0)
-		  Var isCustom As Boolean = isLeaf And (segLeafKind.SelectedSegmentIndex = 1)
 		  Var auth As Boolean = Session.IsAuthenticated
 		  
 		  txtSelectedNode.Enabled = hasNode And auth
 		  segNodeKind.Enabled = hasNode And auth
-		  segLeafKind.Enabled = isLeaf And auth
+		  txtRationale.Enabled = hasNode And auth
 		  
-		  cmbIndication.Enabled = isLinked And auth
-		  btnPickIndication.Enabled = isLinked And auth
-		  btnViewIndication.Enabled = isLinked And SelectedIndicationID > 0
+		  // Indication-related controls: visible only on leaves.
+		  btnPickIndication.Visible = isLeaf
+		  btnPickIndication.Enabled = isLeaf And auth
+		  btnViewIndication.Visible = isLeaf
+		  btnViewIndication.Enabled = isLeaf And SelectedIndicationID > 0
+		  lblSelectedIndicationID.Visible = isLeaf
+		  lblSelectedIndication.Visible = isLeaf
 		  
-		  popVerdictPrimary.Enabled = isCustom And auth
-		  popVerdictSecondaryIP.Enabled = isCustom And auth
-		  popVerdictSecondaryOP.Enabled = isCustom And auth
-		  popUrgency.Enabled = isCustom And auth
-		  
-		  txtRationale.Enabled = isLeaf And auth
+		  popVerdictPrimary.Visible = isLeaf
+		  popVerdictSecondaryIP.Visible = isLeaf
+		  popVerdictSecondaryOP.Visible = isLeaf
+		  popUrgency.Visible = isLeaf
+		  popVerdictPrimary.Enabled = False
+		  popVerdictSecondaryIP.Enabled = False
+		  popVerdictSecondaryOP.Enabled = False
+		  popUrgency.Enabled = False
 		End Sub
 	#tag EndMethod
 
@@ -1116,8 +1062,6 @@ End
 		  txtSelectedNode.Text = ""
 		  txtRationale.Text = ""
 		  segNodeKind.SelectedSegmentIndex = 0
-		  segLeafKind.SelectedSegmentIndex = 0
-		  cmbIndication.SelectedRowIndex = -1
 		  popVerdictPrimary.SelectedRowIndex = -1
 		  popVerdictSecondaryIP.SelectedRowIndex = -1
 		  popVerdictSecondaryOP.SelectedRowIndex = -1
@@ -1133,10 +1077,10 @@ End
 	#tag Method, Flags = &h21
 		Private Function CollectDetailIntoNode() As String
 		  // Pull control state into CurrentNode. "" on success, validation message
-		  // otherwise. Only option_label is strictly required (NOT NULL in schema);
-		  // verdict / indication fields can be left empty — the node just won't be
-		  // a complete leaf, and the row's visual cue reflects that. This avoids
-		  // trapping the user when they toggle node kinds mid-edit.
+		  // otherwise. Only option_label is strictly required (NOT NULL in schema).
+		  // CurrentNode.IndicationID is managed elsewhere (segNodeKind.Pressed for
+		  // Branch-toggle clears, HandleIndicationPicked for picker-select sets) —
+		  // both paths immediately persist, so this function doesn't touch it.
 		  If CurrentNode Is Nil Then Return "No node selected."
 		  
 		  Var label As String = txtSelectedNode.Text.Trim
@@ -1145,35 +1089,6 @@ End
 		  CurrentNode.OptionLabel = label
 		  CurrentNode.Rationale = txtRationale.Text.Trim
 		  CurrentNode.Prompt = ""   // Field is no longer exposed in the UI.
-		  
-		  Var isLeaf As Boolean = (segNodeKind.SelectedSegmentIndex = 1)
-		  If isLeaf Then
-		    Var isLinked As Boolean = (segLeafKind.SelectedSegmentIndex = 0)
-		    If isLinked Then
-		      // Linked leaf — write whatever is currently selected; 0 = no link yet.
-		      CurrentNode.IndicationID = SelectedIndicationID
-		      CurrentNode.VerdictPrimary = ""
-		      CurrentNode.VerdictSecondaryInpatient = ""
-		      CurrentNode.VerdictSecondaryOutpatient = ""
-		      CurrentNode.Urgency = ""
-		    Else
-		      // Custom leaf — write whatever verdicts are currently picked; empties
-		      // become NULL. Saving with no verdict makes IsTerminal=False, which on
-		      // reload reads as a Branch — user can come back and fill in.
-		      CurrentNode.IndicationID = 0
-		      CurrentNode.VerdictPrimary             = VerdictForIndex(popVerdictPrimary.SelectedRowIndex)
-		      CurrentNode.VerdictSecondaryInpatient  = VerdictForIndex(popVerdictSecondaryIP.SelectedRowIndex)
-		      CurrentNode.VerdictSecondaryOutpatient = VerdictForIndex(popVerdictSecondaryOP.SelectedRowIndex)
-		      CurrentNode.Urgency = UrgencyForIndex(popUrgency.SelectedRowIndex)
-		    End If
-		  Else
-		    // Branch — clear any verdict / link state so it's a clean branch.
-		    CurrentNode.IndicationID = 0
-		    CurrentNode.VerdictPrimary = ""
-		    CurrentNode.VerdictSecondaryInpatient = ""
-		    CurrentNode.VerdictSecondaryOutpatient = ""
-		    CurrentNode.Urgency = ""
-		  End If
 		  Return ""
 		End Function
 	#tag EndMethod
@@ -1213,26 +1128,55 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub HandleIndicationPicked(sender As dlg_select_indication, indicationID As Integer)
-		  // Callback for dlg_select_indication. Applies the picked indication to
-		  // the currently-edited node, marks it dirty so the next navigation saves.
+		  // Callback for dlg_select_indication.
+		  //   id > 0 → user picked: assign + immediate save + refresh UI.
+		  //   id = 0 → user cancelled. If the node had no prior indication (i.e. this
+		  //            dialog opened because of a fresh Branch→Leaf toggle), revert
+		  //            segNodeKind back to Branch. If the node already had one, the
+		  //            user was changing it but backed out — leave state untouched.
 		  #Pragma Unused sender
-		  If indicationID = 0 Or CurrentNode Is Nil Then Return
-		  SelectIndicationInCombo(indicationID)
-		  MarkDirty
-		  UpdateIndicationLabels
-		  ApplyLeafModeUI
+		  System.DebugLog("HandleIndicationPicked: indID=" + indicationID.ToString + _
+		  ", CurrentNode=" + If(CurrentNode Is Nil, "Nil", CurrentNode.ID.ToString))
+		  If CurrentNode Is Nil Then Return
+		  
+		  If indicationID > 0 Then
+		    CurrentNode.IndicationID = indicationID
+		    SuppressDirty = True
+		    segNodeKind.SelectedSegmentIndex = 1
+		    MirrorIndicationToPopups(indicationID)
+		    SuppressDirty = False
+		    SaveCurrentNodeImmediately
+		    UpdateIndicationLabels
+		    ApplyLeafModeUI
+		    RefreshFocusedRowStyle
+		    Return
+		  End If
+		  
+		  // Cancelled — only revert if no existing indication.
+		  If CurrentNode.IndicationID = 0 Then
+		    SuppressDirty = True
+		    segNodeKind.SelectedSegmentIndex = 0   // → Branch
+		    SuppressDirty = False
+		    ApplyLeafModeUI
+		    RefreshFocusedRowStyle
+		  End If
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
 		Private Function IndexForUrgency(u As String) As Integer
+		  // Matches the popUrgency row order set up in Opening.
 		  Select Case u
-		  Case "routine"
+		  Case "not_indicated"
 		    Return 0
-		  Case "soon"
+		  Case "can_be_considered"
 		    Return 1
-		  Case "urgent"
+		  Case "routine"
 		    Return 2
+		  Case "soon"
+		    Return 3
+		  Case "urgent"
+		    Return 4
 		  End Select
 		  Return -1
 		End Function
@@ -1392,6 +1336,38 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
+		Private Sub MirrorIndicationToPopups(indicationID As Integer)
+		  // The four verdict / urgency popups display the linked indication's
+		  // values read-only. For non-linked nodes (no indication) they're cleared.
+		  If indicationID = 0 Then
+		    popVerdictPrimary.SelectedRowIndex     = -1
+		    popVerdictSecondaryIP.SelectedRowIndex = -1
+		    popVerdictSecondaryOP.SelectedRowIndex = -1
+		    popUrgency.SelectedRowIndex            = -1
+		    ApplyAllVerdictRagIndicators
+		    Return
+		  End If
+		  Var ind As Indication = Indication.GetByID(Session.DB, indicationID)
+		  If ind Is Nil Then Return
+		  popVerdictPrimary.SelectedRowIndex     = IndexForVerdict(ind.PrimaryCare)
+		  popVerdictSecondaryIP.SelectedRowIndex = IndexForVerdict(ind.SecondaryInpatient)
+		  popVerdictSecondaryOP.SelectedRowIndex = IndexForVerdict(ind.SecondaryOutpatient)
+		  popUrgency.SelectedRowIndex            = IndexForUrgency(ind.Urgency)
+		  ApplyAllVerdictRagIndicators
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub OpenIndicationPicker()
+		  // Opens dlg_select_indication; HandleIndicationPicked handles both
+		  // "user picked" (id > 0) and "user cancelled" (id = 0) outcomes.
+		  Var dlg As New dlg_select_indication
+		  AddHandler dlg.IndicationPicked, AddressOf HandleIndicationPicked
+		  dlg.Show
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
 		Private Function ParentIDForLstParent() As Integer
 		  // The "parent" of lstParent's contents = breadcrumb tail, or 0 for roots.
 		  If PathIDs.Count = 0 Then Return 0
@@ -1409,36 +1385,23 @@ End
 		  txtSelectedNode.Text = n.OptionLabel
 		  txtRationale.Text = n.Rationale
 		  
-		  // Node kind: any verdict OR indication link → leaf; otherwise branch.
+		  // Branch vs Verdict leaf, determined solely by IndicationID.
 		  If n.IsTerminal Then
 		    segNodeKind.SelectedSegmentIndex = 1   // Verdict leaf
-		    If n.IndicationID > 0 Then
-		      segLeafKind.SelectedSegmentIndex = 0  // Linked
-		      SelectIndicationInCombo(n.IndicationID)
-		    Else
-		      segLeafKind.SelectedSegmentIndex = 1  // Custom
-		      cmbIndication.SelectedRowIndex = -1
-		    End If
+		    // Mirror the linked indication's verdicts into the (read-only) popups.
+		    MirrorIndicationToPopups(n.IndicationID)
 		  Else
-		    segNodeKind.SelectedSegmentIndex = 0    // Branch
-		    segLeafKind.SelectedSegmentIndex = 0
-		    cmbIndication.SelectedRowIndex = -1
+		    segNodeKind.SelectedSegmentIndex = 0   // Branch
+		    popVerdictPrimary.SelectedRowIndex = -1
+		    popVerdictSecondaryIP.SelectedRowIndex = -1
+		    popVerdictSecondaryOP.SelectedRowIndex = -1
+		    popUrgency.SelectedRowIndex = -1
+		    ApplyAllVerdictRagIndicators
 		  End If
 		  
-		  popVerdictPrimary.SelectedRowIndex     = IndexForVerdict(n.VerdictPrimary)
-		  popVerdictSecondaryIP.SelectedRowIndex = IndexForVerdict(n.VerdictSecondaryInpatient)
-		  popVerdictSecondaryOP.SelectedRowIndex = IndexForVerdict(n.VerdictSecondaryOutpatient)
-		  popUrgency.SelectedRowIndex            = IndexForUrgency(n.Urgency)
-		  
-		  System.DebugLog("PopulateDetail: applying RAG indicators")
-		  ApplyAllVerdictRagIndicators
-		  System.DebugLog("PopulateDetail: updating indication labels")
 		  UpdateIndicationLabels
-		  System.DebugLog("PopulateDetail: applying leaf-mode UI")
 		  ApplyLeafModeUI
 		  SuppressDirty = False
-		  // A new node only becomes "dirty" once the user actually edits a control.
-		  // Until then, navigating away discards it silently.
 		  IsDirty = False
 		  System.DebugLog("PopulateDetail: done for id=" + n.ID.ToString)
 		End Sub
@@ -1456,8 +1419,8 @@ End
 	#tag Method, Flags = &h21
 		Private Sub RefreshFocusedRowStyle()
 		  // Update the listbox row visual to reflect the current UI's intent for
-		  // terminal-vs-branch, BEFORE save — so toggling segNodeKind / segLeafKind
-		  // immediately re-styles the row in whichever listbox it lives in.
+		  // terminal-vs-branch, BEFORE save — so toggling segNodeKind immediately
+		  // re-styles the row in whichever listbox it lives in.
 		  If CurrentNode Is Nil Or CurrentNode.ID = 0 Then Return
 		  Var pendingTerminal As Boolean = (segNodeKind.SelectedSegmentIndex = 1)
 		  Var labelText As String = txtSelectedNode.Text
@@ -1487,26 +1450,38 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Function SelectedIndicationID() As Integer
-		  Var idx As Integer = cmbIndication.SelectedRowIndex
-		  If idx < 0 Or idx > cmbIndication.LastRowIndex Then Return 0
-		  Var tag As Variant = cmbIndication.RowTagAt(idx)
-		  If tag Is Nil Then Return 0
-		  Return tag.IntegerValue
-		End Function
+		Private Sub SaveCurrentNodeImmediately()
+		  // Atomic save — used for structural changes (toggle to Branch, indication
+		  // picked) that need to persist without waiting for navigation-away. Pulls
+		  // text fields through CollectDetailIntoNode so the on-screen label /
+		  // rationale aren't lost.
+		  If CurrentNode Is Nil Or CurrentNode.ID = 0 Then Return
+		  If Not Session.IsAuthenticated Then Return
+		  Var validationError As String = CollectDetailIntoNode
+		  If validationError <> "" Then
+		    MessageBox(validationError)
+		    Return
+		  End If
+		  Try
+		    If Not CurrentNode.SaveWithAudit(Session.DB, Session.CurrentUsername) Then
+		      MessageBox("Error saving node. See debug log.")
+		      Return
+		    End If
+		    LiveUpdateRowLabel(CurrentNode.ID, CurrentNode.OptionLabel)
+		    IsDirty = False
+		  Catch err As RuntimeException
+		    System.DebugLog("SaveCurrentNodeImmediately: " + Introspection.GetType(err).Name + " — " + err.Message)
+		  End Try
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub SelectIndicationInCombo(indicationID As Integer)
-		  For i As Integer = 0 To cmbIndication.LastRowIndex
-		    Var tag As Variant = cmbIndication.RowTagAt(i)
-		    If tag <> Nil And tag.IntegerValue = indicationID Then
-		      cmbIndication.SelectedRowIndex = i
-		      Return
-		    End If
-		  Next
-		  cmbIndication.SelectedRowIndex = -1
-		End Sub
+		Private Function SelectedIndicationID() As Integer
+		  // The "selected" indication is now read directly from CurrentNode —
+		  // there's no cmbIndication anymore; the link is the source of truth.
+		  If CurrentNode Is Nil Then Return 0
+		  Return CurrentNode.IndicationID
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
@@ -1553,7 +1528,7 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub UpdateIndicationLabels()
-		  // Mirror cmbIndication's current pick into the two read-only labels.
+		  // Mirror the linked indication into the two read-only labels.
 		  // For non-linked nodes (no indication picked) the labels are blanked.
 		  Var indID As Integer = SelectedIndicationID
 		  If indID > 0 Then
@@ -1621,6 +1596,24 @@ End
 
 #tag EndWindowCode
 
+#tag Events bcTreeNavigation
+	#tag Event
+		Sub Pressed(index As Integer)
+		  Try
+		    System.DebugLog("bcTreeNavigation.Pressed: index=" + index.ToString)
+		    If Not MaybeSaveCurrent Then Return
+		    // index 0 = "Decision tree" → roots; index N = drill back to that depth.
+		    PathIDs.ResizeTo(index - 1)
+		    ClearDetail
+		    ReloadView
+		    System.DebugLog("bcTreeNavigation.Pressed: done (index=" + index.ToString + ")")
+		  Catch err As RuntimeException
+		    System.DebugLog("bcTreeNavigation.Pressed: " + Introspection.GetType(err).Name + " — " + err.Message)
+		    MessageBox("Internal error navigating — see debug log.")
+		  End Try
+		End Sub
+	#tag EndEvent
+#tag EndEvents
 #tag Events txtSelectedNode
 	#tag Event
 		Sub TextChanged()
@@ -1636,11 +1629,9 @@ End
 #tag Events btnPickIndication
 	#tag Event
 		Sub Pressed()
-		  // Open the modal browse dialog for full filter + RAG-cell preview.
-		  // The dialog raises IndicationPicked when the user picks one.
-		  Var dlg As New dlg_select_indication
-		  AddHandler dlg.IndicationPicked, AddressOf HandleIndicationPicked
-		  dlg.Show
+		  // Browse — change the linked indication on an existing leaf. (For new
+		  // leaves, the picker auto-opens via segNodeKind.Pressed.)
+		  OpenIndicationPicker
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -1657,25 +1648,6 @@ End
 	#tag Event
 		Sub TextChanged()
 		  MarkDirty
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events cmbIndication
-	#tag Event
-		Sub Opening()
-		  For Each ind As Indication In Indication.GetAll(Session.DB)
-		    cmbIndication.AddRow(ind.Title)
-		    cmbIndication.RowTagAt(cmbIndication.LastAddedRowIndex) = ind.ID
-		  Next
-		End Sub
-	#tag EndEvent
-	#tag Event
-		Sub SelectionChanged(item As WebMenuItem)
-		  #Pragma Unused item
-		  MarkDirty
-		  UpdateIndicationLabels
-		  // Refresh ApplyLeafModeUI so btnViewIndication enables once an indication is picked.
-		  ApplyLeafModeUI
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -1823,24 +1795,6 @@ End
 		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events bcTreeNavigation
-	#tag Event
-		Sub Pressed(index As Integer)
-		  Try
-		    System.DebugLog("bcTreeNavigation.Pressed: index=" + index.ToString)
-		    If Not MaybeSaveCurrent Then Return
-		    // index 0 = "Decision tree" → roots; index N = drill back to that depth.
-		    PathIDs.ResizeTo(index - 1)
-		    ClearDetail
-		    ReloadView
-		    System.DebugLog("bcTreeNavigation.Pressed: done (index=" + index.ToString + ")")
-		  Catch err As RuntimeException
-		    System.DebugLog("bcTreeNavigation.Pressed: " + Introspection.GetType(err).Name + " — " + err.Message)
-		    MessageBox("Internal error navigating — see debug log.")
-		  End Try
-		End Sub
-	#tag EndEvent
-#tag EndEvents
 #tag Events btnDeleteSelected
 	#tag Event
 		Sub Pressed()
@@ -1878,42 +1832,24 @@ End
 	#tag Event
 		Sub Pressed(segmentIndex As Integer)
 		  #Pragma Unused segmentIndex
-		  MarkDirty
-		  // When toggling TO Verdict leaf, seed sensible defaults so the leaf
-		  // actually saves as a leaf. Without this, "Verdict leaf + Linked + no
-		  // indication picked" would save as all-NULL → IsTerminal=False on
-		  // reload → the leaf intent is lost. Defaults match the most common case
-		  // (Custom + Primary=Indicated). The user can override either before save.
+		  If CurrentNode Is Nil Then Return
+		  
 		  If segNodeKind.SelectedSegmentIndex = 1 Then
-		    If segLeafKind.SelectedSegmentIndex = 0 And SelectedIndicationID = 0 Then
-		      segLeafKind.SelectedSegmentIndex = 1   // → Custom
-		    End If
-		    If popVerdictPrimary.SelectedRowIndex < 0 _
-		      And popVerdictSecondaryIP.SelectedRowIndex < 0 _
-		      And popVerdictSecondaryOP.SelectedRowIndex < 0 Then
-		      popVerdictPrimary.SelectedRowIndex = 0   // → Indicated
-		      ApplyRagIndicator(popVerdictPrimary)
-		    End If
+		    // → Verdict leaf. If no indication yet, open the picker immediately;
+		    // HandleIndicationPicked will save on success or revert this toggle on
+		    // cancel. If we already have an indication (re-toggling), just refresh.
+		    ApplyLeafModeUI
+		    RefreshFocusedRowStyle
+		    If CurrentNode.IndicationID = 0 Then OpenIndicationPicker
+		  Else
+		    // → Branch. Immediately clear the indication link and save — atomic.
+		    CurrentNode.IndicationID = 0
+		    SaveCurrentNodeImmediately
+		    MirrorIndicationToPopups(0)
+		    UpdateIndicationLabels
+		    ApplyLeafModeUI
+		    RefreshFocusedRowStyle
 		  End If
-		  ApplyLeafModeUI
-		  RefreshFocusedRowStyle
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events segLeafKind
-	#tag Event
-		Sub Pressed(segmentIndex As Integer)
-		  #Pragma Unused segmentIndex
-		  MarkDirty
-		  // When switching TO Linked with no indication picked, the leaf would
-		  // save as all-NULL on the next navigation. Either the user picks an
-		  // indication (cmbIndication) OR we keep them in Custom. We can't pick
-		  // an indication for them, so leave segLeafKind alone here — the
-		  // ApplyLeafModeUI call below enables cmbIndication so they can pick.
-		  // If they navigate away without picking, the leaf reverts to Branch on
-		  // reload — that's a deliberate "I changed my mind" path.
-		  ApplyLeafModeUI
-		  RefreshFocusedRowStyle
 		End Sub
 	#tag EndEvent
 #tag EndEvents

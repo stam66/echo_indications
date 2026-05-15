@@ -62,10 +62,6 @@ Protected Class DecisionNode
 		  n.OptionLabel = rs.Column("option_label").StringValue
 		  n.Prompt = If(rs.Column("prompt").Value = Nil, "", rs.Column("prompt").StringValue)
 		  n.SortOrder = rs.Column("sort_order").IntegerValue
-		  n.VerdictPrimary = If(rs.Column("verdict_primary").Value = Nil, "", rs.Column("verdict_primary").StringValue)
-		  n.VerdictSecondaryInpatient = If(rs.Column("verdict_secondary_inpatient").Value = Nil, "", rs.Column("verdict_secondary_inpatient").StringValue)
-		  n.VerdictSecondaryOutpatient = If(rs.Column("verdict_secondary_outpatient").Value = Nil, "", rs.Column("verdict_secondary_outpatient").StringValue)
-		  n.Urgency = If(rs.Column("urgency").Value = Nil, "", rs.Column("urgency").StringValue)
 		  n.Rationale = If(rs.Column("rationale").Value = Nil, "", rs.Column("rationale").StringValue)
 		  n.IndicationID = If(rs.Column("indication_id").Value = Nil, 0, rs.Column("indication_id").IntegerValue)
 		  Return n
@@ -74,21 +70,9 @@ Protected Class DecisionNode
 
 	#tag Method, Flags = &h0
 		Function IsTerminal() As Boolean
-		  // A node is terminal if it carries any custom verdict (any of the three
-		  // settings) or is linked to an indication.
-		  Return VerdictPrimary <> "" _
-		    Or VerdictSecondaryInpatient <> "" _
-		    Or VerdictSecondaryOutpatient <> "" _
-		    Or IndicationID > 0
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function HasAnyCustomVerdict() As Boolean
-		  // True if at least one custom verdict is set (regardless of indication link).
-		  Return VerdictPrimary <> "" _
-		    Or VerdictSecondaryInpatient <> "" _
-		    Or VerdictSecondaryOutpatient <> ""
+		  // A node is terminal iff it links to an indication. Custom verdicts were
+		  // removed — every leaf must point at an existing Indication record.
+		  Return IndicationID > 0
 		End Function
 	#tag EndMethod
 
@@ -98,17 +82,14 @@ Protected Class DecisionNode
 		  Try
 		    If Me.ID = 0 Then
 		      Var sql As String = "INSERT INTO decision_nodes (parent_id, option_label, prompt, " + _
-		      "sort_order, verdict_primary, verdict_secondary_inpatient, verdict_secondary_outpatient, " + _
-		      "urgency, rationale, indication_id) " + _
-		      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+		      "sort_order, rationale, indication_id) VALUES (?, ?, ?, ?, ?, ?)"
 		      Var ps As MySQLPreparedStatement = db.Prepare(sql)
 		      BindNodeParams(ps, False)
 		      ps.ExecuteSQL
 		      Me.ID = db.LastInsertedRowID
 		    Else
 		      Var sql As String = "UPDATE decision_nodes SET parent_id=?, option_label=?, prompt=?, " + _
-		      "sort_order=?, verdict_primary=?, verdict_secondary_inpatient=?, " + _
-		      "verdict_secondary_outpatient=?, urgency=?, rationale=?, indication_id=? WHERE id=?"
+		      "sort_order=?, rationale=?, indication_id=? WHERE id=?"
 		      Var ps As MySQLPreparedStatement = db.Prepare(sql)
 		      BindNodeParams(ps, True)
 		      ps.ExecuteSQL
@@ -123,7 +104,7 @@ Protected Class DecisionNode
 
 	#tag Method, Flags = &h21
 		Private Sub BindNodeParams(ps As MySQLPreparedStatement, includeID As Boolean)
-		  // Binds the ten column params (and ID if updating). The MySQL driver
+		  // Binds the six column params (and ID if updating). The MySQL driver
 		  // requires BindType = MYSQL_TYPE_NULL whenever we Bind(n, Nil) — declaring
 		  // a regular type and binding Nil raises "Mismatched parameter and type".
 		  // We therefore interleave BindType and Bind per parameter.
@@ -154,53 +135,28 @@ Protected Class DecisionNode
 		  ps.BindType(3, MySQLPreparedStatement.MYSQL_TYPE_LONG)
 		  ps.Bind(3, Me.SortOrder)
 
-		  // 4: verdict_primary — ENUM, NULL when empty
-		  BindEnumOrNull(ps, 4, Me.VerdictPrimary)
-
-		  // 5: verdict_secondary_inpatient — ENUM, NULL when empty
-		  BindEnumOrNull(ps, 5, Me.VerdictSecondaryInpatient)
-
-		  // 6: verdict_secondary_outpatient — ENUM, NULL when empty
-		  BindEnumOrNull(ps, 6, Me.VerdictSecondaryOutpatient)
-
-		  // 7: urgency — ENUM, NULL when empty
-		  BindEnumOrNull(ps, 7, Me.Urgency)
-
-		  // 8: rationale — NULL when empty
+		  // 4: rationale — NULL when empty
 		  If Me.Rationale = "" Then
-		    ps.BindType(8, MySQLPreparedStatement.MYSQL_TYPE_NULL)
-		    ps.Bind(8, Nil)
+		    ps.BindType(4, MySQLPreparedStatement.MYSQL_TYPE_NULL)
+		    ps.Bind(4, Nil)
 		  Else
-		    ps.BindType(8, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		    ps.Bind(8, Me.Rationale)
+		    ps.BindType(4, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		    ps.Bind(4, Me.Rationale)
 		  End If
 
-		  // 9: indication_id — NULL when 0
+		  // 5: indication_id — NULL when 0
 		  If Me.IndicationID > 0 Then
-		    ps.BindType(9, MySQLPreparedStatement.MYSQL_TYPE_LONG)
-		    ps.Bind(9, Me.IndicationID)
+		    ps.BindType(5, MySQLPreparedStatement.MYSQL_TYPE_LONG)
+		    ps.Bind(5, Me.IndicationID)
 		  Else
-		    ps.BindType(9, MySQLPreparedStatement.MYSQL_TYPE_NULL)
-		    ps.Bind(9, Nil)
+		    ps.BindType(5, MySQLPreparedStatement.MYSQL_TYPE_NULL)
+		    ps.Bind(5, Nil)
 		  End If
 
-		  // 10: id — only for UPDATE
+		  // 6: id — only for UPDATE
 		  If includeID Then
-		    ps.BindType(10, MySQLPreparedStatement.MYSQL_TYPE_LONG)
-		    ps.Bind(10, Me.ID)
-		  End If
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
-		Private Shared Sub BindEnumOrNull(ps As MySQLPreparedStatement, idx As Integer, value As String)
-		  // ENUM columns reject empty string — bind NULL when value is empty.
-		  If value = "" Then
-		    ps.BindType(idx, MySQLPreparedStatement.MYSQL_TYPE_NULL)
-		    ps.Bind(idx, Nil)
-		  Else
-		    ps.BindType(idx, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		    ps.Bind(idx, value)
+		    ps.BindType(6, MySQLPreparedStatement.MYSQL_TYPE_LONG)
+		    ps.Bind(6, Me.ID)
 		  End If
 		End Sub
 	#tag EndMethod
@@ -274,16 +230,12 @@ Protected Class DecisionNode
 		Function GetFieldValues() As Dictionary
 		  // Snapshot for audit before/after diffing.
 		  Var data As New Dictionary
-		  data.Value("parent_id")                    = Me.ParentID.ToString
-		  data.Value("option_label")                 = Me.OptionLabel
-		  data.Value("prompt")                       = Me.Prompt
-		  data.Value("sort_order")                   = Me.SortOrder.ToString
-		  data.Value("verdict_primary")              = Me.VerdictPrimary
-		  data.Value("verdict_secondary_inpatient")  = Me.VerdictSecondaryInpatient
-		  data.Value("verdict_secondary_outpatient") = Me.VerdictSecondaryOutpatient
-		  data.Value("urgency")                      = Me.Urgency
-		  data.Value("rationale")                    = Me.Rationale
-		  data.Value("indication_id")                = Me.IndicationID.ToString
+		  data.Value("parent_id")     = Me.ParentID.ToString
+		  data.Value("option_label")  = Me.OptionLabel
+		  data.Value("prompt")        = Me.Prompt
+		  data.Value("sort_order")    = Me.SortOrder.ToString
+		  data.Value("rationale")     = Me.Rationale
+		  data.Value("indication_id") = Me.IndicationID.ToString
 		  Return data
 		End Function
 	#tag EndMethod
@@ -432,22 +384,6 @@ Protected Class DecisionNode
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		VerdictPrimary As String
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		VerdictSecondaryInpatient As String
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		VerdictSecondaryOutpatient As String
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		Urgency As String
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		Rationale As String
 	#tag EndProperty
 
@@ -535,38 +471,6 @@ Protected Class DecisionNode
 			Group="Behavior"
 			InitialValue=""
 			Type="Integer"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="VerdictPrimary"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="String"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="VerdictSecondaryInpatient"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="String"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="VerdictSecondaryOutpatient"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="String"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="Urgency"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="String"
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty

@@ -444,49 +444,45 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub ShowVerdict(n As DecisionNode)
-		  // rectVerdict is the RAG panel (Visible=False in IDE).
-		  // lblVerdict (bold, 24pt) and lblRationale (multi-line, default size)
-		  // are pre-positioned children — we just set their text and colour.
-		  //
-		  // The editor now stores three setting-specific verdicts; the viewer for
-		  // now picks Primary as the headline (parallel to clinician's "what's the
-		  // advice in primary care?"). Linked-indication leaves and a proper 3-RAG-
-		  // chip display are pending design work.
-		  Var primary As String = n.VerdictPrimary
-		  Var verdictWord As String
+		  // Every terminal node is now linked to an indication — custom verdicts
+		  // have been removed from the data model. Read the verdict from the
+		  // linked Indication.PrimaryCare and use it for the RAG colouring; the
+		  // heading text is the indication's title.
+		  Var primary As String = ""
+		  Var heading As String = n.OptionLabel
+		  Var urgency As String = ""
+		  If n.IndicationID > 0 Then
+		    Var ind As Indication = Indication.GetByID(Session.DB, n.IndicationID)
+		    If ind <> Nil Then
+		      primary = ind.PrimaryCare
+		      urgency = ind.Urgency
+		      heading = ind.Title
+		    End If
+		  End If
+
 		  Var bg As Color
 		  Var fg As Color = Color.RGB(255, 255, 255)
 		  Select Case primary
 		  Case "indicated"
-		    verdictWord = "Indicated"
 		    bg = Color.RGB(30, 120, 50)
 		  Case "not_indicated"
-		    verdictWord = "Not indicated"
 		    bg = Color.RGB(180, 40, 40)
 		  Case "can_be_considered"
-		    verdictWord = "May be considered"
 		    bg = Color.RGB(200, 130, 0)
 		  Else
-		    verdictWord = primary
 		    bg = Color.RGB(100, 100, 100)
 		  End Select
-		  
-		  Var headingText As String = verdictWord
-		  If n.Urgency <> "" Then headingText = headingText + " — " + n.Urgency
-		  
-		  // Paint the rectangle the RAG colour.
+
+		  Var headingText As String = heading
+		  If urgency <> "" Then headingText = headingText + " — " + urgency
+
+		  // Paint the rectangle the RAG colour and set text on the labels.
 		  rectVerdict.FillColor = bg
-		  
-		  // Heading + rationale text + white text colour for both.
 		  lblVerdict.Text = headingText
 		  lblVerdict.Style.ForegroundColor = fg
-		  
 		  lblRationale.Text = n.Rationale
 		  lblRationale.Style.ForegroundColor = fg
-		  
-		  // Hide the options view and show the verdict panel. Both child
-		  // labels need Visible=True (lblVerdict's IDE default is False so
-		  // it doesn't show at design-time when the rect is also hidden).
+
 		  lblCurrentPrompt.Visible = False
 		  lstOptions.Visible = False
 		  rectVerdict.Visible = True

@@ -266,9 +266,12 @@ End
 
 #tag WindowCode
 	#tag Event
-		Sub Shown()
+		Sub Opening()
 		  // Populate the context filter with "(All contexts)" + every active context.
 		  // Tag 0 = no filter; positive tag = context ID.
+		  // Using Opening (not Shown) so the listbox rows are fully wired by the
+		  // time the user can click — populating from Shown leaves the rows briefly
+		  // un-clickable on first open.
 		  popContext.RemoveAllRows
 		  popContext.AddRow("(All contexts)")
 		  popContext.RowTagAt(0) = 0
@@ -277,7 +280,7 @@ End
 		    popContext.RowTagAt(popContext.LastAddedRowIndex) = ctx.ID
 		  Next
 		  popContext.SelectedRowIndex = 0
-		  
+
 		  FilterContextID = 0
 		  SearchText = ""
 		  txtSearch.Text = ""
@@ -439,7 +442,10 @@ End
 #tag Events Button2
 	#tag Event
 		Sub Pressed()
-		  // "Close" — dismiss without picking.
+		  // "Close" — dismiss without picking. Raise IndicationPicked(0) so the
+		  // caller can distinguish "user cancelled" (id = 0) from "user picked X"
+		  // (id > 0) in a single event handler.
+		  RaiseEvent IndicationPicked(0)
 		  Self.Close
 		End Sub
 	#tag EndEvent

@@ -56,10 +56,11 @@ Protected Class Indication
 		      ind.SourceEACVI = rs.Column("source_eacvi").BooleanValue
 		      ind.SourceBSE = rs.Column("source_bse").BooleanValue
 		      ind.SourceConsensus = rs.Column("source_consensus").BooleanValue
-		      
+		      ind.Urgency = If(rs.Column("urgency").Value = Nil, "", rs.Column("urgency").StringValue)
+
 		      // Load contexts
 		      ind.LoadContexts db
-		      
+
 		      results.Add ind
 		      rs.MoveToNextRow
 		    Wend
@@ -95,6 +96,7 @@ Protected Class Indication
 		      ind.SourceEACVI = rs.Column("source_eacvi").BooleanValue
 		      ind.SourceBSE = rs.Column("source_bse").BooleanValue
 		      ind.SourceConsensus = rs.Column("source_consensus").BooleanValue
+		      ind.Urgency = If(rs.Column("urgency").Value = Nil, "", rs.Column("urgency").StringValue)
 		      ind.LoadContexts db
 		      Return ind
 		    End If
