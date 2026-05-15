@@ -1,11 +1,11 @@
 #tag WebPage
-Begin WebDialog dlg_ChangeRequest
+Begin WebDialog dlg_select_indication
    Compatibility   =   ""
    ControlCount    =   0
    ControlID       =   ""
    CSSClasses      =   ""
    Enabled         =   True
-   Height          =   428
+   Height          =   704
    Index           =   -2147483648
    Indicator       =   0
    LayoutDirection =   0
@@ -22,11 +22,56 @@ Begin WebDialog dlg_ChangeRequest
    TabIndex        =   0
    Top             =   0
    Visible         =   True
-   Width           =   600
+   Width           =   828
    _mDesignHeight  =   0
    _mDesignWidth   =   0
    _mPanelIndex    =   -1
-   Begin WebRectangle Rectangle1
+   Begin WebListBox lstIndications
+      AllowRowReordering=   False
+      ColumnCount     =   4
+      ColumnWidths    =   "*,75,75,75"
+      ControlID       =   ""
+      CSSClasses      =   ""
+      DefaultRowHeight=   49
+      Enabled         =   True
+      GridLineStyle   =   3
+      HasBorder       =   True
+      HasHeader       =   True
+      HeaderHeight    =   0
+      Height          =   504
+      HighlightSortedColumn=   True
+      Index           =   -2147483648
+      Indicator       =   0
+      InitialValue    =   "Indication	GP	IP	OP"
+      LastAddedRowIndex=   0
+      LastColumnIndex =   0
+      LastRowIndex    =   0
+      Left            =   20
+      LockBottom      =   True
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   True
+      LockTop         =   True
+      LockVertical    =   False
+      NoRowsMessage   =   "No indications found"
+      PanelIndex      =   0
+      ProcessingMessage=   ""
+      RowCount        =   0
+      RowSelectionType=   1
+      Scope           =   0
+      SearchCriteria  =   ""
+      SelectedRowColor=   &c006AB500
+      SelectedRowIndex=   0
+      TabIndex        =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   134
+      Visible         =   True
+      Width           =   788
+      _mPanelIndex    =   -1
+   End
+   Begin WebRectangle rectHeader
       BorderColor     =   &c000000FF
       BorderThickness =   0
       ControlCount    =   0
@@ -51,12 +96,12 @@ Begin WebDialog dlg_ChangeRequest
       LockVertical    =   False
       PanelIndex      =   0
       Scope           =   0
-      TabIndex        =   0
+      TabIndex        =   1
       TabStop         =   True
       Tooltip         =   ""
       Top             =   0
       Visible         =   True
-      Width           =   600
+      Width           =   828
       _mDesignHeight  =   0
       _mDesignWidth   =   0
       _mPanelIndex    =   -1
@@ -82,196 +127,26 @@ Begin WebDialog dlg_ChangeRequest
          LockVertical    =   False
          Multiline       =   False
          PanelIndex      =   0
-         Parent          =   "Rectangle1"
+         Parent          =   "rectHeader"
          Scope           =   0
-         TabIndex        =   1
+         TabIndex        =   2
          TabPanelIndex   =   -1
          TabStop         =   True
-         Text            =   "Request a change"
+         Text            =   "Select an indication"
          TextAlignment   =   0
          TextColor       =   &cFAFAFA00
          Tooltip         =   ""
          Top             =   12
          Underline       =   False
          Visible         =   True
-         Width           =   560
+         Width           =   277
          _mPanelIndex    =   -1
       End
    End
-   Begin WebTextArea txtIssue
-      AllowReturnKey  =   True
-      AllowSpellChecking=   True
-      Caption         =   ""
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      Height          =   128
-      Hint            =   ""
-      Index           =   -2147483648
-      Indicator       =   0
-      Left            =   20
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   False
-      LockRight       =   True
-      LockTop         =   True
-      LockVertical    =   False
-      Mandatory       =   "False"
-      MaximumCharactersAllowed=   0
-      PanelIndex      =   0
-      ReadOnly        =   False
-      Scope           =   2
-      TabIndex        =   2
-      TabStop         =   True
-      Text            =   ""
-      TextAlignment   =   0
-      Tooltip         =   ""
-      Top             =   111
-      Visible         =   True
-      Width           =   560
-      _mPanelIndex    =   -1
-   End
-   Begin WebTextField txtUsername
-      AllowAutoComplete=   False
-      AllowReturnKey  =   "True"
-      AllowSpellChecking=   False
-      Caption         =   ""
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      FieldType       =   0
-      Height          =   38
-      Hint            =   ""
-      Index           =   -2147483648
-      Indicator       =   0
-      Left            =   20
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   False
-      LockRight       =   True
-      LockTop         =   True
-      LockVertical    =   False
-      Mandatory       =   "False"
-      MaximumCharactersAllowed=   0
-      PanelIndex      =   0
-      ReadOnly        =   False
-      Scope           =   2
-      TabIndex        =   3
-      TabStop         =   True
-      Text            =   ""
-      TextAlignment   =   0
-      Tooltip         =   ""
-      Top             =   273
-      Visible         =   True
-      Width           =   560
-      _mPanelIndex    =   -1
-   End
-   Begin WebLabel lblIssue
-      Bold            =   True
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      FontName        =   ""
-      FontSize        =   14.0
-      Height          =   22
-      HTMLElement     =   0
-      Index           =   -2147483648
-      Indicator       =   0
-      Italic          =   False
-      Left            =   20
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   False
-      LockRight       =   True
-      LockTop         =   True
-      LockVertical    =   False
-      Multiline       =   False
-      PanelIndex      =   0
-      Scope           =   2
-      TabIndex        =   4
-      TabStop         =   True
-      Text            =   "Issue"
-      TextAlignment   =   0
-      TextColor       =   &c000000FF
-      Tooltip         =   ""
-      Top             =   81
-      Underline       =   False
-      Visible         =   True
-      Width           =   132
-      _mPanelIndex    =   -1
-   End
-   Begin WebLabel Label1
-      Bold            =   True
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      FontName        =   ""
-      FontSize        =   14.0
-      Height          =   22
-      HTMLElement     =   0
-      Index           =   3
-      Indicator       =   0
-      Italic          =   False
-      Left            =   20
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   False
-      LockRight       =   True
-      LockTop         =   True
-      LockVertical    =   False
-      Multiline       =   False
-      PanelIndex      =   0
-      Scope           =   2
-      TabIndex        =   5
-      TabStop         =   True
-      Text            =   "Requested by"
-      TextAlignment   =   0
-      TextColor       =   &c000000FF
-      Tooltip         =   ""
-      Top             =   247
-      Underline       =   False
-      Visible         =   True
-      Width           =   132
-      _mPanelIndex    =   -1
-   End
-   Begin WebButton btnCancel
-      AllowAutoDisable=   False
-      Cancel          =   True
-      Caption         =   "Cancel"
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Default         =   False
-      Enabled         =   True
-      Height          =   38
-      Index           =   -2147483648
-      Indicator       =   0
-      Left            =   311
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      LockVertical    =   False
-      Outlined        =   False
-      PanelIndex      =   0
-      Scope           =   2
-      TabIndex        =   6
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   370
-      Visible         =   True
-      Width           =   100
-      _mPanelIndex    =   -1
-   End
-   Begin WebButton btnSubmit
+   Begin WebButton Button1
       AllowAutoDisable=   False
       Cancel          =   False
-      Caption         =   "Submit request"
+      Caption         =   "Select indication"
       ControlID       =   ""
       CSSClasses      =   ""
       Default         =   True
@@ -279,101 +154,312 @@ Begin WebDialog dlg_ChangeRequest
       Height          =   38
       Index           =   -2147483648
       Indicator       =   1
-      Left            =   419
+      Left            =   637
+      LockBottom      =   True
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   False
+      LockVertical    =   False
+      Outlined        =   False
+      PanelIndex      =   0
+      Scope           =   0
+      TabIndex        =   3
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   646
+      Visible         =   True
+      Width           =   171
+      _mPanelIndex    =   -1
+   End
+   Begin WebButton Button2
+      AllowAutoDisable=   False
+      Cancel          =   True
+      Caption         =   "Close"
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Default         =   False
+      Enabled         =   True
+      Height          =   38
+      Index           =   -2147483648
+      Indicator       =   0
+      Left            =   529
+      LockBottom      =   True
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   False
+      LockVertical    =   False
+      Outlined        =   False
+      PanelIndex      =   0
+      Scope           =   0
+      TabIndex        =   4
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   646
+      Visible         =   True
+      Width           =   100
+      _mPanelIndex    =   -1
+   End
+   Begin WebSearchField txtSearch
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      Height          =   38
+      Hint            =   "e.g. dyspnoea, palpitations"
+      Index           =   -2147483648
+      Indicator       =   0
+      Left            =   20
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
       LockLeft        =   True
-      LockRight       =   False
+      LockRight       =   True
       LockTop         =   True
       LockVertical    =   False
-      Outlined        =   False
       PanelIndex      =   0
-      Scope           =   2
-      TabIndex        =   7
+      Scope           =   0
+      TabIndex        =   5
+      TabStop         =   True
+      Text            =   ""
+      Tooltip         =   ""
+      Top             =   79
+      Visible         =   True
+      Width           =   455
+      _mPanelIndex    =   -1
+   End
+   Begin WebPopupMenu popContext
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      Height          =   38
+      Index           =   -2147483648
+      Indicator       =   0
+      InitialValue    =   "All Contexts"
+      LastAddedRowIndex=   0
+      LastRowIndex    =   0
+      Left            =   561
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      LockVertical    =   False
+      PanelIndex      =   0
+      RowCount        =   0
+      Scope           =   0
+      SelectedRowIndex=   0
+      SelectedRowText =   ""
+      TabIndex        =   6
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   370
+      Top             =   79
       Visible         =   True
-      Width           =   161
+      Width           =   247
       _mPanelIndex    =   -1
    End
 End
 #tag EndWebPage
 
 #tag WindowCode
+	#tag Event
+		Sub Shown()
+		  // Populate the context filter with "(All contexts)" + every active context.
+		  // Tag 0 = no filter; positive tag = context ID.
+		  popContext.RemoveAllRows
+		  popContext.AddRow("(All contexts)")
+		  popContext.RowTagAt(0) = 0
+		  For Each ctx As Context In Context.GetAllActive(Session.DB)
+		    popContext.AddRow(ctx.Name)
+		    popContext.RowTagAt(popContext.LastAddedRowIndex) = ctx.ID
+		  Next
+		  popContext.SelectedRowIndex = 0
+		  
+		  FilterContextID = 0
+		  SearchText = ""
+		  txtSearch.Text = ""
+		  LoadIndications
+		End Sub
+	#tag EndEvent
+
+
 	#tag Method, Flags = &h21
-		Private Sub AutoClose()
-		  Self.Close
+		Private Sub AddIndicationRow(id As Integer, title As String, gp As String, ip As String, op As String)
+		  lstIndications.AddRow(title, "", "", "")
+		  Var rowIdx As Integer = lstIndications.LastAddedRowIndex
+		  lstIndications.RowTagAt(rowIdx) = id
+		  lstIndications.CellValueAt(rowIdx, 1) = AucRenderer(gp)
+		  lstIndications.CellValueAt(rowIdx, 2) = AucRenderer(ip)
+		  lstIndications.CellValueAt(rowIdx, 3) = AucRenderer(op)
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Function ButtonClicked() As WebButton
-		  
+		Private Function AucRenderer(value As String) As WebListBoxStyleRenderer
+		  // RAG glyph centred in the cell. Matches wp_indications' style so the
+		  // visual language is identical across pages.
+		  Var s As New WebStyle
+		  s.Bold = True
+		  s.FontSize = 26
+		  s.Value("text-align") = "center"
+		  Var label As String = ""
+		  Select Case value
+		  Case "indicated"
+		    label = "✔"
+		    s.ForegroundColor = Color.RGB(46, 204, 113)
+		  Case "not_indicated"
+		    label = "✕"
+		    s.ForegroundColor = Color.RGB(231, 76, 60)
+		  Case "can_be_considered"
+		    label = "?"
+		    s.ForegroundColor = Color.RGB(243, 156, 18)
+		  End Select
+		  Return New WebListBoxStyleRenderer(s, label)
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h21
+		Private Function CurrentSelectedID() As Integer
+		  If lstIndications.SelectedRowIndex < 0 Then Return 0
+		  Var tag As Variant = lstIndications.RowTagAt(lstIndications.SelectedRowIndex)
+		  If tag Is Nil Then Return 0
+		  Return tag.IntegerValue
+		End Function
+	#tag EndMethod
 
-	#tag Property, Flags = &h0
-		IndicationID As Integer
+	#tag Method, Flags = &h21
+		Private Sub LoadIndications()
+		  // Rebuilds lstIndications from the current FilterContextID + SearchText.
+		  // Single column query — RAG glyphs are rendered per-cell from the
+		  // primary_care / secondary_inpatient / secondary_outpatient columns.
+		  lstIndications.RemoveAllRows
+		  
+		  Try
+		    Var sql As String
+		    Var rs As RowSet
+		    
+		    If FilterContextID = 0 Then
+		      sql = "SELECT i.id, i.title, i.keywords, " + _
+		      "i.primary_care, i.secondary_inpatient, i.secondary_outpatient " + _
+		      "FROM indications i ORDER BY i.title"
+		      rs = Session.DB.SelectSQL(sql)
+		    Else
+		      sql = "SELECT i.id, i.title, i.keywords, " + _
+		      "i.primary_care, i.secondary_inpatient, i.secondary_outpatient " + _
+		      "FROM indications i " + _
+		      "INNER JOIN indication_contexts ic ON i.id = ic.indication_id " + _
+		      "WHERE ic.context_id = ? ORDER BY i.title"
+		      Var ps As MySQLPreparedStatement = Session.DB.Prepare(sql)
+		      ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_LONG)
+		      ps.Bind(0, FilterContextID)
+		      rs = ps.SelectSQL
+		    End If
+		    
+		    Var needle As String = SearchText.Lowercase
+		    While Not rs.AfterLastRow
+		      Var title As String = rs.Column("title").StringValue
+		      Var keywords As String = If(rs.Column("keywords").Value = Nil, "", rs.Column("keywords").StringValue)
+		      
+		      // Simple AND-of-comma-terms substring match against title+keywords.
+		      Var matches As Boolean = True
+		      If needle <> "" Then
+		        Var combined As String = title + " " + keywords
+		        Var hay As String = combined.Lowercase
+		        Var terms() As String = needle.Split(",")
+		        For Each rawTerm As String In terms
+		          Var term As String = rawTerm.Trim
+		          If term <> "" Then
+		            If hay.IndexOf(term) = -1 Then
+		              matches = False
+		              Exit For
+		            End If
+		          End If
+		        Next
+		      End If
+		      If matches Then
+		        Var id As Integer = rs.Column("id").IntegerValue
+		        Var gp As String = If(rs.Column("primary_care").Value = Nil, "", rs.Column("primary_care").StringValue)
+		        Var ip As String = If(rs.Column("secondary_inpatient").Value = Nil, "", rs.Column("secondary_inpatient").StringValue)
+		        Var op As String = If(rs.Column("secondary_outpatient").Value = Nil, "", rs.Column("secondary_outpatient").StringValue)
+		        AddIndicationRow(id, title, gp, ip, op)
+		      End If
+		      rs.MoveToNextRow
+		    Wend
+		  Catch err As DatabaseException
+		    System.DebugLog("dlg_select_indication.LoadIndications: " + err.Message)
+		  End Try
+		End Sub
+	#tag EndMethod
+
+
+	#tag Hook, Flags = &h0
+		Event IndicationPicked(indicationID As Integer)
+	#tag EndHook
+
+
+	#tag Property, Flags = &h21
+		Private FilterContextID As Integer = 0
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private SearchText As String = ""
 	#tag EndProperty
 
 
 #tag EndWindowCode
 
-#tag Events btnCancel
+#tag Events lstIndications
 	#tag Event
-		Sub Pressed()
-		  self.Close
+		Sub DoublePressed(row As Integer, column As Integer)
+		  #Pragma Unused column
+		  If row < 0 Or row > lstIndications.LastRowIndex Then Return
+		  Var id As Integer = lstIndications.RowTagAt(row).IntegerValue
+		  RaiseEvent IndicationPicked(id)
+		  Self.Close
 		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events btnSubmit
+#tag Events Button1
 	#tag Event
 		Sub Pressed()
-		  If txtIssue.Text.Trim = "" Then
-		    MessageBox("Please enter a change request")
+		  // "Select indication" — confirm the highlighted row and close.
+		  Var id As Integer = CurrentSelectedID
+		  If id = 0 Then
+		    MessageBox("Highlight an indication first, or double-click a row to pick it directly.")
 		    Return
 		  End If
-		  
-		  If txtUsername.Text.Trim = "" Then
-		    MessageBox("Please enter your name")
-		    Return
-		  End If
-		  
-		  Try
-		    Var sql As String = "INSERT INTO changes (changes_request, changes_requestor, changes_status) VALUES (?, ?, ?)"
-		    Var ps As MySQLPreparedStatement = Session.DB.Prepare(sql)
-		    
-		    ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		    ps.BindType(1, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		    ps.BindType(2, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		    
-		    ps.Bind(0, txtIssue.Text)
-		    ps.Bind(1, txtUsername.Text)
-		    ps.Bind(2, "New")
-		    
-		    ps.ExecuteSQL
-		    
-		    // In-button flash instead of a modal MessageBox — same pattern as
-		    // btnCopyLink. Disable the button to prevent double-submit, then
-		    // auto-close the dialog just after the flash settles.
-		    Me.Enabled = False
-		    Session.FlashCaption("Thanks — logged!", Me, 1500)
-		    
-		    // Update badge if on landing page
-		    If wp_LandingPage <> Nil Then
-		      wp_LandingPage.UpdateIssuesBadge
-		    End If
-		    
-		    Timer.CallLater(1700, AddressOf AutoClose)
-		    
-		  Catch err As DatabaseException
-		    MessageBox("Error submitting request: " + err.Message)
-		    System.DebugLog("SubmitChangeRequest Error: " + err.Message)
-		  End Try
-		  
+		  RaiseEvent IndicationPicked(id)
+		  Self.Close
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events Button2
+	#tag Event
+		Sub Pressed()
+		  // "Close" — dismiss without picking.
+		  Self.Close
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events txtSearch
+	#tag Event
+		Sub TextChanged()
+		  SearchText = txtSearch.Text.Trim
+		  LoadIndications
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events popContext
+	#tag Event
+		Sub SelectionChanged(item As WebMenuItem)
+		  #Pragma Unused item
+		  If popContext.SelectedRowIndex < 0 Then Return
+		  Var tag As Variant = popContext.RowTagAt(popContext.SelectedRowIndex)
+		  FilterContextID = If(tag Is Nil, 0, tag.IntegerValue)
+		  LoadIndications
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -619,13 +705,5 @@ End
 			"2 - TopToBottom"
 			"3 - BottomToTop"
 		#tag EndEnumValues
-	#tag EndViewProperty
-	#tag ViewProperty
-		Name="IndicationID"
-		Visible=false
-		Group="Behavior"
-		InitialValue=""
-		Type="Integer"
-		EditorType=""
 	#tag EndViewProperty
 #tag EndViewBehavior

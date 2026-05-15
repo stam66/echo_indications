@@ -47,6 +47,43 @@ Protected Module ControlExtension
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub SetSegmentBadge(Extends control As WebSegmentedButton, segmentIndex As Integer, caption As String, indicator As String = "danger", top As Integer = -10, right As Integer = -10)
+		  
+		  // Segments are 0-based in Xojo; :nth-of-type is 1-based.
+		  Var segNum As Integer = segmentIndex + 1
+		  Var selector As String = "#" + control.ControlID + " button:nth-of-type(" + segNum.ToString + ")"
+		  
+		  Var js() As String
+		  // Always start by clearing any existing badge on this segment.
+		  js.Add("$('" + selector + " .xojo-badge').remove();")
+		  
+		  // Empty caption = just remove, don't re-add. (Lets you clear a badge.)
+		  If caption = "" Then
+		    control.ExecuteJavaScript(String.FromArray(js))
+		    Return
+		  End If
+		  
+		  Var classes() As String = Array("xojo-badge", "d-flex", "p-2", _
+		  "border", "border-light", "bg-" + indicator)
+		  classes.Add(If(caption.Length < 2, "rounded-circle", "rounded-pill"))
+		  
+		  Var styles() As String = Array("height: 24px", "font-size: 10px", _
+		  "align-items: center", "color: white", "position: absolute", _
+		  "top: " + top.ToString + "px", "right: " + right.ToString + "px", _
+		  "z-index: 10")
+		  
+		  Var html As String = "<span class=""" + String.FromArray(classes) + _
+		  """ style=""" + String.FromArray(styles, ";") + """>" + caption + "</span>"
+		  
+		  // Segment must be the positioning context for the absolute badge.
+		  js.Add("$('" + selector + "').css('position', 'relative');")
+		  js.Add("$('" + selector + "').append(`" + html + "`);")
+		  control.ExecuteJavaScript(String.FromArray(js))
+		  
+		End Sub
+	#tag EndMethod
+
 
 	#tag ViewBehavior
 		#tag ViewProperty

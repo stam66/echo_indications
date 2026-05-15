@@ -34,6 +34,7 @@ Begin WebDialog dlg_AuditEntry
       FontName        =   ""
       FontSize        =   0.0
       Height          =   38
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   ""
       Italic          =   False
@@ -68,6 +69,7 @@ Begin WebDialog dlg_AuditEntry
       FontName        =   ""
       FontSize        =   0.0
       Height          =   38
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   ""
       Italic          =   False
@@ -102,6 +104,7 @@ Begin WebDialog dlg_AuditEntry
       FontName        =   ""
       FontSize        =   0.0
       Height          =   38
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   ""
       Italic          =   False
@@ -167,9 +170,10 @@ Begin WebDialog dlg_AuditEntry
          ControlID       =   ""
          CSSClasses      =   ""
          Enabled         =   True
-         FontName        =   ""
+         FontName        =   "Bricolage Grotesque"
          FontSize        =   22.0
          Height          =   38
+         HTMLElement     =   0
          Index           =   -2147483648
          Indicator       =   0
          Italic          =   False
@@ -237,6 +241,7 @@ Begin WebDialog dlg_AuditEntry
       FontName        =   ""
       FontSize        =   0.0
       Height          =   38
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   ""
       Italic          =   False
@@ -271,6 +276,7 @@ Begin WebDialog dlg_AuditEntry
       FontName        =   ""
       FontSize        =   0.0
       Height          =   38
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   ""
       Italic          =   False
@@ -305,6 +311,7 @@ Begin WebDialog dlg_AuditEntry
       FontName        =   ""
       FontSize        =   0.0
       Height          =   38
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   ""
       Italic          =   False
@@ -540,6 +547,7 @@ Begin WebDialog dlg_AuditEntry
       FontName        =   ""
       FontSize        =   0.0
       Height          =   38
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   ""
       Italic          =   False
@@ -608,6 +616,7 @@ Begin WebDialog dlg_AuditEntry
       FontName        =   ""
       FontSize        =   0.0
       Height          =   38
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   ""
       Italic          =   False

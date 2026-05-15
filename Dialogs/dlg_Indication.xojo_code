@@ -65,7 +65,7 @@ Begin WebDialog dlg_Indication
          ControlID       =   ""
          CSSClasses      =   ""
          Enabled         =   True
-         FontName        =   ""
+         FontName        =   "Bricolage Grotesque"
          FontSize        =   22.0
          Height          =   38
          HTMLElement     =   0
@@ -185,6 +185,7 @@ Begin WebDialog dlg_Indication
          Parent          =   "Rectangle2"
          Scope           =   2
          TabIndex        =   29
+         TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
          Top             =   12
@@ -1080,10 +1081,10 @@ End
 		  // Load all available contexts
 		  LoadAvailableContexts
 		  btnSave.Enabled = session.IsAuthenticated
-
+		  
 		  // Wire copy + flash JS once. Per-indication ID is stamped after load.
 		  CopyStringToClipboardHelper.SetupDeepLinkButton(btnCopyLink)
-
+		  
 		  Var rs As RowSet
 		  If IndicationID = 0 Then
 		    ResetUI
@@ -1144,19 +1145,23 @@ End
 		        popUrgency.SelectRowWithText("Urgent")
 		      End Select
 		      
+		      UpdateAucIndicator(popPrimaryCare)
+		      UpdateAucIndicator(popSecondaryIP)
+		      UpdateAucIndicator(popSecondaryOP)
+		      
 		      // Load and check selected contexts
 		      LoadSelectedContexts
-
+		      
 		      If rs.Column("updated_at").Value <> Nil Then
 		        Var dt As DateTime = rs.Column("updated_at").DateTimeValue
 		        lblUpdatedAt.Text = "Last reviewed: " + dt.ToString(Locale.Current, DateTime.FormatStyles.Medium, DateTime.FormatStyles.None)
 		      Else
 		        lblUpdatedAt.Text = ""
 		      End If
-
+		      
 		      CopyStringToClipboardHelper.SetDeepLinkID(btnCopyLink, IndicationID)
 		      btnCopyLink.Enabled = True
-
+		      
 		      MarkAsClean()
 		    End If
 		  End If
@@ -1305,19 +1310,23 @@ End
 		      popUrgency.SelectRowWithText("Urgent")
 		    End Select
 		    
+		    UpdateAucIndicator(popPrimaryCare)
+		    UpdateAucIndicator(popSecondaryIP)
+		    UpdateAucIndicator(popSecondaryOP)
+		    
 		    // Load and check selected contexts
 		    LoadSelectedContexts
-
+		    
 		    If rs.Column("updated_at").Value <> Nil Then
 		      Var dt As DateTime = rs.Column("updated_at").DateTimeValue
 		      lblUpdatedAt.Text = "Last reviewed: " + dt.ToString(Locale.Current, DateTime.FormatStyles.Medium, DateTime.FormatStyles.None)
 		    Else
 		      lblUpdatedAt.Text = ""
 		    End If
-
+		    
 		    CopyStringToClipboardHelper.SetDeepLinkID(btnCopyLink, IndicationID)
 		    btnCopyLink.Enabled = True
-
+		    
 		    // Mark as clean after loading
 		    MarkAsClean()
 		  End If
@@ -1491,16 +1500,19 @@ End
 		  popPrimaryCare.SelectedRowIndex = -1
 		  popSecondaryIP.SelectedRowIndex = -1
 		  popSecondaryOP.SelectedRowIndex = -1
+		  popPrimaryCare.Indicator = WebUIControl.Indicators.Default
+		  popSecondaryIP.Indicator = WebUIControl.Indicators.Default
+		  popSecondaryOP.Indicator = WebUIControl.Indicators.Default
 		  popUrgency.SelectedRowIndex = -1
 		  // Uncheck all contexts
 		  For i As Integer = 0 To lstContexts.LastRowIndex
 		    lstContexts.CellCheckBoxValueAt(i, 0) = False
 		  Next
-
+		  
 		  lblUpdatedAt.Text = ""
 		  CopyStringToClipboardHelper.SetDeepLinkID(btnCopyLink, 0)
 		  btnCopyLink.Enabled = False
-
+		  
 		  MarkAsClean()
 		End Sub
 	#tag EndMethod
@@ -1614,6 +1626,25 @@ End
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h21
+		Private Sub UpdateAucIndicator(pop As WebPopupMenu)
+		  // Tint the popup the same RAG colours as the list cells:
+		  //   Indicated         → Success (green)
+		  //   Not indicated     → Danger  (red)
+		  //   May be considered → Warning (amber)
+		  Select Case pop.SelectedRowText
+		  Case "Indicated"
+		    pop.Indicator = WebUIControl.Indicators.Success
+		  Case "Not indicated"
+		    pop.Indicator = WebUIControl.Indicators.Danger
+		  Case "May be considered"
+		    pop.Indicator = WebUIControl.Indicators.Warning
+		  Else
+		    pop.Indicator = WebUIControl.Indicators.Default
+		  End Select
+		End Sub
+	#tag EndMethod
+
 
 	#tag Hook, Flags = &h0
 		Event DialogClosed(lastViewedIndicationID As Integer)
@@ -1677,7 +1708,8 @@ End
 #tag Events popSecondaryOP
 	#tag Event
 		Sub SelectionChanged(item As WebMenuItem)
-		  #Pragma unused item  
+		  #Pragma unused item
+		  UpdateAucIndicator(popSecondaryOP)
 		  MarkAsChanged()
 		End Sub
 	#tag EndEvent
@@ -1685,7 +1717,8 @@ End
 #tag Events popPrimaryCare
 	#tag Event
 		Sub SelectionChanged(item As WebMenuItem)
-		  #Pragma unused item  
+		  #Pragma unused item
+		  UpdateAucIndicator(popPrimaryCare)
 		  MarkAsChanged()
 		End Sub
 	#tag EndEvent
@@ -1693,7 +1726,8 @@ End
 #tag Events popSecondaryIP
 	#tag Event
 		Sub SelectionChanged(item As WebMenuItem)
-		  #Pragma unused item  
+		  #Pragma unused item
+		  UpdateAucIndicator(popSecondaryIP)
 		  MarkAsChanged()
 		End Sub
 	#tag EndEvent

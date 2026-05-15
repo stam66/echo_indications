@@ -18,7 +18,7 @@ Begin WebDialog dlg_Reset
    LockTop         =   False
    LockVertical    =   False
    PanelIndex      =   0
-   Position        =   0
+   Position        =   1
    TabIndex        =   0
    Top             =   0
    Visible         =   True
@@ -34,6 +34,7 @@ Begin WebDialog dlg_Reset
       FontName        =   ""
       FontSize        =   0.0
       Height          =   38
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   0
       Italic          =   False
@@ -162,6 +163,7 @@ Begin WebDialog dlg_Reset
       FontName        =   ""
       FontSize        =   14.0
       Height          =   129
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   0
       Italic          =   False
@@ -227,9 +229,10 @@ Begin WebDialog dlg_Reset
          ControlID       =   ""
          CSSClasses      =   ""
          Enabled         =   True
-         FontName        =   ""
+         FontName        =   "Bricolage Grotesque"
          FontSize        =   24.0
          Height          =   38
+         HTMLElement     =   0
          Index           =   -2147483648
          Indicator       =   0
          Italic          =   False
@@ -279,14 +282,14 @@ End
 		  while not rs.AfterLastRow
 		    if rs.Column("email").StringValue = email then
 		      var tempPass as string = app.RandomString(8)
-
+		      
 		      // Generate salt and hash with PBKDF2
 		      Dim salt As String = app.GenerateRandomSalt(32)
 		      Dim passwordData As New MemoryBlock(tempPass.LenB)
 		      passwordData.StringValue(0, tempPass.LenB) = tempPass
 		      Dim hash As MemoryBlock = Crypto.PBKDF2(salt, passwordData, 10000, 32, Crypto.HashAlgorithms.SHA2_256)
 		      Dim hashHex As String = app.EncodeHex(hash)
-
+		      
 		      rs.EditRow
 		      rs.Column("password_hash").StringValue = hashHex
 		      rs.Column("password_salt").StringValue = salt

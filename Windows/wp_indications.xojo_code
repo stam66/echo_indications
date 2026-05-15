@@ -405,6 +405,12 @@ End
 		  // per-row ID is stamped in SelectionChanged.
 		  CopyStringToClipboardHelper.SetupDeepLinkButton(btnCopyLink)
 
+		  // Apply incoming search term if we arrived from the landing page.
+		  If InitialSearchText.Trim <> "" Then
+		    txtSearch.Text = InitialSearchText
+		    InitialSearchText = ""
+		  End If
+
 		  LoadContexts
 		  LoadIndications
 		  
@@ -795,6 +801,10 @@ End
 
 	#tag Property, Flags = &h0
 		DeepLinkID As Integer = 0
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		InitialSearchText As String = ""
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

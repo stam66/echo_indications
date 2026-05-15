@@ -132,7 +132,7 @@ Begin WebContainer wc_WebPageHeader
       Height          =   38
       Index           =   -2147483648
       Indicator       =   8
-      Left            =   537
+      Left            =   542
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -161,6 +161,7 @@ Begin WebContainer wc_WebPageHeader
       FontName        =   ""
       FontSize        =   24.0
       Height          =   39
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   0
       Italic          =   False
@@ -197,7 +198,7 @@ Begin WebContainer wc_WebPageHeader
       Index           =   -2147483648
       Indicator       =   8
       LastSegmentIndex=   0
-      Left            =   251
+      Left            =   211
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -217,7 +218,7 @@ Begin WebContainer wc_WebPageHeader
       Tooltip         =   ""
       Top             =   17
       Visible         =   True
-      Width           =   298
+      Width           =   343
       _mPanelIndex    =   -1
    End
 End
@@ -327,18 +328,20 @@ End
 #tag Events segAdminButtons
 	#tag Event
 		Sub Pressed(segmentIndex As Integer)
-		  var wp as new webpage
-		  
-		  select case segmentIndex
-		  case 0 // Users
-		    wp = new wp_users
-		  case 1 // Settings
-		    wp = new wp_settings
-		  case 2 // Audit
-		    wp = new wp_audit
-		  end Select
-		  
-		  session.NavigationManager.NavigateToPage(wp)
+		  // Segment order matches the Segments string:
+		  //   0 = Users, 1 = Settings, 2 = Audit
+		  // Changelog opens a dialog rather than navigating to a page.
+		  Select Case segmentIndex
+		  Case 0 // Users
+		    Var wp As New wp_users
+		    Session.NavigationManager.NavigateToPage(wp)
+		  Case 1 // Settings
+		    Var wp As New wp_settings
+		    Session.NavigationManager.NavigateToPage(wp)
+		  Case 2 // Audit
+		    Var wp As New wp_audit
+		    Session.NavigationManager.NavigateToPage(wp)
+		  End Select
 		End Sub
 	#tag EndEvent
 #tag EndEvents

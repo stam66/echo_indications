@@ -37,6 +37,39 @@ Inherits WebApplication
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function EncodeHex(mb as MemoryBlock) As String
+		  // Convert MemoryBlock to hexadecimal string
+		  Var hexChars As String = "0123456789abcdef"
+		  Var result As String = ""
+		  
+		  For i As Integer = 0 To mb.Size - 1
+		    Var b As UInt8 = mb.UInt8Value(i)
+		    Var highNibble As Integer = b \ 16
+		    Var lowNibble As Integer = b Mod 16
+		    result = result + hexChars.Middle(highNibble, 1) + hexChars.Middle(lowNibble, 1)
+		  Next
+		  
+		  Return result
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GenerateRandomSalt(length as Integer) As String
+		  // Generate random salt for password hashing (alphanumeric)
+		  // Compatible with API: 32 alphanumeric characters
+		  Var chars As String = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+		  Var salt As String = ""
+		  
+		  For i As Integer = 1 To length
+		    Var randomIndex As Integer = System.Random.InRange(0, chars.Length - 1)
+		    salt = salt + chars.Middle(randomIndex, 1)
+		  Next
+		  
+		  Return salt
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Shared Function GetContrastingTextColor(backgroundColor As Color) As Color
 		  // Get black or white text color based on background brightness
 		  // Threshold of 128 is midpoint - below is dark, above is light
@@ -200,39 +233,6 @@ Inherits WebApplication
 		  ps.Bind(0, password)
 		  var rs as RowSet = ps.SelectSQL
 		  return rs.Column("password_hash").StringValue
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function GenerateRandomSalt(length as Integer) As String
-		  // Generate random salt for password hashing (alphanumeric)
-		  // Compatible with API: 32 alphanumeric characters
-		  Var chars As String = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-		  Var salt As String = ""
-
-		  For i As Integer = 1 To length
-		    Var randomIndex As Integer = System.Random.InRange(0, chars.Length - 1)
-		    salt = salt + chars.Middle(randomIndex, 1)
-		  Next
-
-		  Return salt
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function EncodeHex(mb as MemoryBlock) As String
-		  // Convert MemoryBlock to hexadecimal string
-		  Var hexChars As String = "0123456789abcdef"
-		  Var result As String = ""
-
-		  For i As Integer = 0 To mb.Size - 1
-		    Var b As UInt8 = mb.UInt8Value(i)
-		    Var highNibble As Integer = b \ 16
-		    Var lowNibble As Integer = b Mod 16
-		    result = result + hexChars.Middle(highNibble, 1) + hexChars.Middle(lowNibble, 1)
-		  Next
-
-		  Return result
 		End Function
 	#tag EndMethod
 
@@ -416,21 +416,21 @@ Inherits WebApplication
 		  
 		  ' Create URLConnection for synchronous HTTP request
 		  Var socket As New URLConnection
-
+		  
 		  ' Build Authorization header manually (Username/Password properties don't exist in Xojo 2025 R3)
 		  Var credentials As String = apiKey + ":" + apiSecret
 		  Var credentialsEncoded As String = EncodeBase64(credentials, 0)
 		  credentialsEncoded = credentialsEncoded.ReplaceAll(EndOfLine, "").ReplaceAll(Chr(13), "").ReplaceAll(Chr(10), "")
 		  socket.RequestHeader("Authorization") = "Basic " + credentialsEncoded
-
+		  
 		  ' Set request body (SetRequestContent sets Content-Type automatically)
 		  socket.SetRequestContent(json, "application/json")
-
+		  
 		  ' Send POST request to MailJet API (30 second timeout)
 		  ' Note: If you have a US-based account, change to: https://api.us.mailjet.com/v3.1/send
 		  Try
 		    Var response As String = socket.SendSync("POST", "https://api.mailjet.com/v3.1/send", 30)
-
+		    
 		    ' Check response status
 		    If socket.HTTPStatusCode = 200 Then
 		      #If TargetWeb Then
@@ -469,7 +469,7 @@ Inherits WebApplication
 		  var db as MySQLCommunityServer, sql as string
 		  db = session.db
 		  sql = "insert into changes  (changeRequest, cUser, cStatus) values (?, ?, 'New')"
-
+		  
 		  try
 		    db.ExecuteSQL(sql, changeRequest, cUser)
 		  catch e as DatabaseException
@@ -484,22 +484,22 @@ Inherits WebApplication
 		  ' Replace these with your actual MailJet API credentials
 		  Var apiKey As String = "***REMOVED***"
 		  Var apiSecret As String = "***REMOVED***"
-
+		  
 		  #If TargetWeb Then
 		    If webSession <> Nil Then
 		      webSession.ExecuteJavaScript("console.log('Testing MailJet API authentication...');")
 		    End If
 		  #EndIf
-
+		  
 		  ' Create URLConnection for synchronous HTTP request
 		  Var socket As New URLConnection
-
+		  
 		  ' Build Authorization header manually (Username/Password properties don't exist in Xojo 2025 R3)
 		  Var credentials As String = apiKey + ":" + apiSecret
 		  Var credentialsEncoded As String = EncodeBase64(credentials, 0)
 		  credentialsEncoded = credentialsEncoded.ReplaceAll(EndOfLine, "").ReplaceAll(Chr(13), "").ReplaceAll(Chr(10), "")
 		  socket.RequestHeader("Authorization") = "Basic " + credentialsEncoded
-
+		  
 		  ' Debug: Log what we're sending
 		  #If TargetWeb Then
 		    If webSession <> Nil Then
@@ -508,12 +508,12 @@ Inherits WebApplication
 		      webSession.ExecuteJavaScript("console.log('=========================');")
 		    End If
 		  #EndIf
-
+		  
 		  ' Send GET request to MailJet API stats endpoint (10 second timeout)
 		  Try
 		    Var url As String = "https://api.mailjet.com/v3/REST/statcounters?CounterSource=APIKey&CounterTiming=Message&CounterResolution=Lifetime"
 		    Var response As String = socket.SendSync("GET", url, 10)
-
+		    
 		    ' Check response status
 		    #If TargetWeb Then
 		      If webSession <> Nil Then
@@ -521,13 +521,13 @@ Inherits WebApplication
 		        webSession.ExecuteJavaScript("console.log('Response: " + response.ReplaceAll("'", "\\'").ReplaceAll("""", "\""").ReplaceAll(EndOfLine, " ") + "');")
 		      End If
 		    #EndIf
-
+		    
 		    If socket.HTTPStatusCode = 200 Then
 		      MessageBox("MailJet API Test Success!" + EndOfLine + "HTTP Status: 200" + EndOfLine + "Response: " + response)
 		    Else
 		      MessageBox("MailJet API Test Failed" + EndOfLine + "HTTP Status: " + socket.HTTPStatusCode.ToString + EndOfLine + "Response: " + response)
 		    End If
-
+		    
 		  Catch e As RuntimeException
 		    #If TargetWeb Then
 		      If webSession <> Nil Then
@@ -536,7 +536,7 @@ Inherits WebApplication
 		    #EndIf
 		    MessageBox("Error testing MailJet API: " + e.Message)
 		  End Try
-
+		  
 		End Sub
 	#tag EndMethod
 

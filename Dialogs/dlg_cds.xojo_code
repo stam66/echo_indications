@@ -1,11 +1,11 @@
 #tag WebPage
-Begin WebDialog dlg_Login
+Begin WebDialog dlg_cds
    Compatibility   =   ""
    ControlCount    =   0
    ControlID       =   ""
    CSSClasses      =   ""
    Enabled         =   True
-   Height          =   422
+   Height          =   613
    Index           =   -2147483648
    Indicator       =   0
    LayoutDirection =   0
@@ -22,23 +22,21 @@ Begin WebDialog dlg_Login
    TabIndex        =   0
    Top             =   0
    Visible         =   True
-   Width           =   558
+   Width           =   712
    _mDesignHeight  =   0
    _mDesignWidth   =   0
    _mPanelIndex    =   -1
-   Begin WebLabel Label1
-      Bold            =   False
+   Begin WebBreadcrumb breadcrumb_cds
       ControlID       =   ""
       CSSClasses      =   ""
       Enabled         =   True
-      FontName        =   ""
-      FontSize        =   0.0
-      Height          =   38
-      HTMLElement     =   0
+      Height          =   48
       Index           =   -2147483648
-      Indicator       =   0
-      Italic          =   False
-      Left            =   77
+      Indicator       =   ""
+      InitialValue    =   "One/Two/Three"
+      LastAddedIndex  =   0
+      LastRowIndex    =   0
+      Left            =   0
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -46,196 +44,103 @@ Begin WebDialog dlg_Login
       LockRight       =   False
       LockTop         =   True
       LockVertical    =   False
-      Multiline       =   False
       PanelIndex      =   0
-      Scope           =   0
-      TabIndex        =   0
-      TabStop         =   True
-      Text            =   "Username"
-      TextAlignment   =   0
-      TextColor       =   &c000000FF
-      Tooltip         =   ""
-      Top             =   94
-      Underline       =   False
-      Visible         =   True
-      Width           =   100
-      _mPanelIndex    =   -1
-   End
-   Begin WebLabel Label2
-      Bold            =   False
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      FontName        =   ""
-      FontSize        =   0.0
-      Height          =   38
-      HTMLElement     =   0
-      Index           =   -2147483648
-      Indicator       =   0
-      Italic          =   False
-      Left            =   77
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      LockVertical    =   False
-      Multiline       =   False
-      PanelIndex      =   0
-      Scope           =   0
+      RowCount        =   0
+      Scope           =   2
       TabIndex        =   1
       TabStop         =   True
-      Text            =   "Password"
+      Tooltip         =   ""
+      Top             =   70
+      Visible         =   True
+      Width           =   712
+      _mPanelIndex    =   -1
+   End
+   Begin WebLabel lblCurrentPrompt
+      Bold            =   False
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      FontName        =   ""
+      FontSize        =   0.0
+      Height          =   38
+      HTMLElement     =   0
+      Index           =   -2147483648
+      Indicator       =   ""
+      Italic          =   False
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      Multiline       =   False
+      PanelIndex      =   0
+      Scope           =   2
+      TabIndex        =   2
+      TabStop         =   True
+      Text            =   "Prompt text"
       TextAlignment   =   0
       TextColor       =   &c000000FF
       Tooltip         =   ""
-      Top             =   191
+      Top             =   142
       Underline       =   False
       Visible         =   True
-      Width           =   100
+      Width           =   672
       _mPanelIndex    =   -1
    End
-   Begin WebTextField txtUsername
-      AllowAutoComplete=   False
-      AllowSpellChecking=   False
-      Caption         =   ""
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      FieldType       =   0
-      Height          =   38
-      Hint            =   ""
-      Index           =   -2147483648
-      Indicator       =   0
-      Left            =   77
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      LockVertical    =   False
-      MaximumCharactersAllowed=   0
-      PanelIndex      =   0
-      ReadOnly        =   False
-      Scope           =   0
-      TabIndex        =   2
-      TabStop         =   True
-      Text            =   ""
-      TextAlignment   =   0
-      Tooltip         =   ""
-      Top             =   127
-      Visible         =   True
-      Width           =   409
-      _mPanelIndex    =   -1
-   End
-   Begin WebTextField txtPassword
-      AllowAutoComplete=   False
-      AllowSpellChecking=   False
-      Caption         =   ""
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      FieldType       =   1
-      Height          =   38
-      Hint            =   ""
-      Index           =   -2147483648
-      Indicator       =   0
-      Left            =   77
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      LockVertical    =   False
-      MaximumCharactersAllowed=   0
-      PanelIndex      =   0
-      ReadOnly        =   False
-      Scope           =   0
-      TabIndex        =   3
-      TabStop         =   True
-      Text            =   ""
-      TextAlignment   =   0
-      Tooltip         =   ""
-      Top             =   224
-      Visible         =   True
-      Width           =   409
-      _mPanelIndex    =   -1
-   End
-   Begin WebButton bLogin
+   Begin WebButton btnClose
       AllowAutoDisable=   False
       Cancel          =   False
-      Caption         =   "Log in"
+      Caption         =   "Close"
       ControlID       =   ""
       CSSClasses      =   ""
-      Default         =   True
+      Default         =   False
       Enabled         =   True
       Height          =   38
       Index           =   -2147483648
-      Indicator       =   1
-      Left            =   438
-      LockBottom      =   True
+      Indicator       =   0
+      Left            =   592
+      LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
-      LockLeft        =   False
-      LockRight       =   True
-      LockTop         =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
       LockVertical    =   False
       Outlined        =   False
       PanelIndex      =   0
-      Scope           =   0
+      Scope           =   2
       TabIndex        =   4
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   364
+      Top             =   555
       Visible         =   True
       Width           =   100
       _mPanelIndex    =   -1
    End
-   Begin WebButton bCancelLogin
-      AllowAutoDisable=   False
-      Cancel          =   True
-      Caption         =   "Cancel"
+   Begin WebListBox lstOptions
+      AllowRowReordering=   False
+      ColumnCount     =   1
+      ColumnWidths    =   ""
       ControlID       =   ""
       CSSClasses      =   ""
-      Default         =   False
+      DefaultRowHeight=   49
       Enabled         =   True
-      Height          =   38
+      GridLineStyle   =   3
+      HasBorder       =   True
+      HasHeader       =   False
+      HeaderHeight    =   0
+      Height          =   359
+      HighlightSortedColumn=   True
       Index           =   -2147483648
       Indicator       =   0
-      Left            =   319
-      LockBottom      =   True
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   False
-      LockRight       =   True
-      LockTop         =   False
-      LockVertical    =   False
-      Outlined        =   False
-      PanelIndex      =   0
-      Scope           =   0
-      TabIndex        =   5
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   364
-      Visible         =   True
-      Width           =   100
-      _mPanelIndex    =   -1
-   End
-   Begin WebButton btnReset
-      AllowAutoDisable=   False
-      Cancel          =   False
-      Caption         =   "Reset"
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Default         =   False
-      Enabled         =   True
-      Height          =   29
-      Index           =   -2147483648
-      Indicator       =   9
-      Left            =   425
+      InitialValue    =   ""
+      LastAddedRowIndex=   0
+      LastColumnIndex =   0
+      LastRowIndex    =   0
+      Left            =   20
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -243,18 +148,24 @@ Begin WebDialog dlg_Login
       LockRight       =   False
       LockTop         =   True
       LockVertical    =   False
-      Outlined        =   False
+      NoRowsMessage   =   ""
       PanelIndex      =   0
-      Scope           =   0
-      TabIndex        =   6
+      ProcessingMessage=   ""
+      RowCount        =   0
+      RowSelectionType=   1
+      Scope           =   2
+      SearchCriteria  =   ""
+      SelectedRowColor=   &c0d6efd
+      SelectedRowIndex=   0
+      TabIndex        =   5
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   263
+      Top             =   188
       Visible         =   True
-      Width           =   73
+      Width           =   672
       _mPanelIndex    =   -1
    End
-   Begin WebRectangle Rectangle1
+   Begin WebRectangle Rectangle2
       BorderColor     =   &c000000FF
       BorderThickness =   0
       ControlCount    =   0
@@ -279,12 +190,12 @@ Begin WebDialog dlg_Login
       LockVertical    =   False
       PanelIndex      =   0
       Scope           =   0
-      TabIndex        =   7
+      TabIndex        =   6
       TabStop         =   True
       Tooltip         =   ""
       Top             =   0
       Visible         =   True
-      Width           =   558
+      Width           =   712
       _mDesignHeight  =   0
       _mDesignWidth   =   0
       _mPanelIndex    =   -1
@@ -310,33 +221,38 @@ Begin WebDialog dlg_Login
          LockVertical    =   False
          Multiline       =   False
          PanelIndex      =   0
-         Parent          =   "Rectangle1"
+         Parent          =   "Rectangle2"
          Scope           =   0
-         TabIndex        =   8
+         TabIndex        =   7
          TabPanelIndex   =   -1
          TabStop         =   True
-         Text            =   "Log in to edit data"
+         Text            =   "Clinical Decision Support"
          TextAlignment   =   0
          TextColor       =   &cFAFAFA00
          Tooltip         =   ""
          Top             =   12
          Underline       =   False
          Visible         =   True
-         Width           =   518
+         Width           =   666
          _mPanelIndex    =   -1
       End
    End
-   Begin WebProgressBar pgbLogin
-      AllowAnimation  =   True
-      Caption         =   ""
+   Begin WebRectangle rectVerdict
+      BorderColor     =   &c000000FF
+      BorderThickness =   1
+      ControlCount    =   0
       ControlID       =   ""
+      CornerSize      =   -1
       CSSClasses      =   ""
       Enabled         =   True
-      Height          =   16
-      Indeterminate   =   True
+      FillColor       =   &cFFFFFFDC
+      HasFillColor    =   True
+      Height          =   359
       Index           =   -2147483648
-      Indicator       =   0
-      Left            =   77
+      Indicator       =   ""
+      LayoutDirection =   "LayoutDirections.LeftToRight"
+      LayoutType      =   "LayoutTypes.Fixed"
+      Left            =   27
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -344,29 +260,92 @@ Begin WebDialog dlg_Login
       LockRight       =   False
       LockTop         =   True
       LockVertical    =   False
-      MaximumValue    =   100
       PanelIndex      =   0
       Scope           =   2
-      TabIndex        =   10
+      TabIndex        =   8
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   310
-      Value           =   100
+      Top             =   178
       Visible         =   False
-      Width           =   409
+      Width           =   658
+      _mDesignHeight  =   0
+      _mDesignWidth   =   0
       _mPanelIndex    =   -1
-   End
-   Begin WebTimer tmrLogin
-      ControlID       =   ""
-      Enabled         =   True
-      Index           =   -2147483648
-      Location        =   0
-      LockedInPosition=   False
-      PanelIndex      =   0
-      Period          =   100
-      RunMode         =   0
-      Scope           =   0
-      _mPanelIndex    =   -1
+      Begin WebLabel lblVerdict
+         Bold            =   True
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         FontName        =   "Bricolage Grotesque"
+         FontSize        =   24.0
+         Height          =   39
+         HTMLElement     =   0
+         Index           =   -2147483648
+         Indicator       =   ""
+         InitialParent   =   "rectVerdict"
+         Italic          =   False
+         Left            =   47
+         LockBottom      =   False
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         Multiline       =   False
+         PanelIndex      =   0
+         Parent          =   "rectVerdict"
+         Scope           =   2
+         TabIndex        =   0
+         TabPanelIndex   =   0
+         TabStop         =   True
+         Text            =   "Verdict"
+         TextAlignment   =   2
+         TextColor       =   &c000000FF
+         Tooltip         =   ""
+         Top             =   218
+         Underline       =   False
+         Visible         =   False
+         Width           =   618
+         _mPanelIndex    =   -1
+      End
+      Begin WebLabel lblRationale
+         Bold            =   False
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         FontName        =   "Bricolage Grotesque"
+         FontSize        =   0.0
+         Height          =   165
+         HTMLElement     =   0
+         Index           =   -2147483648
+         Indicator       =   ""
+         Italic          =   False
+         Left            =   68
+         LockBottom      =   False
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         Multiline       =   True
+         PanelIndex      =   0
+         Parent          =   "rectVerdict"
+         Scope           =   2
+         TabIndex        =   9
+         TabPanelIndex   =   0
+         TabStop         =   True
+         Text            =   "Rational text"
+         TextAlignment   =   0
+         TextColor       =   &c000000FF
+         Tooltip         =   ""
+         Top             =   301
+         Underline       =   False
+         Visible         =   True
+         Width           =   580
+         _mPanelIndex    =   -1
+      End
    End
 End
 #tag EndWebPage
@@ -374,149 +353,195 @@ End
 #tag WindowCode
 	#tag Event
 		Sub Shown()
-		  txtUsername.SetFocus
+		  // Deliberately don't touch lblVerdict here. Any Style.Value() set on
+		  // it appears to override the IDE's Visible=False, so the panel would
+		  // appear on first open. All verdict-panel CSS now lives in ShowVerdict.
+		  
+		  // Fit the breadcrumb inside the dialog (its IDE width was wider than
+		  // the dialog) and allow it to scroll horizontally on long paths so
+		  // 4-5 levels deep don't overflow the bounds.
+		  breadcrumb_cds.Left = 0
+		  breadcrumb_cds.Width = Self.Width
+		  Session.ExecuteJavaScript( _
+		  "var bc = document.getElementById('" + breadcrumb_cds.ControlID + "');" + _
+		  "if (bc) {" + _
+		  "  bc.style.overflowX = 'auto';" + _
+		  "  bc.style.overflowY = 'hidden';" + _
+		  "  bc.style.whiteSpace = 'nowrap';" + _
+		  "  bc.style.boxSizing = 'border-box';" + _
+		  "}")
+		  
+		  ResetToRoot
 		End Sub
 	#tag EndEvent
 
 
-	#tag Method, Flags = &h0
-		Sub doLogin()
-		  var username as string = txtUsername.Text, LoginUser as string
-		  var password as string = txtPassword.Text
-		  Var rs as RowSet
+	#tag Method, Flags = &h21
+		Private Sub RenderStep()
+		  // Refresh the breadcrumb from PathIDs.
+		  breadcrumb_cds.RemoveAllRows
+		  breadcrumb_cds.AddRow("Start over")
+		  breadcrumb_cds.RowTagAt(0) = 0
+		  For Each id As Integer In PathIDs
+		    Var n As DecisionNode = DecisionNode.GetByID(Session.DB, id)
+		    If n <> Nil Then
+		      breadcrumb_cds.AddRow(n.OptionLabel)
+		      breadcrumb_cds.RowTagAt(breadcrumb_cds.LastAddedIndex) = id
+		    End If
+		  Next
 		  
-		  // check fields not empty
-		  if username.IsEmpty or password.IsEmpty then
-		    MessageBox("You must enter both a username and password")
-		    setControlsEnabled(True)
-		    return
-		  end If
+		  // Clear option list.
+		  lstOptions.RemoveAllRows
 		  
-		  var sql as string = "SELECT * from  users"
-		  rs = session.DB.SelectSQL(sql)
+		  // If we're at a terminal node, show the verdict and stop.
+		  If CurrentNodeID > 0 Then
+		    Var current As DecisionNode = DecisionNode.GetByID(Session.DB, CurrentNodeID)
+		    If current <> Nil And current.IsTerminal Then
+		      lstOptions.Visible = False
+		      ShowVerdict(current)
+		      Return
+		    End If
+		  End If
 		  
-		  while not rs.AfterLastRow
-		    if rs.Column("username").StringValue = username then
-		      LoginUser = username
-		      Exit
-		    else
-		      rs.MoveToNextRow
-		    end if
-		  wend
+		  // Non-terminal: prompt + listbox visible, verdict panel hidden.
+		  rectVerdict.Visible = False
+		  lblCurrentPrompt.Visible = True
+		  lstOptions.Visible = True
 		  
-		  if loginUser.IsEmpty then
-		    MessageBox("The username does not correspond to a registered user.")
-		    setControlsEnabled(True)
-		    return
-		  end if
+		  Var children() As DecisionNode
+		  If CurrentNodeID = 0 Then
+		    children = DecisionNode.GetRoots(Session.DB)
+		  Else
+		    children = DecisionNode.GetChildren(Session.DB, CurrentNodeID)
+		  End If
 		  
+		  If children.Count = 0 Then
+		    lblCurrentPrompt.Text = "(No further options defined — this branch is incomplete.)"
+		    Return
+		  End If
 		  
-		  sql = "Select * from users where username = ?"
-		  var ps as MySQLPreparedStatement = session.db.Prepare(sql)
-		  ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		  ps.Bind(0, username)
-		  rs = ps.SelectSQL
+		  If CurrentNodeID = 0 Then
+		    lblCurrentPrompt.Text = "What is the presenting complaint?"
+		  Else
+		    Var current As DecisionNode = DecisionNode.GetByID(Session.DB, CurrentNodeID)
+		    lblCurrentPrompt.Text = If(current <> Nil And current.Prompt <> "", current.Prompt, "Choose an option:")
+		  End If
 		  
-		  // Verify password using PBKDF2
-		  Var storedHash As String = rs.Column("password_hash").StringValue
-		  Var storedSalt As String = rs.Column("password_salt").StringValue
-		  
-		  Dim passwordData As New MemoryBlock(password.LenB)
-		  passwordData.StringValue(0, password.LenB) = password
-		  Dim computedHash As MemoryBlock = Crypto.PBKDF2(storedSalt, passwordData, 10000, 32, Crypto.HashAlgorithms.SHA2_256)
-		  Dim computedHashHex As String = app.EncodeHex(computedHash)
-		  
-		  if computedHashHex = storedHash then
-		    if rs.Column("OTP").IntegerValue = 1  then
-		      self.txtPassword.Text = ""
-		      var w as new dlg_NewPassword
-		      w.username = username
-		      w.Show
-		    else
-		      var wpi as new wp_indications
-		      Session.IsAuthenticated = true
-		      successfulLogin = True  // flag for successful login to be handled in LoginSuccessful event
-		      RaiseEvent LoginSuccessful
-		      PubSub.Broadcast("loginSuccessful", nil) // new publish-subscribe model
-		      session.CurrentUsername = username
-		      // if on landing page then navigate to indications
-		      var wp as  WebPage = session.CurrentPage
-		      if wp isa wp_LandingPage then session.NavigationManager.NavigateToPage(wpi)
-		    end if
-		    
-		    self.Close
-		  else
-		    MessageBox ("Incorrect password - please correct this and try again.")
-		    setControlsEnabled(True)
-		  end if
+		  For Each child As DecisionNode In children
+		    lstOptions.AddRow(child.OptionLabel)
+		    lstOptions.RowTagAt(lstOptions.LastAddedRowIndex) = child.ID
+		  Next
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Sub setControlsEnabled(enabled as Boolean)
-		  txtUsername.Enabled = enabled
-		  txtPassword.Enabled = enabled
-		  bLogin.Enabled = enabled
-		  bCancelLogin.Enabled = enabled
-		  btnReset.Enabled = enabled
-		  pgbLogin.Visible = Not enabled
+	#tag Method, Flags = &h21
+		Private Sub ResetToRoot()
+		  PathIDs.RemoveAll
+		  CurrentNodeID = 0
+		  RenderStep
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Sub startLogin()
-		  // Disable controls and show progress bar
-		  setControlsEnabled(False)
+	#tag Method, Flags = &h21
+		Private Sub ShowVerdict(n As DecisionNode)
+		  // rectVerdict is the RAG panel (Visible=False in IDE).
+		  // lblVerdict (bold, 24pt) and lblRationale (multi-line, default size)
+		  // are pre-positioned children — we just set their text and colour.
+		  //
+		  // The editor now stores three setting-specific verdicts; the viewer for
+		  // now picks Primary as the headline (parallel to clinician's "what's the
+		  // advice in primary care?"). Linked-indication leaves and a proper 3-RAG-
+		  // chip display are pending design work.
+		  Var primary As String = n.VerdictPrimary
+		  Var verdictWord As String
+		  Var bg As Color
+		  Var fg As Color = Color.RGB(255, 255, 255)
+		  Select Case primary
+		  Case "indicated"
+		    verdictWord = "Indicated"
+		    bg = Color.RGB(30, 120, 50)
+		  Case "not_indicated"
+		    verdictWord = "Not indicated"
+		    bg = Color.RGB(180, 40, 40)
+		  Case "can_be_considered"
+		    verdictWord = "May be considered"
+		    bg = Color.RGB(200, 130, 0)
+		  Else
+		    verdictWord = primary
+		    bg = Color.RGB(100, 100, 100)
+		  End Select
 		  
-		  // Use timer to allow UI to update before blocking PBKDF2 computation
-		  tmrLogin.RunMode = WebTimer.RunModes.Single
+		  Var headingText As String = verdictWord
+		  If n.Urgency <> "" Then headingText = headingText + " — " + n.Urgency
+		  
+		  // Paint the rectangle the RAG colour.
+		  rectVerdict.FillColor = bg
+		  
+		  // Heading + rationale text + white text colour for both.
+		  lblVerdict.Text = headingText
+		  lblVerdict.Style.ForegroundColor = fg
+		  
+		  lblRationale.Text = n.Rationale
+		  lblRationale.Style.ForegroundColor = fg
+		  
+		  // Hide the options view and show the verdict panel. Both child
+		  // labels need Visible=True (lblVerdict's IDE default is False so
+		  // it doesn't show at design-time when the rect is also hidden).
+		  lblCurrentPrompt.Visible = False
+		  lstOptions.Visible = False
+		  rectVerdict.Visible = True
+		  lblVerdict.Visible = True
+		  lblRationale.Visible = True
 		End Sub
 	#tag EndMethod
 
 
-	#tag Hook, Flags = &h0
-		Event LoginSuccessful()
-	#tag EndHook
-
-
-	#tag Property, Flags = &h0
-		ButtonClicked As WebButton
+	#tag Property, Flags = &h21
+		Private CurrentNodeID As Integer = 0
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		successfulLogin As Boolean = False
+	#tag Property, Flags = &h21
+		Private PathIDs() As Integer
 	#tag EndProperty
 
 
 #tag EndWindowCode
 
-#tag Events bLogin
+#tag Events breadcrumb_cds
 	#tag Event
-		Sub Pressed()
-		  startLogin
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events bCancelLogin
-	#tag Event
-		Sub Pressed()
-		  self.Close
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events btnReset
-	#tag Event
-		Sub Pressed()
-		  var w as new dlg_Reset
-		  w.Show
+		Sub Pressed(index As Integer)
+		  // Crumb 0 = "Start over"; anything beyond is one of the visited nodes.
+		  If index = 0 Then
+		    ResetToRoot
+		    Return
+		  End If
 		  
+		  // Truncate the visited stack to just the chosen level.
+		  While PathIDs.Count > index
+		    PathIDs.RemoveAt(PathIDs.LastIndex)
+		  Wend
+		  
+		  CurrentNodeID = If(PathIDs.Count > 0, PathIDs(PathIDs.LastIndex), 0)
+		  RenderStep
 		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events tmrLogin
+#tag Events btnClose
 	#tag Event
-		Sub Run()
-		  doLogin
+		Sub Pressed()
+		  self.close
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events lstOptions
+	#tag Event
+		Sub Pressed(row As Integer, column As Integer)
+		  #Pragma Unused column
+		  If row < 0 Or row > lstOptions.LastRowIndex Then Return
+		  Var nextID As Integer = lstOptions.RowTagAt(row).IntegerValue
+		  PathIDs.Add(nextID)
+		  CurrentNodeID = nextID
+		  RenderStep
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -762,13 +787,5 @@ End
 			"2 - TopToBottom"
 			"3 - BottomToTop"
 		#tag EndEnumValues
-	#tag EndViewProperty
-	#tag ViewProperty
-		Name="successfulLogin"
-		Visible=false
-		Group="Behavior"
-		InitialValue="False"
-		Type="Boolean"
-		EditorType=""
 	#tag EndViewProperty
 #tag EndViewBehavior

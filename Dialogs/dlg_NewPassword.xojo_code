@@ -18,7 +18,7 @@ Begin WebDialog dlg_NewPassword
    LockTop         =   False
    LockVertical    =   False
    PanelIndex      =   0
-   Position        =   0
+   Position        =   1
    TabIndex        =   0
    Top             =   0
    Visible         =   True
@@ -34,6 +34,7 @@ Begin WebDialog dlg_NewPassword
       FontName        =   ""
       FontSize        =   0.0
       Height          =   38
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   0
       Italic          =   False
@@ -162,6 +163,7 @@ Begin WebDialog dlg_NewPassword
       FontName        =   ""
       FontSize        =   0.0
       Height          =   38
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   0
       Italic          =   False
@@ -261,9 +263,10 @@ Begin WebDialog dlg_NewPassword
          ControlID       =   ""
          CSSClasses      =   ""
          Enabled         =   True
-         FontName        =   ""
+         FontName        =   "Bricolage Grotesque"
          FontSize        =   24.0
          Height          =   38
+         HTMLElement     =   0
          Index           =   -2147483648
          Indicator       =   0
          Italic          =   False
@@ -324,7 +327,7 @@ End
 		    passwordData.StringValue(0, txtPassword.Text.LenB) = txtPassword.Text
 		    Dim hash As MemoryBlock = Crypto.PBKDF2(salt, passwordData, 10000, 32, Crypto.HashAlgorithms.SHA2_256)
 		    Dim hashHex As String = app.EncodeHex(hash)
-
+		    
 		    var sql as string = "UPDATE users SET password_hash = ?, password_salt = ?, OTP = ? WHERE username = ?"
 		    var ps as MySQLPreparedStatement = session.db.Prepare(sql)
 		    ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_STRING)

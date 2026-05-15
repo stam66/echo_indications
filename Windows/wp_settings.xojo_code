@@ -208,6 +208,7 @@ Begin WebPage wp_settings
       FontName        =   ""
       FontSize        =   20.0
       Height          =   38
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   ""
       Italic          =   False
@@ -232,6 +233,66 @@ Begin WebPage wp_settings
       Underline       =   False
       Visible         =   True
       Width           =   285
+      _mPanelIndex    =   -1
+   End
+   Begin WebButton Button1
+      AllowAutoDisable=   False
+      Cancel          =   False
+      Caption         =   "Changelog Editor"
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Default         =   False
+      Enabled         =   True
+      Height          =   38
+      Index           =   -2147483648
+      Indicator       =   3
+      Left            =   896
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      LockVertical    =   False
+      Outlined        =   False
+      PanelIndex      =   0
+      Scope           =   2
+      TabIndex        =   7
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   121
+      Visible         =   True
+      Width           =   200
+      _mPanelIndex    =   -1
+   End
+   Begin WebButton Button2
+      AllowAutoDisable=   False
+      Cancel          =   False
+      Caption         =   "CDS Editor"
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Default         =   False
+      Enabled         =   True
+      Height          =   38
+      Index           =   -2147483648
+      Indicator       =   3
+      Left            =   896
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      LockVertical    =   False
+      Outlined        =   False
+      PanelIndex      =   0
+      Scope           =   2
+      TabIndex        =   8
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   179
+      Visible         =   True
+      Width           =   200
       _mPanelIndex    =   -1
    End
 End
@@ -810,6 +871,22 @@ End
 		    MessageBox("Error moving context: " + err.Message)
 		    LoadContexts
 		  End Try
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events Button1
+	#tag Event
+		Sub Pressed()
+		  Var dlg As New dlg_ChangeLogEditor
+		  dlg.Show
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events Button2
+	#tag Event
+		Sub Pressed()
+		  Var w As New wp_cds_editor
+		  session.NavigationManager.NavigateToPage(w)
 		End Sub
 	#tag EndEvent
 #tag EndEvents

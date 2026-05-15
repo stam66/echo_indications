@@ -18,14 +18,13 @@ Begin WebDialog dlg_ChangeIndication
    LockTop         =   False
    LockVertical    =   False
    PanelIndex      =   0
-   Position        =   0
+   Position        =   1
    TabIndex        =   0
    Top             =   0
    Visible         =   True
    Width           =   636
    _mDesignHeight  =   0
    _mDesignWidth   =   0
-   _mName          =   ""
    _mPanelIndex    =   -1
    Begin WebRectangle Rectangle1
       BorderColor     =   &c000000FF
@@ -66,7 +65,7 @@ Begin WebDialog dlg_ChangeIndication
          ControlID       =   ""
          CSSClasses      =   ""
          Enabled         =   True
-         FontName        =   ""
+         FontName        =   "Bricolage Grotesque"
          FontSize        =   24.0
          Height          =   38
          HTMLElement     =   0
@@ -791,17 +790,17 @@ End
 		    ps.Bind(7, Session.SelectedIndicationID)
 		    
 		    ps.ExecuteSQL
-
+		    
 		    btnSubmit.Enabled = False
 		    Session.FlashCaption("Thanks — logged!", btnSubmit, 1500)
-
+		    
 		    // Update badge if on landing page
 		    If wp_LandingPage <> Nil Then
 		      wp_LandingPage.UpdateIssuesBadge
 		    End If
-
+		    
 		    Timer.CallLater(1700, AddressOf AutoClose)
-
+		    
 		  Catch err As DatabaseException
 		    MessageBox("Error submitting change request: " + err.Message)
 		    System.DebugLog("SubmitIndicationChange Error: " + err.Message)

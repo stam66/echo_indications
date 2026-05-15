@@ -65,9 +65,10 @@ Begin WebDialog dlg_Issue
          ControlID       =   ""
          CSSClasses      =   ""
          Enabled         =   True
-         FontName        =   ""
+         FontName        =   "Bricolage Grotesque"
          FontSize        =   22.0
          Height          =   38
+         HTMLElement     =   0
          Index           =   -2147483648
          Indicator       =   0
          Italic          =   False
@@ -428,6 +429,7 @@ Begin WebDialog dlg_Issue
       FontName        =   ""
       FontSize        =   0.0
       Height          =   38
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   0
       Italic          =   False
@@ -462,6 +464,7 @@ Begin WebDialog dlg_Issue
       FontName        =   ""
       FontSize        =   0.0
       Height          =   38
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   0
       Italic          =   False
@@ -496,6 +499,7 @@ Begin WebDialog dlg_Issue
       FontName        =   ""
       FontSize        =   0.0
       Height          =   38
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   0
       Italic          =   False
@@ -530,6 +534,7 @@ Begin WebDialog dlg_Issue
       FontName        =   ""
       FontSize        =   14.0
       Height          =   38
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   0
       Italic          =   True
@@ -564,6 +569,7 @@ Begin WebDialog dlg_Issue
       FontName        =   ""
       FontSize        =   14.0
       Height          =   38
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   0
       Italic          =   True
@@ -598,6 +604,7 @@ Begin WebDialog dlg_Issue
       FontName        =   ""
       FontSize        =   14.0
       Height          =   38
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   0
       Italic          =   True
@@ -632,6 +639,7 @@ Begin WebDialog dlg_Issue
       FontName        =   ""
       FontSize        =   14.0
       Height          =   38
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   0
       Italic          =   True
@@ -707,6 +715,7 @@ Begin WebDialog dlg_Issue
       FontName        =   ""
       FontSize        =   0.0
       Height          =   38
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   0
       Italic          =   False
@@ -741,6 +750,7 @@ Begin WebDialog dlg_Issue
       FontName        =   ""
       FontSize        =   0.0
       Height          =   38
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   0
       Italic          =   False
@@ -938,14 +948,14 @@ End
 		    ps.Bind(2, IssueID)
 		    
 		    ps.ExecuteSQL
-
+		    
 		    Me.Enabled = False
 		    Session.FlashCaption("Saved", Me, 1500)
 		    Session.UpdateAllIssuesBadges // update all Issues buttons' badges
-
+		    
 		    RaiseEvent IssueSaved(IssueID)
 		    Timer.CallLater(1700, AddressOf AutoClose)
-
+		    
 		  Catch err As DatabaseException
 		    MessageBox("Error saving issue: " + err.Message)
 		    System.DebugLog("SaveIssue Error: " + err.Message)

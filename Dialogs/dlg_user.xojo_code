@@ -18,7 +18,7 @@ Begin WebDialog dlg_user
    LockTop         =   False
    LockVertical    =   False
    PanelIndex      =   0
-   Position        =   0
+   Position        =   1
    TabIndex        =   0
    Top             =   0
    Visible         =   True
@@ -34,6 +34,7 @@ Begin WebDialog dlg_user
       FontName        =   ""
       FontSize        =   0.0
       Height          =   38
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   0
       Italic          =   False
@@ -102,6 +103,7 @@ Begin WebDialog dlg_user
       FontName        =   ""
       FontSize        =   0.0
       Height          =   38
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   0
       Italic          =   False
@@ -170,6 +172,7 @@ Begin WebDialog dlg_user
       FontName        =   ""
       FontSize        =   0.0
       Height          =   38
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   0
       Italic          =   False
@@ -238,6 +241,7 @@ Begin WebDialog dlg_user
       FontName        =   ""
       FontSize        =   0.0
       Height          =   38
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   0
       Italic          =   False
@@ -337,9 +341,10 @@ Begin WebDialog dlg_user
          ControlID       =   ""
          CSSClasses      =   ""
          Enabled         =   True
-         FontName        =   ""
+         FontName        =   "Bricolage Grotesque"
          FontSize        =   24.0
          Height          =   38
+         HTMLElement     =   0
          Index           =   -2147483648
          Indicator       =   0
          InitialParent   =   "rectHeader"

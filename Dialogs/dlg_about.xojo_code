@@ -1,11 +1,11 @@
 #tag WebPage
-Begin WebDialog dlg_ChangeRequest
+Begin WebDialog dlg_about
    Compatibility   =   ""
    ControlCount    =   0
    ControlID       =   ""
    CSSClasses      =   ""
    Enabled         =   True
-   Height          =   428
+   Height          =   709
    Index           =   -2147483648
    Indicator       =   0
    LayoutDirection =   0
@@ -22,21 +22,22 @@ Begin WebDialog dlg_ChangeRequest
    TabIndex        =   0
    Top             =   0
    Visible         =   True
-   Width           =   600
+   Width           =   754
    _mDesignHeight  =   0
    _mDesignWidth   =   0
+   _mName          =   ""
    _mPanelIndex    =   -1
-   Begin WebRectangle Rectangle1
-      BorderColor     =   &c000000FF
-      BorderThickness =   0
+   Begin WebRectangle rectHeader
+      BorderColor     =   &c49535D00
+      BorderThickness =   1
       ControlCount    =   0
       ControlID       =   ""
       CornerSize      =   0
       CSSClasses      =   ""
       Enabled         =   True
-      FillColor       =   &c006AB500
+      FillColor       =   &c005EB800
       HasFillColor    =   True
-      Height          =   62
+      Height          =   91
       Index           =   -2147483648
       Indicator       =   0
       LayoutDirection =   0
@@ -56,23 +57,55 @@ Begin WebDialog dlg_ChangeRequest
       Tooltip         =   ""
       Top             =   0
       Visible         =   True
-      Width           =   600
+      Width           =   754
       _mDesignHeight  =   0
       _mDesignWidth   =   0
       _mPanelIndex    =   -1
-      Begin WebLabel lblDialogTitle
+      Begin WebImageViewer appLogo
+         ControlID       =   ""
+         CSSClasses      =   ""
+         DisplayMode     =   1
+         Enabled         =   True
+         Height          =   65
+         Image           =   563056639
+         Index           =   -2147483648
+         Indicator       =   0
+         Left            =   17
+         LockBottom      =   False
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         PanelIndex      =   0
+         Parent          =   "rectHeader"
+         Scope           =   0
+         SVGData         =   ""
+         TabIndex        =   1
+         TabPanelIndex   =   -1
+         TabStop         =   True
+         Tooltip         =   ""
+         Top             =   15
+         URL             =   ""
+         Visible         =   True
+         Width           =   65
+         _mPanelIndex    =   -1
+         _ProtectImage   =   False
+      End
+      Begin WebLabel lblHeader
          Bold            =   True
          ControlID       =   ""
          CSSClasses      =   ""
          Enabled         =   True
          FontName        =   "Bricolage Grotesque"
-         FontSize        =   24.0
-         Height          =   38
+         FontSize        =   36.0
+         Height          =   90
          HTMLElement     =   0
          Index           =   -2147483648
          Indicator       =   0
          Italic          =   False
-         Left            =   20
+         Left            =   93
          LockBottom      =   False
          LockedInPosition=   False
          LockHorizontal  =   False
@@ -82,100 +115,62 @@ Begin WebDialog dlg_ChangeRequest
          LockVertical    =   False
          Multiline       =   False
          PanelIndex      =   0
-         Parent          =   "Rectangle1"
+         Parent          =   "rectHeader"
          Scope           =   0
-         TabIndex        =   1
+         TabIndex        =   2
          TabPanelIndex   =   -1
          TabStop         =   True
-         Text            =   "Request a change"
-         TextAlignment   =   0
-         TextColor       =   &cFAFAFA00
+         Text            =   "ECHOindications"
+         TextAlignment   =   1
+         TextColor       =   &cFFFFFF00
          Tooltip         =   ""
-         Top             =   12
+         Top             =   0
          Underline       =   False
          Visible         =   True
-         Width           =   560
+         Width           =   478
          _mPanelIndex    =   -1
       End
+      Begin WebImageViewer ImageViewer1
+         ControlID       =   ""
+         CSSClasses      =   ""
+         DisplayMode     =   2
+         Enabled         =   True
+         Height          =   48
+         Image           =   0
+         Index           =   -2147483648
+         Indicator       =   0
+         Left            =   702
+         LockBottom      =   False
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   False
+         LockRight       =   True
+         LockTop         =   True
+         LockVertical    =   False
+         PanelIndex      =   0
+         Parent          =   "rectHeader"
+         Scope           =   0
+         SVGData         =   "<svg xmlns=""http://www.w3.org/2000/svg""  viewBox=""0 -960 960 960"" fill=""#FFFFFF""><path d=""m336-280 144-144 144 144 56-56-144-144 144-144-56-56-144 144-144-144-56 56 144 144-144 144 56 56ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z""/></svg>"
+         TabIndex        =   4
+         TabPanelIndex   =   0
+         TabStop         =   True
+         Tooltip         =   ""
+         Top             =   5
+         URL             =   ""
+         Visible         =   True
+         Width           =   48
+         _mPanelIndex    =   -1
+         _ProtectImage   =   False
+      End
    End
-   Begin WebTextArea txtIssue
-      AllowReturnKey  =   True
-      AllowSpellChecking=   True
-      Caption         =   ""
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      Height          =   128
-      Hint            =   ""
-      Index           =   -2147483648
-      Indicator       =   0
-      Left            =   20
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   False
-      LockRight       =   True
-      LockTop         =   True
-      LockVertical    =   False
-      Mandatory       =   "False"
-      MaximumCharactersAllowed=   0
-      PanelIndex      =   0
-      ReadOnly        =   False
-      Scope           =   2
-      TabIndex        =   2
-      TabStop         =   True
-      Text            =   ""
-      TextAlignment   =   0
-      Tooltip         =   ""
-      Top             =   111
-      Visible         =   True
-      Width           =   560
-      _mPanelIndex    =   -1
-   End
-   Begin WebTextField txtUsername
-      AllowAutoComplete=   False
-      AllowReturnKey  =   "True"
-      AllowSpellChecking=   False
-      Caption         =   ""
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      FieldType       =   0
-      Height          =   38
-      Hint            =   ""
-      Index           =   -2147483648
-      Indicator       =   0
-      Left            =   20
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   False
-      LockRight       =   True
-      LockTop         =   True
-      LockVertical    =   False
-      Mandatory       =   "False"
-      MaximumCharactersAllowed=   0
-      PanelIndex      =   0
-      ReadOnly        =   False
-      Scope           =   2
-      TabIndex        =   3
-      TabStop         =   True
-      Text            =   ""
-      TextAlignment   =   0
-      Tooltip         =   ""
-      Top             =   273
-      Visible         =   True
-      Width           =   560
-      _mPanelIndex    =   -1
-   End
-   Begin WebLabel lblIssue
+   Begin WebLabel lblVersion
       Bold            =   True
       ControlID       =   ""
       CSSClasses      =   ""
       Enabled         =   True
-      FontName        =   ""
-      FontSize        =   14.0
-      Height          =   22
+      FontName        =   "Bricolage Grotesque"
+      FontSize        =   12.0
+      Height          =   21
       HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   0
@@ -184,23 +179,127 @@ Begin WebDialog dlg_ChangeRequest
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
-      LockLeft        =   False
-      LockRight       =   True
+      LockLeft        =   True
+      LockRight       =   False
       LockTop         =   True
       LockVertical    =   False
       Multiline       =   False
       PanelIndex      =   0
-      Scope           =   2
-      TabIndex        =   4
+      Parent          =   "nil"
+      Scope           =   0
+      TabIndex        =   3
+      TabPanelIndex   =   0
       TabStop         =   True
-      Text            =   "Issue"
+      Text            =   "Version 1.8"
       TextAlignment   =   0
       TextColor       =   &c000000FF
       Tooltip         =   ""
-      Top             =   81
+      Top             =   99
       Underline       =   False
       Visible         =   True
-      Width           =   132
+      Width           =   159
+      _mPanelIndex    =   -1
+   End
+   Begin WebLabel loginLabel
+      Bold            =   False
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      FontName        =   "Bricolage Grotesque"
+      FontSize        =   14.0
+      Height          =   28
+      HTMLElement     =   0
+      Index           =   10
+      Indicator       =   0
+      Italic          =   False
+      Left            =   20
+      LockBottom      =   True
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   False
+      LockVertical    =   False
+      Multiline       =   False
+      PanelIndex      =   0
+      Parent          =   "nil"
+      Scope           =   0
+      TabIndex        =   4
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "(c) Dr S Kapetanakis 2025-2027"
+      TextAlignment   =   1
+      TextColor       =   &c000000FF
+      Tooltip         =   ""
+      Top             =   661
+      Underline       =   False
+      Visible         =   True
+      Width           =   222
+      _mPanelIndex    =   -1
+   End
+   Begin WebLabel lblInfo
+      Bold            =   False
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      FontName        =   "Bricolage Grotesque"
+      FontSize        =   0.0
+      Height          =   461
+      HTMLElement     =   0
+      Index           =   -2147483648
+      Indicator       =   0
+      Italic          =   False
+      Left            =   20
+      LockBottom      =   True
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   True
+      LockTop         =   True
+      LockVertical    =   False
+      Multiline       =   True
+      PanelIndex      =   0
+      Scope           =   0
+      TabIndex        =   5
+      TabStop         =   True
+      Text            =   "- ECHO Indications drawn from National and International guidelines, expert consensus.\n- Reviewed and ratified by South East London university hospitals:\n        - Guy's and St Thomas' Hospitals (GSTT)\n        - Harefield Hospital (GSTT)\n        - Royal Brompton Hospital (GSTT)\n        - King's College Hospital (KCH)\n        - Princess Royal University Hospital (KCH)\n        - University Hospital Lewisham (LGT)\n        - Queen Elizabeth Hospital (LGT)\n\n- Indications can be filtered by context or full text, misspelling tolerant (fuzzy) search \n\n- Each indication includes one more more contexts, attributions, synonyms, comments.\n\n- Appropriate use criteria and urgency recommendations for multiple settings:\n        - Primary Care\n        - Secondary Care (outpatient setting)\n        - Secondary Care (inpatient setting)\n\n- The web app includes\n        - Free access to view all indications & appropriate use critera.\n        - Direct navigation to a specific indication with a URL that can be shared.\n        - Admin access to modiy indications, contexts, manage registered users and more.\n        - Feedback for feature requests and changes as well as bug reports.\n        - A detailed view of all pending feature requests & bug reports.\n        - A full database audit trail.\n        - A change log viewable by all, edited by admins.\n\n"
+      TextAlignment   =   0
+      TextColor       =   &c000000FF
+      Tooltip         =   ""
+      Top             =   174
+      Underline       =   False
+      Visible         =   True
+      Width           =   714
+      _mPanelIndex    =   -1
+   End
+   Begin WebButton Button1
+      AllowAutoDisable=   False
+      Cancel          =   False
+      Caption         =   "Email for questions or support"
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Default         =   False
+      Enabled         =   True
+      Height          =   46
+      Index           =   -2147483648
+      Indicator       =   3
+      Left            =   429
+      LockBottom      =   True
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   False
+      LockVertical    =   False
+      Outlined        =   False
+      PanelIndex      =   0
+      Scope           =   0
+      TabIndex        =   6
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   643
+      Visible         =   True
+      Width           =   305
       _mPanelIndex    =   -1
    End
    Begin WebLabel Label1
@@ -208,172 +307,81 @@ Begin WebDialog dlg_ChangeRequest
       ControlID       =   ""
       CSSClasses      =   ""
       Enabled         =   True
-      FontName        =   ""
-      FontSize        =   14.0
-      Height          =   22
+      FontName        =   "Bricolage Grotesque"
+      FontSize        =   20.0
+      Height          =   38
       HTMLElement     =   0
-      Index           =   3
-      Indicator       =   0
+      Index           =   -2147483648
+      Indicator       =   ""
       Italic          =   False
       Left            =   20
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
-      LockLeft        =   False
-      LockRight       =   True
+      LockLeft        =   True
+      LockRight       =   False
       LockTop         =   True
       LockVertical    =   False
       Multiline       =   False
       PanelIndex      =   0
-      Scope           =   2
-      TabIndex        =   5
+      Scope           =   0
+      TabIndex        =   7
       TabStop         =   True
-      Text            =   "Requested by"
+      Text            =   "Appropriate Use Criteria for Echocardiography"
       TextAlignment   =   0
       TextColor       =   &c000000FF
       Tooltip         =   ""
-      Top             =   247
+      Top             =   128
       Underline       =   False
       Visible         =   True
-      Width           =   132
-      _mPanelIndex    =   -1
-   End
-   Begin WebButton btnCancel
-      AllowAutoDisable=   False
-      Cancel          =   True
-      Caption         =   "Cancel"
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Default         =   False
-      Enabled         =   True
-      Height          =   38
-      Index           =   -2147483648
-      Indicator       =   0
-      Left            =   311
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      LockVertical    =   False
-      Outlined        =   False
-      PanelIndex      =   0
-      Scope           =   2
-      TabIndex        =   6
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   370
-      Visible         =   True
-      Width           =   100
-      _mPanelIndex    =   -1
-   End
-   Begin WebButton btnSubmit
-      AllowAutoDisable=   False
-      Cancel          =   False
-      Caption         =   "Submit request"
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Default         =   True
-      Enabled         =   True
-      Height          =   38
-      Index           =   -2147483648
-      Indicator       =   1
-      Left            =   419
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      LockVertical    =   False
-      Outlined        =   False
-      PanelIndex      =   0
-      Scope           =   2
-      TabIndex        =   7
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   370
-      Visible         =   True
-      Width           =   161
+      Width           =   689
       _mPanelIndex    =   -1
    End
 End
 #tag EndWebPage
 
 #tag WindowCode
-	#tag Method, Flags = &h21
-		Private Sub AutoClose()
-		  Self.Close
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
-		Private Function ButtonClicked() As WebButton
-		  
-		End Function
-	#tag EndMethod
-
-
-	#tag Property, Flags = &h0
-		IndicationID As Integer
-	#tag EndProperty
-
-
 #tag EndWindowCode
 
-#tag Events btnCancel
+#tag Events appLogo
 	#tag Event
-		Sub Pressed()
-		  self.Close
+		Sub Pressed(x As Integer, y As Integer)
+		  #Pragma Unused x
+		  #Pragma Unused y
+		  
+		  self.close
 		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events btnSubmit
+#tag Events lblHeader
 	#tag Event
 		Sub Pressed()
-		  If txtIssue.Text.Trim = "" Then
-		    MessageBox("Please enter a change request")
-		    Return
-		  End If
+		  self.close
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events ImageViewer1
+	#tag Event
+		Sub Pressed(x As Integer, y As Integer)
+		  #Pragma Unused x
+		  #Pragma Unused y
 		  
-		  If txtUsername.Text.Trim = "" Then
-		    MessageBox("Please enter your name")
-		    Return
-		  End If
+		  self.close
 		  
-		  Try
-		    Var sql As String = "INSERT INTO changes (changes_request, changes_requestor, changes_status) VALUES (?, ?, ?)"
-		    Var ps As MySQLPreparedStatement = Session.DB.Prepare(sql)
-		    
-		    ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		    ps.BindType(1, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		    ps.BindType(2, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		    
-		    ps.Bind(0, txtIssue.Text)
-		    ps.Bind(1, txtUsername.Text)
-		    ps.Bind(2, "New")
-		    
-		    ps.ExecuteSQL
-		    
-		    // In-button flash instead of a modal MessageBox — same pattern as
-		    // btnCopyLink. Disable the button to prevent double-submit, then
-		    // auto-close the dialog just after the flash settles.
-		    Me.Enabled = False
-		    Session.FlashCaption("Thanks — logged!", Me, 1500)
-		    
-		    // Update badge if on landing page
-		    If wp_LandingPage <> Nil Then
-		      wp_LandingPage.UpdateIssuesBadge
-		    End If
-		    
-		    Timer.CallLater(1700, AddressOf AutoClose)
-		    
-		  Catch err As DatabaseException
-		    MessageBox("Error submitting request: " + err.Message)
-		    System.DebugLog("SubmitChangeRequest Error: " + err.Message)
-		  End Try
-		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events lblInfo
+	#tag Event
+		Sub Pressed()
+		  self.close
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events Button1
+	#tag Event
+		Sub Pressed()
+		  Session.GotoURL("mailto:skapetanakis@nhs.net", False)
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -619,13 +627,5 @@ End
 			"2 - TopToBottom"
 			"3 - BottomToTop"
 		#tag EndEnumValues
-	#tag EndViewProperty
-	#tag ViewProperty
-		Name="IndicationID"
-		Visible=false
-		Group="Behavior"
-		InitialValue=""
-		Type="Integer"
-		EditorType=""
 	#tag EndViewProperty
 #tag EndViewBehavior
