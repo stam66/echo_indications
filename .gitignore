@@ -14,3 +14,18 @@ Debug*/Debug*\ Libs
 # Claude Code worktrees / scratch space
 .claude/
 
+# Secrets - the real secrets file lives OUTSIDE the repo
+# (/etc/ECHOINDICATIONS/secrets.env). Only secrets.env.example is committed.
+secrets.env
+
+# JetBrains IDE project files (may carry datasource/connection details)
+.idea/
+
+# Database dumps - contain user PII and password hashes; must not be committed.
+# Schema-only migration / seed scripts (decision_nodes_*.sql, *_migration.sql)
+# are fine to keep tracked - it's the data dumps below that are the concern.
+echo_indications_data.sql
+echo_indications_schema+data.sql
+echo_indications schema.sql
+schema & data.sql
+
