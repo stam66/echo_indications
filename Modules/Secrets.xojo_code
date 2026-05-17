@@ -6,7 +6,7 @@ Protected Module Secrets
 		  #If TargetXojoCloud then
 		    f = SpecialFolder.SharedDocuments.Child("secrets.env")
 		  #Else
-		    f = SpecialFolder.Etc.Child("AIAUDIT").Child("secrets.env")
+		    f = SpecialFolder.Etc.Child("ECHOINDICATIONS").Child("secrets.env")
 		  #EndIf
 		  If f Is Nil Or Not f.Exists Then
 		    Raise New RuntimeException("Secrets file not found at " + If(f Is Nil, "<nil path>", f.NativePath))
@@ -43,13 +43,13 @@ Protected Module Secrets
 		        End If
 		        
 		        Select Case key
-		        Case "AIAUDIT_DB_USERNAME"
+		        Case "ECHO_DB_USERNAME"
 		          DB_USERNAME = value
-		        Case "AIAUDIT_DB_PASSWORD"
+		        Case "ECHO_DB_PASSWORD"
 		          DB_PASSWORD = value
-		        Case "AIAUDIT_MAILJET_API_KEY"
+		        Case "ECHO_MAILJET_API_KEY"
 		          MAILJET_API_KEY = value
-		        Case "AIAUDIT_MAILJET_SECRET_KEY"
+		        Case "ECHO_MAILJET_SECRET_KEY"
 		          MAILJET_SECRET_KEY = value
 		        case "XOJO_DB_USERNAME"
 		          XOJO_DB_USERNAME = value
@@ -68,10 +68,10 @@ Protected Module Secrets
 		  + ", MAILJET_SECRET_KEY:" + If(MAILJET_SECRET_KEY.IsEmpty, "MISSING", "ok"))
 		  
 		  Var missing() As String
-		  If DB_USERNAME.IsEmpty Then missing.Add("AIAUDIT_DB_USERNAME")
-		  If DB_PASSWORD.IsEmpty Then missing.Add("AIAUDIT_DB_PASSWORD")
-		  If MAILJET_API_KEY.IsEmpty Then missing.Add("AIAUDIT_MAILJET_API_KEY")
-		  If MAILJET_SECRET_KEY.IsEmpty Then missing.Add("AIAUDIT_MAILJET_SECRET_KEY")
+		  If DB_USERNAME.IsEmpty Then missing.Add("ECHO_DB_USERNAME")
+		  If DB_PASSWORD.IsEmpty Then missing.Add("ECHO_DB_PASSWORD")
+		  If MAILJET_API_KEY.IsEmpty Then missing.Add("ECHO_MAILJET_API_KEY")
+		  If MAILJET_SECRET_KEY.IsEmpty Then missing.Add("ECHO_MAILJET_SECRET_KEY")
 		  
 		  SecretsLoaded = (missing.Count = 0)
 		  
