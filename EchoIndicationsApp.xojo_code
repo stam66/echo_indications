@@ -8,15 +8,7 @@ Inherits WebApplication
 		  ' Semaphore is used to ensure that only one session at a time tries
 		  ' to send an email. Constructor defaults to count 1 (one resource available).
 		  MailSemaphore = New Semaphore ' Mail Semaphore is a Property: MailSemaphore As Semaphore
-		  
-		  ' Global socket for sending emails
-		  MailSocket = New SMTPSecureSocket ' MailSocket is a Property: MailSocket As SMTPSecureSocket
-		  
-		  ' Map the socket's error events to methods on the App object
-		  AddHandler MailSocket.MailSent, AddressOf MailSentHandler
-		  AddHandler MailSocket.ServerError, AddressOf MailServerErrorHandler
-		  
-		  
+
 		  ' // populate users
 		  ' all_users = users.GetInstance
 		End Sub
@@ -290,42 +282,6 @@ Inherits WebApplication
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Sub MailSentHandler(m As SMTPSecureSocket)
-		  #Pragma Unused m
-		  
-		  #If TargetWeb Then
-		    ' Log to all active sessions
-		    For Each sess As WebSession In App.Sessions
-		      If sess <> Nil Then
-		        sess.ExecuteJavaScript("console.log('Email sent successfully, releasing semaphore');")
-		      End If
-		    Next
-		  #EndIf
-		  
-		  MailSemaphore.Release ' Release the Semaphore to make the socket available for use
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub MailServerErrorHandler(m As SMTPSecureSocket, errorID As Integer, errorMessage As String, email As EmailMessage)
-		  #Pragma Unused m
-		  #Pragma Unused email
-		  
-		  #If TargetWeb Then
-		    ' Log to all active sessions
-		    For Each sess As WebSession In App.Sessions
-		      If sess <> Nil Then
-		        sess.ExecuteJavaScript("console.error('Email error (ID: " + errorID.ToString + "): " + errorMessage.ReplaceAll("'", "\\'") + "');")
-		        sess.ExecuteJavaScript("console.log('Releasing semaphore after error');")
-		      End If
-		    Next
-		  #EndIf
-		  
-		  MailSemaphore.Release ' Release the Semaphore to make the socket available for use
-		  MessageBox(errorMessage)
-		End Sub
-	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function RandomString(randomLength as Integer) As string
@@ -584,9 +540,6 @@ Inherits WebApplication
 		MailSemaphore As Semaphore
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		MailSocket As SMTPSecureSocket
-	#tag EndProperty
 
 
 	#tag Constant, Name = LightGrey, Type = Color, Dynamic = False, Default = \"&cD6D6D6", Scope = Public
