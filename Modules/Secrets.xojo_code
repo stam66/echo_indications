@@ -4,7 +4,7 @@ Protected Module Secrets
 		Sub Load()
 		  Var f As FolderItem 
 		  #If TargetXojoCloud then
-		    f = SpecialFolder.SharedDocuments.Child("secrets.env")
+		    f = SpecialFolder.SharedDocuments.Child("ECHOINDICATIONS").Child("secrets.env")
 		  #Else
 		    f = SpecialFolder.Etc.Child("ECHOINDICATIONS").Child("secrets.env")
 		  #EndIf
