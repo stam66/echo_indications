@@ -25,6 +25,7 @@ Begin WebDialog dlg_cds
    Width           =   712
    _mDesignHeight  =   0
    _mDesignWidth   =   0
+   _mName          =   ""
    _mPanelIndex    =   -1
    Begin WebBreadcrumb breadcrumb_cds
       ControlID       =   ""
@@ -271,44 +272,6 @@ Begin WebDialog dlg_cds
       _mDesignHeight  =   0
       _mDesignWidth   =   0
       _mPanelIndex    =   -1
-      Begin WebLabel lblVerdict
-         Bold            =   True
-         ControlID       =   ""
-         CSSClasses      =   ""
-         Enabled         =   True
-         FontName        =   "Bricolage Grotesque"
-         FontSize        =   24.0
-         Height          =   39
-         HTMLElement     =   0
-         Index           =   -2147483648
-         Indicator       =   ""
-         InitialParent   =   "rectVerdict"
-         Italic          =   False
-         Left            =   47
-         LockBottom      =   False
-         LockedInPosition=   False
-         LockHorizontal  =   False
-         LockLeft        =   True
-         LockRight       =   False
-         LockTop         =   True
-         LockVertical    =   False
-         Multiline       =   False
-         PanelIndex      =   0
-         Parent          =   "rectVerdict"
-         Scope           =   2
-         TabIndex        =   0
-         TabPanelIndex   =   0
-         TabStop         =   True
-         Text            =   "Verdict"
-         TextAlignment   =   2
-         TextColor       =   &c000000FF
-         Tooltip         =   ""
-         Top             =   218
-         Underline       =   False
-         Visible         =   False
-         Width           =   618
-         _mPanelIndex    =   -1
-      End
       Begin WebLabel lblRationale
          Bold            =   False
          ControlID       =   ""
@@ -316,12 +279,12 @@ Begin WebDialog dlg_cds
          Enabled         =   True
          FontName        =   "Bricolage Grotesque"
          FontSize        =   0.0
-         Height          =   165
+         Height          =   142
          HTMLElement     =   0
          Index           =   -2147483648
          Indicator       =   ""
          Italic          =   False
-         Left            =   68
+         Left            =   40
          LockBottom      =   False
          LockedInPosition=   False
          LockHorizontal  =   False
@@ -340,10 +303,322 @@ Begin WebDialog dlg_cds
          TextAlignment   =   0
          TextColor       =   &c000000FF
          Tooltip         =   ""
-         Top             =   301
+         Top             =   385
          Underline       =   False
          Visible         =   True
-         Width           =   580
+         Width           =   606
+         _mPanelIndex    =   -1
+      End
+      Begin WebLabel lblPrimaryCareVerdict
+         Bold            =   False
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         FontName        =   ""
+         FontSize        =   0.0
+         Height          =   38
+         HTMLElement     =   0
+         Index           =   -2147483648
+         Indicator       =   0
+         Italic          =   False
+         Left            =   89
+         LockBottom      =   True
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   False
+         LockRight       =   True
+         LockTop         =   False
+         LockVertical    =   False
+         Multiline       =   False
+         PanelIndex      =   0
+         Parent          =   "rectVerdict"
+         Scope           =   0
+         TabIndex        =   10
+         TabPanelIndex   =   -1
+         TabStop         =   True
+         Text            =   "Primary care"
+         TextAlignment   =   0
+         TextColor       =   &c000000FF
+         Tooltip         =   ""
+         Top             =   208
+         Underline       =   False
+         Visible         =   True
+         Width           =   172
+         _mPanelIndex    =   -1
+      End
+      Begin WebPopupMenu popVerdictPrimary
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   False
+         Height          =   38
+         Index           =   -2147483648
+         Indicator       =   0
+         InitialValue    =   "Verdict"
+         LastAddedRowIndex=   0
+         LastRowIndex    =   0
+         Left            =   89
+         LockBottom      =   True
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   False
+         LockRight       =   True
+         LockTop         =   False
+         LockVertical    =   False
+         PanelIndex      =   0
+         Parent          =   "rectVerdict"
+         RowCount        =   0
+         Scope           =   0
+         SelectedRowIndex=   0
+         SelectedRowText =   ""
+         TabIndex        =   11
+         TabPanelIndex   =   -1
+         TabStop         =   True
+         Tooltip         =   ""
+         Top             =   241
+         Visible         =   True
+         Width           =   172
+         _mPanelIndex    =   -1
+      End
+      Begin WebLabel lblUrgency
+         Bold            =   False
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         FontName        =   ""
+         FontSize        =   0.0
+         Height          =   38
+         HTMLElement     =   0
+         Index           =   -2147483648
+         Indicator       =   0
+         Italic          =   False
+         Left            =   89
+         LockBottom      =   True
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   False
+         LockRight       =   True
+         LockTop         =   False
+         LockVertical    =   False
+         Multiline       =   False
+         PanelIndex      =   0
+         Parent          =   "rectVerdict"
+         Scope           =   0
+         TabIndex        =   12
+         TabPanelIndex   =   -1
+         TabStop         =   True
+         Text            =   "Priority"
+         TextAlignment   =   0
+         TextColor       =   &c000000FF
+         Tooltip         =   ""
+         Top             =   280
+         Underline       =   False
+         Visible         =   True
+         Width           =   76
+         _mPanelIndex    =   -1
+      End
+      Begin WebPopupMenu popUrgency
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   False
+         Height          =   38
+         Index           =   -2147483648
+         Indicator       =   0
+         InitialValue    =   "Urgency"
+         LastAddedRowIndex=   0
+         LastRowIndex    =   0
+         Left            =   89
+         LockBottom      =   True
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   False
+         LockRight       =   True
+         LockTop         =   False
+         LockVertical    =   False
+         PanelIndex      =   0
+         Parent          =   "rectVerdict"
+         RowCount        =   0
+         Scope           =   0
+         SelectedRowIndex=   0
+         SelectedRowText =   ""
+         TabIndex        =   13
+         TabPanelIndex   =   -1
+         TabStop         =   True
+         Tooltip         =   ""
+         Top             =   312
+         Visible         =   True
+         Width           =   172
+         _mPanelIndex    =   -1
+      End
+      Begin WebButton btnViewIndication
+         AllowAutoDisable=   False
+         Cancel          =   False
+         Caption         =   "View indicaiton ID 273"
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Default         =   False
+         Enabled         =   True
+         Height          =   38
+         Index           =   -2147483648
+         Indicator       =   0
+         Left            =   271
+         LockBottom      =   True
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   False
+         LockVertical    =   False
+         Outlined        =   False
+         PanelIndex      =   0
+         Parent          =   "rectVerdict"
+         Scope           =   0
+         TabIndex        =   14
+         TabPanelIndex   =   -1
+         TabStop         =   True
+         Tooltip         =   ""
+         Top             =   312
+         Visible         =   True
+         Width           =   353
+         _mPanelIndex    =   -1
+      End
+      Begin WebPopupMenu popVerdictSecondaryOP
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   False
+         Height          =   38
+         Index           =   -2147483648
+         Indicator       =   0
+         InitialValue    =   "Verdict"
+         LastAddedRowIndex=   0
+         LastRowIndex    =   0
+         Left            =   271
+         LockBottom      =   True
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   False
+         LockRight       =   True
+         LockTop         =   False
+         LockVertical    =   False
+         PanelIndex      =   0
+         Parent          =   "rectVerdict"
+         RowCount        =   0
+         Scope           =   0
+         SelectedRowIndex=   0
+         SelectedRowText =   ""
+         TabIndex        =   15
+         TabPanelIndex   =   -1
+         TabStop         =   True
+         Tooltip         =   ""
+         Top             =   241
+         Visible         =   True
+         Width           =   172
+         _mPanelIndex    =   -1
+      End
+      Begin WebLabel lblSecondaryOPVerdict
+         Bold            =   False
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         FontName        =   ""
+         FontSize        =   0.0
+         Height          =   38
+         HTMLElement     =   0
+         Index           =   -2147483648
+         Indicator       =   0
+         Italic          =   False
+         Left            =   271
+         LockBottom      =   True
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   False
+         LockRight       =   True
+         LockTop         =   False
+         LockVertical    =   False
+         Multiline       =   False
+         PanelIndex      =   0
+         Parent          =   "rectVerdict"
+         Scope           =   0
+         TabIndex        =   16
+         TabPanelIndex   =   -1
+         TabStop         =   True
+         Text            =   "Secondary care (OP)"
+         TextAlignment   =   0
+         TextColor       =   &c000000FF
+         Tooltip         =   ""
+         Top             =   208
+         Underline       =   False
+         Visible         =   True
+         Width           =   172
+         _mPanelIndex    =   -1
+      End
+      Begin WebLabel lblSecondaryIPVerdict
+         Bold            =   False
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         FontName        =   ""
+         FontSize        =   0.0
+         Height          =   38
+         HTMLElement     =   0
+         Index           =   -2147483648
+         Indicator       =   0
+         Italic          =   False
+         Left            =   452
+         LockBottom      =   True
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   False
+         LockRight       =   True
+         LockTop         =   False
+         LockVertical    =   False
+         Multiline       =   False
+         PanelIndex      =   0
+         Parent          =   "rectVerdict"
+         Scope           =   0
+         TabIndex        =   17
+         TabPanelIndex   =   -1
+         TabStop         =   True
+         Text            =   "Secondary care (IP)"
+         TextAlignment   =   0
+         TextColor       =   &c000000FF
+         Tooltip         =   ""
+         Top             =   208
+         Underline       =   False
+         Visible         =   True
+         Width           =   172
+         _mPanelIndex    =   -1
+      End
+      Begin WebPopupMenu popVerdictSecondaryIP
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   False
+         Height          =   38
+         Index           =   -2147483648
+         Indicator       =   0
+         InitialValue    =   "Verdict"
+         LastAddedRowIndex=   0
+         LastRowIndex    =   0
+         Left            =   452
+         LockBottom      =   True
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   False
+         LockRight       =   True
+         LockTop         =   False
+         LockVertical    =   False
+         PanelIndex      =   0
+         Parent          =   "rectVerdict"
+         RowCount        =   0
+         Scope           =   0
+         SelectedRowIndex=   0
+         SelectedRowText =   ""
+         TabIndex        =   18
+         TabPanelIndex   =   -1
+         TabStop         =   True
+         Tooltip         =   ""
+         Top             =   241
+         Visible         =   True
+         Width           =   172
          _mPanelIndex    =   -1
       End
    End
@@ -353,9 +628,17 @@ End
 #tag WindowCode
 	#tag Event
 		Sub Shown()
-		  // Deliberately don't touch lblVerdict here. Any Style.Value() set on
-		  // it appears to override the IDE's Visible=False, so the panel would
-		  // appear on first open. All verdict-panel CSS now lives in ShowVerdict.
+		  // Populate the verdict / urgency popups once. They're filled with the
+		  // linked indication's values per-leaf in ShowVerdict.
+		  PopulateVerdictPopup(popVerdictPrimary)
+		  PopulateVerdictPopup(popVerdictSecondaryIP)
+		  PopulateVerdictPopup(popVerdictSecondaryOP)
+		  popUrgency.RemoveAllRows
+		  popUrgency.AddRow("Not indicated")
+		  popUrgency.AddRow("Can be considered")
+		  popUrgency.AddRow("Routine")
+		  popUrgency.AddRow("Soon")
+		  popUrgency.AddRow("Urgent")
 		  
 		  // Fit the breadcrumb inside the dialog (its IDE width was wider than
 		  // the dialog) and allow it to scroll horizontally on long paths so
@@ -375,6 +658,65 @@ End
 		End Sub
 	#tag EndEvent
 
+
+	#tag Method, Flags = &h21
+		Private Sub ApplyRagIndicator(p As WebPopupMenu)
+		  // Tint the popup the RAG colours: Indicated → green, Not indicated → red,
+		  // Can be considered → amber, nothing selected → neutral.
+		  Select Case p.SelectedRowIndex
+		  Case 0
+		    p.Indicator = WebUIControl.Indicators.Success
+		  Case 1
+		    p.Indicator = WebUIControl.Indicators.Danger
+		  Case 2
+		    p.Indicator = WebUIControl.Indicators.Warning
+		  Else
+		    p.Indicator = WebUIControl.Indicators.Default
+		  End Select
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function IndexForUrgency(u As String) As Integer
+		  // Matches the popUrgency row order set up in Shown.
+		  Select Case u
+		  Case "not_indicated"
+		    Return 0
+		  Case "can_be_considered"
+		    Return 1
+		  Case "routine"
+		    Return 2
+		  Case "soon"
+		    Return 3
+		  Case "urgent"
+		    Return 4
+		  End Select
+		  Return -1
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function IndexForVerdict(v As String) As Integer
+		  Select Case v
+		  Case "indicated"
+		    Return 0
+		  Case "not_indicated"
+		    Return 1
+		  Case "can_be_considered"
+		    Return 2
+		  End Select
+		  Return -1
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub PopulateVerdictPopup(p As WebPopupMenu)
+		  p.RemoveAllRows
+		  p.AddRow("Indicated")
+		  p.AddRow("Not indicated")
+		  p.AddRow("Can be considered")
+		End Sub
+	#tag EndMethod
 
 	#tag Method, Flags = &h21
 		Private Sub RenderStep()
@@ -444,53 +786,53 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub ShowVerdict(n As DecisionNode)
-		  // Every terminal node is now linked to an indication — custom verdicts
-		  // have been removed from the data model. Read the verdict from the
-		  // linked Indication.PrimaryCare and use it for the RAG colouring; the
-		  // heading text is the indication's title.
-		  Var primary As String = ""
-		  Var heading As String = n.OptionLabel
-		  Var urgency As String = ""
-		  If n.IndicationID > 0 Then
-		    Var ind As Indication = Indication.GetByID(Session.DB, n.IndicationID)
-		    If ind <> Nil Then
-		      primary = ind.PrimaryCare
-		      urgency = ind.Urgency
-		      heading = ind.Title
-		    End If
-		  End If
-
-		  Var bg As Color
-		  Var fg As Color = Color.RGB(255, 255, 255)
-		  Select Case primary
-		  Case "indicated"
-		    bg = Color.RGB(30, 120, 50)
-		  Case "not_indicated"
-		    bg = Color.RGB(180, 40, 40)
-		  Case "can_be_considered"
-		    bg = Color.RGB(200, 130, 0)
+		  // Every terminal node links to an indication. The verdict panel shows
+		  // the indication's three setting-specific verdicts (GP / IP / OP) as
+		  // RAG-tinted read-only popups, plus urgency and rationale.
+		  Var ind As Indication
+		  If n.IndicationID > 0 Then ind = Indication.GetByID(Session.DB, n.IndicationID)
+		  CurrentIndicationID = n.IndicationID
+		  
+		  If ind <> Nil Then
+		    popVerdictPrimary.SelectedRowIndex     = IndexForVerdict(ind.PrimaryCare)
+		    popVerdictSecondaryIP.SelectedRowIndex = IndexForVerdict(ind.SecondaryInpatient)
+		    popVerdictSecondaryOP.SelectedRowIndex = IndexForVerdict(ind.SecondaryOutpatient)
+		    popUrgency.SelectedRowIndex            = IndexForUrgency(ind.Urgency)
+		    btnViewIndication.Caption = "View indication (ID " + n.IndicationID.ToString + ")"
 		  Else
-		    bg = Color.RGB(100, 100, 100)
-		  End Select
-
-		  Var headingText As String = heading
-		  If urgency <> "" Then headingText = headingText + " — " + urgency
-
-		  // Paint the rectangle the RAG colour and set text on the labels.
-		  rectVerdict.FillColor = bg
-		  lblVerdict.Text = headingText
-		  lblVerdict.Style.ForegroundColor = fg
-		  lblRationale.Text = n.Rationale
-		  lblRationale.Style.ForegroundColor = fg
-
+		    popVerdictPrimary.SelectedRowIndex = -1
+		    popVerdictSecondaryIP.SelectedRowIndex = -1
+		    popVerdictSecondaryOP.SelectedRowIndex = -1
+		    popUrgency.SelectedRowIndex = -1
+		    btnViewIndication.Caption = "View indication"
+		  End If
+		  
+		  ApplyRagIndicator(popVerdictPrimary)
+		  ApplyRagIndicator(popVerdictSecondaryIP)
+		  ApplyRagIndicator(popVerdictSecondaryOP)
+		  
+		  // Verdict popups are read-only here — purely a display of the indication.
+		  popVerdictPrimary.Enabled = False
+		  popVerdictSecondaryIP.Enabled = False
+		  popVerdictSecondaryOP.Enabled = False
+		  popUrgency.Enabled = False
+		  
+		  // Rationale: tree-specific text first, fall back to the indication's
+		  // own comments if the node has no rationale of its own.
+		  Var rationaleText As String = n.Rationale
+		  If rationaleText = "" And ind <> Nil Then rationaleText = ind.Comments
+		  lblRationale.Text = rationaleText
+		  
 		  lblCurrentPrompt.Visible = False
 		  lstOptions.Visible = False
 		  rectVerdict.Visible = True
-		  lblVerdict.Visible = True
-		  lblRationale.Visible = True
 		End Sub
 	#tag EndMethod
 
+
+	#tag Property, Flags = &h21
+		Private CurrentIndicationID As Integer = 0
+	#tag EndProperty
 
 	#tag Property, Flags = &h21
 		Private CurrentNodeID As Integer = 0
@@ -538,6 +880,57 @@ End
 		  PathIDs.Add(nextID)
 		  CurrentNodeID = nextID
 		  RenderStep
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events popVerdictPrimary
+	#tag Event
+		Sub SelectionChanged(item As WebMenuItem)
+		  #Pragma Unused item
+		  
+		  ApplyRagIndicator(popVerdictPrimary)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events popUrgency
+	#tag Event
+		Sub SelectionChanged(item As WebMenuItem)
+		  #Pragma Unused item
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnViewIndication
+	#tag Event
+		Sub Pressed()
+		  // Open dlg_Indication for the leaf's linked indication so the clinician
+		  // can read the full AUC entry (sources, contexts, comments, review date).
+		  If CurrentIndicationID = 0 Then Return
+		  Var dlg As New dlg_Indication
+		  dlg.IndicationID = CurrentIndicationID
+		  Var ids() As Integer
+		  ids.Add(CurrentIndicationID)
+		  dlg.IndicationIDs = ids
+		  dlg.CurrentIndex = 0
+		  dlg.Show
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events popVerdictSecondaryOP
+	#tag Event
+		Sub SelectionChanged(item As WebMenuItem)
+		  #Pragma Unused item
+		  
+		  ApplyRagIndicator(popVerdictSecondaryOP)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events popVerdictSecondaryIP
+	#tag Event
+		Sub SelectionChanged(item As WebMenuItem)
+		  #Pragma Unused item
+		  
+		  ApplyRagIndicator(popVerdictSecondaryIP)
 		End Sub
 	#tag EndEvent
 #tag EndEvents
