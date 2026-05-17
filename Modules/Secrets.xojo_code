@@ -2,11 +2,13 @@
 Protected Module Secrets
 	#tag Method, Flags = &h0
 		Sub Load()
-		  Var f As FolderItem 
+		  Const kAppFolder As String = "ECHOINDICATIONS"
+
+		  Var f As FolderItem
 		  #If TargetXojoCloud then
-		    f = SpecialFolder.SharedDocuments.Child("ECHOINDICATIONS").Child("secrets.env")
+		    f = SpecialFolder.SharedDocuments.Child(kAppFolder).Child("secrets.env")
 		  #Else
-		    f = SpecialFolder.Etc.Child("ECHOINDICATIONS").Child("secrets.env")
+		    f = SpecialFolder.Etc.Child(kAppFolder).Child("secrets.env")
 		  #EndIf
 		  If f Is Nil Or Not f.Exists Then
 		    Raise New RuntimeException("Secrets file not found at " + If(f Is Nil, "<nil path>", f.NativePath))
@@ -43,13 +45,13 @@ Protected Module Secrets
 		        End If
 		        
 		        Select Case key
-		        Case "ECHO_DB_USERNAME"
+		        Case "DB_USERNAME"
 		          DB_USERNAME = value
-		        Case "ECHO_DB_PASSWORD"
+		        Case "DB_PASSWORD"
 		          DB_PASSWORD = value
-		        Case "ECHO_MAILJET_API_KEY"
+		        Case "MAILJET_API_KEY"
 		          MAILJET_API_KEY = value
-		        Case "ECHO_MAILJET_SECRET_KEY"
+		        Case "MAILJET_SECRET_KEY"
 		          MAILJET_SECRET_KEY = value
 		        case "XOJO_DB_USERNAME"
 		          XOJO_DB_USERNAME = value
@@ -60,7 +62,13 @@ Protected Module Secrets
 		    End If
 		  Wend
 		  t.Close
-		  
+
+		  // On Xojo Cloud the database is reached with a different account.
+		  #If TargetXojoCloud Then
+		    DB_USERNAME = XOJO_DB_USERNAME
+		    DB_PASSWORD = XOJO_DB_PASSWORD
+		  #EndIf
+
 		  // Log which keys loaded (values redacted) so we can diagnose missing entries
 		  System.DebugLog("Secrets loaded — DB_USERNAME:" + If(DB_USERNAME.IsEmpty, "MISSING", "ok") _
 		  + ", DB_PASSWORD:" + If(DB_PASSWORD.IsEmpty, "MISSING", "ok") _
@@ -68,10 +76,15 @@ Protected Module Secrets
 		  + ", MAILJET_SECRET_KEY:" + If(MAILJET_SECRET_KEY.IsEmpty, "MISSING", "ok"))
 		  
 		  Var missing() As String
-		  If DB_USERNAME.IsEmpty Then missing.Add("ECHO_DB_USERNAME")
-		  If DB_PASSWORD.IsEmpty Then missing.Add("ECHO_DB_PASSWORD")
-		  If MAILJET_API_KEY.IsEmpty Then missing.Add("ECHO_MAILJET_API_KEY")
-		  If MAILJET_SECRET_KEY.IsEmpty Then missing.Add("ECHO_MAILJET_SECRET_KEY")
+		  #If TargetXojoCloud Then
+		    If DB_USERNAME.IsEmpty Then missing.Add("XOJO_DB_USERNAME")
+		    If DB_PASSWORD.IsEmpty Then missing.Add("XOJO_DB_PASSWORD")
+		  #Else
+		    If DB_USERNAME.IsEmpty Then missing.Add("DB_USERNAME")
+		    If DB_PASSWORD.IsEmpty Then missing.Add("DB_PASSWORD")
+		  #EndIf
+		  If MAILJET_API_KEY.IsEmpty Then missing.Add("MAILJET_API_KEY")
+		  If MAILJET_SECRET_KEY.IsEmpty Then missing.Add("MAILJET_SECRET_KEY")
 		  
 		  SecretsLoaded = (missing.Count = 0)
 		  
