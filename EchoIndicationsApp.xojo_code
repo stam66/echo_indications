@@ -396,10 +396,10 @@ Inherits WebApplication
 		  #EndIf
 		  
 		  ' Send email via MailJet API v3.1
-		  ' IMPORTANT: Replace these with your actual MailJet API credentials
-		  Var apiKey As String = "***REMOVED***"
-		  Var apiSecret As String = "***REMOVED***"
-		  
+		  ' Credentials loaded from the out-of-repo secrets file (see Modules/Secrets).
+		  Var apiKey As String = Secrets.MAILJET_API_KEY
+		  Var apiSecret As String = Secrets.MAILJET_SECRET_KEY
+
 		  ' Build JSON payload for MailJet API v3.1
 		  Var json As String = "{" + _
 		  """Messages"": [{" + _
@@ -481,9 +481,9 @@ Inherits WebApplication
 	#tag Method, Flags = &h0
 		Sub TestMailJetAuth(webSession As WebSession = Nil)
 		  ' Test MailJet API credentials with a simple GET request
-		  ' Replace these with your actual MailJet API credentials
-		  Var apiKey As String = "***REMOVED***"
-		  Var apiSecret As String = "***REMOVED***"
+		  ' Credentials loaded from the out-of-repo secrets file (see Modules/Secrets).
+		  Var apiKey As String = Secrets.MAILJET_API_KEY
+		  Var apiSecret As String = Secrets.MAILJET_SECRET_KEY
 		  
 		  #If TargetWeb Then
 		    If webSession <> Nil Then

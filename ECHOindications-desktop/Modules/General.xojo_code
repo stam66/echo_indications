@@ -291,8 +291,8 @@ Protected Module General
 		  
 		  ' Send email via MailJet API v3.1
 		  ' IMPORTANT: Replace these with your actual MailJet API credentials
-		  Var apiKey As String = "***REMOVED***"
-		  Var apiSecret As String = "***REMOVED***"
+		  Var apiKey As String = ""
+		  Var apiSecret As String = ""
 		  
 		  ' Build JSON payload for MailJet API v3.1
 		  Var json As String = "{" + _

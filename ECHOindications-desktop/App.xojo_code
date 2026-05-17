@@ -17,7 +17,7 @@ Inherits DesktopApplication
 		  
 		  // Test credentials (REPLACE WITH YOUR ACTUAL CREDENTIALS)
 		  Var testUsername As String = "stam66@mac.com"  // Try both "admin" and "stam66@mac.com"
-		  Var testPassword As String = "***REMOVED***"   // Your actual password
+		  Var testPassword As String = ""   // Your actual password
 		  
 		  System.DebugLog "Testing with:"
 		  System.DebugLog "  Username: " + testUsername

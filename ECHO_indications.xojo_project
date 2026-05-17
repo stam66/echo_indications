@@ -65,6 +65,7 @@ WebView=dlg_about;Dialogs/dlg_about.xojo_code;&h000000002EA807FF;&h000000000B117
 WebView=dlg_cds;Dialogs/dlg_cds.xojo_code;&h000000007B4F07FF;&h000000000B117FFF;false
 WebContainer=wc_cds_options;Containers/wc_cds_options.xojo_code;&h00000000277947FF;&h000000005C5177FF;false
 WebView=dlg_select_indication;Dialogs/dlg_select_indication.xojo_code;&h00000000102C07FF;&h000000000B117FFF;false
+Module=Secrets;Modules/Secrets.xojo_code;&h000000003420DFFF;&h0000000022A40FFF;false
 DefaultWindow=wp_LandingPage
 MajorVersion=1
 MinorVersion=5

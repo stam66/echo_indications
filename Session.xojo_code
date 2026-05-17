@@ -20,6 +20,14 @@ Inherits WebSession
 
 	#tag Event
 		Sub Opening()
+		  // Load credentials from the out-of-repo secrets file before anything
+		  // that needs them (DB connection, Mailjet). Load is idempotent.
+		  Try
+		    Secrets.Load
+		  Catch err As RuntimeException
+		    System.DebugLog("Secrets.Load failed: " + err.Message)
+		  End Try
+
 		  Call Connect()
 		  me.NavigationManager = new WebNavigationManager(self)
 		  Var w as new wp_LandingPage
@@ -35,8 +43,8 @@ Inherits WebSession
 		    DB.Host = "127.0.0.1"
 		    DB.Port = 3306
 		    DB.DatabaseName = "echo_indications"
-		    DB.UserName = "admin" // Configure as needed
-		    DB.Password = "***REMOVED***" // Configure as needed
+		    DB.UserName = Secrets.DB_USERNAME
+		    DB.Password = Secrets.DB_PASSWORD
 		    
 		    DB.Connect
 		    Return DB.IsConnected

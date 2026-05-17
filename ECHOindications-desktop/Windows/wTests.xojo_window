@@ -485,7 +485,7 @@ End
 		  
 		  // Replace with valid credentials to test audit endpoints
 		  Var testUsername As String = "admin"
-		  Var testPassword As String = "***REMOVED***"
+		  Var testPassword As String = ""
 		  
 		  Var loginSuccess As Boolean = AuthManager.Login(testUsername, testPassword)
 		  
