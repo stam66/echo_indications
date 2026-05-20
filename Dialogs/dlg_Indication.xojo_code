@@ -25,6 +25,7 @@ Begin WebDialog dlg_Indication
    Width           =   942
    _mDesignHeight  =   0
    _mDesignWidth   =   0
+   _mName          =   ""
    _mPanelIndex    =   -1
    Begin WebRectangle Rectangle2
       BorderColor     =   &c000000FF
@@ -681,7 +682,7 @@ Begin WebDialog dlg_Indication
       TabIndex        =   4
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   294
+      Top             =   320
       Value           =   False
       Visible         =   True
       Width           =   100
@@ -737,7 +738,7 @@ Begin WebDialog dlg_Indication
       TabIndex        =   6
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   345
+      Top             =   358
       Value           =   False
       Visible         =   True
       Width           =   100
@@ -769,6 +770,34 @@ Begin WebDialog dlg_Indication
       Value           =   False
       Visible         =   True
       Width           =   139
+      _mPanelIndex    =   -1
+   End
+   Begin WebCheckbox chkSourceBHVS
+      Caption         =   "BHVS"
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      Height          =   34
+      Indeterminate   =   False
+      Index           =   -2147483648
+      Indicator       =   ""
+      Left            =   232
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   True
+      LockLeft        =   False
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      PanelIndex      =   0
+      Scope           =   0
+      TabIndex        =   8
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   282
+      Value           =   False
+      Visible         =   True
+      Width           =   100
       _mPanelIndex    =   -1
    End
    Begin WebTextArea txtKeywords
@@ -1102,6 +1131,7 @@ End
 		      
 		      chkSourceASE.Value = (rs.Column("source_ase").IntegerValue = 1)
 		      chkSourceBSE.Value = (rs.Column("source_bse").IntegerValue = 1)
+		      chkSourceBHVS.Value = (rs.Column("source_bhvs").IntegerValue = 1)
 		      chkSourceEACVI.Value = (rs.Column("source_eacvi").IntegerValue = 1)
 		      chkSourceConsensus.Value = (rs.Column("source_consensus").IntegerValue = 1)
 		      
@@ -1267,6 +1297,7 @@ End
 		    
 		    chkSourceASE.Value = (rs.Column("source_ase").IntegerValue = 1)
 		    chkSourceBSE.Value = (rs.Column("source_bse").IntegerValue = 1)
+		    chkSourceBHVS.Value = (rs.Column("source_bhvs").IntegerValue = 1)
 		    chkSourceEACVI.Value = (rs.Column("source_eacvi").IntegerValue = 1)
 		    chkSourceConsensus.Value = (rs.Column("source_consensus").IntegerValue = 1)
 		    
@@ -1495,6 +1526,7 @@ End
 		  txtKeywords.Text = ""
 		  chkSourceASE.Value = False
 		  chkSourceBSE.Value = False
+		  chkSourceBHVS.Value = False
 		  chkSourceEACVI.Value = False
 		  chkSourceConsensus.Value = False
 		  popPrimaryCare.SelectedRowIndex = -1
@@ -1545,6 +1577,7 @@ End
 		    
 		    ind.SourceASE = chkSourceASE.Value
 		    ind.SourceBSE = chkSourceBSE.Value
+		    ind.SourceBHVS = chkSourceBHVS.Value
 		    ind.SourceEACVI = chkSourceEACVI.Value
 		    ind.SourceConsensus = chkSourceConsensus.Value
 		    
@@ -1786,6 +1819,13 @@ End
 	#tag EndEvent
 #tag EndEvents
 #tag Events chkSourceConsensus
+	#tag Event
+		Sub ValueChanged()
+		  MarkAsChanged()
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events chkSourceBHVS
 	#tag Event
 		Sub ValueChanged()
 		  MarkAsChanged()

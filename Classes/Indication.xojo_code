@@ -55,6 +55,7 @@ Protected Class Indication
 		      ind.SourceASE = rs.Column("source_ase").BooleanValue
 		      ind.SourceEACVI = rs.Column("source_eacvi").BooleanValue
 		      ind.SourceBSE = rs.Column("source_bse").BooleanValue
+		      ind.SourceBHVS = If(rs.Column("source_bhvs").Value = Nil, False, rs.Column("source_bhvs").BooleanValue)
 		      ind.SourceConsensus = rs.Column("source_consensus").BooleanValue
 		      ind.Urgency = If(rs.Column("urgency").Value = Nil, "", rs.Column("urgency").StringValue)
 
@@ -95,6 +96,7 @@ Protected Class Indication
 		      ind.SourceASE = rs.Column("source_ase").BooleanValue
 		      ind.SourceEACVI = rs.Column("source_eacvi").BooleanValue
 		      ind.SourceBSE = rs.Column("source_bse").BooleanValue
+		      ind.SourceBHVS = If(rs.Column("source_bhvs").Value = Nil, False, rs.Column("source_bhvs").BooleanValue)
 		      ind.SourceConsensus = rs.Column("source_consensus").BooleanValue
 		      ind.Urgency = If(rs.Column("urgency").Value = Nil, "", rs.Column("urgency").StringValue)
 		      ind.LoadContexts db
@@ -122,6 +124,7 @@ Protected Class Indication
 		  data.Value("source_ase") = If(Self.SourceASE, "1", "0")
 		  data.Value("source_eacvi") = If(Self.SourceEACVI, "1", "0")
 		  data.Value("source_bse") = If(Self.SourceBSE, "1", "0")
+		  data.Value("source_bhvs") = If(Self.SourceBHVS, "1", "0")
 		  data.Value("source_consensus") = If(Self.SourceConsensus, "1", "0")
 		  data.Value("contexts") = String.FromArray(Self.ContextNames, ", ")
 		  
@@ -165,8 +168,8 @@ Protected Class Indication
 		      // Insert
 		      Var sql As String = "INSERT INTO indications (title, keywords, comments, " + _
 		      "primary_care, secondary_inpatient, secondary_outpatient, " + _
-		      "source_ase, source_eacvi, source_bse, source_consensus, urgency) " + _
-		      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+		      "source_ase, source_eacvi, source_bse, source_bhvs, source_consensus, urgency) " + _
+		      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
 		      
 		      Var ps As PreparedSQLStatement = db.Prepare(sql)
 		      ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_STRING)
@@ -179,7 +182,8 @@ Protected Class Indication
 		      ps.BindType(7, MySQLPreparedStatement.MYSQL_TYPE_TINY)
 		      ps.BindType(8, MySQLPreparedStatement.MYSQL_TYPE_TINY)
 		      ps.BindType(9, MySQLPreparedStatement.MYSQL_TYPE_TINY)
-		      ps.BindType(10, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		      ps.BindType(10, MySQLPreparedStatement.MYSQL_TYPE_TINY)
+		      ps.BindType(11, MySQLPreparedStatement.MYSQL_TYPE_STRING)
 		      
 		      ps.Bind(0, Me.Title)
 		      ps.Bind(1, Me.Keywords)
@@ -190,8 +194,9 @@ Protected Class Indication
 		      ps.Bind(6, Me.SourceASE)
 		      ps.Bind(7, Me.SourceEACVI)
 		      ps.Bind(8, Me.SourceBSE)
-		      ps.Bind(9, Me.SourceConsensus)
-		      ps.Bind(10, Me.Urgency)
+		      ps.Bind(9, Me.SourceBHVS)
+		      ps.Bind(10, Me.SourceConsensus)
+		      ps.Bind(11, Me.Urgency)
 		      
 		      ps.SQLExecute
 		      Me.ID = db.LastInsertedRowID
@@ -200,7 +205,7 @@ Protected Class Indication
 		      // Update
 		      Var sql As String = "UPDATE indications SET title=?, keywords=?, comments=?, " + _
 		      "primary_care=?, secondary_inpatient=?, secondary_outpatient=?, " + _
-		      "source_ase=?, source_eacvi=?, source_bse=?, source_consensus=?, urgency=? " + _
+		      "source_ase=?, source_eacvi=?, source_bse=?, source_bhvs=?, source_consensus=?, urgency=? " + _
 		      "WHERE id=?"
 		      
 		      Var ps As PreparedSQLStatement = db.Prepare(sql)
@@ -214,8 +219,9 @@ Protected Class Indication
 		      ps.BindType(7, MySQLPreparedStatement.MYSQL_TYPE_TINY)
 		      ps.BindType(8, MySQLPreparedStatement.MYSQL_TYPE_TINY)
 		      ps.BindType(9, MySQLPreparedStatement.MYSQL_TYPE_TINY)
-		      ps.BindType(10, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		      ps.BindType(11, MySQLPreparedStatement.MYSQL_TYPE_LONG)
+		      ps.BindType(10, MySQLPreparedStatement.MYSQL_TYPE_TINY)
+		      ps.BindType(11, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		      ps.BindType(12, MySQLPreparedStatement.MYSQL_TYPE_LONG)
 		      
 		      ps.Bind(0, Me.Title)
 		      ps.Bind(1, Me.Keywords)
@@ -226,9 +232,10 @@ Protected Class Indication
 		      ps.Bind(6, Me.SourceASE)
 		      ps.Bind(7, Me.SourceEACVI)
 		      ps.Bind(8, Me.SourceBSE)
-		      ps.Bind(9, Me.SourceConsensus)
-		      ps.Bind(10, Me.Urgency)
-		      ps.Bind(11, Me.ID)
+		      ps.Bind(9, Me.SourceBHVS)
+		      ps.Bind(10, Me.SourceConsensus)
+		      ps.Bind(11, Me.Urgency)
+		      ps.Bind(12, Me.ID)
 		      
 		      ps.SQLExecute
 		    End If
@@ -342,6 +349,10 @@ Protected Class Indication
 
 	#tag Property, Flags = &h0
 		SourceBSE As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		SourceBHVS As Boolean
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
