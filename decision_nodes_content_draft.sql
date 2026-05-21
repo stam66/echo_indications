@@ -3,8 +3,9 @@
 -- ============================================================================
 -- Comprehensive seed for the clinical decision tool. Builds 26 root entry
 -- points (symptom presentations, abnormal findings, known conditions and
--- clinical contexts) and routes every leaf to one of the 87 indications in
--- content/blended_echo_indications_seed.sql.
+-- clinical contexts) and routes every leaf to one of the 93 indications in
+--   content/blended_echo_indications_seed.sql                       (87)
+--   content/2026-05-21_brugada_myocarditis_pericarditis.sql         ( 6)
 --
 -- DESIGN PRINCIPLES (from prior design sessions):
 --   * The ONLY contact point between the decision tree and the indications
@@ -44,9 +45,11 @@
 -- and the viewer falls back to the linked indication's own comments when a
 -- node has no tree-specific rationale.
 --
--- Prerequisite:
---   content/blended_echo_indications_seed.sql must have been applied so the
---   referenced indications exist by title.
+-- Prerequisites (apply in this order, then re-run this file):
+--   1. content/blended_echo_indications_seed.sql
+--   2. content/2026-05-21_brugada_myocarditis_pericarditis.sql
+-- The referenced indications must exist by title or the VALIDATION CHECKPOINT
+-- below will list the unresolved ones.
 -- ============================================================================
 
 START TRANSACTION;
@@ -197,6 +200,8 @@ INSERT INTO `_decision_node_seed` (`id`,`parent_id`,`option_label`,`sort_order`,
 (210, 12, 'Suspected pericarditis, effusion or constriction',                                1, 'Clinically suspected pericarditis, effusion or constriction'),
 (211, 12, 'Suspected tamponade or pericardial fluid causing compromise',                     2, 'Suspected cardiac tamponade or pericardial fluid causing haemodynamic compromise'),
 (212, 12, 'Small stable pericardial effusion - no compromise, no clinical change',           3, 'Small stable pericardial effusion without haemodynamic effect or clinical change'),
+(213, 12, 'Recurrent pericarditis or prior effusion / suspected constriction',               4, 'Recurrent pericarditis or pericarditis with prior effusion or suspected constriction'),
+(214, 12, 'Routine repeat after fully resolved uncomplicated pericarditis, no effusion',     5, 'Routine repeat TTE after fully resolved uncomplicated acute pericarditis with no effusion'),
 
 -- ============================================================================
 -- ROOT 13 - Suspected or confirmed infective endocarditis
@@ -243,6 +248,8 @@ INSERT INTO `_decision_node_seed` (`id`,`parent_id`,`option_label`,`sort_order`,
 (270, 17, 'Change in clinical status (new symptoms, planned therapy change)',                1, 'Known LV dysfunction or cardiomyopathy with change in clinical status'),
 (271, 17, 'Routine repeat in stable cardiomyopathy - no management impact',                  2, 'Routine repeat TTE in stable cardiomyopathy when management will not change'),
 (272, 17, 'Suspected genetic or infiltrative cardiomyopathy or LVH phenotype',               3, 'Suspected genetic or infiltrative cardiomyopathy or LVH phenotype'),
+(273, 17, 'Acute or recent myocarditis - assess LV function and recovery',                   4, 'Acute or recent myocarditis - assess LV function and recovery'),
+(274, 17, 'Routine repeat in fully recovered myocarditis, normal prior, no symptoms',        5, 'Routine repeat TTE in fully recovered myocarditis with normal prior echo and no symptoms'),
 
 -- ============================================================================
 -- ROOT 18 - Aortopathy or aortic root concerns
@@ -257,6 +264,8 @@ INSERT INTO `_decision_node_seed` (`id`,`parent_id`,`option_label`,`sort_order`,
 (290, 19, 'Known adult congenital heart disease (imaging will guide management)',            1, 'Known adult congenital heart disease when imaging will guide management'),
 (291, 19, 'First-degree relative of a bicuspid aortic valve patient',                        2, 'First-degree relative of a patient with a bicuspid aortic valve'),
 (292, 19, 'Suspected inherited cardiomyopathy or LVH phenotype (FH, exam, ECG)',             3, 'Suspected genetic or infiltrative cardiomyopathy or LVH phenotype'),
+(293, 19, 'Known or suspected Brugada syndrome - baseline TTE',                              4, 'Known or suspected Brugada syndrome - baseline TTE to exclude structural heart disease'),
+(294, 19, 'Asymptomatic first-degree relative of Brugada patient, normal ECG',               5, 'Asymptomatic first-degree relative of a Brugada patient with normal ECG'),
 
 -- ============================================================================
 -- ROOT 20 - Pre-operative assessment for non-cardiac surgery
