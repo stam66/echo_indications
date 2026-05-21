@@ -1,6 +1,8 @@
 # Technical notes
 
-Architecture, data model, content workflow and deployment for the ECHO Indications app. For the user-facing description, see [README.md](README.md).
+Architecture, data model and deployment for the ECHO Indications app. For the user-facing description, see [README.md](README.md).
+
+> **Note on scope.** This repo contains only the Xojo application source. The clinical content (indication seeds, decision-tree seed, source-guideline references), schema migrations, secrets, and database dumps live **outside** the repo. Building from this source alone gives you a runnable app that talks to an empty database; you also need the content and schema to make it useful. Contact the maintainer for access if you're collaborating clinically.
 
 ---
 
@@ -30,14 +32,15 @@ echo_indications/
 │                       wp_audit, wp_settings, wp_users, wp_issues)
 ├── Session.xojo_code   Per-user session state (auth, DB connection)
 ├── EchoIndicationsApp.xojo_code   App entry, startup wiring
-├── content/            Clinical content seeds (idempotent SQL, applied via mysql CLI)
-├── migrations/         Schema migrations (dated, applied in order)
-├── decision_nodes_content_draft.sql   Decision tree seed (rebuilds the whole tree)
-├── secrets.env.example   Template for the out-of-tree secrets file
-└── README.md / TECHNICAL.md / LICENSE
+├── Build Automation.xojo_code      Build hooks
+├── Graphics/           Icons and image assets
+├── ECHO_indications.xojo_project   Xojo project file
+├── ECHO_indications.xojo_resources Binary resources bundled by Xojo
+├── secrets.env.example Template for the out-of-tree secrets file
+└── README.md / TECHNICAL.md / LICENSE / .gitignore
 ```
 
-Off-repo material (DB dumps, source PDFs, working files) lives in the sibling folder `../echo_indications resources/` &mdash; **not** in git.
+Everything **not** in this list (clinical content seeds, schema migrations, database dumps, source-guideline PDFs, deployment notes, working files) lives in the sibling folder `../echo_indications resources/` and is **not** in git.
 
 ---
 
@@ -68,44 +71,18 @@ There are no verdict columns on `decision_nodes`. Verdicts and urgency come from
 
 ---
 
-## Content workflow
+## Content and schema
 
-Indications and the decision tree are seeded by idempotent SQL files, applied via the `mysql` CLI.
+Indication seeds, the decision-tree seed and schema migrations are **not** in this repo &mdash; they live in `../echo_indications resources/` alongside DB dumps and source-guideline PDFs. The maintainer applies them via the `mysql` CLI in this order on a fresh DB:
 
-### Indications
+1. Schema migrations (dated files, applied in order).
+2. The blended indications seed (idempotent: UPDATE-or-INSERT by `title`).
+3. Any incremental content packs (same idempotent pattern; order-independent against the blended seed).
+4. The decision-tree seed, which DELETEs and rebuilds `decision_nodes` from scratch, resolving leaf links by `title` (portable across DB rebuilds because AUTO_INCREMENT ids vary).
 
-`content/blended_echo_indications_seed.sql` is the canonical "big bang" content pack, paraphrased from the source guidelines listed in `content/blended_echo_auc_sources.md`. It:
+If you rename indication titles in the content seeds, the decision-tree seed must be re-applied so its title-based lookups still resolve.
 
-1. Inserts missing `contexts` rows.
-2. Stages all indications in a temp table `import_blended_indications`, keyed by `title`.
-3. **UPDATE**s existing rows whose title matches, then **INSERT**s any new ones.
-4. Rebuilds `indication_contexts` links for the touched rows.
-
-Incremental content packs (e.g. `content/2026-05-21_brugada_myocarditis_pericarditis.sql`) follow the same staging &rarr; UPDATE-or-INSERT &rarr; refresh-contexts pattern. They're safe to re-run and order-independent against the blended seed.
-
-### Decision tree
-
-`decision_nodes_content_draft.sql` rebuilds the entire `decision_nodes` table on every run:
-
-1. Stages every node in a temp table `_decision_node_seed` with **`indication_title`** instead of `indication_id` (so the seed is portable across DB rebuilds; AUTO_INCREMENT ids vary).
-2. Runs a **VALIDATION CHECKPOINT** `SELECT` that lists any unresolved titles.
-3. `DELETE FROM decision_nodes` and re-inserts everything, resolving titles to ids at insert time. FK checks are briefly disabled so the single `INSERT` can include parents and children together.
-4. Resets `AUTO_INCREMENT = 1000` so future editor-created nodes are visually distinct from the authored set.
-
-**If you rename indication titles in `content/`, re-run the decision tree file too** so its title-based lookups still resolve.
-
-### Schema migrations
-
-DDL changes live in `migrations/` as dated files (e.g. `migrations/2026-05-19_add_bhvs_source.sql`). Apply in order, **before** the content seeds.
-
-### Typical refresh on a fresh DB
-
-```sh
-mysql -u <user> -p <db> < migrations/2026-05-19_add_bhvs_source.sql
-mysql -u <user> -p <db> < content/blended_echo_indications_seed.sql
-mysql -u <user> -p <db> < content/2026-05-21_brugada_myocarditis_pericarditis.sql
-mysql -u <user> -p <db> < decision_nodes_content_draft.sql
-```
+If you're collaborating and need access to the content files, contact the maintainer.
 
 ---
 
@@ -164,9 +141,9 @@ Database backups: dumps live in `../echo_indications resources/` (not in git).
 
 ---
 
-## Source guidelines (full list)
+## Source guidelines
 
-Cited per indication via the `source_*` flags. The full reference list is in `content/blended_echo_auc_sources.md`, along with the ASE/ACC numeric-score &rarr; enum mapping used to translate AUC median scores into the app's three-value verdict:
+Indications are cited per row via the `source_*` flags (ASE/ACC AUCs, BSE, BHVS, EACVI, local consensus). The full reference list and the ASE/ACC numeric-score &rarr; enum mapping used to translate AUC median scores into the app's three-value verdict are kept with the content files outside this repo. The mapping rule, in summary:
 
 | ASE/ACC median appropriateness score | App verdict |
 |---|---|
