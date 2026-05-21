@@ -48,7 +48,7 @@ Protected Module ControlExtension
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetSegmentBadge(Extends control As WebSegmentedButton, segmentIndex As Integer, caption As String, indicator As String = "danger", top As Integer = -10, right As Integer = -10)
+		Sub SetSegmentBadge(Extends control As WebSegmentedButton, segmentIndex As Integer, caption As String, indicator As String = "danger", right As Integer = 8)
 		  
 		  // Segments are 0-based in Xojo; :nth-of-type is 1-based.
 		  Var segNum As Integer = segmentIndex + 1
@@ -60,6 +60,8 @@ Protected Module ControlExtension
 		  
 		  // Empty caption = just remove, don't re-add. (Lets you clear a badge.)
 		  If caption = "" Then
+		    // Revert the caption alignment / padding applied alongside the badge.
+		    js.Add("$('" + selector + "').css({'text-align': '', 'justify-content': '', 'padding-right': ''});")
 		    control.ExecuteJavaScript(String.FromArray(js))
 		    Return
 		  End If
@@ -70,14 +72,15 @@ Protected Module ControlExtension
 		  
 		  Var styles() As String = Array("height: 24px", "font-size: 10px", _
 		  "align-items: center", "color: white", "position: absolute", _
-		  "top: " + top.ToString + "px", "right: " + right.ToString + "px", _
-		  "z-index: 10")
+		  "top: 50%", "transform: translateY(-50%)", _
+		  "right: " + right.ToString + "px", "z-index: 10")
 		  
 		  Var html As String = "<span class=""" + String.FromArray(classes) + _
 		  """ style=""" + String.FromArray(styles, ";") + """>" + caption + "</span>"
 		  
-		  // Segment must be the positioning context for the absolute badge.
-		  js.Add("$('" + selector + "').css('position', 'relative');")
+		  // Segment is the badge's positioning context; the caption is left-aligned
+		  // and given right padding so it can't run under the badge.
+		  js.Add("$('" + selector + "').css({'position': 'relative', 'text-align': 'left', 'justify-content': 'flex-start', 'padding-right': '48px'});")
 		  js.Add("$('" + selector + "').append(`" + html + "`);")
 		  control.ExecuteJavaScript(String.FromArray(js))
 		  

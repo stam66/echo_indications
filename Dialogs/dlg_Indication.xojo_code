@@ -25,7 +25,6 @@ Begin WebDialog dlg_Indication
    Width           =   942
    _mDesignHeight  =   0
    _mDesignWidth   =   0
-   _mName          =   ""
    _mPanelIndex    =   -1
    Begin WebRectangle Rectangle2
       BorderColor     =   &c000000FF

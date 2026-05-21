@@ -169,6 +169,10 @@ Inherits WebSession
 		SelectedIndicationID As Integer
 	#tag EndProperty
 
+	#tag Property, Flags = &h0
+		PendingSearch As String
+	#tag EndProperty
+
 
 	#tag ViewBehavior
 		#tag ViewProperty

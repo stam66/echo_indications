@@ -100,7 +100,7 @@ Begin WebContainer wc_WebPageHeader
       Height          =   38
       Index           =   -2147483648
       Indicator       =   8
-      Left            =   666
+      Left            =   652
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -118,7 +118,7 @@ Begin WebContainer wc_WebPageHeader
       Tooltip         =   ""
       Top             =   17
       Visible         =   True
-      Width           =   116
+      Width           =   130
       _mPanelIndex    =   -1
    End
    Begin WebButton btnIssues
@@ -132,7 +132,7 @@ Begin WebContainer wc_WebPageHeader
       Height          =   38
       Index           =   -2147483648
       Indicator       =   8
-      Left            =   542
+      Left            =   528
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -198,7 +198,7 @@ Begin WebContainer wc_WebPageHeader
       Index           =   -2147483648
       Indicator       =   8
       LastSegmentIndex=   0
-      Left            =   211
+      Left            =   197
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False

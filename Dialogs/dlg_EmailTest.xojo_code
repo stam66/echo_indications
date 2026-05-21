@@ -1,11 +1,11 @@
 #tag WebPage
-Begin WebDialog dlg_NewPassword
+Begin WebDialog dlg_EmailTest
    Compatibility   =   ""
    ControlCount    =   0
    ControlID       =   ""
    CSSClasses      =   ""
    Enabled         =   True
-   Height          =   400
+   Height          =   604
    Index           =   -2147483648
    Indicator       =   0
    LayoutDirection =   0
@@ -25,20 +25,21 @@ Begin WebDialog dlg_NewPassword
    Width           =   600
    _mDesignHeight  =   0
    _mDesignWidth   =   0
+   _mName          =   ""
    _mPanelIndex    =   -1
-   Begin WebLabel lblPasswordAgain
-      Bold            =   False
+   Begin WebLabel lblTitle
+      Bold            =   True
       ControlID       =   ""
       CSSClasses      =   ""
       Enabled         =   True
-      FontName        =   ""
-      FontSize        =   0.0
+      FontName        =   "Bricolage Grotesque"
+      FontSize        =   24.0
       Height          =   38
       HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   0
       Italic          =   False
-      Left            =   56
+      Left            =   20
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -51,54 +52,20 @@ Begin WebDialog dlg_NewPassword
       Scope           =   0
       TabIndex        =   0
       TabStop         =   True
-      Text            =   "Again"
+      Text            =   "Send test email"
       TextAlignment   =   0
       TextColor       =   &c000000FF
       Tooltip         =   ""
-      Top             =   217
+      Top             =   20
       Underline       =   False
       Visible         =   True
-      Width           =   100
+      Width           =   288
       _mPanelIndex    =   -1
    End
-   Begin WebTextField txtPasswordAgain
-      AllowAutoComplete=   False
-      AllowSpellChecking=   False
-      Caption         =   ""
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      FieldType       =   1
-      Height          =   38
-      Hint            =   ""
-      Index           =   -2147483648
-      Indicator       =   0
-      Left            =   147
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      LockVertical    =   False
-      MaximumCharactersAllowed=   0
-      PanelIndex      =   0
-      ReadOnly        =   False
-      Scope           =   0
-      TabIndex        =   1
-      TabStop         =   True
-      Text            =   ""
-      TextAlignment   =   0
-      Tooltip         =   ""
-      Top             =   217
-      Visible         =   True
-      Width           =   409
-      _mPanelIndex    =   -1
-   End
-   Begin WebButton btnUpdate
+   Begin WebButton btnTestEmail
       AllowAutoDisable=   False
       Cancel          =   False
-      Caption         =   "Update"
+      Caption         =   "Send Test Email"
       ControlID       =   ""
       CSSClasses      =   ""
       Default         =   True
@@ -106,29 +73,29 @@ Begin WebDialog dlg_NewPassword
       Height          =   38
       Index           =   -2147483648
       Indicator       =   1
-      Left            =   480
-      LockBottom      =   False
+      Left            =   410
+      LockBottom      =   True
       LockedInPosition=   False
       LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   False
       LockVertical    =   False
       Outlined        =   False
       PanelIndex      =   0
       Scope           =   0
-      TabIndex        =   2
+      TabIndex        =   15
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   342
+      Top             =   546
       Visible         =   True
-      Width           =   100
+      Width           =   170
       _mPanelIndex    =   -1
    End
-   Begin WebButton btnCancelLogin
+   Begin WebButton btnClose
       AllowAutoDisable=   False
       Cancel          =   True
-      Caption         =   "Cancel"
+      Caption         =   "Close"
       ControlID       =   ""
       CSSClasses      =   ""
       Default         =   False
@@ -136,38 +103,105 @@ Begin WebDialog dlg_NewPassword
       Height          =   38
       Index           =   -2147483648
       Indicator       =   0
-      Left            =   361
-      LockBottom      =   False
+      Left            =   302
+      LockBottom      =   True
       LockedInPosition=   False
       LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   False
       LockVertical    =   False
       Outlined        =   False
       PanelIndex      =   0
       Scope           =   0
-      TabIndex        =   3
+      TabIndex        =   17
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   342
+      Top             =   546
       Visible         =   True
       Width           =   100
       _mPanelIndex    =   -1
    End
-   Begin WebLabel lblPassword
+   Begin WebTextField txtLastError
+      AllowAutoComplete=   False
+      AllowSpellChecking=   False
+      Caption         =   ""
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      FieldType       =   0
+      Height          =   38
+      Hint            =   ""
+      Index           =   -2147483648
+      Indicator       =   0
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   True
+      LockTop         =   True
+      LockVertical    =   False
+      MaximumCharactersAllowed=   0
+      PanelIndex      =   0
+      ReadOnly        =   True
+      Scope           =   0
+      TabIndex        =   18
+      TabStop         =   True
+      Text            =   ""
+      TextAlignment   =   0
+      Tooltip         =   ""
+      Top             =   129
+      Visible         =   True
+      Width           =   560
+      _mPanelIndex    =   -1
+   End
+   Begin WebTextArea txtLastResponse
+      AllowReturnKey  =   True
+      AllowSpellChecking=   False
+      Caption         =   ""
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      Height          =   289
+      Hint            =   ""
+      Index           =   -2147483648
+      Indicator       =   0
+      Left            =   20
+      LockBottom      =   True
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   True
+      LockTop         =   True
+      LockVertical    =   False
+      MaximumCharactersAllowed=   0
+      PanelIndex      =   0
+      ReadOnly        =   True
+      Scope           =   0
+      TabIndex        =   19
+      TabStop         =   True
+      Text            =   ""
+      TextAlignment   =   0
+      Tooltip         =   ""
+      Top             =   226
+      Visible         =   True
+      Width           =   560
+      _mPanelIndex    =   -1
+   End
+   Begin WebLabel lblLastError
       Bold            =   False
       ControlID       =   ""
       CSSClasses      =   ""
       Enabled         =   True
-      FontName        =   ""
+      FontName        =   "Bricolage Grotesque"
       FontSize        =   0.0
       Height          =   38
       HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   0
       Italic          =   False
-      Left            =   56
+      Left            =   20
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -178,31 +212,31 @@ Begin WebDialog dlg_NewPassword
       Multiline       =   False
       PanelIndex      =   0
       Scope           =   0
-      TabIndex        =   4
+      TabIndex        =   20
       TabStop         =   True
-      Text            =   "Password"
+      Text            =   "Last Status"
       TextAlignment   =   0
       TextColor       =   &c000000FF
       Tooltip         =   ""
-      Top             =   145
+      Top             =   93
       Underline       =   False
       Visible         =   True
-      Width           =   100
+      Width           =   126
       _mPanelIndex    =   -1
    End
-   Begin WebTextField txtPassword
-      AllowAutoComplete=   False
-      AllowSpellChecking=   False
-      Caption         =   ""
+   Begin WebLabel lblLastResponse
+      Bold            =   False
       ControlID       =   ""
       CSSClasses      =   ""
       Enabled         =   True
-      FieldType       =   1
+      FontName        =   "Bricolage Grotesque"
+      FontSize        =   0.0
       Height          =   38
-      Hint            =   ""
+      HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   0
-      Left            =   147
+      Italic          =   False
+      Left            =   20
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -210,157 +244,76 @@ Begin WebDialog dlg_NewPassword
       LockRight       =   False
       LockTop         =   True
       LockVertical    =   False
-      MaximumCharactersAllowed=   0
+      Multiline       =   False
       PanelIndex      =   0
-      ReadOnly        =   False
       Scope           =   0
-      TabIndex        =   5
+      TabIndex        =   21
       TabStop         =   True
-      Text            =   ""
+      Text            =   "Last response"
       TextAlignment   =   0
+      TextColor       =   &c000000FF
       Tooltip         =   ""
-      Top             =   145
+      Top             =   191
+      Underline       =   False
       Visible         =   True
-      Width           =   409
+      Width           =   150
       _mPanelIndex    =   -1
-   End
-   Begin WebRectangle Rectangle2
-      BorderColor     =   &c000000FF
-      BorderThickness =   0
-      ControlCount    =   0
-      ControlID       =   ""
-      CornerSize      =   0
-      CSSClasses      =   ""
-      Enabled         =   True
-      FillColor       =   &c006AB500
-      HasFillColor    =   True
-      Height          =   62
-      Index           =   -2147483648
-      Indicator       =   0
-      LayoutDirection =   0
-      LayoutType      =   0
-      Left            =   0
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   True
-      LockTop         =   True
-      LockVertical    =   False
-      PanelIndex      =   0
-      Scope           =   0
-      TabIndex        =   6
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   0
-      Visible         =   True
-      Width           =   600
-      _mDesignHeight  =   0
-      _mDesignWidth   =   0
-      _mPanelIndex    =   -1
-      Begin WebLabel lblDialogTitle
-         Bold            =   True
-         ControlID       =   ""
-         CSSClasses      =   ""
-         Enabled         =   True
-         FontName        =   "Bricolage Grotesque"
-         FontSize        =   24.0
-         Height          =   38
-         HTMLElement     =   0
-         Index           =   -2147483648
-         Indicator       =   0
-         Italic          =   False
-         Left            =   20
-         LockBottom      =   False
-         LockedInPosition=   False
-         LockHorizontal  =   False
-         LockLeft        =   True
-         LockRight       =   False
-         LockTop         =   True
-         LockVertical    =   False
-         Multiline       =   False
-         PanelIndex      =   0
-         Parent          =   "Rectangle2"
-         Scope           =   0
-         TabIndex        =   7
-         TabPanelIndex   =   -1
-         TabStop         =   True
-         Text            =   "Password expired: Choose a new one"
-         TextAlignment   =   0
-         TextColor       =   &cFAFAFA00
-         Tooltip         =   ""
-         Top             =   12
-         Underline       =   False
-         Visible         =   True
-         Width           =   560
-         _mPanelIndex    =   -1
-      End
    End
 End
 #tag EndWebPage
 
 #tag WindowCode
-	#tag Property, Flags = &h21
-		Private ButtonClicked As WebButton
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		email As String
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		username As String
-	#tag EndProperty
+	#tag Event
+		Sub Opening()
+		  
+		End Sub
+	#tag EndEvent
 
 
 #tag EndWindowCode
 
-#tag Events btnUpdate
+#tag Events btnTestEmail
 	#tag Event
 		Sub Pressed()
-		  if txtPassword.Text <> txtPasswordAgain.Text then
-		    messageBox("Passwords do not match. Please correct and try again")
-		  else
-		    // Generate salt and hash with PBKDF2
-		    Dim salt As String = app.GenerateRandomSalt(32)
-		    Dim passwordData As New MemoryBlock(txtPassword.Text.LenB)
-		    passwordData.StringValue(0, txtPassword.Text.LenB) = txtPassword.Text
-		    Dim hash As MemoryBlock = Crypto.PBKDF2(salt, passwordData, 10000, 32, Crypto.HashAlgorithms.SHA2_256)
-		    Dim hashHex As String = app.EncodeHex(hash)
-		    
-		    var sql as string = "UPDATE users SET password_hash = ?, password_salt = ?, OTP = ? WHERE username = ?"
-		    var ps as MySQLPreparedStatement = session.db.Prepare(sql)
+		  // The test goes to the signed-in user. Session has no email, only the
+		  // username, so look the address up from the users table.
+		  Var toEmail As String
+		  Try
+		    Var ps As MySQLPreparedStatement = Session.db.Prepare("SELECT email FROM users WHERE username = ?")
 		    ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		    ps.BindType(1, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		    ps.BindType(2, MySQLPreparedStatement.MYSQL_TYPE_TINY)
-		    ps.BindType(3, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		    ps.Bind(0, hashHex)
-		    ps.Bind(1, salt)
-		    ps.Bind(2, 0)
-		    ps.Bind(3, username)
-		    ps.ExecuteSQL
-		    
-		    
-		    var w as new dlg_Login
-		    w.txtUsername.Text = self.username
-		    w.Show
-		    
-		    self.username = ""
-		    self.email = ""
-		    self.close
-		  end If
+		    ps.Bind(0, Session.CurrentUsername)
+		    Var rs As RowSet = ps.SelectSQL
+		    If rs <> Nil And Not rs.AfterLastRow Then toEmail = rs.Column("email").StringValue.Trim
+		  Catch err As DatabaseException
+		    txtLastError.Text = "Could not look up your email address: " + err.Message
+		    txtLastResponse.Text = ""
+		    Return
+		  End Try
+
+		  If toEmail = "" Then
+		    txtLastError.Text = "No email address on the current account — cannot send a test."
+		    txtLastResponse.Text = ""
+		    Return
+		  End If
+
+		  Var ok As Boolean = EmailHelper.SendTestEmail(toEmail, Session.CurrentUsername)
+		  txtLastError.Text = If(ok, "Success", EmailHelper.LastError)
 		  
-		  
+		  // Pretty-print the JSON response; fall back to the raw text if it
+		  // can't be parsed (e.g. a network failure left it empty).
+		  Try
+		    Var j As New JSONItem(EmailHelper.LastResponse)
+		    j.Compact = False
+		    txtLastResponse.Text = j.ToString
+		  Catch e As RuntimeException
+		    txtLastResponse.Text = EmailHelper.LastResponse
+		  End Try
 		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events btnCancelLogin
+#tag Events btnClose
 	#tag Event
 		Sub Pressed()
-		  var d as new dlg_Login
-		  d.Show
-		  self.username = ""
-		  self.email = ""
 		  self.Close
 		End Sub
 	#tag EndEvent
@@ -607,21 +560,5 @@ End
 			"2 - TopToBottom"
 			"3 - BottomToTop"
 		#tag EndEnumValues
-	#tag EndViewProperty
-	#tag ViewProperty
-		Name="email"
-		Visible=false
-		Group="Behavior"
-		InitialValue=""
-		Type="String"
-		EditorType="MultiLineEditor"
-	#tag EndViewProperty
-	#tag ViewProperty
-		Name="username"
-		Visible=false
-		Group="Behavior"
-		InitialValue=""
-		Type="String"
-		EditorType="MultiLineEditor"
 	#tag EndViewProperty
 #tag EndViewBehavior

@@ -32,6 +32,7 @@ Begin WebPage wp_indications
    _ImplicitInstance=   False
    _mDesignHeight  =   0
    _mDesignWidth   =   0
+   _mName          =   ""
    _mPanelIndex    =   -1
    Begin WebLabel Label1
       Bold            =   False
@@ -158,7 +159,7 @@ Begin WebPage wp_indications
       Top             =   216
       Underline       =   False
       Visible         =   True
-      Width           =   275
+      Width           =   297
       _mPanelIndex    =   -1
    End
    Begin WebListBox lstIndications
@@ -399,18 +400,19 @@ End
 		  btnShowIndicationDetail.Enabled = False
 		  btnRequestIndicationChange.Enabled = False
 		  btnCopyLink.Enabled = False
-
+		  
 		  // Copy must happen client-side in the user gesture (navigator.clipboard
 		  // refuses out-of-gesture writes). Setup wires onclick + flash; the
 		  // per-row ID is stamped in SelectionChanged.
 		  CopyStringToClipboardHelper.SetupDeepLinkButton(btnCopyLink)
-
-		  // Apply incoming search term if we arrived from the landing page.
-		  If InitialSearchText.Trim <> "" Then
-		    txtSearch.Text = InitialSearchText
-		    InitialSearchText = ""
+		  
+		  // Apply a search term stashed on the Session by the landing page.
+		  Var pendingSearch As String = Session.PendingSearch.Trim
+		  Session.PendingSearch = ""
+		  If pendingSearch <> "" Then
+		    txtSearch.Text = pendingSearch
 		  End If
-
+		  
 		  LoadContexts
 		  LoadIndications
 		  
@@ -804,10 +806,6 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		InitialSearchText As String = ""
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		FilterContextID As Integer = 0
 	#tag EndProperty
 
@@ -851,12 +849,12 @@ End
 	#tag Event
 		Sub SelectionChanged(rows() As Integer)
 		  #Pragma Unused rows
-
+		  
 		  Var hasSelection As Boolean = me.SelectedRowIndex >= 0
 		  btnShowIndicationDetail.Enabled = hasSelection
 		  btnRequestIndicationChange.Enabled = hasSelection
 		  btnCopyLink.Enabled = hasSelection
-
+		  
 		  If hasSelection Then
 		    IndicationID = me.RowTagAt(me.SelectedRowIndex)
 		    session.SelectedIndicationID = IndicationID

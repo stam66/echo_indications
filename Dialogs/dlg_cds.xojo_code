@@ -5,7 +5,7 @@ Begin WebDialog dlg_cds
    ControlID       =   ""
    CSSClasses      =   ""
    Enabled         =   True
-   Height          =   613
+   Height          =   695
    Index           =   -2147483648
    Indicator       =   0
    LayoutDirection =   0
@@ -25,7 +25,6 @@ Begin WebDialog dlg_cds
    Width           =   712
    _mDesignHeight  =   0
    _mDesignWidth   =   0
-   _mName          =   ""
    _mPanelIndex    =   -1
    Begin WebBreadcrumb breadcrumb_cds
       ControlID       =   ""
@@ -37,7 +36,7 @@ Begin WebDialog dlg_cds
       InitialValue    =   "One/Two/Three"
       LastAddedIndex  =   0
       LastRowIndex    =   0
-      Left            =   0
+      Left            =   20
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -51,9 +50,9 @@ Begin WebDialog dlg_cds
       TabIndex        =   1
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   70
+      Top             =   116
       Visible         =   True
-      Width           =   712
+      Width           =   692
       _mPanelIndex    =   -1
    End
    Begin WebLabel lblCurrentPrompt
@@ -85,7 +84,7 @@ Begin WebDialog dlg_cds
       TextAlignment   =   0
       TextColor       =   &c000000FF
       Tooltip         =   ""
-      Top             =   142
+      Top             =   206
       Underline       =   False
       Visible         =   True
       Width           =   672
@@ -116,7 +115,7 @@ Begin WebDialog dlg_cds
       TabIndex        =   4
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   555
+      Top             =   637
       Visible         =   True
       Width           =   100
       _mPanelIndex    =   -1
@@ -161,7 +160,7 @@ Begin WebDialog dlg_cds
       TabIndex        =   5
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   188
+      Top             =   252
       Visible         =   True
       Width           =   672
       _mPanelIndex    =   -1
@@ -266,7 +265,7 @@ Begin WebDialog dlg_cds
       TabIndex        =   8
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   178
+      Top             =   242
       Visible         =   False
       Width           =   658
       _mDesignHeight  =   0
@@ -303,7 +302,7 @@ Begin WebDialog dlg_cds
          TextAlignment   =   0
          TextColor       =   &c000000FF
          Tooltip         =   ""
-         Top             =   385
+         Top             =   449
          Underline       =   False
          Visible         =   True
          Width           =   606
@@ -340,7 +339,7 @@ Begin WebDialog dlg_cds
          TextAlignment   =   0
          TextColor       =   &c000000FF
          Tooltip         =   ""
-         Top             =   208
+         Top             =   272
          Underline       =   False
          Visible         =   True
          Width           =   172
@@ -374,7 +373,7 @@ Begin WebDialog dlg_cds
          TabPanelIndex   =   -1
          TabStop         =   True
          Tooltip         =   ""
-         Top             =   241
+         Top             =   305
          Visible         =   True
          Width           =   172
          _mPanelIndex    =   -1
@@ -410,7 +409,7 @@ Begin WebDialog dlg_cds
          TextAlignment   =   0
          TextColor       =   &c000000FF
          Tooltip         =   ""
-         Top             =   280
+         Top             =   344
          Underline       =   False
          Visible         =   True
          Width           =   76
@@ -444,7 +443,7 @@ Begin WebDialog dlg_cds
          TabPanelIndex   =   -1
          TabStop         =   True
          Tooltip         =   ""
-         Top             =   312
+         Top             =   376
          Visible         =   True
          Width           =   172
          _mPanelIndex    =   -1
@@ -476,7 +475,7 @@ Begin WebDialog dlg_cds
          TabPanelIndex   =   -1
          TabStop         =   True
          Tooltip         =   ""
-         Top             =   312
+         Top             =   376
          Visible         =   True
          Width           =   353
          _mPanelIndex    =   -1
@@ -509,7 +508,7 @@ Begin WebDialog dlg_cds
          TabPanelIndex   =   -1
          TabStop         =   True
          Tooltip         =   ""
-         Top             =   241
+         Top             =   305
          Visible         =   True
          Width           =   172
          _mPanelIndex    =   -1
@@ -545,7 +544,7 @@ Begin WebDialog dlg_cds
          TextAlignment   =   0
          TextColor       =   &c000000FF
          Tooltip         =   ""
-         Top             =   208
+         Top             =   272
          Underline       =   False
          Visible         =   True
          Width           =   172
@@ -582,7 +581,7 @@ Begin WebDialog dlg_cds
          TextAlignment   =   0
          TextColor       =   &c000000FF
          Tooltip         =   ""
-         Top             =   208
+         Top             =   272
          Underline       =   False
          Visible         =   True
          Width           =   172
@@ -616,11 +615,68 @@ Begin WebDialog dlg_cds
          TabPanelIndex   =   -1
          TabStop         =   True
          Tooltip         =   ""
-         Top             =   241
+         Top             =   305
          Visible         =   True
          Width           =   172
          _mPanelIndex    =   -1
       End
+   End
+   Begin WebSearchField txtSearch
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      Height          =   38
+      Hint            =   "Search presenting complaints (starts over)"
+      Index           =   -2147483648
+      Indicator       =   ""
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      PanelIndex      =   0
+      Scope           =   2
+      TabIndex        =   19
+      TabStop         =   True
+      Text            =   ""
+      Tooltip         =   ""
+      Top             =   70
+      Visible         =   True
+      Width           =   564
+      _mPanelIndex    =   -1
+   End
+   Begin WebButton btnSearch
+      AllowAutoDisable=   False
+      Cancel          =   False
+      Caption         =   "Search"
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Default         =   True
+      Enabled         =   True
+      Height          =   38
+      Index           =   -2147483648
+      Indicator       =   1
+      Left            =   592
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      Outlined        =   False
+      PanelIndex      =   0
+      Scope           =   2
+      TabIndex        =   20
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   70
+      Visible         =   True
+      Width           =   100
+      _mPanelIndex    =   -1
    End
 End
 #tag EndWebPage
@@ -931,6 +987,45 @@ End
 		  #Pragma Unused item
 		  
 		  ApplyRagIndicator(popVerdictSecondaryIP)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnSearch
+	#tag Event
+		Sub Pressed()
+		  // Search the ROOT presenting complaints by substring (case-insensitive).
+		  // If we're below the root level, jump back to roots first - same effect
+		  // as the breadcrumb "Start over" crumb - then highlight the first
+		  // matching root. Empty search is a no-op.
+		  Var query As String = txtSearch.Text.Trim
+		  If query = "" Then Return
+		  
+		  // Reset only when we're not already on the roots view.
+		  If CurrentNodeID <> 0 Or PathIDs.Count > 0 Then
+		    ResetToRoot
+		  End If
+		  
+		  // First matching root wins. Match is case-insensitive substring against
+		  // the option_label. We re-fetch roots in DB order (the same order
+		  // RenderStep just used to populate lstOptions) and then map back to the
+		  // listbox row via its RowTagAt (which carries the node id).
+		  Var qLower As String = query.Lowercase
+		  Var roots() As DecisionNode = DecisionNode.GetRoots(Session.DB)
+		  For Each r As DecisionNode In roots
+		    If r.OptionLabel.Lowercase.IndexOf(qLower) >= 0 Then
+		      For i As Integer = 0 To lstOptions.LastRowIndex
+		        If lstOptions.RowTagAt(i).IntegerValue = r.ID Then
+		          lstOptions.SelectedRowIndex = i
+		          lstOptions.ScrollTo(i)
+		          Return
+		        End If
+		      Next
+		      Return // matched a root but couldn't find its row (shouldn't happen)
+		    End If
+		  Next
+		  
+		  // No match: clear any prior selection but leave the user on the roots view.
+		  lstOptions.SelectedRowIndex = -1
 		End Sub
 	#tag EndEvent
 #tag EndEvents

@@ -190,7 +190,7 @@ Begin WebDialog dlg_about
       TabIndex        =   3
       TabPanelIndex   =   0
       TabStop         =   True
-      Text            =   "Version 1.8"
+      Text            =   "Version 2.0"
       TextAlignment   =   0
       TextColor       =   &c000000FF
       Tooltip         =   ""
@@ -240,10 +240,10 @@ Begin WebDialog dlg_about
    Begin WebLabel lblInfo
       Bold            =   False
       ControlID       =   ""
-      CSSClasses      =   ""
+      CSSClasses      =   "prewrap"
       Enabled         =   True
       FontName        =   "Bricolage Grotesque"
-      FontSize        =   0.0
+      FontSize        =   14.0
       Height          =   461
       HTMLElement     =   0
       Index           =   -2147483648
@@ -341,6 +341,15 @@ End
 #tag EndWebPage
 
 #tag WindowCode
+	#tag Event
+		Sub Shown()
+		  // lblInfo's sub-items are indented with leading spaces in its Text;
+		  // pre-wrap stops the browser collapsing them so the indent shows.
+		  lblInfo.ExecuteJavaScript("$('#" + lblInfo.ControlID + ", #" + lblInfo.ControlID + " *').css('white-space', 'pre-wrap');")
+		End Sub
+	#tag EndEvent
+
+
 #tag EndWindowCode
 
 #tag Events appLogo

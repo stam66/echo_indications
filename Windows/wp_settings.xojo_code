@@ -32,6 +32,7 @@ Begin WebPage wp_settings
    _ImplicitInstance=   False
    _mDesignHeight  =   0
    _mDesignWidth   =   0
+   _mName          =   ""
    _mPanelIndex    =   -1
    Begin wc_WebPageHeader wc_header
       ControlCount    =   0
@@ -235,7 +236,7 @@ Begin WebPage wp_settings
       Width           =   285
       _mPanelIndex    =   -1
    End
-   Begin WebButton Button1
+   Begin WebButton btnChangelogEditor
       AllowAutoDisable=   False
       Cancel          =   False
       Caption         =   "Changelog Editor"
@@ -260,12 +261,12 @@ Begin WebPage wp_settings
       TabIndex        =   7
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   121
+      Top             =   179
       Visible         =   True
       Width           =   200
       _mPanelIndex    =   -1
    End
-   Begin WebButton Button2
+   Begin WebButton btnCDSEditor
       AllowAutoDisable=   False
       Cancel          =   False
       Caption         =   "CDS Editor"
@@ -290,7 +291,37 @@ Begin WebPage wp_settings
       TabIndex        =   8
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   179
+      Top             =   237
+      Visible         =   True
+      Width           =   200
+      _mPanelIndex    =   -1
+   End
+   Begin WebButton btnEmail
+      AllowAutoDisable=   False
+      Cancel          =   False
+      Caption         =   "Email healthcheck"
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Default         =   False
+      Enabled         =   True
+      Height          =   38
+      Index           =   -2147483648
+      Indicator       =   3
+      Left            =   896
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      LockVertical    =   False
+      Outlined        =   False
+      PanelIndex      =   0
+      Scope           =   2
+      TabIndex        =   9
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   121
       Visible         =   True
       Width           =   200
       _mPanelIndex    =   -1
@@ -874,7 +905,7 @@ End
 		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events Button1
+#tag Events btnChangelogEditor
 	#tag Event
 		Sub Pressed()
 		  Var dlg As New dlg_ChangeLogEditor
@@ -882,11 +913,19 @@ End
 		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events Button2
+#tag Events btnCDSEditor
 	#tag Event
 		Sub Pressed()
 		  Var w As New wp_cds_editor
 		  session.NavigationManager.NavigateToPage(w)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnEmail
+	#tag Event
+		Sub Pressed()
+		  Var dlg As New dlg_EmailTest
+		  dlg.Show
 		End Sub
 	#tag EndEvent
 #tag EndEvents

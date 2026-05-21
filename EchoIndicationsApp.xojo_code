@@ -5,10 +5,6 @@ Inherits WebApplication
 		Sub Opening(args() As String)
 		  #Pragma Unused args
 		  
-		  ' Semaphore is used to ensure that only one session at a time tries
-		  ' to send an email. Constructor defaults to count 1 (one resource available).
-		  MailSemaphore = New Semaphore ' Mail Semaphore is a Property: MailSemaphore As Semaphore
-
 		  ' // populate users
 		  ' all_users = users.GetInstance
 		End Sub
@@ -299,126 +295,6 @@ Inherits WebApplication
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Sub SendMail(toAddress As String, subject As String, message As String, webSession As WebSession = Nil)
-		  
-		  ' Try to acquire the semaphore (non-blocking)
-		  ' If we can't acquire it, another email is being sent - wait briefly and retry
-		  Var retryCount As Integer = 0
-		  Var maxRetries As Integer = 30  ' Wait up to ~30 seconds
-		  
-		  While Not MailSemaphore.TrySignal And retryCount < maxRetries
-		    retryCount = retryCount + 1
-		    
-		    #If TargetWeb Then
-		      If webSession <> Nil Then
-		        webSession.ExecuteJavaScript("console.log('Waiting for email semaphore... attempt " + retryCount.ToString + "');")
-		      End If
-		    #EndIf
-		    
-		    ' Wait 1 second before retry
-		    Var deadline As Double = System.Microseconds + 1000000
-		    While System.Microseconds < deadline
-		      ' Busy wait
-		    Wend
-		  Wend
-		  
-		  If retryCount >= maxRetries Then
-		    ' Failed to acquire semaphore - another email is stuck
-		    #If TargetWeb Then
-		      If webSession <> Nil Then
-		        webSession.ExecuteJavaScript("console.error('Failed to acquire email semaphore after " + maxRetries.ToString + " attempts. Forcing release.');")
-		      End If
-		    #EndIf
-		    
-		    ' Force release the stuck semaphore and try one more time
-		    Try
-		      MailSemaphore.Release
-		    Catch e As RuntimeException
-		      ' Ignore if already released
-		    End Try
-		    
-		    If Not MailSemaphore.TrySignal Then
-		      ' Still can't acquire - give up
-		      MessageBox("Email system is busy. Please try again in a moment.")
-		      Return
-		    End If
-		  End If
-		  
-		  #If TargetWeb Then
-		    If webSession <> Nil Then
-		      webSession.ExecuteJavaScript("console.log('Sending email via MailJet API to: " + toAddress + "');")
-		    End If
-		  #EndIf
-		  
-		  ' Send email via MailJet API v3.1
-		  ' Credentials loaded from the out-of-repo secrets file (see Modules/Secrets).
-		  Var apiKey As String = Secrets.MAILJET_API_KEY
-		  Var apiSecret As String = Secrets.MAILJET_SECRET_KEY
-
-		  ' Build JSON payload for MailJet API v3.1
-		  Var json As String = "{" + _
-		  """Messages"": [{" + _
-		  """From"": {" + _
-		  """Email"": ""info@echoindications.org""," + _
-		  """Name"": ""ECHOindications""" + _
-		  "}," + _
-		  """To"": [{" + _
-		  """Email"": """ + toAddress + """" + _
-		  "}]," + _
-		  """Subject"": """ + subject.ReplaceAll("""", "\""") + """," + _
-		  """TextPart"": """ + message.ReplaceAll("""", "\""").ReplaceAll(EndOfLine, "\n") + """" + _
-		  "}]}"
-		  
-		  ' Create URLConnection for synchronous HTTP request
-		  Var socket As New URLConnection
-		  
-		  ' Build Authorization header manually (Username/Password properties don't exist in Xojo 2025 R3)
-		  Var credentials As String = apiKey + ":" + apiSecret
-		  Var credentialsEncoded As String = EncodeBase64(credentials, 0)
-		  credentialsEncoded = credentialsEncoded.ReplaceAll(EndOfLine, "").ReplaceAll(Chr(13), "").ReplaceAll(Chr(10), "")
-		  socket.RequestHeader("Authorization") = "Basic " + credentialsEncoded
-		  
-		  ' Set request body (SetRequestContent sets Content-Type automatically)
-		  socket.SetRequestContent(json, "application/json")
-		  
-		  ' Send POST request to MailJet API (30 second timeout)
-		  ' Note: If you have a US-based account, change to: https://api.us.mailjet.com/v3.1/send
-		  Try
-		    Var response As String = socket.SendSync("POST", "https://api.mailjet.com/v3.1/send", 30)
-		    
-		    ' Check response status
-		    If socket.HTTPStatusCode = 200 Then
-		      #If TargetWeb Then
-		        If webSession <> Nil Then
-		          webSession.ExecuteJavaScript("console.log('Email sent successfully via MailJet');")
-		        End If
-		      #EndIf
-		    Else
-		      #If TargetWeb Then
-		        If webSession <> Nil Then
-		          webSession.ExecuteJavaScript("console.error('MailJet API error: HTTP " + socket.HTTPStatusCode.ToString + "');")
-		          webSession.ExecuteJavaScript("console.error('Response: " + response.ReplaceAll("'", "\\'").ReplaceAll("""", "\""") + "');")
-		        End If
-		      #EndIf
-		      MessageBox("Failed to send email. HTTP Status: " + socket.HTTPStatusCode.ToString + EndOfLine + "Response: " + response)
-		    End If
-		    
-		  Catch e As RuntimeException
-		    #If TargetWeb Then
-		      If webSession <> Nil Then
-		        webSession.ExecuteJavaScript("console.error('Email send exception: " + e.Message + "');")
-		      End If
-		    #EndIf
-		    MessageBox("Error sending email: " + e.Message)
-		  End Try
-		  
-		  ' Release the semaphore
-		  MailSemaphore.Release
-		  
-		  
-		End Sub
-	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub submitChangeRequest(changeRequest as string, cUser as string)
@@ -434,67 +310,6 @@ Inherits WebApplication
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Sub TestMailJetAuth(webSession As WebSession = Nil)
-		  ' Test MailJet API credentials with a simple GET request
-		  ' Credentials loaded from the out-of-repo secrets file (see Modules/Secrets).
-		  Var apiKey As String = Secrets.MAILJET_API_KEY
-		  Var apiSecret As String = Secrets.MAILJET_SECRET_KEY
-		  
-		  #If TargetWeb Then
-		    If webSession <> Nil Then
-		      webSession.ExecuteJavaScript("console.log('Testing MailJet API authentication...');")
-		    End If
-		  #EndIf
-		  
-		  ' Create URLConnection for synchronous HTTP request
-		  Var socket As New URLConnection
-		  
-		  ' Build Authorization header manually (Username/Password properties don't exist in Xojo 2025 R3)
-		  Var credentials As String = apiKey + ":" + apiSecret
-		  Var credentialsEncoded As String = EncodeBase64(credentials, 0)
-		  credentialsEncoded = credentialsEncoded.ReplaceAll(EndOfLine, "").ReplaceAll(Chr(13), "").ReplaceAll(Chr(10), "")
-		  socket.RequestHeader("Authorization") = "Basic " + credentialsEncoded
-		  
-		  ' Debug: Log what we're sending
-		  #If TargetWeb Then
-		    If webSession <> Nil Then
-		      webSession.ExecuteJavaScript("console.log('=== MANUAL BASIC AUTH ===');")
-		      webSession.ExecuteJavaScript("console.log('Credentials Base64: " + credentialsEncoded + "');")
-		      webSession.ExecuteJavaScript("console.log('=========================');")
-		    End If
-		  #EndIf
-		  
-		  ' Send GET request to MailJet API stats endpoint (10 second timeout)
-		  Try
-		    Var url As String = "https://api.mailjet.com/v3/REST/statcounters?CounterSource=APIKey&CounterTiming=Message&CounterResolution=Lifetime"
-		    Var response As String = socket.SendSync("GET", url, 10)
-		    
-		    ' Check response status
-		    #If TargetWeb Then
-		      If webSession <> Nil Then
-		        webSession.ExecuteJavaScript("console.log('MailJet API Test - HTTP Status: " + socket.HTTPStatusCode.ToString + "');")
-		        webSession.ExecuteJavaScript("console.log('Response: " + response.ReplaceAll("'", "\\'").ReplaceAll("""", "\""").ReplaceAll(EndOfLine, " ") + "');")
-		      End If
-		    #EndIf
-		    
-		    If socket.HTTPStatusCode = 200 Then
-		      MessageBox("MailJet API Test Success!" + EndOfLine + "HTTP Status: 200" + EndOfLine + "Response: " + response)
-		    Else
-		      MessageBox("MailJet API Test Failed" + EndOfLine + "HTTP Status: " + socket.HTTPStatusCode.ToString + EndOfLine + "Response: " + response)
-		    End If
-		    
-		  Catch e As RuntimeException
-		    #If TargetWeb Then
-		      If webSession <> Nil Then
-		        webSession.ExecuteJavaScript("console.error('MailJet API test exception: " + e.Message + "');")
-		      End If
-		    #EndIf
-		    MessageBox("Error testing MailJet API: " + e.Message)
-		  End Try
-		  
-		End Sub
-	#tag EndMethod
 
 
 	#tag Note, Name = Untitled
@@ -536,9 +351,6 @@ Inherits WebApplication
 	#tag EndNote
 
 
-	#tag Property, Flags = &h0
-		MailSemaphore As Semaphore
-	#tag EndProperty
 
 
 
