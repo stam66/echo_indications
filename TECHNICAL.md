@@ -11,7 +11,7 @@ Architecture, data model and deployment for the ECHO Indications app. For the us
 | Layer | Choice |
 |---|---|
 | Application framework | [Xojo Web 2](https://www.xojo.com) |
-| Backend host | Xojo Cloud |
+| Backend host | Xojo Cloud or a self-hosted Linux server (currently deployed on a DigitalOcean droplet) |
 | Database | MySQL / MariaDB (`MySQLCommunityServer` plugin) |
 | Email | MailJet (transactional; outbound SMTP code retired) |
 | Source control | Git / GitHub |
@@ -110,12 +110,12 @@ If you're collaborating and need access to the content files, contact the mainta
 
 ## Secrets
 
-Credentials are **not** committed. The `Secrets` module loads keys (database, MailJet API, etc.) from an out-of-tree file at app startup:
+Credentials are **not** committed. The `Secrets` module loads keys (database, MailJet API, etc.) from an out-of-tree file at app startup. The path is chosen at compile time via `#If TargetXojoCloud` so the same source tree builds correctly for either host:
 
-- **Local / on-prem**: `/etc/ECHOINDICATIONS/secrets.env` (`SpecialFolder.Etc.Child("ECHOINDICATIONS")`).
-- **Xojo Cloud**: `SharedDocuments/ECHOINDICATIONS/secrets.env`.
+- **Xojo Cloud build target**: `SharedDocuments/ECHOINDICATIONS/secrets.env`.
+- **Linux build target** (self-hosted server or local dev): `/etc/ECHOINDICATIONS/secrets.env`, resolved via `SpecialFolder.Etc.Child("ECHOINDICATIONS")`. This is the path used on the current droplet deployment.
 
-The shape of the file is in `secrets.env.example`. Keys are loaded once by `Secrets.Load` at startup and accessed via module-level getters. To add a new key: declare it in `Modules/Secrets.xojo_code` (parse + getter), then add the key to both the local template and every deployed secrets file.
+The shape of the file is in `secrets.env.example`. Keys are loaded once by `Secrets.Load` at startup and accessed via module-level getters. To add a new key: declare it in `Modules/Secrets.xojo_code` (parse + getter), then add the key to the local template and to the deployed secrets file on every host that runs the app.
 
 ---
 
@@ -135,9 +135,16 @@ Indication URLs of the form `https://echoindications.org/?id=42` open that indic
 
 ## Deployment
 
-The app is built as a 64-bit Xojo Web binary and pushed to Xojo Cloud. The site is served at [https://echoindications.org](https://echoindications.org) with HTTPS terminated at the Xojo Cloud edge.
+The app supports two deployment targets, selected at Xojo build time:
 
-Database backups: dumps live in `../echo_indications resources/` (not in git).
+- **Xojo Cloud** &mdash; build for the Xojo Cloud target and push via the IDE's standard deploy flow.
+- **Self-hosted Linux server** &mdash; build a 64-bit Xojo Web (Linux) binary, copy the compiled binary plus its `Libs/` directory and bundled resources to the server, and run as a long-lived service.
+
+The conditional code in `Modules/Secrets.xojo_code` handles the differing platform conventions (file paths, permissions) for each target. The same source tree compiles for either; no per-host code changes are required.
+
+The currently active deployment is a **DigitalOcean droplet** serving [https://echoindications.org](https://echoindications.org). The droplet also hosts the MySQL database and the `/etc/ECHOINDICATIONS/secrets.env` file the app reads at startup.
+
+Database backups: dumps live in `../echo_indications resources/` on the maintainer's workstation (not in git, not on the droplet).
 
 ---
 
