@@ -29,7 +29,7 @@ Protected Class Indication
 		  If Not Self.Delete(db) Then Return False
 		  
 		  // Log to audit
-		  Call AuditTracker.LogDelete("indications", Self.ID, username, oldData)
+		  Call AuditTracker.LogDelete(db, "indications", Self.ID, username, oldData)
 		  
 		  Return True
 		End Function
@@ -133,6 +133,78 @@ Protected Class Indication
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub LoadFromJSON(j As JSONItem)
+		  // Populate Self from a JSONItem body. Used by POST (create) and
+		  // PUT (update) endpoints. Only assigns fields that are present —
+		  // a missing key leaves the existing value alone (PATCH-friendly
+		  // for update; for create, missing keys keep the default zero values).
+		  //
+		  // The "contexts" key, if present, fully replaces ContextIDs/ContextNames.
+		  If j.HasName("title") Then Self.Title = j.Value("title").StringValue
+		  If j.HasName("keywords") Then Self.Keywords = j.Value("keywords").StringValue
+		  If j.HasName("comments") Then Self.Comments = j.Value("comments").StringValue
+		  If j.HasName("primary_care") Then Self.PrimaryCare = j.Value("primary_care").StringValue
+		  If j.HasName("secondary_inpatient") Then Self.SecondaryInpatient = j.Value("secondary_inpatient").StringValue
+		  If j.HasName("secondary_outpatient") Then Self.SecondaryOutpatient = j.Value("secondary_outpatient").StringValue
+		  If j.HasName("source_ase") Then Self.SourceASE = j.Value("source_ase").BooleanValue
+		  If j.HasName("source_eacvi") Then Self.SourceEACVI = j.Value("source_eacvi").BooleanValue
+		  If j.HasName("source_bse") Then Self.SourceBSE = j.Value("source_bse").BooleanValue
+		  If j.HasName("source_bhvs") Then Self.SourceBHVS = j.Value("source_bhvs").BooleanValue
+		  If j.HasName("source_consensus") Then Self.SourceConsensus = j.Value("source_consensus").BooleanValue
+		  If j.HasName("urgency") Then Self.Urgency = j.Value("urgency").StringValue
+
+		  If j.HasName("contexts") Then
+		    Var ctxArr As JSONItem = j.Value("contexts")
+		    Self.ContextIDs.ResizeTo(-1)
+		    Self.ContextNames.ResizeTo(-1)
+		    For i As Integer = 0 To ctxArr.Count - 1
+		      Var c As JSONItem = ctxArr.Child(i)
+		      If c.HasName("id") Then
+		        Self.ContextIDs.Add c.Value("id").IntegerValue
+		        Self.ContextNames.Add If(c.HasName("name"), c.Value("name").StringValue, "")
+		      End If
+		    Next
+		  End If
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ToJSONItem() As JSONItem
+		  // JSON-shaped projection of an Indication. Uses JSONItem directly
+		  // rather than Dictionary so that nested arrays of objects (contexts)
+		  // serialise cleanly — Xojo's typed-array rules don't play nicely
+		  // with Variant-of-Dictionary-array round-tripping.
+		  Var j As New JSONItem
+		  j.Value("id") = Self.ID
+		  j.Value("title") = Self.Title
+		  j.Value("keywords") = Self.Keywords
+		  j.Value("comments") = Self.Comments
+		  // Nullable enum columns: "" sentinel becomes JSON null.
+		  If Self.PrimaryCare = "" Then j.Value("primary_care") = Nil Else j.Value("primary_care") = Self.PrimaryCare
+		  If Self.SecondaryInpatient = "" Then j.Value("secondary_inpatient") = Nil Else j.Value("secondary_inpatient") = Self.SecondaryInpatient
+		  If Self.SecondaryOutpatient = "" Then j.Value("secondary_outpatient") = Nil Else j.Value("secondary_outpatient") = Self.SecondaryOutpatient
+		  j.Value("source_ase") = Self.SourceASE
+		  j.Value("source_eacvi") = Self.SourceEACVI
+		  j.Value("source_bse") = Self.SourceBSE
+		  j.Value("source_bhvs") = Self.SourceBHVS
+		  j.Value("source_consensus") = Self.SourceConsensus
+		  If Self.Urgency = "" Then j.Value("urgency") = Nil Else j.Value("urgency") = Self.Urgency
+
+		  Var contexts As New JSONItem
+		  contexts.Load("[]")
+		  For i As Integer = 0 To Self.ContextIDs.LastIndex
+		    Var c As New JSONItem
+		    c.Value("id") = Self.ContextIDs(i)
+		    c.Value("name") = Self.ContextNames(i)
+		    contexts.Add(c)
+		  Next
+		  j.Value("contexts") = contexts
+
+		  Return j
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub LoadContexts(db As MySQLCommunityServer)
 		  Try
 		    Var sql As String = "SELECT c.id, c.name FROM contexts c " + _
@@ -175,29 +247,53 @@ Protected Class Indication
 		      ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_STRING)
 		      ps.BindType(1, MySQLPreparedStatement.MYSQL_TYPE_STRING)
 		      ps.BindType(2, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		      ps.BindType(3, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		      ps.BindType(4, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		      ps.BindType(5, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		      // BindType for nullable enum columns (3,4,5,11) is set conditionally below.
 		      ps.BindType(6, MySQLPreparedStatement.MYSQL_TYPE_TINY)
 		      ps.BindType(7, MySQLPreparedStatement.MYSQL_TYPE_TINY)
 		      ps.BindType(8, MySQLPreparedStatement.MYSQL_TYPE_TINY)
 		      ps.BindType(9, MySQLPreparedStatement.MYSQL_TYPE_TINY)
 		      ps.BindType(10, MySQLPreparedStatement.MYSQL_TYPE_TINY)
-		      ps.BindType(11, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		      
+
 		      ps.Bind(0, Me.Title)
 		      ps.Bind(1, Me.Keywords)
 		      ps.Bind(2, Me.Comments)
-		      ps.Bind(3, Me.PrimaryCare)
-		      ps.Bind(4, Me.SecondaryInpatient)
-		      ps.Bind(5, Me.SecondaryOutpatient)
+		      // Enum columns are nullable. BindType must be MYSQL_TYPE_NULL when
+		      // binding Nil — otherwise MYSQL_TYPE_STRING coerces Nil back to ""
+		      // and the row silently fails to insert under non-strict sql_mode.
+		      If Me.PrimaryCare = "" Then
+		        ps.BindType(3, MySQLPreparedStatement.MYSQL_TYPE_NULL)
+		        ps.Bind(3, Nil)
+		      Else
+		        ps.BindType(3, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		        ps.Bind(3, Me.PrimaryCare)
+		      End If
+		      If Me.SecondaryInpatient = "" Then
+		        ps.BindType(4, MySQLPreparedStatement.MYSQL_TYPE_NULL)
+		        ps.Bind(4, Nil)
+		      Else
+		        ps.BindType(4, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		        ps.Bind(4, Me.SecondaryInpatient)
+		      End If
+		      If Me.SecondaryOutpatient = "" Then
+		        ps.BindType(5, MySQLPreparedStatement.MYSQL_TYPE_NULL)
+		        ps.Bind(5, Nil)
+		      Else
+		        ps.BindType(5, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		        ps.Bind(5, Me.SecondaryOutpatient)
+		      End If
 		      ps.Bind(6, Me.SourceASE)
 		      ps.Bind(7, Me.SourceEACVI)
 		      ps.Bind(8, Me.SourceBSE)
 		      ps.Bind(9, Me.SourceBHVS)
 		      ps.Bind(10, Me.SourceConsensus)
-		      ps.Bind(11, Me.Urgency)
-		      
+		      If Me.Urgency = "" Then
+		        ps.BindType(11, MySQLPreparedStatement.MYSQL_TYPE_NULL)
+		        ps.Bind(11, Nil)
+		      Else
+		        ps.BindType(11, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		        ps.Bind(11, Me.Urgency)
+		      End If
+
 		      ps.SQLExecute
 		      Me.ID = db.LastInsertedRowID
 		      
@@ -212,31 +308,53 @@ Protected Class Indication
 		      ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_STRING)
 		      ps.BindType(1, MySQLPreparedStatement.MYSQL_TYPE_STRING)
 		      ps.BindType(2, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		      ps.BindType(3, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		      ps.BindType(4, MySQLPreparedStatement.MYSQL_TYPE_STRING)
-		      ps.BindType(5, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		      // BindType for nullable enum columns (3,4,5,11) is set conditionally below.
 		      ps.BindType(6, MySQLPreparedStatement.MYSQL_TYPE_TINY)
 		      ps.BindType(7, MySQLPreparedStatement.MYSQL_TYPE_TINY)
 		      ps.BindType(8, MySQLPreparedStatement.MYSQL_TYPE_TINY)
 		      ps.BindType(9, MySQLPreparedStatement.MYSQL_TYPE_TINY)
 		      ps.BindType(10, MySQLPreparedStatement.MYSQL_TYPE_TINY)
-		      ps.BindType(11, MySQLPreparedStatement.MYSQL_TYPE_STRING)
 		      ps.BindType(12, MySQLPreparedStatement.MYSQL_TYPE_LONG)
-		      
+
 		      ps.Bind(0, Me.Title)
 		      ps.Bind(1, Me.Keywords)
 		      ps.Bind(2, Me.Comments)
-		      ps.Bind(3, Me.PrimaryCare)
-		      ps.Bind(4, Me.SecondaryInpatient)
-		      ps.Bind(5, Me.SecondaryOutpatient)
+		      // Enum columns are nullable — see INSERT branch above for rationale.
+		      If Me.PrimaryCare = "" Then
+		        ps.BindType(3, MySQLPreparedStatement.MYSQL_TYPE_NULL)
+		        ps.Bind(3, Nil)
+		      Else
+		        ps.BindType(3, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		        ps.Bind(3, Me.PrimaryCare)
+		      End If
+		      If Me.SecondaryInpatient = "" Then
+		        ps.BindType(4, MySQLPreparedStatement.MYSQL_TYPE_NULL)
+		        ps.Bind(4, Nil)
+		      Else
+		        ps.BindType(4, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		        ps.Bind(4, Me.SecondaryInpatient)
+		      End If
+		      If Me.SecondaryOutpatient = "" Then
+		        ps.BindType(5, MySQLPreparedStatement.MYSQL_TYPE_NULL)
+		        ps.Bind(5, Nil)
+		      Else
+		        ps.BindType(5, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		        ps.Bind(5, Me.SecondaryOutpatient)
+		      End If
 		      ps.Bind(6, Me.SourceASE)
 		      ps.Bind(7, Me.SourceEACVI)
 		      ps.Bind(8, Me.SourceBSE)
 		      ps.Bind(9, Me.SourceBHVS)
 		      ps.Bind(10, Me.SourceConsensus)
-		      ps.Bind(11, Me.Urgency)
+		      If Me.Urgency = "" Then
+		        ps.BindType(11, MySQLPreparedStatement.MYSQL_TYPE_NULL)
+		        ps.Bind(11, Nil)
+		      Else
+		        ps.BindType(11, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		        ps.Bind(11, Me.Urgency)
+		      End If
 		      ps.Bind(12, Me.ID)
-		      
+
 		      ps.SQLExecute
 		    End If
 		    
@@ -301,9 +419,9 @@ Protected Class Indication
 		  
 		  // Log to audit
 		  If isNew Then
-		    Call AuditTracker.LogCreate("indications", Self.ID, username, newData)
+		    Call AuditTracker.LogCreate(db, "indications", Self.ID, username, newData)
 		  Else
-		    Call AuditTracker.LogUpdate("indications", Self.ID, username, oldData, newData)
+		    Call AuditTracker.LogUpdate(db, "indications", Self.ID, username, oldData, newData)
 		  End If
 		  
 		  Return True

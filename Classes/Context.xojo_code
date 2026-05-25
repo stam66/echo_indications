@@ -86,6 +86,53 @@ Protected Class Context
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function Delete(db As MySQLCommunityServer) As Boolean
+		  Try
+		    Var sql As String = "DELETE FROM contexts WHERE id = ?"
+		    Var ps As PreparedSQLStatement = db.Prepare(sql)
+		    ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_LONG)
+		    ps.Bind(0, Me.ID)
+		    ps.ExecuteSQL
+		    Return True
+		  Catch err As DatabaseException
+		    System.DebugLog("Error deleting context: " + err.Message)
+		    Return False
+		  End Try
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function DeleteWithAudit(db As MySQLCommunityServer, username As String) As Boolean
+		  If Me.ID = 0 Then Return False
+		  Var oldData As Dictionary = Me.GetFieldValues
+		  If Not Me.Delete(db) Then Return False
+		  Call AuditTracker.LogDelete(db, "contexts", Me.ID, username, oldData)
+		  Return True
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ToJSONItem() As JSONItem
+		  Var j As New JSONItem
+		  j.Value("id") = Self.ID
+		  j.Value("name") = Self.Name
+		  j.Value("description") = Self.Description
+		  j.Value("sort_order") = Self.SortOrder
+		  j.Value("is_active") = Self.IsActive
+		  Return j
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub LoadFromJSON(j As JSONItem)
+		  If j.HasName("name") Then Self.Name = j.Value("name").StringValue
+		  If j.HasName("description") Then Self.Description = j.Value("description").StringValue
+		  If j.HasName("sort_order") Then Self.SortOrder = j.Value("sort_order").IntegerValue
+		  If j.HasName("is_active") Then Self.IsActive = j.Value("is_active").BooleanValue
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function GetFieldValues() As Dictionary
 		  Var d As New Dictionary
 		  d.Value("name") = Me.Name
@@ -102,7 +149,7 @@ Protected Class Context
 		    If Me.ID = 0 Then
 		      // Insert new context
 		      Var sql As String = "INSERT INTO contexts (name, description, sort_order, is_active) VALUES (?, ?, ?, ?)"
-		      Var ps As MySQLPreparedStatement = session.DB.Prepare(sql)
+		      Var ps As MySQLPreparedStatement = db.Prepare(sql)
 		      
 		      ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_STRING)
 		      if me.Description.IsEmpty  then
@@ -188,9 +235,9 @@ Protected Class Context
 		  
 		  // Log to audit
 		  If isNew Then
-		    Call AuditTracker.LogCreate("contexts", Me.ID, username, newData)
+		    Call AuditTracker.LogCreate(db, "contexts", Me.ID, username, newData)
 		  Else
-		    Call AuditTracker.LogUpdate("contexts", Me.ID, username, oldData, newData)
+		    Call AuditTracker.LogUpdate(db, "contexts", Me.ID, username, oldData, newData)
 		  End If
 		  
 		  Return True

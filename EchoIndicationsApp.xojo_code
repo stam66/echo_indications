@@ -2,6 +2,40 @@
 Protected Class EchoIndicationsApp
 Inherits WebApplication
 	#tag Event
+		Function HandleURL(request As WebRequest, response As WebResponse) As Boolean
+		  
+		  // Normalize path — Xojo Debug returns "api/..." while Xojo Cloud may return "/api/..."
+		  Var path As String = Request.Path
+		  If Not path.BeginsWith("/") Then path = "/" + path
+		  
+		  // Route /api/* to the JSON API layer. Anything else falls through
+		  // to the normal Web UI session handling.
+		  If Not path.BeginsWith("/api/") Then Return False
+		  
+		  Response.MIMEType = "application/json"
+		  Response.Header("Access-Control-Allow-Origin") = "*"
+		  Response.Header("Access-Control-Allow-Methods") = "GET, POST, PUT, DELETE, OPTIONS"
+		  Response.Header("Access-Control-Allow-Headers") = "Content-Type, Authorization"
+		  
+		  // CORS preflight
+		  If Request.Method = "OPTIONS" Then
+		    Response.Status = 204
+		    Return True
+		  End If
+		  
+		  Try
+		    Return APIRouter.Route(Request, Response)
+		  Catch err As RuntimeException
+		    APIResponse.WriteError(Response, 500, "Server error: " + err.Message)
+		    Return True
+		  End Try
+		  
+		  
+		  
+		End Function
+	#tag EndEvent
+
+	#tag Event
 		Sub Opening(args() As String)
 		  #Pragma Unused args
 		  

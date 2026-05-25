@@ -1,6 +1,73 @@
 #tag Class
 Protected Class DecisionNode
 	#tag Method, Flags = &h0
+		Shared Function GetAll(db As MySQLCommunityServer) As DecisionNode()
+		  // Flat list of every node in the table — useful for clients that
+		  // want to reconstruct the tree themselves via parent_id.
+		  Var results() As DecisionNode
+		  Try
+		    Var sql As String = "SELECT * FROM decision_nodes ORDER BY parent_id, sort_order, option_label"
+		    Var rs As RowSet = db.SelectSQL(sql)
+		    While Not rs.AfterLastRow
+		      results.Add(NodeFromRow(rs))
+		      rs.MoveToNextRow
+		    Wend
+		  Catch err As DatabaseException
+		    System.DebugLog("DecisionNode.GetAll: " + err.Message)
+		  End Try
+		  Return results
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Shared Function GetByIndicationID(db As MySQLCommunityServer, indicationID As Integer) As DecisionNode()
+		  // Leaf nodes whose verdict is this indication.
+		  Var results() As DecisionNode
+		  Try
+		    Var sql As String = "SELECT * FROM decision_nodes WHERE indication_id = ? ORDER BY sort_order, option_label"
+		    Var ps As MySQLPreparedStatement = db.Prepare(sql)
+		    ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_LONG)
+		    ps.Bind(0, indicationID)
+		    Var rs As RowSet = ps.SelectSQL
+		    While Not rs.AfterLastRow
+		      results.Add(NodeFromRow(rs))
+		      rs.MoveToNextRow
+		    Wend
+		  Catch err As DatabaseException
+		    System.DebugLog("DecisionNode.GetByIndicationID: " + err.Message)
+		  End Try
+		  Return results
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ToJSONItem() As JSONItem
+		  Var j As New JSONItem
+		  j.Value("id") = Self.ID
+		  // parent_id NULL = root node; indication_id NULL = non-leaf (no verdict)
+		  If Self.ParentID = 0 Then j.Value("parent_id") = Nil Else j.Value("parent_id") = Self.ParentID
+		  j.Value("option_label") = Self.OptionLabel
+		  j.Value("prompt") = Self.Prompt
+		  j.Value("sort_order") = Self.SortOrder
+		  j.Value("rationale") = Self.Rationale
+		  If Self.IndicationID = 0 Then j.Value("indication_id") = Nil Else j.Value("indication_id") = Self.IndicationID
+		  j.Value("is_terminal") = Self.IsTerminal
+		  Return j
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub LoadFromJSON(j As JSONItem)
+		  If j.HasName("parent_id") Then Self.ParentID = j.Value("parent_id").IntegerValue
+		  If j.HasName("option_label") Then Self.OptionLabel = j.Value("option_label").StringValue
+		  If j.HasName("prompt") Then Self.Prompt = j.Value("prompt").StringValue
+		  If j.HasName("sort_order") Then Self.SortOrder = j.Value("sort_order").IntegerValue
+		  If j.HasName("rationale") Then Self.Rationale = j.Value("rationale").StringValue
+		  If j.HasName("indication_id") Then Self.IndicationID = j.Value("indication_id").IntegerValue
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Shared Function GetRoots(db As MySQLCommunityServer) As DecisionNode()
 		  // Top-level options the user starts from (parent_id IS NULL).
 		  Var results() As DecisionNode
@@ -178,7 +245,7 @@ Protected Class DecisionNode
 		  Var newData As Dictionary = Me.GetFieldValues
 		  Try
 		    If isNew Then
-		      Call AuditTracker.LogCreate("decision_nodes", Me.ID, username, newData)
+		      Call AuditTracker.LogCreate(db, "decision_nodes", Me.ID, username, newData)
 		    Else
 		      // Defensive: if oldData ended up Nil (e.g. GetByID couldn't load the pre-save
 		      // state), skip the diff-based update log and just record what we have as new
@@ -186,9 +253,9 @@ Protected Class DecisionNode
 		      // oldData.HasKey(...).
 		      If oldData Is Nil Then
 		        System.DebugLog("DecisionNode.SaveWithAudit: oldData was Nil for id=" + Me.ID.ToString + " (skipping diff)")
-		        Call AuditTracker.LogCreate("decision_nodes", Me.ID, username, newData)
+		        Call AuditTracker.LogCreate(db, "decision_nodes", Me.ID, username, newData)
 		      Else
-		        Call AuditTracker.LogUpdate("decision_nodes", Me.ID, username, oldData, newData)
+		        Call AuditTracker.LogUpdate(db, "decision_nodes", Me.ID, username, oldData, newData)
 		      End If
 		    End If
 		  Catch err As RuntimeException
@@ -221,7 +288,7 @@ Protected Class DecisionNode
 		  If Me.ID = 0 Then Return False
 		  Var oldData As Dictionary = Me.GetFieldValues
 		  If Not Me.Delete(db) Then Return False
-		  Call AuditTracker.LogDelete("decision_nodes", Me.ID, username, oldData)
+		  Call AuditTracker.LogDelete(db, "decision_nodes", Me.ID, username, oldData)
 		  Return True
 		End Function
 	#tag EndMethod

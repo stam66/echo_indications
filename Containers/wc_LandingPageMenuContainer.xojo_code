@@ -53,7 +53,7 @@ Begin WebContainer wc_LandingPageMenuContainer
       TabIndex        =   11
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   471
+      Top             =   521
       Visible         =   True
       Width           =   269
       _mDesignHeight  =   0
@@ -90,7 +90,7 @@ Begin WebContainer wc_LandingPageMenuContainer
          TextAlignment   =   0
          TextColor       =   &c006AB500
          Tooltip         =   ""
-         Top             =   477
+         Top             =   527
          Underline       =   False
          Visible         =   True
          Width           =   202
@@ -127,7 +127,7 @@ Begin WebContainer wc_LandingPageMenuContainer
          TextAlignment   =   0
          TextColor       =   &c000000FF
          Tooltip         =   ""
-         Top             =   523
+         Top             =   573
          Underline       =   False
          Visible         =   True
          Width           =   194
@@ -158,7 +158,7 @@ Begin WebContainer wc_LandingPageMenuContainer
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
-         Top             =   480
+         Top             =   530
          URL             =   "https://api.iconify.design/material-symbols/checklist.svg?color=%23006AB5&height=32"
          Visible         =   True
          Width           =   32
@@ -196,7 +196,7 @@ Begin WebContainer wc_LandingPageMenuContainer
          TextAlignment   =   0
          TextColor       =   &c006AB500
          Tooltip         =   ""
-         Top             =   559
+         Top             =   609
          Underline       =   False
          Visible         =   True
          Width           =   126
@@ -229,7 +229,7 @@ Begin WebContainer wc_LandingPageMenuContainer
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
-         Top             =   476
+         Top             =   526
          Visible         =   True
          Width           =   260
          _mPanelIndex    =   -1
@@ -262,7 +262,7 @@ Begin WebContainer wc_LandingPageMenuContainer
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   335
+      Top             =   369
       Visible         =   True
       Width           =   100
       _mPanelIndex    =   -1
@@ -291,7 +291,7 @@ Begin WebContainer wc_LandingPageMenuContainer
       TabStop         =   True
       Text            =   ""
       Tooltip         =   ""
-      Top             =   335
+      Top             =   369
       Visible         =   True
       Width           =   484
       _mPanelIndex    =   -1
@@ -324,7 +324,7 @@ Begin WebContainer wc_LandingPageMenuContainer
       TabIndex        =   3
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   12
+      Top             =   62
       Visible         =   True
       Width           =   261
       _mDesignHeight  =   0
@@ -362,7 +362,7 @@ Begin WebContainer wc_LandingPageMenuContainer
          TextAlignment   =   0
          TextColor       =   &c006AB500
          Tooltip         =   ""
-         Top             =   15
+         Top             =   65
          Underline       =   False
          Visible         =   True
          Width           =   224
@@ -394,7 +394,7 @@ Begin WebContainer wc_LandingPageMenuContainer
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
-         Top             =   14
+         Top             =   64
          URL             =   "https://api.iconify.design/material-symbols/verified-user-outline.svg?color=%23006AB5&height=16"
          Visible         =   True
          Width           =   20
@@ -431,7 +431,7 @@ Begin WebContainer wc_LandingPageMenuContainer
       TextAlignment   =   0
       TextColor       =   &c006AB500
       Tooltip         =   ""
-      Top             =   117
+      Top             =   167
       Underline       =   False
       Visible         =   True
       Width           =   322
@@ -466,7 +466,7 @@ Begin WebContainer wc_LandingPageMenuContainer
       TextAlignment   =   2
       TextColor       =   &c000000FF
       Tooltip         =   ""
-      Top             =   61
+      Top             =   111
       Underline       =   False
       Visible         =   True
       Width           =   585
@@ -501,7 +501,7 @@ Begin WebContainer wc_LandingPageMenuContainer
       TextAlignment   =   0
       TextColor       =   &c000000FF
       Tooltip         =   ""
-      Top             =   117
+      Top             =   167
       Underline       =   False
       Visible         =   True
       Width           =   31
@@ -536,7 +536,7 @@ Begin WebContainer wc_LandingPageMenuContainer
       TextAlignment   =   2
       TextColor       =   &c92929200
       Tooltip         =   ""
-      Top             =   193
+      Top             =   243
       Underline       =   False
       Visible         =   True
       Width           =   527
@@ -573,7 +573,7 @@ Begin WebContainer wc_LandingPageMenuContainer
       TextAlignment   =   2
       TextColor       =   &c79797900
       Tooltip         =   ""
-      Top             =   372
+      Top             =   406
       Underline       =   False
       Visible         =   True
       Width           =   331
@@ -607,7 +607,7 @@ Begin WebContainer wc_LandingPageMenuContainer
       TabIndex        =   15
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   471
+      Top             =   521
       Visible         =   True
       Width           =   269
       _mDesignHeight  =   0
@@ -645,7 +645,7 @@ Begin WebContainer wc_LandingPageMenuContainer
          TextAlignment   =   0
          TextColor       =   &c006AB500
          Tooltip         =   ""
-         Top             =   477
+         Top             =   527
          Underline       =   False
          Visible         =   True
          Width           =   207
@@ -683,7 +683,7 @@ Begin WebContainer wc_LandingPageMenuContainer
          TextAlignment   =   0
          TextColor       =   &c000000FF
          Tooltip         =   ""
-         Top             =   523
+         Top             =   573
          Underline       =   False
          Visible         =   True
          Width           =   194
@@ -715,7 +715,7 @@ Begin WebContainer wc_LandingPageMenuContainer
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
-         Top             =   482
+         Top             =   532
          URL             =   "https://api.iconify.design/material-symbols/stethoscope.svg?color=%23006AB5&height=32"
          Visible         =   True
          Width           =   32
@@ -754,7 +754,7 @@ Begin WebContainer wc_LandingPageMenuContainer
          TextAlignment   =   0
          TextColor       =   &c006AB500
          Tooltip         =   ""
-         Top             =   559
+         Top             =   609
          Underline       =   False
          Visible         =   True
          Width           =   126
@@ -788,7 +788,7 @@ Begin WebContainer wc_LandingPageMenuContainer
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
-         Top             =   476
+         Top             =   526
          Visible         =   True
          Width           =   260
          _mPanelIndex    =   -1

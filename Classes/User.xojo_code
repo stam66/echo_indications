@@ -16,13 +16,41 @@ Protected Class User
 		    ps.ExecuteSQL
 		    
 		    // Log to audit
-		    Call AuditTracker.LogDelete("users", Self.ID, username, oldData)
+		    Call AuditTracker.LogDelete(db, "users", Self.ID, username, oldData)
 		    
 		    Return True
 		  Catch err As DatabaseException
 		    System.DebugLog("Error deleting user: " + err.Message)
 		    Return False
 		  End Try
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Shared Function GetByUsername(db As MySQLCommunityServer, username As String) As User
+		  Try
+		    Var sql As String = "SELECT * FROM users WHERE username = ?"
+		    Var ps As PreparedSQLStatement = db.Prepare(sql)
+		    ps.BindType(0, MySQLPreparedStatement.MYSQL_TYPE_STRING)
+		    ps.Bind(0, username)
+
+		    Var rs As RowSet = ps.SelectSQL
+
+		    If Not rs.AfterLastRow Then
+		      Var u As New User
+		      u.ID = rs.Column("id").IntegerValue
+		      u.Name = rs.Column("name").StringValue
+		      u.Username = rs.Column("username").StringValue
+		      u.Email = rs.Column("email").StringValue
+		      u.Title = rs.Column("title").StringValue
+		      u.IsActive = rs.Column("is_active").BooleanValue
+		      Return u
+		    End If
+		  Catch err As DatabaseException
+		    System.DebugLog("Error loading user by username: " + err.Message)
+		  End Try
+
+		  Return Nil
 		End Function
 	#tag EndMethod
 
@@ -51,6 +79,21 @@ Protected Class User
 		  End Try
 		  
 		  Return Nil
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ToJSONItem() As JSONItem
+		  // JSON-shaped projection of a User. Never includes password_hash
+		  // or password_salt — those must not leave the server.
+		  Var j As New JSONItem
+		  j.Value("id") = Self.ID
+		  j.Value("name") = Self.Name
+		  j.Value("username") = Self.Username
+		  j.Value("email") = Self.Email
+		  j.Value("title") = Self.Title
+		  j.Value("is_active") = Self.IsActive
+		  Return j
 		End Function
 	#tag EndMethod
 
@@ -133,9 +176,9 @@ Protected Class User
 		  Var newData As Dictionary = Self.GetFieldValues
 		  
 		  If isNew Then
-		    Call AuditTracker.LogCreate("users", Self.ID, username, newData)
+		    Call AuditTracker.LogCreate(db, "users", Self.ID, username, newData)
 		  Else
-		    Call AuditTracker.LogUpdate("users", Self.ID, username, oldData, newData)
+		    Call AuditTracker.LogUpdate(db, "users", Self.ID, username, oldData, newData)
 		  End If
 		  
 		  Return True
