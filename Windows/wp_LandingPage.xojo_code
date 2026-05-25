@@ -6,7 +6,7 @@ Begin WebPage wp_LandingPage
    ControlID       =   ""
    CSSClasses      =   ""
    Enabled         =   False
-   Height          =   905
+   Height          =   870
    ImplicitInstance=   True
    Index           =   -2147483648
    Indicator       =   0
@@ -20,363 +20,19 @@ Begin WebPage wp_LandingPage
    LockRight       =   False
    LockTop         =   True
    LockVertical    =   False
-   MinimumHeight   =   905
-   MinimumWidth    =   1064
+   MinimumHeight   =   870
+   MinimumWidth    =   1014
    PanelIndex      =   0
    ScaleFactor     =   0.0
    TabIndex        =   0
    Title           =   "Appropriate Use Criteria for ECHO"
    Top             =   0
    Visible         =   True
-   Width           =   1138
+   Width           =   1190
    _ImplicitInstance=   False
    _mDesignHeight  =   0
    _mDesignWidth   =   0
    _mPanelIndex    =   -1
-   Begin WebRectangle Rectangle1
-      BorderColor     =   &c000000FF
-      BorderThickness =   0
-      ControlCount    =   0
-      ControlID       =   ""
-      CornerSize      =   -1
-      CSSClasses      =   ""
-      Enabled         =   True
-      FillColor       =   &cFFFFFF
-      HasFillColor    =   False
-      Height          =   369
-      Index           =   -2147483648
-      Indicator       =   ""
-      LayoutDirection =   "LayoutDirections.LeftToRight"
-      LayoutType      =   "LayoutTypes.Fixed"
-      Left            =   0
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockHorizontal  =   True
-      LockLeft        =   False
-      LockRight       =   False
-      LockTop         =   True
-      LockVertical    =   False
-      PanelIndex      =   0
-      Scope           =   0
-      TabIndex        =   49
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   378
-      Visible         =   True
-      Width           =   1138
-      _mDesignHeight  =   0
-      _mDesignWidth   =   0
-      _mPanelIndex    =   -1
-      Begin WebLabel zLabel
-         Bold            =   True
-         ControlID       =   ""
-         CSSClasses      =   ""
-         Enabled         =   True
-         FontName        =   "Bricolage Grotesque"
-         FontSize        =   20.0
-         Height          =   32
-         HTMLElement     =   0
-         Index           =   2
-         Indicator       =   ""
-         Italic          =   False
-         Left            =   800
-         LockBottom      =   False
-         LockedInPosition=   False
-         LockHorizontal  =   False
-         LockLeft        =   True
-         LockRight       =   False
-         LockTop         =   True
-         LockVertical    =   False
-         Multiline       =   False
-         PanelIndex      =   0
-         Parent          =   "Rectangle1"
-         Scope           =   0
-         TabIndex        =   0
-         TabPanelIndex   =   0
-         TabStop         =   True
-         Text            =   "Unsure? Try CDS"
-         TextAlignment   =   1
-         TextColor       =   &c000000FF
-         Tooltip         =   ""
-         Top             =   613
-         Underline       =   False
-         Visible         =   True
-         Width           =   318
-         _mPanelIndex    =   -1
-      End
-      Begin WebLabel zLabel
-         Bold            =   True
-         ControlID       =   ""
-         CSSClasses      =   ""
-         Enabled         =   True
-         FontName        =   "Bricolage Grotesque"
-         FontSize        =   20.0
-         Height          =   32
-         HTMLElement     =   0
-         Index           =   1
-         Indicator       =   ""
-         Italic          =   False
-         Left            =   800
-         LockBottom      =   False
-         LockedInPosition=   False
-         LockHorizontal  =   False
-         LockLeft        =   True
-         LockRight       =   False
-         LockTop         =   True
-         LockVertical    =   False
-         Multiline       =   False
-         PanelIndex      =   0
-         Parent          =   "Rectangle1"
-         Scope           =   0
-         TabIndex        =   1
-         TabPanelIndex   =   0
-         TabStop         =   True
-         Text            =   "Browse appropriate use criteria"
-         TextAlignment   =   1
-         TextColor       =   &c000000FF
-         Tooltip         =   ""
-         Top             =   398
-         Underline       =   False
-         Visible         =   True
-         Width           =   318
-         _mPanelIndex    =   -1
-      End
-      Begin WebButton btnSearch
-         AllowAutoDisable=   False
-         Cancel          =   False
-         Caption         =   "Search"
-         ControlID       =   ""
-         CSSClasses      =   ""
-         Default         =   True
-         Enabled         =   True
-         Height          =   38
-         Index           =   -2147483648
-         Indicator       =   1
-         Left            =   353
-         LockBottom      =   False
-         LockedInPosition=   False
-         LockHorizontal  =   False
-         LockLeft        =   True
-         LockRight       =   False
-         LockTop         =   True
-         LockVertical    =   False
-         Outlined        =   False
-         PanelIndex      =   0
-         Parent          =   "Rectangle1"
-         Scope           =   2
-         TabIndex        =   2
-         TabPanelIndex   =   0
-         TabStop         =   True
-         Tooltip         =   ""
-         Top             =   438
-         Visible         =   True
-         Width           =   100
-         _mPanelIndex    =   -1
-      End
-      Begin WebLabel zLabel
-         Bold            =   True
-         ControlID       =   ""
-         CSSClasses      =   ""
-         Enabled         =   True
-         FontName        =   "Bricolage Grotesque"
-         FontSize        =   20.0
-         Height          =   32
-         HTMLElement     =   0
-         Index           =   0
-         Indicator       =   ""
-         InitialParent   =   "rectHeroControls"
-         Italic          =   False
-         Left            =   20
-         LockBottom      =   False
-         LockedInPosition=   False
-         LockHorizontal  =   False
-         LockLeft        =   True
-         LockRight       =   False
-         LockTop         =   True
-         LockVertical    =   False
-         Multiline       =   False
-         PanelIndex      =   0
-         Parent          =   "Rectangle1"
-         Scope           =   0
-         TabIndex        =   3
-         TabPanelIndex   =   0
-         TabStop         =   True
-         Text            =   "Search appropriate use criteria"
-         TextAlignment   =   1
-         TextColor       =   &c000000FF
-         Tooltip         =   ""
-         Top             =   398
-         Underline       =   False
-         Visible         =   True
-         Width           =   318
-         _mPanelIndex    =   -1
-      End
-      Begin WebButton view
-         AllowAutoDisable=   False
-         Cancel          =   False
-         Caption         =   "Browse all ECHO indications"
-         ControlID       =   ""
-         CSSClasses      =   ""
-         Default         =   False
-         Enabled         =   True
-         Height          =   38
-         Index           =   -2147483648
-         Indicator       =   3
-         InitialParent   =   "rectHeroControls"
-         Left            =   800
-         LockBottom      =   False
-         LockedInPosition=   False
-         LockHorizontal  =   False
-         LockLeft        =   True
-         LockRight       =   False
-         LockTop         =   True
-         LockVertical    =   False
-         Outlined        =   False
-         PanelIndex      =   0
-         Parent          =   "Rectangle1"
-         Scope           =   0
-         TabIndex        =   4
-         TabPanelIndex   =   0
-         TabStop         =   True
-         Tooltip         =   ""
-         Top             =   438
-         Visible         =   True
-         Width           =   318
-         _mPanelIndex    =   -1
-      End
-      Begin WebSearchField txtSearch
-         ControlID       =   ""
-         CSSClasses      =   ""
-         Enabled         =   True
-         Height          =   40
-         Hint            =   "e.g. dyspnoea, palpitations"
-         Index           =   -2147483648
-         Indicator       =   ""
-         InitialParent   =   "rectHeroControls"
-         Left            =   20
-         LockBottom      =   False
-         LockedInPosition=   False
-         LockHorizontal  =   False
-         LockLeft        =   True
-         LockRight       =   False
-         LockTop         =   True
-         LockVertical    =   False
-         PanelIndex      =   0
-         Parent          =   "Rectangle1"
-         Scope           =   0
-         TabIndex        =   5
-         TabPanelIndex   =   0
-         TabStop         =   True
-         Text            =   ""
-         Tooltip         =   ""
-         Top             =   438
-         Visible         =   True
-         Width           =   318
-         _mPanelIndex    =   -1
-      End
-      Begin WebButton btnCDS
-         AllowAutoDisable=   False
-         Cancel          =   False
-         Caption         =   "Clincal Decision Support tool"
-         ControlID       =   ""
-         CSSClasses      =   ""
-         Default         =   False
-         Enabled         =   True
-         Height          =   38
-         Index           =   -2147483648
-         Indicator       =   5
-         Left            =   800
-         LockBottom      =   False
-         LockedInPosition=   False
-         LockHorizontal  =   False
-         LockLeft        =   True
-         LockRight       =   False
-         LockTop         =   True
-         LockVertical    =   False
-         Outlined        =   False
-         PanelIndex      =   0
-         Parent          =   "Rectangle1"
-         Scope           =   2
-         TabIndex        =   7
-         TabPanelIndex   =   0
-         TabStop         =   True
-         Tooltip         =   ""
-         Top             =   653
-         Visible         =   True
-         Width           =   318
-         _mPanelIndex    =   -1
-      End
-      Begin WebLabel lblStats
-         Bold            =   False
-         ControlID       =   ""
-         CSSClasses      =   ""
-         Enabled         =   True
-         FontName        =   ""
-         FontSize        =   0.0
-         Height          =   38
-         HTMLElement     =   0
-         Index           =   -2147483648
-         Indicator       =   ""
-         InitialParent   =   "rectHeroControls"
-         Italic          =   False
-         Left            =   800
-         LockBottom      =   False
-         LockedInPosition=   False
-         LockHorizontal  =   False
-         LockLeft        =   True
-         LockRight       =   False
-         LockTop         =   True
-         LockVertical    =   False
-         Multiline       =   False
-         PanelIndex      =   0
-         Parent          =   "Rectangle1"
-         Scope           =   0
-         TabIndex        =   8
-         TabPanelIndex   =   0
-         TabStop         =   True
-         Text            =   "Database statistics"
-         TextAlignment   =   1
-         TextColor       =   &c000000FF
-         Tooltip         =   ""
-         Top             =   484
-         Underline       =   False
-         Visible         =   True
-         Width           =   331
-         _mPanelIndex    =   -1
-      End
-   End
-   Begin wc_logoContainer wc_logos
-      ControlCount    =   0
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      Height          =   85
-      Index           =   -2147483648
-      Indicator       =   0
-      LayoutDirection =   0
-      LayoutType      =   0
-      Left            =   0
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   True
-      LockTop         =   True
-      LockVertical    =   False
-      PanelIndex      =   0
-      Parent          =   "nil"
-      Scope           =   0
-      ScrollDirection =   0
-      TabIndex        =   3
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   213
-      Visible         =   True
-      Width           =   1138
-      _mDesignHeight  =   0
-      _mDesignWidth   =   0
-      _mPanelIndex    =   -1
-   End
    Begin WebRectangle rectHeroPanel
       BorderColor     =   &c000000FF
       BorderThickness =   0
@@ -387,7 +43,7 @@ Begin WebPage wp_LandingPage
       Enabled         =   True
       FillColor       =   &c006AB500
       HasFillColor    =   True
-      Height          =   220
+      Height          =   148
       Index           =   -2147483648
       Indicator       =   0
       LayoutDirection =   "LayoutDirections.LeftToRight"
@@ -407,7 +63,7 @@ Begin WebPage wp_LandingPage
       Tooltip         =   ""
       Top             =   0
       Visible         =   True
-      Width           =   1138
+      Width           =   1190
       _mDesignHeight  =   0
       _mDesignWidth   =   0
       _mPanelIndex    =   -1
@@ -416,11 +72,11 @@ Begin WebPage wp_LandingPage
          CSSClasses      =   ""
          DisplayMode     =   3
          Enabled         =   True
-         Height          =   139
+         Height          =   77
          Image           =   0
          Index           =   -2147483648
          Indicator       =   0
-         Left            =   50
+         Left            =   51
          LockBottom      =   False
          LockedInPosition=   False
          LockHorizontal  =   False
@@ -436,10 +92,10 @@ Begin WebPage wp_LandingPage
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
-         Top             =   36
+         Top             =   38
          URL             =   ""
          Visible         =   True
-         Width           =   139
+         Width           =   78
          _mPanelIndex    =   -1
          _ProtectImage   =   False
       End
@@ -455,7 +111,7 @@ Begin WebPage wp_LandingPage
          Index           =   -2147483648
          Indicator       =   ""
          Italic          =   False
-         Left            =   223
+         Left            =   145
          LockBottom      =   False
          LockedInPosition=   False
          LockHorizontal  =   False
@@ -474,7 +130,7 @@ Begin WebPage wp_LandingPage
          TextAlignment   =   0
          TextColor       =   &cE0F4ED00
          Tooltip         =   ""
-         Top             =   121
+         Top             =   86
          Underline       =   False
          Visible         =   True
          Width           =   677
@@ -486,35 +142,35 @@ Begin WebPage wp_LandingPage
          CSSClasses      =   ""
          Enabled         =   True
          FontName        =   "Bricolage Grotesque"
-         FontSize        =   72.0
-         Height          =   152
+         FontSize        =   60.0
+         Height          =   76
          HTMLElement     =   0
          Index           =   -2147483648
          Indicator       =   0
          Italic          =   False
-         Left            =   216
+         Left            =   145
          LockBottom      =   False
          LockedInPosition=   False
          LockHorizontal  =   False
          LockLeft        =   True
-         LockRight       =   True
+         LockRight       =   False
          LockTop         =   True
          LockVertical    =   False
          Multiline       =   False
          PanelIndex      =   0
          Parent          =   "rectHeroPanel"
          Scope           =   0
-         TabIndex        =   10
+         TabIndex        =   13
          TabPanelIndex   =   0
          TabStop         =   True
          Text            =   "ECHOindications.org"
          TextAlignment   =   1
          TextColor       =   &cFFFFFF00
          Tooltip         =   ""
-         Top             =   18
+         Top             =   20
          Underline       =   False
          Visible         =   True
-         Width           =   870
+         Width           =   677
          _mPanelIndex    =   -1
       End
       Begin WebButton btnAdminLogin
@@ -528,7 +184,7 @@ Begin WebPage wp_LandingPage
          Height          =   38
          Index           =   -2147483648
          Indicator       =   8
-         Left            =   989
+         Left            =   1041
          LockBottom      =   False
          LockedInPosition=   False
          LockHorizontal  =   False
@@ -540,13 +196,77 @@ Begin WebPage wp_LandingPage
          PanelIndex      =   0
          Parent          =   "rectHeroPanel"
          Scope           =   2
-         TabIndex        =   12
+         TabIndex        =   17
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
-         Top             =   20
+         Top             =   50
          Visible         =   True
          Width           =   129
+         _mPanelIndex    =   -1
+      End
+      Begin WebButton btnAbout
+         AllowAutoDisable=   False
+         Cancel          =   False
+         Caption         =   "ⓘ"
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Default         =   False
+         Enabled         =   True
+         Height          =   38
+         Index           =   -2147483648
+         Indicator       =   8
+         Left            =   988
+         LockBottom      =   False
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   False
+         LockRight       =   True
+         LockTop         =   True
+         LockVertical    =   False
+         Outlined        =   False
+         PanelIndex      =   0
+         Parent          =   "rectHeroPanel"
+         Scope           =   0
+         TabIndex        =   18
+         TabPanelIndex   =   0
+         TabStop         =   True
+         Tooltip         =   ""
+         Top             =   50
+         Visible         =   True
+         Width           =   45
+         _mPanelIndex    =   -1
+      End
+      Begin WebButton btnToggleDarkmode
+         AllowAutoDisable=   False
+         Cancel          =   False
+         Caption         =   "☾"
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Default         =   False
+         Enabled         =   True
+         Height          =   38
+         Index           =   -2147483648
+         Indicator       =   8
+         Left            =   935
+         LockBottom      =   False
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   False
+         LockRight       =   True
+         LockTop         =   True
+         LockVertical    =   False
+         Outlined        =   False
+         PanelIndex      =   0
+         Parent          =   "rectHeroPanel"
+         Scope           =   0
+         TabIndex        =   19
+         TabPanelIndex   =   0
+         TabStop         =   True
+         Tooltip         =   "Switch to dark mode"
+         Top             =   50
+         Visible         =   True
+         Width           =   45
          _mPanelIndex    =   -1
       End
    End
@@ -560,7 +280,7 @@ Begin WebPage wp_LandingPage
       Height          =   38
       HTMLElement     =   0
       Index           =   -2147483648
-      Indicator       =   ""
+      Indicator       =   0
       Italic          =   False
       Left            =   20
       LockBottom      =   True
@@ -573,13 +293,13 @@ Begin WebPage wp_LandingPage
       Multiline       =   False
       PanelIndex      =   0
       Scope           =   0
-      TabIndex        =   11
+      TabIndex        =   28
       TabStop         =   True
       Text            =   "ECHOindications"
       TextAlignment   =   0
       TextColor       =   &c000000FF
       Tooltip         =   ""
-      Top             =   838
+      Top             =   817
       Underline       =   False
       Visible         =   True
       Width           =   124
@@ -595,7 +315,7 @@ Begin WebPage wp_LandingPage
       Height          =   22
       HTMLElement     =   0
       Index           =   -2147483648
-      Indicator       =   ""
+      Indicator       =   0
       Italic          =   True
       Left            =   20
       LockBottom      =   True
@@ -608,90 +328,838 @@ Begin WebPage wp_LandingPage
       Multiline       =   False
       PanelIndex      =   0
       Scope           =   0
-      TabIndex        =   12
+      TabIndex        =   29
       TabStop         =   True
-      Text            =   "Version 2.0"
+      Text            =   "Version 2.1"
       TextAlignment   =   0
       TextColor       =   &c000000FF
       Tooltip         =   ""
-      Top             =   863
+      Top             =   838
       Underline       =   False
       Visible         =   True
-      Width           =   248
+      Width           =   144
       _mPanelIndex    =   -1
    End
-   Begin WebSegmentedButton segOtherActions
+   Begin WebRectangle rectGSTT4
+      BorderColor     =   &c000000FF
+      BorderThickness =   0
+      ControlCount    =   0
+      ControlID       =   ""
+      CornerSize      =   0
+      CSSClasses      =   ""
+      Enabled         =   True
+      FillColor       =   &cFFFFFF
+      HasFillColor    =   False
+      Height          =   74
+      Index           =   -2147483648
+      Indicator       =   0
+      LayoutDirection =   0
+      LayoutType      =   0
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      PanelIndex      =   0
+      Parent          =   "nil"
+      Scope           =   0
+      TabIndex        =   30
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   239
+      Visible         =   True
+      Width           =   144
+      _mDesignHeight  =   0
+      _mDesignWidth   =   0
+      _mPanelIndex    =   -1
+      Begin WebLabel lblTrustType
+         Bold            =   False
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         FontName        =   "Asap"
+         FontSize        =   10.0
+         Height          =   15
+         HTMLElement     =   0
+         Index           =   6
+         Indicator       =   0
+         Italic          =   False
+         Left            =   20
+         LockBottom      =   False
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         Multiline       =   False
+         PanelIndex      =   0
+         Parent          =   "rectGSTT4"
+         Scope           =   0
+         TabIndex        =   32
+         TabPanelIndex   =   -1
+         TabStop         =   True
+         Text            =   "NHS Foundation Trust"
+         TextAlignment   =   0
+         TextColor       =   &c005EB800
+         Tooltip         =   ""
+         Top             =   257
+         Underline       =   False
+         Visible         =   True
+         Width           =   126
+         _mPanelIndex    =   -1
+      End
+      Begin WebLabel lblTrust
+         Bold            =   True
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         FontName        =   "Asap"
+         FontSize        =   12.0
+         Height          =   21
+         HTMLElement     =   0
+         Index           =   6
+         Indicator       =   0
+         Italic          =   False
+         Left            =   20
+         LockBottom      =   False
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   True
+         LockTop         =   True
+         LockVertical    =   False
+         Multiline       =   False
+         PanelIndex      =   0
+         Parent          =   "rectGSTT4"
+         Scope           =   0
+         TabIndex        =   31
+         TabPanelIndex   =   -1
+         TabStop         =   True
+         Text            =   "Guy's and St Thomas'"
+         TextAlignment   =   0
+         TextColor       =   &c000000FF
+         Tooltip         =   ""
+         Top             =   239
+         Underline       =   False
+         Visible         =   True
+         Width           =   141
+         _mPanelIndex    =   -1
+      End
+      Begin WebLabel lblHospitals
+         Bold            =   False
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         FontName        =   "Asap"
+         FontSize        =   10.0
+         Height          =   36
+         HTMLElement     =   0
+         Index           =   6
+         Indicator       =   0
+         Italic          =   False
+         Left            =   20
+         LockBottom      =   False
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         Multiline       =   True
+         PanelIndex      =   0
+         Parent          =   "rectGSTT4"
+         Scope           =   0
+         TabIndex        =   33
+         TabPanelIndex   =   -1
+         TabStop         =   True
+         Text            =   "Guy's and St Thomas' Hospitals\nHarefield Hospital\nRoyal Brompton Hospital"
+         TextAlignment   =   0
+         TextColor       =   &c000000FF
+         Tooltip         =   ""
+         Top             =   274
+         Underline       =   False
+         Visible         =   True
+         Width           =   141
+         _mPanelIndex    =   -1
+      End
+   End
+   Begin WebRectangle rectGSTT5
+      BorderColor     =   &c000000FF
+      BorderThickness =   0
+      ControlCount    =   0
+      ControlID       =   ""
+      CornerSize      =   0
+      CSSClasses      =   ""
+      Enabled         =   True
+      FillColor       =   &cFFFFFF
+      HasFillColor    =   False
+      Height          =   74
+      Index           =   -2147483648
+      Indicator       =   0
+      LayoutDirection =   0
+      LayoutType      =   0
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      PanelIndex      =   0
+      Parent          =   "nil"
+      Scope           =   0
+      TabIndex        =   34
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   356
+      Visible         =   True
+      Width           =   144
+      _mDesignHeight  =   0
+      _mDesignWidth   =   0
+      _mPanelIndex    =   -1
+      Begin WebLabel lblTrust
+         Bold            =   True
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         FontName        =   "Asap"
+         FontSize        =   12.0
+         Height          =   21
+         HTMLElement     =   0
+         Index           =   7
+         Indicator       =   0
+         Italic          =   False
+         Left            =   20
+         LockBottom      =   False
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   True
+         LockTop         =   True
+         LockVertical    =   False
+         Multiline       =   False
+         PanelIndex      =   0
+         Parent          =   "rectGSTT5"
+         Scope           =   0
+         TabIndex        =   35
+         TabPanelIndex   =   -1
+         TabStop         =   True
+         Text            =   "King's College Hospital"
+         TextAlignment   =   0
+         TextColor       =   &c000000FF
+         Tooltip         =   ""
+         Top             =   356
+         Underline       =   False
+         Visible         =   True
+         Width           =   141
+         _mPanelIndex    =   -1
+      End
+      Begin WebLabel lblTrustType
+         Bold            =   False
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         FontName        =   "Asap"
+         FontSize        =   10.0
+         Height          =   15
+         HTMLElement     =   0
+         Index           =   7
+         Indicator       =   0
+         Italic          =   False
+         Left            =   20
+         LockBottom      =   False
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         Multiline       =   False
+         PanelIndex      =   0
+         Parent          =   "rectGSTT5"
+         Scope           =   0
+         TabIndex        =   36
+         TabPanelIndex   =   -1
+         TabStop         =   True
+         Text            =   "NHS Foundation Trust"
+         TextAlignment   =   0
+         TextColor       =   &c005EB800
+         Tooltip         =   ""
+         Top             =   374
+         Underline       =   False
+         Visible         =   True
+         Width           =   126
+         _mPanelIndex    =   -1
+      End
+      Begin WebLabel lblHospitals
+         Bold            =   False
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         FontName        =   "Asap"
+         FontSize        =   10.0
+         Height          =   31
+         HTMLElement     =   0
+         Index           =   7
+         Indicator       =   0
+         Italic          =   False
+         Left            =   20
+         LockBottom      =   False
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         Multiline       =   True
+         PanelIndex      =   0
+         Parent          =   "rectGSTT5"
+         Scope           =   0
+         TabIndex        =   37
+         TabPanelIndex   =   -1
+         TabStop         =   True
+         Text            =   "King's College Hospital\nPrincess Royal University Hospital"
+         TextAlignment   =   0
+         TextColor       =   &c000000FF
+         Tooltip         =   ""
+         Top             =   391
+         Underline       =   False
+         Visible         =   True
+         Width           =   141
+         _mPanelIndex    =   -1
+      End
+   End
+   Begin WebRectangle rectGSTT6
+      BorderColor     =   &c000000FF
+      BorderThickness =   0
+      ControlCount    =   0
+      ControlID       =   ""
+      CornerSize      =   0
+      CSSClasses      =   ""
+      Enabled         =   True
+      FillColor       =   &cFFFFFF
+      HasFillColor    =   False
+      Height          =   74
+      Index           =   -2147483648
+      Indicator       =   0
+      LayoutDirection =   0
+      LayoutType      =   0
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      PanelIndex      =   0
+      Parent          =   "nil"
+      Scope           =   0
+      TabIndex        =   38
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   474
+      Visible         =   True
+      Width           =   144
+      _mDesignHeight  =   0
+      _mDesignWidth   =   0
+      _mPanelIndex    =   -1
+      Begin WebLabel lblTrust
+         Bold            =   True
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         FontName        =   "Asap"
+         FontSize        =   12.0
+         Height          =   21
+         HTMLElement     =   0
+         Index           =   8
+         Indicator       =   0
+         Italic          =   False
+         Left            =   20
+         LockBottom      =   False
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   True
+         LockTop         =   True
+         LockVertical    =   False
+         Multiline       =   False
+         PanelIndex      =   0
+         Parent          =   "rectGSTT6"
+         Scope           =   0
+         TabIndex        =   39
+         TabPanelIndex   =   -1
+         TabStop         =   True
+         Text            =   "Lewisham and Greenwich"
+         TextAlignment   =   0
+         TextColor       =   &c000000FF
+         Tooltip         =   ""
+         Top             =   476
+         Underline       =   False
+         Visible         =   True
+         Width           =   141
+         _mPanelIndex    =   -1
+      End
+      Begin WebLabel lblTrustType
+         Bold            =   False
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         FontName        =   "Asap"
+         FontSize        =   10.0
+         Height          =   15
+         HTMLElement     =   0
+         Index           =   8
+         Indicator       =   0
+         Italic          =   False
+         Left            =   20
+         LockBottom      =   False
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         Multiline       =   False
+         PanelIndex      =   0
+         Parent          =   "rectGSTT6"
+         Scope           =   0
+         TabIndex        =   40
+         TabPanelIndex   =   -1
+         TabStop         =   True
+         Text            =   "NHS Trust"
+         TextAlignment   =   0
+         TextColor       =   &c005EB800
+         Tooltip         =   ""
+         Top             =   494
+         Underline       =   False
+         Visible         =   True
+         Width           =   126
+         _mPanelIndex    =   -1
+      End
+      Begin WebLabel lblHospitals
+         Bold            =   False
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         FontName        =   "Asap"
+         FontSize        =   10.0
+         Height          =   31
+         HTMLElement     =   0
+         Index           =   8
+         Indicator       =   0
+         Italic          =   False
+         Left            =   20
+         LockBottom      =   False
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         Multiline       =   True
+         PanelIndex      =   0
+         Parent          =   "rectGSTT6"
+         Scope           =   0
+         TabIndex        =   41
+         TabPanelIndex   =   -1
+         TabStop         =   True
+         Text            =   "Queen Elizabeth Hospital\nUniversity Hospital Lewisham"
+         TextAlignment   =   0
+         TextColor       =   &c000000FF
+         Tooltip         =   ""
+         Top             =   511
+         Underline       =   False
+         Visible         =   True
+         Width           =   144
+         _mPanelIndex    =   -1
+      End
+   End
+   Begin WebRectangle rectNHS1
+      BorderColor     =   &c000000FF
+      BorderThickness =   0
+      ControlCount    =   0
+      ControlID       =   ""
+      CornerSize      =   0
+      CSSClasses      =   ""
+      Enabled         =   True
+      FillColor       =   &c006AB500
+      HasFillColor    =   True
+      Height          =   21
+      Index           =   -2147483648
+      Indicator       =   0
+      LayoutDirection =   0
+      LayoutType      =   0
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      PanelIndex      =   0
+      Parent          =   "nil"
+      Scope           =   0
+      TabIndex        =   39
+      TabPanelIndex   =   -1
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   217
+      Visible         =   True
+      Width           =   50
+      _mDesignHeight  =   0
+      _mDesignWidth   =   0
+      _mPanelIndex    =   -1
+      Begin WebLabel lblNHS
+         Bold            =   True
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         FontName        =   "Asap"
+         FontSize        =   14.0
+         Height          =   18
+         HTMLElement     =   0
+         Index           =   0
+         Indicator       =   0
+         Italic          =   True
+         Left            =   20
+         LockBottom      =   False
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         Multiline       =   False
+         PanelIndex      =   0
+         Parent          =   "rectNHS1"
+         Scope           =   0
+         TabIndex        =   43
+         TabPanelIndex   =   -1
+         TabStop         =   True
+         Text            =   "NHS"
+         TextAlignment   =   2
+         TextColor       =   &cFFFFFF00
+         Tooltip         =   ""
+         Top             =   219
+         Underline       =   False
+         Visible         =   True
+         Width           =   48
+         _mPanelIndex    =   -1
+      End
+   End
+   Begin WebRectangle rectNHS2
+      BorderColor     =   &c000000FF
+      BorderThickness =   0
+      ControlCount    =   0
+      ControlID       =   ""
+      CornerSize      =   0
+      CSSClasses      =   ""
+      Enabled         =   True
+      FillColor       =   &c006AB500
+      HasFillColor    =   True
+      Height          =   21
+      Index           =   -2147483648
+      Indicator       =   0
+      LayoutDirection =   0
+      LayoutType      =   0
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      PanelIndex      =   0
+      Parent          =   "nil"
+      Scope           =   0
+      TabIndex        =   44
+      TabPanelIndex   =   -1
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   335
+      Visible         =   True
+      Width           =   50
+      _mDesignHeight  =   0
+      _mDesignWidth   =   0
+      _mPanelIndex    =   -1
+      Begin WebLabel lblNHS
+         Bold            =   True
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         FontName        =   "Asap"
+         FontSize        =   14.0
+         Height          =   18
+         HTMLElement     =   0
+         Index           =   1
+         Indicator       =   0
+         Italic          =   True
+         Left            =   20
+         LockBottom      =   False
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         Multiline       =   False
+         PanelIndex      =   0
+         Parent          =   "rectNHS2"
+         Scope           =   0
+         TabIndex        =   45
+         TabPanelIndex   =   -1
+         TabStop         =   True
+         Text            =   "NHS"
+         TextAlignment   =   2
+         TextColor       =   &cFFFFFF00
+         Tooltip         =   ""
+         Top             =   336
+         Underline       =   False
+         Visible         =   True
+         Width           =   48
+         _mPanelIndex    =   -1
+      End
+   End
+   Begin WebRectangle rectNHS3
+      BorderColor     =   &c000000FF
+      BorderThickness =   0
+      ControlCount    =   0
+      ControlID       =   ""
+      CornerSize      =   0
+      CSSClasses      =   ""
+      Enabled         =   True
+      FillColor       =   &c006AB500
+      HasFillColor    =   True
+      Height          =   21
+      Index           =   -2147483648
+      Indicator       =   0
+      LayoutDirection =   0
+      LayoutType      =   0
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      PanelIndex      =   0
+      Parent          =   "nil"
+      Scope           =   0
+      TabIndex        =   46
+      TabPanelIndex   =   -1
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   454
+      Visible         =   True
+      Width           =   50
+      _mDesignHeight  =   0
+      _mDesignWidth   =   0
+      _mPanelIndex    =   -1
+      Begin WebLabel lblNHS
+         Bold            =   True
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         FontName        =   "Asap"
+         FontSize        =   14.0
+         Height          =   18
+         HTMLElement     =   0
+         Index           =   2
+         Indicator       =   0
+         Italic          =   True
+         Left            =   20
+         LockBottom      =   False
+         LockedInPosition=   False
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         Multiline       =   False
+         PanelIndex      =   0
+         Parent          =   "rectNHS3"
+         Scope           =   0
+         TabIndex        =   47
+         TabPanelIndex   =   -1
+         TabStop         =   True
+         Text            =   "NHS"
+         TextAlignment   =   2
+         TextColor       =   &cFFFFFF00
+         Tooltip         =   ""
+         Top             =   456
+         Underline       =   False
+         Visible         =   True
+         Width           =   48
+         _mPanelIndex    =   -1
+      End
+   End
+   Begin wc_LandingPageMenuContainer wc_LandingPageMenu
+      ControlCount    =   0
       ControlID       =   ""
       CSSClasses      =   ""
       Enabled         =   True
-      Height          =   47
+      Height          =   685
       Index           =   -2147483648
       Indicator       =   0
-      LastSegmentIndex=   0
-      Left            =   550
-      LockBottom      =   True
+      LayoutDirection =   0
+      LayoutType      =   0
+      Left            =   259
+      LockBottom      =   False
       LockedInPosition=   False
-      LockHorizontal  =   False
+      LockHorizontal  =   True
       LockLeft        =   False
-      LockRight       =   True
-      LockTop         =   False
+      LockRight       =   False
+      LockTop         =   True
       LockVertical    =   False
-      Outlined        =   False
       PanelIndex      =   0
-      Scope           =   2
-      SegmentCount    =   0
-      Segments        =   "Reported issues\n\nFalse\rRequest a change\n\nFalse\rChangelog\n\nFalse"
-      SelectedSegmentIndex=   0
-      SelectionStyle  =   0
-      TabIndex        =   21
+      Scope           =   0
+      ScrollDirection =   0
+      TabIndex        =   48
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   847
+      Top             =   165
       Visible         =   True
-      Width           =   460
+      Width           =   740
+      _mDesignHeight  =   0
+      _mDesignWidth   =   0
       _mPanelIndex    =   -1
    End
-   Begin WebButton btnAbout
+   Begin WebButton btnChangeLog
       AllowAutoDisable=   False
       Cancel          =   False
-      Caption         =   "ⓘ About"
+      Caption         =   "Change log"
       ControlID       =   ""
       CSSClasses      =   ""
       Default         =   False
       Enabled         =   True
       Height          =   38
       Index           =   -2147483648
-      Indicator       =   0
-      Left            =   1018
-      LockBottom      =   True
+      Indicator       =   1
+      Left            =   20
+      LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
-      LockLeft        =   False
-      LockRight       =   True
-      LockTop         =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
       LockVertical    =   False
-      Outlined        =   False
+      Outlined        =   True
       PanelIndex      =   0
-      Parent          =   "nil"
       Scope           =   0
-      TabIndex        =   32
+      TabIndex        =   49
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   847
+      Top             =   572
       Visible         =   True
-      Width           =   100
+      Width           =   165
       _mPanelIndex    =   -1
    End
-   Begin WebTimer tmrSearch
+   Begin WebButton btnRequestChange
+      AllowAutoDisable=   False
+      Cancel          =   False
+      Caption         =   "Request change"
       ControlID       =   ""
+      CSSClasses      =   ""
+      Default         =   False
       Enabled         =   True
+      Height          =   38
       Index           =   -2147483648
-      Location        =   0
+      Indicator       =   1
+      Left            =   20
+      LockBottom      =   False
       LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      Outlined        =   True
       PanelIndex      =   0
-      Period          =   300
-      RunMode         =   0
       Scope           =   0
+      TabIndex        =   50
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   627
+      Visible         =   True
+      Width           =   165
+      _mPanelIndex    =   -1
+   End
+   Begin WebButton btnOpenIssues
+      AllowAutoDisable=   False
+      Cancel          =   False
+      Caption         =   "Open issues"
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Default         =   False
+      Enabled         =   True
+      Height          =   38
+      Index           =   -2147483648
+      Indicator       =   1
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      Outlined        =   True
+      PanelIndex      =   0
+      Scope           =   0
+      TabIndex        =   51
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   682
+      Visible         =   True
+      Width           =   165
+      _mPanelIndex    =   -1
+   End
+   Begin WebLabel Label1
+      Bold            =   True
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      FontName        =   "asap"
+      FontSize        =   15.0
+      Height          =   24
+      HTMLElement     =   0
+      Index           =   -2147483648
+      Indicator       =   ""
+      Italic          =   False
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      Multiline       =   False
+      PanelIndex      =   0
+      Scope           =   0
+      TabIndex        =   52
+      TabStop         =   True
+      Text            =   "Developed with"
+      TextAlignment   =   0
+      TextColor       =   &c92929200
+      Tooltip         =   ""
+      Top             =   184
+      Underline       =   False
+      Visible         =   True
+      Width           =   144
       _mPanelIndex    =   -1
    End
 End
@@ -701,7 +1169,14 @@ End
 	#tag Event
 		Sub Shown()
 		  UpdateIssuesBadge
-		  UpdateStats
+		  
+		  // Capture the resolved dark-mode state once, after the browser's
+		  // prefers-color-scheme has had time to report back. Everything
+		  // else in the app reads Session.UserDarkMode rather than
+		  // Session.IsDarkMode (which lags the actual render across
+		  // ColorMode flips and initial sync). Re-runs every time the
+		  // landing page is shown — covers fresh logins and re-visits.
+		  WebTimer.CallLater(250, AddressOf CaptureUserDarkMode)
 		  
 		  // Deep-link: if URL had ?id=N, skip the landing page and open that
 		  // indication directly in wp_indications.
@@ -715,105 +1190,98 @@ End
 	#tag EndEvent
 
 
+	#tag Method, Flags = &h21
+		Private Sub CaptureUserDarkMode()
+		  // Snapshot the live IsDarkMode into Session.UserDarkMode and
+		  // refresh the toggle caption to match. Called via
+		  // WebTimer.CallLater from Shown so the browser's
+		  // prefers-color-scheme sync has had time to land before we read.
+		  Session.UserDarkMode = Session.IsDarkMode
+		  RefreshThemeToggle
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Sub DoSearch()
-		  // The query is passed via Session, not a wp_indications property:
-		  // wp_indications is an implicit-instance page, so a value set on a
-		  // New instance is lost when the framework shows its own instance.
-		  Var q As String = txtSearch.Text.Trim
-		  If q = "" Then Return
-		  
-		  // Clear the field so returning here via Back doesn't show a stale query.
-		  txtSearch.Text = ""
-		  
-		  Session.PendingSearch = q
-		  Var w As New wp_indications
-		  Session.NavigationManager.NavigateToPage(w)
+		  ' // The query is passed via Session, not a wp_indications property:
+		  ' // wp_indications is an implicit-instance page, so a value set on a
+		  ' // New instance is lost when the framework shows its own instance.
+		  ' Var q As String = txtSearch.Text.Trim
+		  ' If q = "" Then Return
+		  ' 
+		  ' // Clear the field so returning here via Back doesn't show a stale query.
+		  ' txtSearch.Text = ""
+		  ' 
+		  ' Session.PendingSearch = q
+		  ' Var w As New wp_indications
+		  ' Session.NavigationManager.NavigateToPage(w)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub RefreshThemeToggle()
+		  // Set the icon to show the action the click WILL perform:
+		  //   - light mode now → ☾ (click to go dark)
+		  //   - dark mode now → ☀ (click to go light)
+		  If Session.UserDarkMode Then
+		    btnToggleDarkmode.Caption = "☀"
+		    btnToggleDarkmode.Tooltip = "Switch to light mode"
+		  Else
+		    btnToggleDarkmode.Caption = "☾"
+		    btnToggleDarkmode.Tooltip = "Switch to dark mode"
+		  End If
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub UpdateIssuesBadge()
+		  Var count As Integer = 0
 		  Try
 		    Var sql As String = "SELECT COUNT(*) as count FROM changes WHERE changes_status = 'New' OR changes_status = 'In Progress'"
 		    Var rs As RowSet = Session.DB.SelectSQL(sql)
 		    
 		    If Not rs.AfterLastRow Then
-		      Var count As Integer = rs.Column("count").IntegerValue
-		      If count > 0 Then
-		        ' btnIssues.SetBadge(count.ToString)
-		        segOtherActions.SetSegmentBadge(0, count.ToString)
-		      Else
-		        ' btnIssues.RemoveBadge // REMOVE badge when count is 0
-		        segOtherActions.RemoveBadge
-		      End If
+		      count = rs.Column("count").IntegerValue
 		    End If
 		    
 		  Catch err As DatabaseException
 		    System.DebugLog("UpdateIssuesBadge Error: " + err.Message)
 		  End Try
+		  
+		  // Always show the badge, including "0", so the user sees the queue depth at a glance.
+		  btnOpenIssues.SetBadge(count.ToString)
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub UpdateStats()
-		  // Live counts for the landing-page summary line.
-		  // Only counts active contexts (matching what the user can actually filter by).
-		  Try
-		    Var rs As RowSet = Session.DB.SelectSQL( _
-		    "SELECT (SELECT COUNT(*) FROM indications) AS ind_count, " + _
-		    "(SELECT COUNT(*) FROM contexts WHERE is_active = 1) AS ctx_count")
-		    
-		    If Not rs.AfterLastRow Then
-		      Var indCount As Integer = rs.Column("ind_count").IntegerValue
-		      Var ctxCount As Integer = rs.Column("ctx_count").IntegerValue
-		      Var indWord As String = If(indCount = 1, "indication", "indications")
-		      Var ctxWord As String = If(ctxCount = 1, "context", "contexts")
-		      lblStats.Text = indCount.ToString + " " + indWord + " across " + ctxCount.ToString + " " + ctxWord
-		    Else
-		      lblStats.Text = ""
-		    End If
-		    
-		  Catch err As DatabaseException
-		    System.DebugLog("UpdateStats Error: " + err.Message)
-		    lblStats.Text = ""
-		  End Try
+		  ' // Live counts for the landing-page summary line.
+		  ' // Only counts active contexts (matching what the user can actually filter by).
+		  ' Try
+		  ' Var rs As RowSet = Session.DB.SelectSQL( _
+		  ' "SELECT (SELECT COUNT(*) FROM indications) AS ind_count, " + _
+		  ' "(SELECT COUNT(*) FROM contexts WHERE is_active = 1) AS ctx_count")
+		  ' 
+		  ' If Not rs.AfterLastRow Then
+		  ' Var indCount As Integer = rs.Column("ind_count").IntegerValue
+		  ' Var ctxCount As Integer = rs.Column("ctx_count").IntegerValue
+		  ' Var indWord As String = If(indCount = 1, "indication", "indications")
+		  ' Var ctxWord As String = If(ctxCount = 1, "context", "contexts")
+		  ' lblStats.Text = indCount.ToString + " " + indWord + " across " + ctxCount.ToString + " " + ctxWord
+		  ' Else
+		  ' lblStats.Text = ""
+		  ' End If
+		  ' 
+		  ' Catch err As DatabaseException
+		  ' System.DebugLog("UpdateStats Error: " + err.Message)
+		  ' lblStats.Text = ""
+		  ' End Try
 		End Sub
 	#tag EndMethod
 
 
 #tag EndWindowCode
 
-#tag Events btnSearch
-	#tag Event
-		Sub Pressed()
-		  DoSearch
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events view
-	#tag Event
-		Sub Pressed()
-		  var w as new wp_indications
-		  Session.NavigationManager.NavigateToPage(w)
-		End Sub
-	#tag EndEvent
-	#tag Event
-		Sub Opening()
-		  var tStyle as new WebStyle
-		  tStyle.Bold  = true
-		  me.Style = tStyle
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events btnCDS
-	#tag Event
-		Sub Pressed()
-		  var dlg as new dlg_cds
-		  dlg.Show
-		End Sub
-	#tag EndEvent
-#tag EndEvents
 #tag Events btnAdminLogin
 	#tag Event
 		Sub Pressed()
@@ -822,34 +1290,62 @@ End
 		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events segOtherActions
-	#tag Event
-		Sub Pressed(segmentIndex As Integer)
-		  // Segment order matches the Segments string: 0 = Reported issues, 1 = Reqeust change, 2 = Changelog, 3 = About
-		  Select Case segmentIndex
-		  Case 0 // Reported issues
-		    var w as new wp_issues
-		    session.NavigationManager.NavigateToPage(w)
-		    
-		  Case 1 // Request a Change
-		    var dlg as new dlg_ChangeRequest
-		    Session.NavigationManager.NavigateToPage(dlg)
-		    
-		  Case 2 // Changelog
-		    Var dlg As New dlg_ChangeLogViewer
-		    dlg.Show
-		    
-		  End Select
-		  
-		  
-		End Sub
-	#tag EndEvent
-#tag EndEvents
 #tag Events btnAbout
 	#tag Event
 		Sub Pressed()
 		  Var dlg As New dlg_about
 		  dlg.Show
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnToggleDarkmode
+	#tag Event
+		Sub Pressed()
+		  // Flip both ColorMode and the cached UserDarkMode, then update
+		  // the icon deterministically. The cache stays in sync without
+		  // ever depending on the lagging Session.IsDarkMode property.
+		  If Session.UserDarkMode Then
+		    Session.ColorMode = WebSession.ColorModes.Light
+		    Session.UserDarkMode = False
+		    btnToggleDarkmode.Caption = "☾"
+		    btnToggleDarkmode.Tooltip = "Switch to dark mode"
+		  Else
+		    Session.ColorMode = WebSession.ColorModes.Dark
+		    Session.UserDarkMode = True
+		    btnToggleDarkmode.Caption = "☀"
+		    btnToggleDarkmode.Tooltip = "Switch to light mode"
+		  End If
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events rectGSTT4
+	#tag Event
+		Sub Opening()
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnChangeLog
+	#tag Event
+		Sub Pressed()
+		  Var dlg As New dlg_ChangeLogViewer
+		  dlg.Show
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnRequestChange
+	#tag Event
+		Sub Pressed()
+		  var dlg as new dlg_ChangeRequest
+		  Session.NavigationManager.NavigateToPage(dlg)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnOpenIssues
+	#tag Event
+		Sub Pressed()
+		  var w as new wp_issues
+		  session.NavigationManager.NavigateToPage(w)
 		End Sub
 	#tag EndEvent
 #tag EndEvents

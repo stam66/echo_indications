@@ -278,7 +278,6 @@ Inherits WebApplication
 		End Function
 	#tag EndMethod
 
-
 	#tag Method, Flags = &h0
 		Function RandomString(randomLength as Integer) As string
 		  var s as string
@@ -295,7 +294,6 @@ Inherits WebApplication
 		End Function
 	#tag EndMethod
 
-
 	#tag Method, Flags = &h0
 		Sub submitChangeRequest(changeRequest as string, cUser as string)
 		  var db as MySQLCommunityServer, sql as string
@@ -309,7 +307,6 @@ Inherits WebApplication
 		  end try
 		End Sub
 	#tag EndMethod
-
 
 
 	#tag Note, Name = Untitled
@@ -349,9 +346,6 @@ Inherits WebApplication
 		
 		
 	#tag EndNote
-
-
-
 
 
 	#tag Constant, Name = LightGrey, Type = Color, Dynamic = False, Default = \"&cD6D6D6", Scope = Public

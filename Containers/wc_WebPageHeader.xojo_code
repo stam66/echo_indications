@@ -68,7 +68,7 @@ Begin WebContainer wc_WebPageHeader
       Height          =   38
       Index           =   -2147483648
       Indicator       =   8
-      Left            =   790
+      Left            =   823
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -86,7 +86,7 @@ Begin WebContainer wc_WebPageHeader
       Tooltip         =   ""
       Top             =   17
       Visible         =   True
-      Width           =   116
+      Width           =   83
       _mPanelIndex    =   -1
    End
    Begin WebButton btnAdminLogin
@@ -100,7 +100,7 @@ Begin WebContainer wc_WebPageHeader
       Height          =   38
       Index           =   -2147483648
       Indicator       =   8
-      Left            =   652
+      Left            =   632
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -132,7 +132,7 @@ Begin WebContainer wc_WebPageHeader
       Height          =   38
       Index           =   -2147483648
       Indicator       =   8
-      Left            =   528
+      Left            =   508
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -198,7 +198,7 @@ Begin WebContainer wc_WebPageHeader
       Index           =   -2147483648
       Indicator       =   8
       LastSegmentIndex=   0
-      Left            =   197
+      Left            =   177
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -221,6 +221,36 @@ Begin WebContainer wc_WebPageHeader
       Width           =   343
       _mPanelIndex    =   -1
    End
+   Begin WebButton btnToggleDarkmode
+      AllowAutoDisable=   False
+      Cancel          =   False
+      Caption         =   "☾"
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Default         =   False
+      Enabled         =   True
+      Height          =   38
+      Index           =   -2147483648
+      Indicator       =   8
+      Left            =   770
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      LockVertical    =   False
+      Outlined        =   False
+      PanelIndex      =   0
+      Scope           =   0
+      TabIndex        =   7
+      TabStop         =   True
+      Tooltip         =   "Switch to dark mode"
+      Top             =   17
+      Visible         =   True
+      Width           =   45
+      _mPanelIndex    =   -1
+   End
 End
 #tag EndWebContainerControl
 
@@ -237,6 +267,7 @@ End
 		  segAdminButtons.Visible = Session.IsAuthenticated
 		  UpdateAuthenticationStatus(session.IsAuthenticated)
 		  UpdateIssuesBadge
+		  RefreshThemeToggle
 		End Sub
 	#tag EndEvent
 
@@ -250,6 +281,26 @@ End
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h21
+		Private Sub RefreshThemeToggle()
+		  // Reads Session.UserDarkMode — the cached snapshot captured at
+		  // wp_LandingPage.Shown (and updated by the toggle Pressed handler).
+		  // No defer needed because UserDarkMode is set deterministically;
+		  // unlike Session.IsDarkMode, it doesn't lag the actual render.
+		  //
+		  // Caption shows the icon for the action the click WILL perform:
+		  //   - light mode now → ☾ (click to go dark)
+		  //   - dark mode now → ☀ (click to go light)
+		  If Session.UserDarkMode Then
+		    btnToggleDarkmode.Caption = "☀"
+		    btnToggleDarkmode.Tooltip = "Switch to light mode"
+		  Else
+		    btnToggleDarkmode.Caption = "☾"
+		    btnToggleDarkmode.Tooltip = "Switch to dark mode"
+		  End If
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Sub UpdateAuthenticationStatus(isAuthenticated As Boolean)
 		  btnAdminLogin.Enabled = Not IsAuthenticated
@@ -260,22 +311,21 @@ End
 
 	#tag Method, Flags = &h0
 		Sub UpdateIssuesBadge()
+		  Var count As Integer = 0
 		  Try
 		    Var sql As String = "SELECT COUNT(*) as count FROM changes WHERE changes_status = 'New' OR changes_status = 'In Progress'"
 		    Var rs As RowSet = Session.DB.SelectSQL(sql)
 		    
 		    If Not rs.AfterLastRow Then
-		      Var count As Integer = rs.Column("count").IntegerValue
-		      If count > 0 Then
-		        btnIssues.SetBadge(count.ToString)
-		      Else
-		        btnIssues.RemoveBadge  // REMOVE badge when count is 0
-		      End If
+		      count = rs.Column("count").IntegerValue
 		    End If
 		    
 		  Catch err As DatabaseException
 		    System.DebugLog("UpdateIssuesBadge Error: " + err.Message)
 		  End Try
+		  
+		  // Always show the badge, including "0", so the user sees the queue depth at a glance.
+		  btnIssues.SetBadge(count.ToString)
 		End Sub
 	#tag EndMethod
 
@@ -342,6 +392,27 @@ End
 		    Var wp As New wp_audit
 		    Session.NavigationManager.NavigateToPage(wp)
 		  End Select
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnToggleDarkmode
+	#tag Event
+		Sub Pressed()
+		  // Read the cached UserDarkMode (set at wp_LandingPage.Shown), flip
+		  // both ColorMode and UserDarkMode, then update the icon
+		  // deterministically. The cache stays in sync without ever
+		  // depending on the lagging Session.IsDarkMode property.
+		  If Session.UserDarkMode Then
+		    Session.ColorMode = WebSession.ColorModes.Light
+		    Session.UserDarkMode = False
+		    btnToggleDarkmode.Caption = "☾"
+		    btnToggleDarkmode.Tooltip = "Switch to dark mode"
+		  Else
+		    Session.ColorMode = WebSession.ColorModes.Dark
+		    Session.UserDarkMode = True
+		    btnToggleDarkmode.Caption = "☀"
+		    btnToggleDarkmode.Tooltip = "Switch to light mode"
+		  End If
 		End Sub
 	#tag EndEvent
 #tag EndEvents

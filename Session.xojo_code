@@ -173,6 +173,19 @@ Inherits WebSession
 		PendingSearch As String
 	#tag EndProperty
 
+	#tag Property, Flags = &h0
+		#tag Note
+			Cached snapshot of dark-mode state. Captured once at
+			wp_LandingPage.Shown (with a defer so the browser's
+			prefers-color-scheme has reported in), then updated by
+			the theme-toggle button. Read this everywhere instead
+			of the live Session.IsDarkMode, which lags the actual
+			rendered state across ColorMode flips and the initial
+			browser → server sync.
+		#tag EndNote
+		UserDarkMode As Boolean = False
+	#tag EndProperty
+
 
 	#tag ViewBehavior
 		#tag ViewProperty

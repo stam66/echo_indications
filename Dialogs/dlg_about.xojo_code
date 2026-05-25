@@ -25,7 +25,6 @@ Begin WebDialog dlg_about
    Width           =   754
    _mDesignHeight  =   0
    _mDesignWidth   =   0
-   _mName          =   ""
    _mPanelIndex    =   -1
    Begin WebRectangle rectHeader
       BorderColor     =   &c49535D00
@@ -190,7 +189,7 @@ Begin WebDialog dlg_about
       TabIndex        =   3
       TabPanelIndex   =   0
       TabStop         =   True
-      Text            =   "Version 2.0"
+      Text            =   "Version 2.1"
       TextAlignment   =   0
       TextColor       =   &c000000FF
       Tooltip         =   ""
@@ -198,43 +197,6 @@ Begin WebDialog dlg_about
       Underline       =   False
       Visible         =   True
       Width           =   159
-      _mPanelIndex    =   -1
-   End
-   Begin WebLabel loginLabel
-      Bold            =   False
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      FontName        =   "Bricolage Grotesque"
-      FontSize        =   14.0
-      Height          =   28
-      HTMLElement     =   0
-      Index           =   10
-      Indicator       =   0
-      Italic          =   False
-      Left            =   20
-      LockBottom      =   True
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   False
-      LockVertical    =   False
-      Multiline       =   False
-      PanelIndex      =   0
-      Parent          =   "nil"
-      Scope           =   0
-      TabIndex        =   4
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Text            =   "(c) Dr S Kapetanakis 2025-2027"
-      TextAlignment   =   1
-      TextColor       =   &c000000FF
-      Tooltip         =   ""
-      Top             =   661
-      Underline       =   False
-      Visible         =   True
-      Width           =   222
       _mPanelIndex    =   -1
    End
    Begin WebLabel lblInfo
@@ -262,7 +224,7 @@ Begin WebDialog dlg_about
       Scope           =   0
       TabIndex        =   5
       TabStop         =   True
-      Text            =   "- ECHO Indications drawn from National and International guidelines, expert consensus.\n- Reviewed and ratified by South East London university hospitals:\n        - Guy's and St Thomas' Hospitals (GSTT)\n        - Harefield Hospital (GSTT)\n        - Royal Brompton Hospital (GSTT)\n        - King's College Hospital (KCH)\n        - Princess Royal University Hospital (KCH)\n        - University Hospital Lewisham (LGT)\n        - Queen Elizabeth Hospital (LGT)\n\n- Indications can be filtered by context or full text, misspelling tolerant (fuzzy) search \n\n- Each indication includes one more more contexts, attributions, synonyms, comments.\n\n- Appropriate use criteria and urgency recommendations for multiple settings:\n        - Primary Care\n        - Secondary Care (outpatient setting)\n        - Secondary Care (inpatient setting)\n\n- The web app includes\n        - Free access to view all indications & appropriate use critera.\n        - Direct navigation to a specific indication with a URL that can be shared.\n        - Admin access to modiy indications, contexts, manage registered users and more.\n        - Feedback for feature requests and changes as well as bug reports.\n        - A detailed view of all pending feature requests & bug reports.\n        - A full database audit trail.\n        - A change log viewable by all, edited by admins.\n\n"
+      Text            =   "- ECHO Indications drawn from National and International guidelines, expert consensus.\n- Reviewed and ratified by South East London university hospitals:\n        - Guy's and St Thomas' NHS Trust (Guy's, St Thomas', Harefield, Royal Brompton Hospitals)\n        - King's College Hospital NHS Trust (King's college, Princess Royal University hospitals)\n        - Lewisham & Greenwich NHS Trust (Queen Elizabeth and University Hospital Lewisham)\n\n- Indications for ECHO graded as Indicated, Not Indicated and Can be consdired.\n- Apprriate use criteria drawn from national and international guidlines.\n\n- Appropriate use criteria set for Primary Care, Secondary Care Outpatients and Inpatients.\n\n- Each indication has\n        - One or more contexts\n        - One or more attributions to guidelines\n        - Searchable Keywords/Synonyms and Comments       \n\n- Features\n        - Search ECHO indications and/or filter by context(s)\n        - Direct navigation to a specific indication with a URL that can be shared.\n        - Clinical decision support tool to navigate a decision tree to the right indication.\n        - Admin access to modiy indications, contexts, manage registered users and more.\n        - Feedback for feature requests and changes as well as bug reports.\n        - A detailed view of all pending feature requests & bug reports.\n        - A full database audit trail.\n        - A change log viewable by all, edited by admins."
       TextAlignment   =   0
       TextColor       =   &c000000FF
       Tooltip         =   ""
@@ -335,6 +297,81 @@ Begin WebDialog dlg_about
       Underline       =   False
       Visible         =   True
       Width           =   689
+      _mPanelIndex    =   -1
+   End
+   Begin WebLabel loginLabel
+      Bold            =   False
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      FontName        =   "Bricolage Grotesque"
+      FontSize        =   14.0
+      Height          =   28
+      HTMLElement     =   0
+      Index           =   11
+      Indicator       =   0
+      Italic          =   False
+      Left            =   20
+      LockBottom      =   True
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   False
+      LockVertical    =   False
+      Multiline       =   False
+      PanelIndex      =   0
+      Parent          =   "nil"
+      Scope           =   0
+      TabIndex        =   8
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "(c) Dr S Kapetanakis 2025-2027"
+      TextAlignment   =   1
+      TextColor       =   &c000000FF
+      Tooltip         =   ""
+      Top             =   644
+      Underline       =   False
+      Visible         =   True
+      Width           =   222
+      _mPanelIndex    =   -1
+   End
+   Begin WebLink Link1
+      Appearance      =   0
+      Bold            =   False
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      FontName        =   ""
+      FontSize        =   0.0
+      Height          =   38
+      HTMLElement     =   0
+      Index           =   -2147483648
+      Indicator       =   ""
+      Italic          =   False
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      Multiline       =   False
+      PanelIndex      =   0
+      Scope           =   0
+      TabIndex        =   9
+      TabStop         =   True
+      Target          =   2
+      Text            =   "Github Repository"
+      TextAlignment   =   0
+      TextColor       =   &c000000FF
+      Tooltip         =   ""
+      Top             =   662
+      Underline       =   False
+      URL             =   "https://github.com/stam66/echo_indications"
+      Visible         =   True
+      Width           =   363
       _mPanelIndex    =   -1
    End
 End
