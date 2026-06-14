@@ -22,7 +22,7 @@ Begin WebDialog dlg_Indication
    TabIndex        =   0
    Top             =   0
    Visible         =   True
-   Width           =   942
+   Width           =   978
    _mDesignHeight  =   0
    _mDesignWidth   =   0
    _mPanelIndex    =   -1
@@ -56,7 +56,7 @@ Begin WebDialog dlg_Indication
       Tooltip         =   ""
       Top             =   0
       Visible         =   True
-      Width           =   942
+      Width           =   978
       _mDesignHeight  =   0
       _mDesignWidth   =   0
       _mPanelIndex    =   -1
@@ -108,7 +108,7 @@ Begin WebDialog dlg_Indication
          Height          =   38
          Index           =   -2147483648
          Indicator       =   7
-         Left            =   884
+         Left            =   920
          LockBottom      =   False
          LockedInPosition=   False
          LockHorizontal  =   False
@@ -140,7 +140,7 @@ Begin WebDialog dlg_Indication
          Height          =   38
          Index           =   -2147483648
          Indicator       =   7
-         Left            =   837
+         Left            =   873
          LockBottom      =   False
          LockedInPosition=   False
          LockHorizontal  =   False
@@ -172,7 +172,7 @@ Begin WebDialog dlg_Indication
          Height          =   38
          Index           =   -2147483648
          Indicator       =   7
-         Left            =   581
+         Left            =   653
          LockBottom      =   False
          LockedInPosition=   False
          LockHorizontal  =   False
@@ -209,12 +209,12 @@ Begin WebDialog dlg_Indication
       Indicator       =   ""
       LayoutDirection =   "LayoutDirections.LeftToRight"
       LayoutType      =   "LayoutTypes.Fixed"
-      Left            =   232
+      Left            =   272
       LockBottom      =   True
       LockedInPosition=   False
-      LockHorizontal  =   False
+      LockHorizontal  =   True
       LockLeft        =   False
-      LockRight       =   True
+      LockRight       =   False
       LockTop         =   False
       LockVertical    =   False
       PanelIndex      =   0
@@ -224,7 +224,7 @@ Begin WebDialog dlg_Indication
       Tooltip         =   ""
       Top             =   459
       Visible         =   True
-      Width           =   690
+      Width           =   687
       _mDesignHeight  =   0
       _mDesignWidth   =   0
       _mPanelIndex    =   -1
@@ -240,7 +240,7 @@ Begin WebDialog dlg_Indication
          Index           =   -2147483648
          Indicator       =   ""
          Italic          =   False
-         Left            =   252
+         Left            =   292
          LockBottom      =   False
          LockedInPosition=   False
          LockHorizontal  =   False
@@ -275,7 +275,7 @@ Begin WebDialog dlg_Indication
          InitialValue    =   "Indicated\nNot Indicated\nMay be considered"
          LastAddedRowIndex=   0
          LastRowIndex    =   0
-         Left            =   470
+         Left            =   510
          LockBottom      =   False
          LockedInPosition=   False
          LockHorizontal  =   False
@@ -310,7 +310,7 @@ Begin WebDialog dlg_Indication
          Index           =   -2147483648
          Indicator       =   ""
          Italic          =   True
-         Left            =   470
+         Left            =   510
          LockBottom      =   False
          LockedInPosition=   False
          LockHorizontal  =   False
@@ -345,7 +345,7 @@ Begin WebDialog dlg_Indication
          InitialValue    =   "Indicated\nNot Indicated\nMay be considered"
          LastAddedRowIndex=   0
          LastRowIndex    =   0
-         Left            =   252
+         Left            =   292
          LockBottom      =   False
          LockedInPosition=   False
          LockHorizontal  =   False
@@ -380,7 +380,7 @@ Begin WebDialog dlg_Indication
          Index           =   -2147483648
          Indicator       =   ""
          Italic          =   True
-         Left            =   252
+         Left            =   292
          LockBottom      =   False
          LockedInPosition=   False
          LockHorizontal  =   False
@@ -415,7 +415,7 @@ Begin WebDialog dlg_Indication
          InitialValue    =   "Indicated\nNot Indicated\nMay be considered"
          LastAddedRowIndex=   0
          LastRowIndex    =   0
-         Left            =   687
+         Left            =   727
          LockBottom      =   False
          LockedInPosition=   False
          LockHorizontal  =   False
@@ -450,7 +450,7 @@ Begin WebDialog dlg_Indication
          Index           =   -2147483648
          Indicator       =   ""
          Italic          =   True
-         Left            =   687
+         Left            =   727
          LockBottom      =   False
          LockedInPosition=   False
          LockHorizontal  =   False
@@ -487,7 +487,7 @@ Begin WebDialog dlg_Indication
          Index           =   -2147483648
          Indicator       =   0
          Italic          =   True
-         Left            =   470
+         Left            =   510
          LockBottom      =   False
          LockedInPosition=   False
          LockHorizontal  =   False
@@ -522,7 +522,7 @@ Begin WebDialog dlg_Indication
          InitialValue    =   "Not indicated\nCan be considered\nRoutine\nSoon\nUrgent"
          LastAddedRowIndex=   0
          LastRowIndex    =   0
-         Left            =   470
+         Left            =   510
          LockBottom      =   False
          LockedInPosition=   False
          LockHorizontal  =   False
@@ -557,12 +557,12 @@ Begin WebDialog dlg_Indication
       Hint            =   ""
       Index           =   -2147483648
       Indicator       =   ""
-      Left            =   218
+      Left            =   284
       LockBottom      =   False
       LockedInPosition=   False
-      LockHorizontal  =   False
+      LockHorizontal  =   True
       LockLeft        =   False
-      LockRight       =   True
+      LockRight       =   False
       LockTop         =   True
       LockVertical    =   False
       MaximumCharactersAllowed=   0
@@ -576,7 +576,7 @@ Begin WebDialog dlg_Indication
       Tooltip         =   ""
       Top             =   98
       Visible         =   True
-      Width           =   704
+      Width           =   674
       _mPanelIndex    =   -1
    End
    Begin WebListBox lstContexts
@@ -621,7 +621,7 @@ Begin WebDialog dlg_Indication
       Tooltip         =   ""
       Top             =   98
       Visible         =   True
-      Width           =   190
+      Width           =   241
       _mPanelIndex    =   -1
    End
    Begin WebLabel lblContexts
@@ -668,7 +668,7 @@ Begin WebDialog dlg_Indication
       Indeterminate   =   False
       Index           =   -2147483648
       Indicator       =   ""
-      Left            =   232
+      Left            =   284
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   True
@@ -696,7 +696,7 @@ Begin WebDialog dlg_Indication
       Indeterminate   =   False
       Index           =   -2147483648
       Indicator       =   ""
-      Left            =   232
+      Left            =   284
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   True
@@ -724,7 +724,7 @@ Begin WebDialog dlg_Indication
       Indeterminate   =   False
       Index           =   -2147483648
       Indicator       =   ""
-      Left            =   232
+      Left            =   284
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   True
@@ -752,7 +752,7 @@ Begin WebDialog dlg_Indication
       Indeterminate   =   False
       Index           =   -2147483648
       Indicator       =   ""
-      Left            =   232
+      Left            =   284
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   True
@@ -780,7 +780,7 @@ Begin WebDialog dlg_Indication
       Indeterminate   =   False
       Index           =   -2147483648
       Indicator       =   ""
-      Left            =   232
+      Left            =   284
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   True
@@ -810,7 +810,7 @@ Begin WebDialog dlg_Indication
       Hint            =   ""
       Index           =   -2147483648
       Indicator       =   ""
-      Left            =   407
+      Left            =   423
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   True
@@ -829,7 +829,7 @@ Begin WebDialog dlg_Indication
       Tooltip         =   ""
       Top             =   243
       Visible         =   True
-      Width           =   192
+      Width           =   241
       _mPanelIndex    =   -1
    End
    Begin WebLabel lblSources
@@ -844,7 +844,7 @@ Begin WebDialog dlg_Indication
       Index           =   -2147483648
       Indicator       =   ""
       Italic          =   False
-      Left            =   232
+      Left            =   284
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   True
@@ -879,7 +879,7 @@ Begin WebDialog dlg_Indication
       Index           =   -2147483648
       Indicator       =   ""
       Italic          =   False
-      Left            =   407
+      Left            =   423
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -913,12 +913,12 @@ Begin WebDialog dlg_Indication
       Hint            =   ""
       Index           =   -2147483648
       Indicator       =   ""
-      Left            =   657
+      Left            =   674
       LockBottom      =   False
       LockedInPosition=   False
-      LockHorizontal  =   False
+      LockHorizontal  =   True
       LockLeft        =   False
-      LockRight       =   True
+      LockRight       =   False
       LockTop         =   True
       LockVertical    =   False
       MaximumCharactersAllowed=   0
@@ -932,7 +932,7 @@ Begin WebDialog dlg_Indication
       Tooltip         =   ""
       Top             =   243
       Visible         =   True
-      Width           =   265
+      Width           =   285
       _mPanelIndex    =   -1
    End
    Begin WebLabel lblComments
@@ -947,7 +947,7 @@ Begin WebDialog dlg_Indication
       Index           =   -2147483648
       Indicator       =   ""
       Italic          =   False
-      Left            =   657
+      Left            =   672
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -981,7 +981,7 @@ Begin WebDialog dlg_Indication
       Height          =   38
       Index           =   -2147483648
       Indicator       =   1
-      Left            =   822
+      Left            =   858
       LockBottom      =   True
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -1011,7 +1011,7 @@ Begin WebDialog dlg_Indication
       Height          =   38
       Index           =   -2147483648
       Indicator       =   0
-      Left            =   714
+      Left            =   750
       LockBottom      =   True
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -1042,7 +1042,7 @@ Begin WebDialog dlg_Indication
       Index           =   -2147483648
       Indicator       =   ""
       Italic          =   False
-      Left            =   218
+      Left            =   269
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -1077,7 +1077,7 @@ Begin WebDialog dlg_Indication
       Index           =   -2147483648
       Indicator       =   ""
       Italic          =   True
-      Left            =   232
+      Left            =   272
       LockBottom      =   True
       LockedInPosition=   False
       LockHorizontal  =   False

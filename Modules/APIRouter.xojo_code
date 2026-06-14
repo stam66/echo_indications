@@ -43,6 +43,12 @@ Protected Module APIRouter
 		  Case "decision-nodes"
 		    RouteSimple(request, response, segments, "decision-nodes")
 
+		  Case "audit"
+		    RouteSimple(request, response, segments, "audit")
+
+		  Case "changelog"
+		    RouteSimple(request, response, segments, "changelog")
+
 		  Else
 		    APIResponse.WriteError(response, 404, "Unknown resource: " + resource)
 		  End Select
@@ -142,6 +148,20 @@ Protected Module APIRouter
 		      Else
 		        APIResponse.WriteError(response, 405, "Method not allowed")
 		      End If
+		    Case "audit"
+		      If request.Method = "GET" Then
+		        AuditEndpoints.HandleList(request, response)
+		      Else
+		        APIResponse.WriteError(response, 405, "Method not allowed")
+		      End If
+		    Case "changelog"
+		      If request.Method = "GET" Then
+		        ChangelogEndpoints.HandleList(request, response)
+		      ElseIf request.Method = "POST" Then
+		        ChangelogEndpoints.HandleCreate(request, response)
+		      Else
+		        APIResponse.WriteError(response, 405, "Method not allowed")
+		      End If
 		    End Select
 		    Return
 		  End If
@@ -196,6 +216,23 @@ Protected Module APIRouter
 		        DecisionNodeEndpoints.HandleUpdate(request, response, id)
 		      Case "DELETE"
 		        DecisionNodeEndpoints.HandleDelete(request, response, id)
+		      Else
+		        APIResponse.WriteError(response, 405, "Method not allowed")
+		      End Select
+		    Case "audit"
+		      If request.Method = "GET" Then
+		        AuditEndpoints.HandleGet(request, response, id)
+		      Else
+		        APIResponse.WriteError(response, 405, "Method not allowed")
+		      End If
+		    Case "changelog"
+		      Select Case request.Method
+		      Case "GET"
+		        ChangelogEndpoints.HandleGet(request, response, id)
+		      Case "PUT"
+		        ChangelogEndpoints.HandleUpdate(request, response, id)
+		      Case "DELETE"
+		        ChangelogEndpoints.HandleDelete(request, response, id)
 		      Else
 		        APIResponse.WriteError(response, 405, "Method not allowed")
 		      End Select

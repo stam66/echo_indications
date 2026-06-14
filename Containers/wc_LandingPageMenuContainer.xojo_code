@@ -408,13 +408,13 @@ Begin WebContainer wc_LandingPageMenuContainer
       CSSClasses      =   ""
       Enabled         =   True
       FontName        =   "Bricolage Grotesque"
-      FontSize        =   54.0
+      FontSize        =   56.0
       Height          =   68
-      HTMLElement     =   0
+      HTMLElement     =   2
       Index           =   1
       Indicator       =   ""
       Italic          =   False
-      Left            =   187
+      Left            =   70
       LockBottom      =   False
       LockedInPosition=   False
       LockHorizontal  =   False
@@ -427,14 +427,14 @@ Begin WebContainer wc_LandingPageMenuContainer
       Scope           =   0
       TabIndex        =   4
       TabStop         =   True
-      Text            =   "appropriate"
-      TextAlignment   =   0
+      Text            =   "appropriate?"
+      TextAlignment   =   2
       TextColor       =   &c006AB500
       Tooltip         =   ""
       Top             =   167
       Underline       =   False
       Visible         =   True
-      Width           =   322
+      Width           =   600
       _mPanelIndex    =   -1
    End
    Begin WebLabel lblTitle
@@ -443,9 +443,9 @@ Begin WebContainer wc_LandingPageMenuContainer
       CSSClasses      =   ""
       Enabled         =   True
       FontName        =   "Bricolage Grotesque"
-      FontSize        =   54.0
+      FontSize        =   56.0
       Height          =   68
-      HTMLElement     =   0
+      HTMLElement     =   2
       Index           =   0
       Indicator       =   ""
       Italic          =   False
@@ -472,49 +472,14 @@ Begin WebContainer wc_LandingPageMenuContainer
       Width           =   585
       _mPanelIndex    =   -1
    End
-   Begin WebLabel lblTitle
-      Bold            =   True
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      FontName        =   "Bricolage Grotesque"
-      FontSize        =   54.0
-      Height          =   68
-      HTMLElement     =   0
-      Index           =   2
-      Indicator       =   ""
-      Italic          =   False
-      Left            =   506
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      LockVertical    =   False
-      Multiline       =   False
-      PanelIndex      =   0
-      Scope           =   0
-      TabIndex        =   6
-      TabStop         =   True
-      Text            =   "?"
-      TextAlignment   =   0
-      TextColor       =   &c000000FF
-      Tooltip         =   ""
-      Top             =   167
-      Underline       =   False
-      Visible         =   True
-      Width           =   31
-      _mPanelIndex    =   -1
-   End
    Begin WebLabel lblTagLine
       Bold            =   False
       ControlID       =   ""
       CSSClasses      =   ""
       Enabled         =   True
       FontName        =   "bricolage grotesque"
-      FontSize        =   0.0
-      Height          =   46
+      FontSize        =   16.0
+      Height          =   69
       HTMLElement     =   0
       Index           =   -2147483648
       Indicator       =   ""

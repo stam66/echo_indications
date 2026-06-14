@@ -32,7 +32,6 @@ Begin WebPage wp_LandingPage
    _ImplicitInstance=   False
    _mDesignHeight  =   0
    _mDesignWidth   =   0
-   _mName          =   ""
    _mPanelIndex    =   -1
    Begin WebRectangle rectHeroPanel
       BorderColor     =   &c000000FF
@@ -108,7 +107,7 @@ Begin WebPage wp_LandingPage
          FontName        =   "Bricolage Grotesque"
          FontSize        =   24.0
          Height          =   38
-         HTMLElement     =   0
+         HTMLElement     =   3
          Index           =   -2147483648
          Indicator       =   ""
          Italic          =   False
@@ -145,7 +144,7 @@ Begin WebPage wp_LandingPage
          FontName        =   "Bricolage Grotesque"
          FontSize        =   60.0
          Height          =   76
-         HTMLElement     =   0
+         HTMLElement     =   1
          Index           =   -2147483648
          Indicator       =   0
          Italic          =   False

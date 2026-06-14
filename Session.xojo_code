@@ -27,11 +27,49 @@ Inherits WebSession
 		  Catch err As RuntimeException
 		    System.DebugLog("Secrets.Load failed: " + err.Message)
 		  End Try
-
+		  
 		  Call Connect()
 		  me.NavigationManager = new WebNavigationManager(self)
-		  Var w as new wp_LandingPage
-		  me.NavigationManager.NavigateToPage(w)
+		  
+		  // Route based on ?item=... query parameter.
+		  // Example: https://echoindications.org/?item=privacypolicy
+		  Var item As String = ""
+		  Try
+		    item = Session.URLParameter("item").Lowercase.Trim
+		  Catch err As RuntimeException
+		    // URLParameter not available — fall back to parsing the URL ourselves
+		    Var url As String = Session.URL
+		    Var q As Integer = url.IndexOf("?")
+		    If q >= 0 Then
+		      Var qs As String = url.Middle(q + 1)
+		      For Each pair As String In qs.Split("&")
+		        Var eqIdx As Integer = pair.IndexOf("=")
+		        If eqIdx > 0 And pair.Left(eqIdx).Lowercase = "item" Then
+		          item = pair.Middle(eqIdx + 1).Lowercase.Trim
+		          Exit For
+		        End If
+		      Next
+		    End If
+		  End Try
+		  
+		  Select Case item
+		  Case "privacypolicy", "privacy", "privacy-policy"
+		    Var p as new wp_PrivacyPolicy
+		    me.NavigationManager.NavigateToPage(p)
+		  Else
+		    Var w as new wp_LandingPage
+		    me.NavigationManager.NavigateToPage(w)
+		  End Select
+		  
+		  Var css As String = _
+		  "h1{font-size:60px !important;line-height:1.2 !important;font-weight:700 !important;margin:0 !important;}" + _
+		  "h2{font-size:56px !important;line-height:1.2 !important;font-weight:700 !important;margin:0 !important;}" + _
+		  "h3{font-size:24px !important;line-height:1.3 !important;font-weight:600 !important;margin:0 !important;}"
+		  Session.ExecuteJavaScript( _
+		  "var s=document.createElement('style');" + _
+		  "s.type='text/css';" + _
+		  "s.appendChild(document.createTextNode('" + css + "'));" + _
+		  "document.head.appendChild(s);")
 		End Sub
 	#tag EndEvent
 
@@ -59,7 +97,7 @@ Inherits WebSession
 
 	#tag Method, Flags = &h0
 		Sub Disconnect()
-
+		  
 		  If DB <> Nil And DB.IsConnected Then
 		    DB.Close
 		  End If
@@ -72,18 +110,18 @@ Inherits WebSession
 		  // a rapid second click on the same button keeps the real original),
 		  // swap to tempCaption, schedule a restore.
 		  If btn = Nil Then Return
-
+		  
 		  // If a different button is mid-flash, restore it now so we don't
 		  // lose its original caption.
 		  If mFlashButton <> Nil And mFlashButton <> btn Then
 		    mFlashButton.Caption = mFlashOriginal
 		  End If
-
+		  
 		  If mFlashButton <> btn Then
 		    mFlashOriginal = btn.Caption
 		    mFlashButton = btn
 		  End If
-
+		  
 		  btn.Caption = tempCaption
 		  Timer.CallLater(durationMs, AddressOf RestoreFlashedCaption)
 		End Sub
@@ -131,14 +169,6 @@ Inherits WebSession
 		CurrentUserID As Integer = 0
 	#tag EndProperty
 
-	#tag Property, Flags = &h21
-		Private mFlashButton As WebButton
-	#tag EndProperty
-
-	#tag Property, Flags = &h21
-		Private mFlashOriginal As String
-	#tag EndProperty
-
 	#tag Property, Flags = &h0
 		CurrentUsername As String
 	#tag EndProperty
@@ -161,16 +191,24 @@ Inherits WebSession
 		IsConnected As Boolean
 	#tag EndComputedProperty
 
+	#tag Property, Flags = &h21
+		Private mFlashButton As WebButton
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mFlashOriginal As String
+	#tag EndProperty
+
 	#tag Property, Flags = &h0
 		NavigationManager As WebNavigationManager
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		SelectedIndicationID As Integer
+		PendingSearch As String
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		PendingSearch As String
+		SelectedIndicationID As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -188,6 +226,14 @@ Inherits WebSession
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="_mIsUserAuthenticationCapable"
+			Visible=false
+			Group="Behavior"
+			InitialValue="False"
+			Type="Boolean"
+			EditorType=""
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Index"
 			Visible=true
@@ -463,6 +509,22 @@ Inherits WebSession
 			Group="Behavior"
 			InitialValue=""
 			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="PendingSearch"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="String"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="UserDarkMode"
+			Visible=false
+			Group="Behavior"
+			InitialValue="False"
+			Type="Boolean"
 			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior
