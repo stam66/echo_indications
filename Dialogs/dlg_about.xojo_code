@@ -362,7 +362,7 @@ Begin WebDialog dlg_about
       Scope           =   0
       TabIndex        =   9
       TabStop         =   True
-      Target          =   2
+      Target          =   1
       Text            =   "Github Repository"
       TextAlignment   =   0
       TextColor       =   &c000000FF
@@ -371,7 +371,45 @@ Begin WebDialog dlg_about
       Underline       =   False
       URL             =   "https://github.com/stam66/echo_indications"
       Visible         =   True
-      Width           =   363
+      Width           =   159
+      _mPanelIndex    =   -1
+   End
+   Begin WebLink Link2
+      Appearance      =   0
+      Bold            =   False
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      FontName        =   ""
+      FontSize        =   0.0
+      Height          =   38
+      HTMLElement     =   0
+      Index           =   -2147483648
+      Indicator       =   ""
+      Italic          =   False
+      Left            =   187
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      Multiline       =   False
+      PanelIndex      =   0
+      Scope           =   0
+      TabIndex        =   11
+      TabStop         =   True
+      Target          =   1
+      Text            =   "Privacy policy"
+      TextAlignment   =   0
+      TextColor       =   &c000000FF
+      Tooltip         =   ""
+      Top             =   662
+      Underline       =   False
+      URL             =   "https://echoindications.org/?item=privacypolicy"
+      Visible         =   True
+      Width           =   130
       _mPanelIndex    =   -1
    End
 End
@@ -427,7 +465,7 @@ End
 #tag Events Button1
 	#tag Event
 		Sub Pressed()
-		  Session.GotoURL("mailto:skapetanakis@nhs.net", False)
+		  Session.GotoURL("mailto:info@echoindications.org", False)
 		End Sub
 	#tag EndEvent
 #tag EndEvents

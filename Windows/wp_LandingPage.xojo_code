@@ -1186,6 +1186,14 @@ End
 		    w.DeepLinkID = idValue
 		    Session.NavigationManager.NavigateToPage(w)
 		  End If
+
+		  // Deep-link: ?item=reset opens the password-reset dialog directly,
+		  // e.g. https://echoindications.org/?item=reset (used by the desktop
+		  // app's "Reset your password" link).
+		  If Session.URLParameter("item").Lowercase.Trim = "reset" Then
+		    Var d As New dlg_Reset
+		    d.Show
+		  End If
 		End Sub
 	#tag EndEvent
 
